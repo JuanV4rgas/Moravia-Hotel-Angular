@@ -31,4 +31,10 @@ export class ServiceFormComponent {
 
   }
 
+  addService(form: any){
+    console.log(this.formService);
+    this.sendService = Object.assign({}, this.formService);
+    this.addServiceEvent.emit(this.sendService);
+  }
+
 }

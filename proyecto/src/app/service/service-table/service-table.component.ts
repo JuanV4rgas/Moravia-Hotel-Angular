@@ -95,4 +95,9 @@ selectedService!: Service;
     this.servicesList.push(service);
   }
 
+  eliminarServicio(service:Service){
+    var index = this.servicesList.indexOf(service);
+    this.servicesList.splice(index,1);
+  }
+
 }

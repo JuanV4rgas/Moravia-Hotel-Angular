@@ -9,4 +9,16 @@ import { Service } from '../service';
 export class ServiceDetailComponent {
   @Input()
   service!:Service;
+
+  //Inyectar dependencias
+  constructor(){}
+
+  //funcion que llama el componente
+  ngOnInit():void{
+    console.log("ngOnInit del detail");
+  }
+
+  ngOnChanges():void{
+    console.log("ngOnChanges del detail");
+  } 
 }
