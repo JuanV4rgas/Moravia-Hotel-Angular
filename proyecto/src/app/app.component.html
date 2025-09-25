@@ -1,0 +1,12 @@
+<h1>{{title}}</h1>
+
+<ng-container [ngSwitch]="userType">
+    <ng-container *ngSwitchCase="'user'">
+        <button>Acciones basicas</button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'admin'">
+        <button>Acciones basicas</button>
+        <button>Acciones admin</button>
+    </ng-container>
+</ng-container>
+<app-service-table></app-service-table>
