@@ -1,0 +1,142 @@
+<app-header></app-header>
+<main class="landing">
+  <!-- HERO principal con imagen + títulos centrados -->
+  <section class="hero-main">
+    <img
+      src="https://accidentallywesanderson.com/wp-content/uploads/2024/07/GrandhotelGiessbach_24_27.jpg"
+      alt="Fachada The Moravia" class="hero-img">
+
+    <!-- capa oscura suave para contraste del texto -->
+    <div class="hero-overlay"></div>
+
+    <!-- título centrado -->
+    <div class="hero-title">
+      <h1>THE MORAVIA</h1>
+      <img src="/assets/img/logo_gray.png" alt="Escudo The Moravia" class="hero-crest">
+      <h2>HOTEL</h2>
+    </div>
+  </section>
+
+  <section class="media-row">
+    <!-- Marco con el VIDEO -->
+    <div class="media-frame">
+      <video class="video-bg" autoplay muted loop playsinline poster="/assets/img/poster.png">
+        <source src="https://giessbach.ch/images/video_uploads/SchiffHD_Web.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="book">
+      <h2>Bienvenidos a</h2>
+      <h2>The Moravia</h2>
+      <p>Somos el hotel de cinco estrellas más emblemático de Praga.</p>
+      <p>Un refugio en Malá Strana, mundialmente famoso por su elegancia histórica, su impecable servicio, sus
+        impresionantes habitaciones y suites, y su legendario kompot cuando cae la noche.</p>
+      <div class="cover">
+        <img src="/assets/img/logo_blue.png" alt="Logo">
+      </div>
+    </div>
+  </section>
+
+  <!-- RESTAURANTE -->
+  <section class="feature-hero">
+    <img
+      src="https://cldnr.prod.webx.talpa.digital/talpa-network/image/fetch/f_auto,c_limit,w_3840,q_auto/https://images.ctfassets.net/mwdlh7x5m54h/72sO8UnNUwLASrqMK86d3x/bb012a3c1006d7daa6d6ca8bf0fb2690/pexels-cottonbro-6466288.jpg"
+      alt="Restaurante - servicio en habitación">
+
+    <div class="feature-card">
+      <h3>Restaurante de tres estrellas <span>Michelin</span></h3>
+      <p>Agradable para todo tipo de paladares.</p>
+      <p>Reserva ahora una mesa en uno de los comedores más prestigiosos del mundo.</p>
+      <a href="/reservas" class="button2">Reservar</a>
+    </div>
+  </section>
+
+  <!-- SUITES -->
+  <section class="suites-grid">
+    <article class="tile">
+      <div class="tile-media">
+        <img src="https://giessbach.ch/images/image_uploads/Giessbach-Suite-Wohnzimmer.jpg" alt="Suite 1">
+      </div>
+      <div class="tile-content">
+        <h1>Suites <em>Lujosas</em></h1>
+        <h2>Refinadas con una elegancia excepcional y atemporal, nuestras impresionantes suites de 5 estrellas le
+          dejarán sin aliento.</h2>
+        <div class="actions">
+          <button class="cta">
+            <span class="hover-underline-animation"> Más información </span>
+            <svg id="arrow-horizontal" xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+              <path id="Path_10" data-name="Path 10"
+                d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" transform="translate(30)">
+              </path>
+            </svg>
+          </button>
+        </div>
+        <button class="cta">
+          <span class="hover-underline-animation"> Reservar ahora </span>
+          <svg id="arrow-horizontal" xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+            <path id="Path_10" data-name="Path 10"
+              d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" transform="translate(30)">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </article>
+
+    <article class="tile invert">
+      <div class="tile-media">
+        <img src="https://giessbach.ch/images/image_uploads/Suite-Horace-Edouard-Zimmer.jpg" alt="Suite 2">
+      </div>
+      <div class="tile-content">
+        <h1>Habitaciones <em>Inolvidables</em></h1>
+        <h2>Estancias bañadas en luz y detalles artesanales para un descanso perfecto.</h2>
+        <div class="actions">
+          <button class="cta">
+            <span class="hover-underline-animation"> Más información </span>
+            <svg id="arrow-horizontal" xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+              <path id="Path_10" data-name="Path 10"
+                d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" transform="translate(30)">
+              </path>
+            </svg>
+          </button>
+        </div>
+        <button class="cta">
+          <span class="hover-underline-animation"> Reservar ahora </span>
+          <svg id="arrow-horizontal" xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+            <path id="Path_10" data-name="Path 10"
+              d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" transform="translate(30)">
+            </path>
+          </svg>
+          </button>
+      </div>
+    </article>
+  </section>
+
+  <!--TARJETAS-->
+  <section class="cards-carousel" style="overflow: hidden;">
+    <button class="cc-arrow cc-prev" aria-label="Anterior" (click)="scrollPrev()">‹</button>
+
+    <div class="cc-track" #ccTrack>
+      <div class="flip-card" *ngFor="let servicio of servicios">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img [src]="servicio.foto" [alt]="servicio.nombre">
+          </div>
+          <div class="flip-card-back">
+            <p class="title-card">{{ servicio.nombre }}</p>
+            <a [href]="'/servicios/' + servicio.id" class="cta">
+              <span class="hover-underline-animation"> Ver más </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+                <path d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
+                  transform="translate(30)">
+                </path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="cc-arrow cc-next" aria-label="Siguiente" (click)="scrollNext()">›</button>
+  </section>
+</main>
+
+<app-footer></app-footer>

@@ -1,0 +1,141 @@
+<header class="site-header">
+  <!-- Botón hamburguesa (lado izquierdo) -->
+  <button
+    class="hamburger"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#navOffcanvas"
+    aria-controls="navOffcanvas"
+    aria-label="Abrir menú"
+    (click)="toggleOffcanvas()"
+  >
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Logo + título (centro/izquierda) -->
+  <div class="logo">
+    <a href="/"><img src="/assets/img/logo_gray.png" alt="Logo" /></a>
+    <a class="titulo-logo" href="/">
+      <img src="/assets/img/title_gray.png" alt="Title" />
+    </a>
+  </div>
+
+  <!-- Botones del lado derecho -->
+  <div class="header-buttons">
+    <a href="/reservas" class="button2">Reservar</a>
+
+    <div *ngIf="!authenticated">
+      <a href="/login" class="button2">Login</a>
+    </div>
+
+    <div *ngIf="authenticated" class="user-profile-circle">
+      <div class="user-dropdown">
+        <button
+          class="user-avatar-circle"
+          id="userDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            [src]="usuario.fotoPerfil || '/assets/img/default-avatar.png'"
+            [alt]="usuario.nombre"
+            class="profile-circle-img"
+          />
+        </button>
+
+        <!-- Dropdown Menu -->
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="userDropdown"
+        >
+          <li class="dropdown-header">
+            <div class="user-info">
+              <strong>{{ usuario.nombre }}</strong>
+              <small>{{ usuario.email }}</small>
+            </div>
+          </li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li>
+            <a class="dropdown-item" [href]="'/usuarios/' + usuario.idUsuario">
+              Mi Perfil
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="/mis-reservas">Mis Reservas</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="/configuracion">Configuración</a>
+          </li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li>
+            <a class="dropdown-item text-danger" (click)="logout()" href="#"
+              >Cerrar Sesión</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offcanvas DESDE LA IZQUIERDA Y ALTURA COMPLETA -->
+  <div
+    class="offcanvas offcanvas-start offcanvas-custom"
+    tabindex="-1"
+    id="navOffcanvas"
+    aria-labelledby="navOffcanvasLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="navOffcanvasLabel">The Moravia</h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Cerrar"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="menu">
+        <li><a href="/reservas">Reserva</a></li>
+        <li><a href="/habitaciones/lista">Habitaciones</a></li>
+        <li><a href="/servicios/lista">Nuestros servicios</a></li>
+        <li><a href="/historia">Historia</a></li>
+        <li><a href="/contacto">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Mensajes de estado -->
+  <div
+    *ngIf="loginSuccess"
+    class="alert alert-success alert-dismissible fade show position-fixed"
+    style="top: 80px; right: 20px; z-index: 9999"
+    role="alert"
+  >
+    ¡Bienvenido! Has iniciado sesión correctamente.
+    <button
+      type="button"
+      class="btn-close"
+      (click)="dismissAlert()"
+      data-bs-dismiss="alert"
+    ></button>
+  </div>
+
+  <div
+    *ngIf="logoutSuccess"
+    class="alert alert-info alert-dismissible fade show position-fixed"
+    style="top: 80px; right: 20px; z-index: 9999"
+    role="alert"
+  >
+    Sesión cerrada correctamente.
+    <button
+      type="button"
+      class="btn-close"
+      (click)="dismissAlert()"
+      data-bs-dismiss="alert"
+    ></button>
+  </div>
+</header>

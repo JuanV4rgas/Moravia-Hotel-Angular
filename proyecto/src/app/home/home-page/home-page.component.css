@@ -1,0 +1,778 @@
+/* Variables base */
+:root {
+  --rose: #ffd8d8;
+  --pink: #c28ba1;
+  --plum: #1f5f87;
+  --sand: #010101;
+  --ink: #1f1a1d;
+  --muted: #5b4f57;
+  --paper: #fff7fb;
+  --surface: #ffffff;
+  --shadow: 0 10px 28px rgba(120, 66, 131, 0.16);
+}
+
+/* ===========================
+   LANDING: marco y hero
+   =========================== */
+
+/* Marco del contenido */
+.landing {
+  width: min(1400px, 92%);
+  margin: 14px auto 0;
+}
+
+/* Contenedor del hero */
+.landing .hero-main {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+/* Imagen del hero */
+.landing .hero-main .hero-img {
+  width: 100%;
+  height: clamp(340px, 72vh, 820px);
+  object-fit: cover;
+  display: block;
+}
+
+/* Capa oscura suave */
+.landing .hero-main .hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.35));
+  pointer-events: none;
+}
+
+/* Bloque del título centrado */
+.landing .hero-main .hero-title {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: clamp(12px, 3vw, 24px);
+}
+
+/* THE MORAVIA (muy grande) */
+.landing .hero-main .hero-title h1 {
+  margin: 0;
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 0.95;
+  font-size: clamp(36px, 9vw, 128px);
+  text-shadow: 0 6px 20px rgba(0,0,0,.35);
+}
+
+/* Escudo entre las dos líneas */
+.landing .hero-main .hero-crest {
+  width: clamp(40px, 6vw, 72px);
+  height: auto;
+  margin: 0.3em 0 0.2em;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,.35));
+}
+
+/* HOTEL (segunda línea) */
+.landing .hero-main .hero-title h2 {
+  margin: 0;
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: clamp(22px, 5.4vw, 72px);
+  text-shadow: 0 6px 20px rgba(0,0,0,.35);
+}
+
+/* =========================================================
+   Fila MEDIA (video a la izquierda + tarjeta/book a la derecha)
+   ========================================================= */
+.media-row {
+  width: min(1400px, 92%);
+  margin: 14px auto 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* video más grande */
+  gap: 18px;
+  align-items: stretch;
+  z-index: 1;
+}
+
+/* Marco del video */
+.media-frame {
+  position: relative;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  min-height: clamp(320px, 48vw, 520px);
+  border-radius: 16px;
+}
+
+.media-frame .video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*==========================
+              BOOK
+==========================*/
+.book {
+  margin-top: 50px;
+  position: relative;
+  border-radius: 10px;
+  width: 500px;
+  height: 420px;
+  background-color: #3579a3;
+  transform: preserve-3d;
+  perspective: 2000px;
+  display: block;
+  color: #000;
+}
+
+.cover {
+  top: 0;
+  position: absolute;
+  background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.5s;
+  transform-origin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book:hover .cover {
+  transition: all 0.5s;
+  transform: rotateY(-80deg);
+}
+
+.book h2 {
+  margin: 10px;
+  text-align: center;
+  font-family: "Helvetica";
+  font-size: 30px;
+  font-weight: bolder;
+  color: #ffffff;
+}
+
+.book p {
+  margin: 30px;
+  margin-left: 35px;
+  text-align: center;
+  font-family: "DM Serif Display";
+  font-size: 20px;
+  font-weight: lighter;
+  color: #ffffff;
+}
+
+.book img {
+  width: 60%;
+  height: 50%;
+  object-fit: contain;
+}
+
+@media (max-width: 992px) {
+  .media-row {
+    grid-template-columns: 1fr; /* apilar */
+  }
+
+  .media-card {
+    order: 2;
+  }
+}
+
+/* =========================================================
+   FEATURE HERO (Restaurante)
+   ========================================================= */
+.feature-hero {
+  position: relative;
+  width: min(1400px, 92%);
+  margin: 18px auto 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.feature-hero > img {
+  display: block;
+  width: 100%;
+  height: clamp(360px, 56vw, 560px);
+  object-fit: cover;
+}
+
+/* Tarjeta superpuesta */
+.feature-card {
+  position: absolute;
+  left: -1px;
+  bottom: -1px;
+  z-index: 2;
+  background-color: #1f5f87;
+  color: #fff;
+  padding: 18px 22px;
+  width: min(520px, 70%);
+  opacity: 0.95;
+}
+
+.feature-card h3 {
+  margin: 0 0 6px 0;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  font-family: "DM Serif Display";
+}
+
+.feature-card h3 span {
+  color: var(--pink);
+  font-weight: 900;
+}
+
+.feature-card p {
+  margin: 0.2rem 0;
+  line-height: 1.45;
+  color: color-mix(in srgb, #ffffff 88%, var(--rose) 12%);
+}
+
+.button2 {
+  display: inline-block;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  color: #ffffff;
+  padding: 0.7em 1.7em;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 0.5em;
+  background: #1f5f87;
+  border: 1px solid #e8e8e8;
+  width: 120px;
+  font-family: "DM Serif Display", "Inter", system-ui, sans-serif;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.button2:active {
+  color: #666;
+  box-shadow: inset 4px 4px 12px #11ffeb, inset -4px -4px 12px #ffffff;
+}
+
+.button2:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+  width: auto;
+  height: 180%;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button2:after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background-color: #2d6b92;
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button2:hover {
+  color: #ffffff;
+  border: 1px solid #3b90c5;
+}
+
+.button2:hover:before {
+  top: -35%;
+  background-color: #4c918c;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+.button2:hover:after {
+  top: -45%;
+  background-color: #2d6b92;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+@media (max-width: 768px) {
+  .feature-card {
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+}
+
+/* =========================================================
+   SUITES (grid de tiles)
+   ========================================================= */
+.suites-grid {
+  position: relative;
+  width: min(1400px, 92%);
+  margin: 18px auto 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.tile {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 360px;
+  background: linear-gradient(
+    180deg,
+    #fff,
+    color-mix(in srgb, var(--rose) 24%, #fff 76%)
+  );
+  border: 1px solid rgba(120, 66, 131, 0.14);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.tile.invert .tile-media {
+  order: 2;
+}
+
+.tile.invert .tile-content {
+  order: 1;
+}
+
+.tile-media {
+  position: relative;
+}
+
+.tile-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tile-content {
+  padding: clamp(18px, 3.2vw, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tile-content h1 {
+  color: var(--plum);
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  font-family: "DM Serif Display";
+  font-size: clamp(22px, 2.6vw, 30px);
+}
+
+.tile-content h1 em {
+  font-style: normal;
+  color: var(--pink);
+}
+
+.tile-content h2 {
+  color: var(--muted);
+  font-size: clamp(14px, 1.4vw, 17px);
+  max-width: 58ch;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Estilos para los botones CTA */
+.cta {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: "DM Serif Display";
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  color: #1f5f87;
+  position: relative;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.cta span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
+}
+
+.cta svg {
+  transform: translateX(-8px);
+  transition: all 0.3s ease;
+}
+
+.cta:hover svg {
+  transform: translateX(0);
+}
+
+.cta:active svg {
+  transform: scale(0.9);
+}
+
+.hover-underline-animation {
+  position: relative;
+  color: #1f5f87;
+  padding-bottom: 20px;
+}
+
+.hover-underline-animation:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #1f5f87;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.cta:hover .hover-underline-animation:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+@media (max-width: 900px) {
+  .tile {
+    grid-template-columns: 1fr;
+  }
+  .tile-media {
+    min-height: 46vw;
+  }
+}
+
+/* =========================================================
+   TARJETAS CAROUSEL
+   ========================================================= */
+
+/* Carrusel contenedor */
+.cards-carousel {
+  position: relative;
+  width: min(1024px, 94%);
+  margin: 24px auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+/* Pista desplazable */
+.cc-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 8px;
+}
+
+.cc-track::-webkit-scrollbar {
+  height: 8px;
+}
+.cc-track::-webkit-scrollbar-thumb {
+  background: #b7c4cf;
+  border-radius: 8px;
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 190px;
+  height: 254px;
+  perspective: 1000px;
+  font-family: sans-serif;
+  flex: 0 0 190px;
+  scroll-snap-align: start;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid #ffffff;
+  border-radius: 1rem;
+}
+
+.flip-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+  display: block;
+}
+
+.flip-card-back {
+  background-color: #ffffff;
+  color: #1f5f87;
+  transform: rotateY(180deg);
+}
+
+.title-card {
+  font-family: "DM Serif Display";
+  font-size: clamp(18px, 2.2vw, 24px);
+  margin: 0;
+  color: #1f5f87;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.cc-arrow {
+  border: none;
+  background: #1f5f87;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+}
+.cc-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Responsive: reducir tarjeta en pantallas pequeñas */
+@media (max-width: 768px) {
+  .flip-card {
+    width: 180px;
+    height: 240px;
+    flex: 0 0 180px;
+  }
+}
+
+/* =========================================================
+   FOOTER (newsletter, contacto, escudo, legales)
+   ========================================================= */
+footer {
+  background: linear-gradient(
+    180deg,
+    var(--plum, #1f5f87),
+    color-mix(in srgb, var(--plum, #1f5f87) 88%, #000 12%)
+  );
+  color: #fff;
+  padding: 18px 20px 8px;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  margin-top: clamp(26px, 5vw, 64px);
+}
+
+.footer-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px clamp(12px, 3vw, 24px) 32px;
+  display: grid;
+  grid-template-columns: 1.2fr 1.1fr 0.7fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.label {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.signup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.signup input {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  padding: 8px 2px;
+  width: clamp(220px, 22vw, 280px);
+  outline: none;
+}
+
+.signup input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Botón registrarse */
+.ButtonLog {
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.7em 2em;
+  border: 3px solid #1f5f87;
+  border-radius: 2px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+  color: #1f5f87;
+  background: #fff;
+  text-decoration: none;
+  transition: 0.3s ease all;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.ButtonLog:before {
+  transition: 0.5s all ease;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  bottom: 0;
+  opacity: 0;
+  content: "";
+  background-color: #0e4567;
+  z-index: -1;
+}
+
+.ButtonLog:hover,
+.ButtonLog:focus {
+  color: white;
+}
+
+.ButtonLog:hover:before,
+.ButtonLog:focus:before {
+  left: 0;
+  right: 0;
+  opacity: 1;
+}
+
+button:active {
+  transform: scale(0.9);
+}
+
+.datos {
+  border: 0;
+  height: 2px;
+  width: 120px;
+  background: rgba(255, 255, 255, 0.55);
+  margin: 8px 0 6px;
+}
+
+address {
+  font-style: normal;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+address a {
+  color: #fff;
+  text-decoration: none;
+}
+
+address a:hover {
+  text-decoration: underline;
+}
+
+.crest-img {
+  width: 128px;
+  height: auto;
+  opacity: 0.95;
+  margin-top: 6px;
+}
+
+.legal {
+  text-align: center;
+  padding: 14px 12px 20px;
+  opacity: 0.92;
+  font-size: 0.9rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.22);
+  margin-top: 8px;
+}
+
+.lead {
+  font-family: "DM Serif Display", serif;
+  font-weight: 500;
+  margin: 0 0 18px 0;
+  line-height: 1.35;
+}
+
+/* Columna del escudo alineada arriba a la derecha */
+footer .brand {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .footer-wrap {
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+  }
+  
+  footer .brand {
+    justify-content: center;
+  }
+  
+  footer .crest-img {
+    width: 100px;
+  }
+}
+
+/* Pequeños ajustes responsive */
+@media (max-width: 480px) {
+  .landing { 
+    width: 95%; 
+  }
+  
+  .landing .hero-main .hero-crest { 
+    width: 44px; 
+  }
+  
+  .book {
+    width: 100%;
+    height: 350px;
+    margin-top: 20px;
+  }
+}

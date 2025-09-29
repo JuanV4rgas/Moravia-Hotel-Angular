@@ -1,0 +1,192 @@
+/* =========================================================
+   FOOTER (newsletter, contacto, escudo, legales)
+   ========================================================= */
+footer {
+  background: linear-gradient(
+    180deg,
+    var(--plum, #1f5f87),
+    color-mix(in srgb, var(--plum, #1f5f87) 88%, #000 12%)
+  );
+  color: #fff;
+  padding: 18px 20px 8px;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  margin-top: clamp(26px, 5vw, 64px);
+}
+
+.footer-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px clamp(12px, 3vw, 24px) 32px;
+  display: grid;
+  grid-template-columns: 1.2fr 1.1fr 0.7fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.label {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.signup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.signup input {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  padding: 8px 2px;
+  width: clamp(220px, 22vw, 280px);
+  outline: none;
+}
+
+.signup input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Botón registrarse */
+.ButtonLog {
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.7em 2em;
+  border: 3px solid #1f5f87;
+  border-radius: 2px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+  color: #1f5f87;
+  background: #fff;
+  text-decoration: none;
+  transition: 0.3s ease all;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.ButtonLog:before {
+  transition: 0.5s all ease;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  bottom: 0;
+  opacity: 0;
+  content: "";
+  background-color: #0e4567;
+  z-index: -1;
+}
+
+.ButtonLog:hover,
+.ButtonLog:focus {
+  color: white;
+}
+
+.ButtonLog:hover:before,
+.ButtonLog:focus:before {
+  left: 0;
+  right: 0;
+  opacity: 1;
+}
+
+button:active {
+  transform: scale(0.9);
+}
+
+.datos {
+  border: 0;
+  height: 2px;
+  width: 120px;
+  background: rgba(255, 255, 255, 0.55);
+  margin: 8px 0 6px;
+}
+
+address {
+  font-style: normal;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+address a {
+  color: #fff;
+  text-decoration: none;
+}
+
+address a:hover {
+  text-decoration: underline;
+}
+
+.crest-img {
+  width: 128px;
+  height: auto;
+  opacity: 0.95;
+  margin-top: 6px;
+}
+
+.legal {
+  text-align: center;
+  padding: 14px 12px 20px;
+  opacity: 0.92;
+  font-size: 0.9rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.22);
+  margin-top: 8px;
+}
+
+.lead {
+  font-family: "DM Serif Display", serif;
+  font-weight: 500;
+  margin: 0 0 18px 0;
+  line-height: 1.35;
+}
+
+/* Columna del escudo alineada arriba a la derecha */
+footer .brand {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .footer-wrap {
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+  }
+  
+  footer .brand {
+    justify-content: center;
+  }
+  
+  footer .crest-img {
+    width: 100px;
+  }
+}
+
+/* Pequeños ajustes responsive */
+@media (max-width: 480px) {
+  .landing { 
+    width: 95%; 
+  }
+  
+  .landing .hero-main .hero-crest { 
+    width: 44px; 
+  }
+  
+  .book {
+    width: 100%;
+    height: 350px;
+    margin-top: 20px;
+  }
+}
