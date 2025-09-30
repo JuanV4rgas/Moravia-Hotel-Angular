@@ -1,1 +1,17 @@
 <p>room-detail works!</p>
+<div>
+    <h4>Room-detail</h4>
+    <ng-container *ngIf="room">
+        <ul>
+            <li>Id:{{room.id}}</li>
+            <li>Numero de Habitacion: {{room.habitacionNumber}}</li>
+            <li>Tipo: {{room.type}}</li>
+            <li>Disponible: {{room.available}}</li>
+        </ul>
+    </ng-container>
+
+    <ng-container *ngIf="!room">
+        <p>No hay Room seleccionada</p>
+    </ng-container>
+
+</div>
