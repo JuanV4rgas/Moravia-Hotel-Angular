@@ -9,4 +9,13 @@
         <button>Acciones admin</button>
     </ng-container>
 </ng-container>
-<app-home-page></app-home-page>
+<main>
+    <router-outlet></router-outlet>
+</main>
+
+<nav>
+  <a routerLink="">Inicio</a>
+  <a routerLink="Service-Table">Servicios</a>
+  <a routerLink="Habitacion-Table">Habitaciones</a>
+  <a routerLink="Room-Table">Salas</a>
+</nav>
