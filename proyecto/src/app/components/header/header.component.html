@@ -1,4 +1,4 @@
-<header class="site-header">
+<header th:fragment="header" class="site-header">
   <!-- Botón hamburguesa (lado izquierdo) -->
   <button
     class="hamburger"
@@ -7,28 +7,27 @@
     data-bs-target="#navOffcanvas"
     aria-controls="navOffcanvas"
     aria-label="Abrir menú"
-    (click)="toggleOffcanvas()"
   >
     <span></span><span></span><span></span>
   </button>
 
   <!-- Logo + título (centro/izquierda) -->
   <div class="logo">
-    <a href="/"><img src="/assets/img/logo_gray.png" alt="Logo" /></a>
-    <a class="titulo-logo" href="/">
-      <img src="/assets/img/title_gray.png" alt="Title" />
-    </a>
+    <a href="/"><img src="/img/logo_gray.png" alt="Logo" /></a>
+    <a class="titulo-logo" href="/"
+      ><img src="/img/title_gray.png" alt="Title"
+    /></a>
   </div>
 
   <!-- Botones del lado derecho -->
   <div class="header-buttons">
-    <a href="/reservas" class="button2">Reservar</a>
+    <button class="button2" href="reservas.html" >Reservar</button>
 
-    <div *ngIf="!authenticated">
-      <a href="/login" class="button2">Login</a>
+    <div th:if="${!authenticated}">
+      <a th:href="@{/login}" class="button2">Login</a>
     </div>
 
-    <div *ngIf="authenticated" class="user-profile-circle">
+    <div th:if="${authenticated}" class="user-profile-circle">
       <div class="user-dropdown">
         <button
           class="user-avatar-circle"
@@ -37,8 +36,8 @@
           aria-expanded="false"
         >
           <img
-            [src]="usuario.fotoPerfil || '/assets/img/default-avatar.png'"
-            [alt]="usuario.nombre"
+            th:src="${usuario.fotoPerfil != null ? usuario.fotoPerfil : '/img/default-avatar.png'}"
+            th:alt="${usuario.nombre}"
             class="profile-circle-img"
           />
         </button>
@@ -50,17 +49,19 @@
         >
           <li class="dropdown-header">
             <div class="user-info">
-              <strong>{{ usuario.nombre }}</strong>
-              <small>{{ usuario.email }}</small>
+              <strong th:text="${usuario.nombre}">Nombre Usuario</strong>
+              <small th:text="${usuario.email}">correo@ejemplo.com</small>
             </div>
           </li>
           <li>
             <hr class="dropdown-divider" />
           </li>
           <li>
-            <a class="dropdown-item" [href]="'/usuarios/' + usuario.idUsuario">
-              Mi Perfil
-            </a>
+            <a
+              class="dropdown-item"
+              th:href="@{/usuarios/{idUsuario}(idUsuario=${usuario.idUsuario})}"
+              >Mi Perfil</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="/mis-reservas">Mis Reservas</a>
@@ -72,7 +73,7 @@
             <hr class="dropdown-divider" />
           </li>
           <li>
-            <a class="dropdown-item text-danger" (click)="logout()" href="#"
+            <a class="dropdown-item text-danger" th:href="@{/logout}"
               >Cerrar Sesión</a
             >
           </li>
@@ -99,43 +100,33 @@
     </div>
     <div class="offcanvas-body">
       <ul class="menu">
-        <li><a href="/reservas">Reserva</a></li>
+        <li><a href="#">Reserva</a></li>
         <li><a href="/habitaciones/lista">Habitaciones</a></li>
         <li><a href="/servicios/lista">Nuestros servicios</a></li>
-        <li><a href="/historia">Historia</a></li>
-        <li><a href="/contacto">Contacto</a></li>
+        <li><a th:href="@{/historia}">Historia</a></li>
+        <li><a href="#">Contacto</a></li>
       </ul>
     </div>
   </div>
 
   <!-- Mensajes de estado -->
   <div
-    *ngIf="loginSuccess"
+    th:if="${loginSuccess}"
     class="alert alert-success alert-dismissible fade show position-fixed"
     style="top: 80px; right: 20px; z-index: 9999"
     role="alert"
   >
     ¡Bienvenido! Has iniciado sesión correctamente.
-    <button
-      type="button"
-      class="btn-close"
-      (click)="dismissAlert()"
-      data-bs-dismiss="alert"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   </div>
 
   <div
-    *ngIf="logoutSuccess"
+    th:if="${logoutSuccess}"
     class="alert alert-info alert-dismissible fade show position-fixed"
     style="top: 80px; right: 20px; z-index: 9999"
     role="alert"
   >
     Sesión cerrada correctamente.
-    <button
-      type="button"
-      class="btn-close"
-      (click)="dismissAlert()"
-      data-bs-dismiss="alert"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   </div>
 </header>

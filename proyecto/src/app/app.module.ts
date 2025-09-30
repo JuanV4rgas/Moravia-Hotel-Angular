@@ -15,6 +15,8 @@ import { RestaurantComponent } from './home/restaurant/restaurant.component';
 import { SuitesComponent } from './home/suites/suites.component';
 import { CardsCarouselComponent } from './home/cards-carousel/cards-carousel.component';
 import { MediaRowComponent } from './home/media-row/media-row.component';
+import { HamburgerComponent } from './components/hamburger/hamburger.component';
+import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { MediaRowComponent } from './home/media-row/media-row.component';
     SuitesComponent,
     CardsCarouselComponent,
     MediaRowComponent,
+    HamburgerComponent,
+    UserDropdownComponent,
   ],
   imports: [
     BrowserModule,
