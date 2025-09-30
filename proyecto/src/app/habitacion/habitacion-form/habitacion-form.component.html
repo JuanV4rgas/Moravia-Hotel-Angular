@@ -1,0 +1,30 @@
+<p>habitacion-form works!</p>
+<form #HabitacionForm="ngForm" (ngSubmit)="addHabitacion(HabitacionForm)">
+  <label for="id">Id</label><br>
+  <input type="text" id="id" name="id" [(ngModel)]="formHabitacion.id" required><br>
+
+  <label for="name">Nombre</label><br>
+  <input type="text" id="name" name="name" [(ngModel)]="formHabitacion.name" required><br>
+
+   <label for="description">Descripción</label><br>
+  <textarea id="description" name="description" [(ngModel)]="formHabitacion.description"></textarea><br>
+
+  <label for="price">Precio</label><br>
+  <input type="number" id="price" name="price" [(ngModel)]="formHabitacion.price" required><br>
+
+  <label for="capacity">Capacidad</label><br>
+  <input type="text" id="capacity" name="capacity" [(ngModel)]="formHabitacion.capacity" required><br>
+
+  <label for="numberOfBeds">Numero de camas</label><br>
+  <input type="number" id="numberOfBeds" name="numberOfBeds" [(ngModel)]="formHabitacion.numberOfBeds" required><br>
+
+  <label for="image">Imagen (URL)</label><br>   
+  <input type="text" id="image" name="image" required [(ngModel)]="formHabitacion.image"><br>
+
+  <label for="type">Tipo</label><br>   
+  <input type="text" id="type" name="type" required [(ngModel)]="formHabitacion.type"><br>
+
+  <button type="submit" [disabled]="!HabitacionForm.form.valid">Agregar Servicio</button>
+
+</form>
+<!--Revisar-->

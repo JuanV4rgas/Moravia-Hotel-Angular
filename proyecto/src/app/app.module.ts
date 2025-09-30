@@ -11,6 +11,12 @@ import { HomePageComponent } from './home/home-page/home-page.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LandingComponent } from './components/landing/landing.component';
+import { RoomTableComponent } from './room/room-table/room-table.component';
+import { RoomDetailComponent } from './room/room-detail/room-detail.component';
+import { RoomFormComponent } from './room/room-form/room-form.component';
+import { HabitacionTableComponent } from './habitacion/habitacion-table/habitacion-table.component';
+import { HabitacionDetailComponent } from './habitacion/habitacion-detail/habitacion-detail.component';
+import { HabitacionFormComponent } from './habitacion/habitacion-form/habitacion-form.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +27,13 @@ import { LandingComponent } from './components/landing/landing.component';
     HomePageComponent,
     FooterComponent,
     HeaderComponent,
-    LandingComponent
+    LandingComponent,
+    RoomTableComponent,
+    RoomDetailComponent,
+    RoomFormComponent,
+    HabitacionTableComponent,
+    HabitacionDetailComponent,
+    HabitacionFormComponent
   ],
   imports: [
     BrowserModule,
