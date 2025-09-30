@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let habitacion of habitacionesList">
+        <tr *ngFor="let habitacion of HabitacionesList">
             <th scope="row">{{habitacion.id}}</th>
             <td>{{habitacion.name}}</td>
             <td>{{habitacion.description}}</td>
@@ -23,7 +23,7 @@
             <td>{{habitacion.image}}</td>
             <td>{{habitacion.type}}</td>
             <td>
-                <button class="btn btn-primary" (click)="mostrarhabitacion(habitacion)">
+                <button class="btn btn-primary" (click)="mostrarHabitacion(habitacion)">
                     Seleccionar
                 </button>
             </td>
