@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./room-table.component.css']
 })
 export class RoomTableComponent {
-//
+
 }
