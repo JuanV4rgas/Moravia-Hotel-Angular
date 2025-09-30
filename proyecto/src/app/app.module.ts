@@ -10,7 +10,11 @@ import { ServiceFormComponent } from './service/service-form/service-form.compon
 import { HomePageComponent } from './home/home-page/home-page.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
-import { LandingComponent } from './components/landing/landing.component';
+import { HeroComponent } from './home/hero/hero.component';
+import { RestaurantComponent } from './home/restaurant/restaurant.component';
+import { SuitesComponent } from './home/suites/suites.component';
+import { CardsCarouselComponent } from './home/cards-carousel/cards-carousel.component';
+import { MediaRowComponent } from './home/media-row/media-row.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +25,11 @@ import { LandingComponent } from './components/landing/landing.component';
     HomePageComponent,
     FooterComponent,
     HeaderComponent,
-    LandingComponent
+    HeroComponent,
+    RestaurantComponent,
+    SuitesComponent,
+    CardsCarouselComponent,
+    MediaRowComponent,
   ],
   imports: [
     BrowserModule,
