@@ -1,0 +1,21 @@
+<div>
+    <h4>Cliente-detail</h4>
+    <ng-container *ngIf="cliente">
+        <ul>
+            <li>Id:{{cliente.id}}</li>
+            <li>Correo:{{cliente.email}}</li>
+            <li>Clave:{{cliente.password}}</li>
+            <li>Nombre:{{cliente.name}}</li>
+            <li>Apellido:{{cliente.surename}}</li>
+            <li>Cedula:{{cliente.cedula}}</li>
+            <li>Telfonp:{{cliente.phone}}</li>
+            <li>Foto de Perfil:{{cliente.pfp}}</li>
+
+        </ul>
+    </ng-container>
+
+    <ng-container *ngIf="!cliente">
+        <p>No hay Cliente seleccionado</p>
+    </ng-container>
+
+</div>

@@ -17,6 +17,9 @@ import { RoomFormComponent } from './room/room-form/room-form.component';
 import { HabitacionTableComponent } from './habitacion/habitacion-table/habitacion-table.component';
 import { HabitacionDetailComponent } from './habitacion/habitacion-detail/habitacion-detail.component';
 import { HabitacionFormComponent } from './habitacion/habitacion-form/habitacion-form.component';
+import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component';
+import { ClienteDetailComponent } from './cliente/cliente-detail/cliente-detail.component';
+import { ClienteFormComponent } from './cliente/cliente-form/cliente-form.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,10 @@ import { HabitacionFormComponent } from './habitacion/habitacion-form/habitacion
     RoomFormComponent,
     HabitacionTableComponent,
     HabitacionDetailComponent,
-    HabitacionFormComponent
+    HabitacionFormComponent,
+    ClienteTableComponent,
+    ClienteDetailComponent,
+    ClienteFormComponent
   ],
   imports: [
     BrowserModule,
