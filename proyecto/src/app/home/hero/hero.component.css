@@ -2,7 +2,7 @@
    HERO principal con imagen  <section.hero-main>
    ========================================================= */
 .hero-main {
-  position: relative;
+  position: default;
   width: auto;
   margin: 0 auto;
   border-radius: 0;
