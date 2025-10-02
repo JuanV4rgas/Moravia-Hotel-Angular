@@ -26,27 +26,22 @@
 
 /* Botón cerrar */
 .offcanvas-custom .btn-close {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  opacity: 0.8;
-  width: 30px;
-  height: 30px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: opacity 0.3s ease, background 0.3s ease;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-.offcanvas-custom .btn-close:hover {
-  opacity: 1;
-  background: rgba(255, 255, 255, 0.1);
-}
+
 .offcanvas-custom .btn-close::after {
-  content: "×";
+  content: "✕";
   color: white;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
 }
 
 /* Cuerpo */
@@ -77,7 +72,6 @@
   transition: all 0.3s ease;
 }
 
-/* Hover en móvil */
 .offcanvas-custom .menu a:hover {
   background: var(--nav-hover);
   color: var(--nav-accent);
@@ -104,4 +98,26 @@
 
 .offcanvas-custom .titulo-logo img {
   height: 26px;
+}
+
+/* === LOGO === */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+/* Animación del offcanvas */
+.offcanvas {
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out !important;
+  opacity: 0; /* estado inicial */
+}
+
+.offcanvas.show {
+  opacity: 3; /* cuando está abierto */
+}
+
+.offcanvas.hiding {
+  opacity: 3; /* cuando comienza a cerrarse */
 }
