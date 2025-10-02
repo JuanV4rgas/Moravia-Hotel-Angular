@@ -1,0 +1,32 @@
+<p>room-table works!</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Room Number</th>
+            <th scope="col">Type</th>
+            <th scope="col">Available</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let room of RoomsList">
+            <th scope="row">{{room.id}}</th>
+            <td>{{room.id}}</td>
+            <td>{{room.habitacionNumber}}</td>
+            <td>{{room.type}}</td>
+            <td>{{room.available}}</td>
+            <td>
+                <button class="btn btn-primary" (click)="mostrarRoom(room)">
+                    Seleccionar
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-primary" (click)="eliminarRoom(room)">
+                    Eliminar
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<app-room-detail [room] = "selectedRoom"></app-room-detail>
+<app-room-form (addRoomEvent)="agregarRoom($event)"></app-room-form>

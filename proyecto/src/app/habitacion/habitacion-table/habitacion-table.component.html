@@ -1,0 +1,39 @@
+<p>habitacion-table works!</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col">Capacity</th>
+            <th scope="col">Number of Beds</th>
+            <th scope="col">Image</th>
+            <th scope="col">Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let habitacion of HabitacionesList">
+            <th scope="row">{{habitacion.id}}</th>
+            <td>{{habitacion.name}}</td>
+            <td>{{habitacion.description}}</td>
+            <td>{{habitacion.price}}</td>
+            <td>{{habitacion.capacity}}</td>
+            <td>{{habitacion.numberOfBeds}}</td>
+            <td>{{habitacion.image}}</td>
+            <td>{{habitacion.type}}</td>
+            <td>
+                <button class="btn btn-primary" (click)="mostrarHabitacion(habitacion)">
+                    Seleccionar
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-primary" (click)="eliminarHabitacion(habitacion)">
+                    Eliminar
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<app-habitacion-detail [habitacion] = "selectedHabitacion"></app-habitacion-detail>
+<app-habitacion-form (addHabitacionEvent)="agregarHabitacion($event)"></app-habitacion-form>

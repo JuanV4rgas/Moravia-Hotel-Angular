@@ -1,0 +1,17 @@
+<p>room-form works!</p>
+<form #RoomForm="ngForm" (ngSubmit)="addRoom(RoomForm)">
+  <label for="id">Id</label><br>
+  <input type="text" id="id" name="id" [(ngModel)]="formRoom.id" required><br>
+
+  <label for="habitacionNumber">Numero de Habitacion</label><br>
+  <input type="text" id="habitacionNumber" name="habitacionNumber" [(ngModel)]="formRoom.habitacionNumber" required><br>
+
+  <label for="type">Tipo</label><br>
+    <input type="text" id="type" name="type" [(ngModel)]="formRoom.type" required><br>
+
+    <label for="available">Disponible</label><br>
+    <input type="checkbox" id="available" name="available" [(ngModel)]="formRoom.available" required><br>
+
+
+  <button type="submit" [disabled]="!RoomForm.form.valid">Agregar Room</button>
+</form>

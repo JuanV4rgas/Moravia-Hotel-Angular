@@ -1,0 +1,21 @@
+<p>habitacion-detail works!</p>
+<div>
+    <h4>service-detail</h4>
+    <ng-container *ngIf="habitacion">
+        <ul>
+            <li>Id:{{habitacion.id}}</li>
+            <li>Nombre: {{habitacion.name}}</li>
+            <li>Precio: ${{habitacion.price}}</li>
+            <li>Capacidad:  {{habitacion.capacity}}</li>
+            <li>Numero de camas: {{habitacion.numberOfBeds}}</li>
+            <li>{{habitacion.image}}</li>
+            <li>Tipo: {{habitacion.type}}</li>
+
+        </ul>
+    </ng-container>
+
+    <ng-container *ngIf="!habitacion">
+        <p>No hay Habitación seleccionada</p>
+    </ng-container>
+
+</div>
