@@ -1,0 +1,33 @@
+:root {
+  --rose: #ffd8d8;
+  --pink: #c28ba1;
+  --plum: #1f5f87;
+  --sand: #010101;
+  --ink: #1f1a1d;
+  --muted: #5b4f57;
+  --paper: #fff7fb;
+  --surface: #ffffff;
+  --shadow: 0 10px 28px rgba(120, 66, 131, 0.16);
+  --header-h: 70px; /* altura de la navbar */
+  --nav-surface: #1f5f87; /* fondo panel */
+  --nav-text: #f7f7f7; /* texto principal */
+  --nav-muted: #d0dde3; /* texto secundario */
+  --nav-hover: rgba(255, 255, 255, 0.12);
+  --nav-accent: #ffcb0e; /* acento (ej: subrayados/activos) */
+  --nav-font: "DM Serif Display", "Inter", system-ui, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  padding-top: var(--header-h, 70px);
+}
