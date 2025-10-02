@@ -1,117 +1,42 @@
-<header th:fragment="header" class="site-header">
+<header class="site-header">
   <!-- Botón hamburguesa (lado izquierdo) -->
   <button
     class="hamburger"
     type="button"
     data-bs-toggle="offcanvas"
-    data-bs-target="#navOffcanvas"
-    aria-controls="navOffcanvas"
-    aria-label="Abrir menú"
+    data-bs-target="#offcanvasWithBothOptions"
+    aria-controls="offcanvasWithBothOptions"
   >
     <span></span><span></span><span></span>
   </button>
 
   <!-- Logo + título (centro/izquierda) -->
   <div class="logo">
-    <a href="/"><img src="/img/logo_gray.png" alt="Logo" /></a>
-    <a class="titulo-logo" href="/"
-      ><img src="/img/title_gray.png" alt="Title"
+    <a routerLink="/"><img src="assets/img/logo_gray.png" alt="Logo" /></a>
+    <a class="titulo-logo" routerLink="/"
+      ><img src="assets/img/title_gray.png" alt="Title"
     /></a>
   </div>
 
   <!-- Botones del lado derecho -->
   <div class="header-buttons">
-    <button class="button2" href="reservas.html" >Reservar</button>
+    <button class="button2" routerLink="/reservas">Reservar</button>
 
-    <div th:if="${!authenticated}">
-      <a th:href="@{/login}" class="button2">Login</a>
+    <!-- Si NO está autenticado -->
+    <div *ngIf="!authenticated">
+      <button class="button2" routerLink="/login">Login</button>
     </div>
 
-    <div th:if="${authenticated}" class="user-profile-circle">
-      <div class="user-dropdown">
-        <button
-          class="user-avatar-circle"
-          id="userDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <img
-            th:src="${usuario.fotoPerfil != null ? usuario.fotoPerfil : '/img/default-avatar.png'}"
-            th:alt="${usuario.nombre}"
-            class="profile-circle-img"
-          />
-        </button>
-
-        <!-- Dropdown Menu -->
-        <ul
-          class="dropdown-menu dropdown-menu-end"
-          aria-labelledby="userDropdown"
-        >
-          <li class="dropdown-header">
-            <div class="user-info">
-              <strong th:text="${usuario.nombre}">Nombre Usuario</strong>
-              <small th:text="${usuario.email}">correo@ejemplo.com</small>
-            </div>
-          </li>
-          <li>
-            <hr class="dropdown-divider" />
-          </li>
-          <li>
-            <a
-              class="dropdown-item"
-              th:href="@{/usuarios/{idUsuario}(idUsuario=${usuario.idUsuario})}"
-              >Mi Perfil</a
-            >
-          </li>
-          <li>
-            <a class="dropdown-item" href="/mis-reservas">Mis Reservas</a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="/configuracion">Configuración</a>
-          </li>
-          <li>
-            <hr class="dropdown-divider" />
-          </li>
-          <li>
-            <a class="dropdown-item text-danger" th:href="@{/logout}"
-              >Cerrar Sesión</a
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
+    <!-- Si está autenticado -->
+    <app-user-dropdown *ngIf="authenticated"></app-user-dropdown>
   </div>
 
   <!-- Offcanvas DESDE LA IZQUIERDA Y ALTURA COMPLETA -->
-  <div
-    class="offcanvas offcanvas-start offcanvas-custom"
-    tabindex="-1"
-    id="navOffcanvas"
-    aria-labelledby="navOffcanvasLabel"
-  >
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="navOffcanvasLabel">The Moravia</h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="offcanvas"
-        aria-label="Cerrar"
-      ></button>
-    </div>
-    <div class="offcanvas-body">
-      <ul class="menu">
-        <li><a href="#">Reserva</a></li>
-        <li><a href="/habitaciones/lista">Habitaciones</a></li>
-        <li><a href="/servicios/lista">Nuestros servicios</a></li>
-        <li><a th:href="@{/historia}">Historia</a></li>
-        <li><a href="#">Contacto</a></li>
-      </ul>
-    </div>
-  </div>
+  <app-hamburger></app-hamburger>
 
   <!-- Mensajes de estado -->
   <div
-    th:if="${loginSuccess}"
+    *ngIf="loginSuccess"
     class="alert alert-success alert-dismissible fade show position-fixed"
     style="top: 80px; right: 20px; z-index: 9999"
     role="alert"
@@ -121,7 +46,7 @@
   </div>
 
   <div
-    th:if="${logoutSuccess}"
+    *ngIf="logoutSuccess"
     class="alert alert-info alert-dismissible fade show position-fixed"
     style="top: 80px; right: 20px; z-index: 9999"
     role="alert"

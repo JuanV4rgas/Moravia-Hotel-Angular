@@ -1,10 +1,4 @@
-/* =====================================
-   OFFCANVAS MENÚ (hamburguesa)
-   - Lateral en móvil
-   - Barra horizontal en desktop
-   ===================================== */
-
-/* Panel lateral en móvil */
+/* === OFFCANVAS MENÚ (hamburguesa) === */
 .offcanvas-custom {
   background: var(--nav-surface);
   border: none;
@@ -17,21 +11,20 @@
   transition: transform 0.35s ease, opacity 0.25s ease, visibility 0.25s;
 }
 
-/* Header del panel */
+/* Header */
 .offcanvas-custom .offcanvas-header {
-  background: linear-gradient(135deg, var(--nav-surface), #2a6b94);
+  background: linear-gradient(135deg, var(--nav-surface), #1f5f87);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
-  min-height: 80px;
+  height: var(--header-h) !important;
+  min-height: var(--header-h) !important;
+  padding: 8px 20px !important;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 16px;
 }
 
-.offcanvas-custom .offcanvas-title {
-  color: var(--nav-text);
-  font-family: var(--nav-font);
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
+/* Botón cerrar */
 .offcanvas-custom .btn-close {
   background: none;
   border: none;
@@ -43,26 +36,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  transition: opacity 0.3s ease, background 0.3s ease;
 }
-
 .offcanvas-custom .btn-close:hover {
   opacity: 1;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
 }
-
 .offcanvas-custom .btn-close::after {
   content: "×";
   color: white;
   font-size: 1.8rem;
 }
 
-/* Cuerpo del panel */
+/* Cuerpo */
 .offcanvas-custom .offcanvas-body {
   padding: 1.5rem;
   overflow-y: auto;
 }
 
+/* Menú */
 .offcanvas-custom .menu {
   list-style: none;
   padding: 0;
@@ -71,28 +64,25 @@
   flex-direction: column;
   gap: 8px;
 }
-
-/* Estilo de enlaces */
 .offcanvas-custom .menu a {
+  display: block;
   color: var(--nav-text);
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: 500;
-  padding: 0.75rem 1rem;
   border-radius: 8px;
-  display: block;
+  padding: 0.75rem 1rem;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-/* Hover con barra lateral animada */
+/* Hover en móvil */
 .offcanvas-custom .menu a:hover {
   background: var(--nav-hover);
   color: var(--nav-accent);
   transform: translateX(5px);
 }
-
 .offcanvas-custom .menu a::before {
   content: "";
   position: absolute;
@@ -104,76 +94,14 @@
   transform: scaleY(0);
   transition: transform 0.3s ease;
 }
-
 .offcanvas-custom .menu a:hover::before {
   transform: scaleY(1);
 }
 
-/* Backdrop */
-.offcanvas-backdrop {
-  background-color: rgba(0, 0, 0, 0.4) !important;
-  z-index: 1050 !important;
-}
-.offcanvas-custom.show {
-  z-index: 1055 !important;
+.offcanvas-custom .offcanvas-header img {
+  height: 44px;
 }
 
-/* =====================================
-   ADAPTACIÓN EN DESKTOP
-   ===================================== */
-@media (min-width: 992px) {
-  .offcanvas-custom {
-    position: static;
-    transform: none !important;
-    visibility: visible;
-    display: block !important;
-    background: transparent;
-    box-shadow: none;
-    width: auto;
-    height: auto;
-    padding: 0;
-  }
-
-  .offcanvas-custom .offcanvas-header {
-    display: none;
-  }
-
-  .offcanvas-custom .offcanvas-body {
-    padding: 0;
-  }
-
-  .offcanvas-custom .menu {
-    flex-direction: row;
-    gap: 44px;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .offcanvas-custom .menu a {
-    padding: 0;
-    background: transparent;
-    transform: none !important;
-    font-family: "DM Serif Display";
-    font-weight: 400;
-    letter-spacing: 0.4px;
-    color: #fff;
-  }
-
-  .offcanvas-custom .menu a::before {
-    display: none; /* sin barra lateral en horizontal */
-  }
-
-  .offcanvas-custom .menu a:hover {
-    background: transparent;
-    color: var(--nav-accent);
-  }
-}
-
-/* =====================================
-   HAMBURGER
-   ===================================== */
-.hamburger {
-  display: flex; /* visible en móvil y desktop */
-  justify-self: end; /* empuja a la esquina derecha de la grid */
-  z-index: 1002; /* por encima de cualquier enlace */
+.offcanvas-custom .titulo-logo img {
+  height: 26px;
 }

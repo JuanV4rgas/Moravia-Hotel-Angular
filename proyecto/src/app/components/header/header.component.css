@@ -1,4 +1,42 @@
-/*Hmaburguer*/
+/* === HEADER FIJO === */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  height: var(--header-h);
+  background: var(--plum);
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* hamburguesa | logo | acciones */
+  align-items: center;
+  gap: 16px;
+  padding: 8px 20px;
+  border-bottom: 2px solid #ffffff; /* línea blanca */
+}
+
+/* Evita que el contenido quede por debajo del header fijo */
+body {
+  padding-top: var(--header-h, 64px);
+}
+
+/* === LOGO === */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.logo img {
+  height: 44px;
+}
+
+.titulo-logo img {
+  height: 26px;
+}
+
+/* === HAMBURGER BUTTON === */
 .hamburger {
   width: 42px;
   height: 42px;
@@ -13,37 +51,32 @@
   transition: all 0.3s ease;
 }
 
-/* Logo + título */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1; /* Toma el espacio disponible */
-}
-
-.logo img {
-  height: 44px;
-}
-
-.titulo-logo img {
-  height: 26px;
-}
-
-
-/* Botones */
+/* === HEADER ACTIONS === */
 .header-buttons {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
+  justify-content: flex-end;
+  min-width: 200px;
+}
+
+/* === BOTONES === */
+.header-buttons a,
+.button2 {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-family: "DM Serif Display", "Inter", system-ui, sans-serif;
+  background: transparent;
+  border: none;
+  padding: 8px 0;
 }
 
 .button2 {
   display: inline-block;
-  transition: all 0.2s ease-in;
   position: relative;
   overflow: hidden;
   z-index: 1;
-  color: #ffffff;
   padding: 0.7em 1.7em;
   cursor: pointer;
   font-size: 16px;
@@ -51,11 +84,8 @@
   background: #1f5f87;
   border: 1px solid #e8e8e8;
   width: 120px;
-  font-family: "DM Serif Display", "Inter", system-ui, sans-serif;
-  font-weight: 700;
-  text-decoration: none;
   text-align: center;
-  padding: 8px 0;
+  transition: all 0.2s ease-in;
 }
 
 .button2:active {
@@ -63,38 +93,35 @@
   box-shadow: inset 4px 4px 12px #11ffeb, inset -4px -4px 12px #ffffff;
 }
 
-.button2:before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%) scaleY(1) scaleX(1.25);
-  top: 100%;
-  width: auto;
-  height: 180%;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 50%;
-  display: block;
-  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
-  z-index: -1;
-}
-
+.button2:before,
 .button2:after {
   content: "";
   position: absolute;
-  left: 55%;
-  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  left: 50%;
+  border-radius: 50%;
+  display: block;
+  z-index: -1;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.button2:before {
+  top: 100%;
+  width: auto;
+  height: 180%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.button2:after {
   top: 180%;
   width: 160%;
   height: 190%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
   background-color: #2d6b92;
-  border-radius: 50%;
-  display: block;
-  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
-  z-index: -1;
 }
 
 .button2:hover {
-  color: #ffffff;
+  color: #fff;
   border: 1px solid #3b90c5;
 }
 
@@ -110,36 +137,9 @@
   transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }
 
-/*Usuario logueado*/
-.user-profile-circle {
-  position: relative;
-  display: inline-block;
-}
-
-.user-avatar-circle {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  background: white;
-  padding: 2px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.user-avatar-circle:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
-  border-color: rgb(0, 255, 94);
-}
-
-.profile-circle-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
+/* === RESPONSIVE === */
+@media (min-width: 992px) {
+  .site-header {
+    padding: 10px 28px;
+  }
 }
