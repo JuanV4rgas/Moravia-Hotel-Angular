@@ -1,20 +1,64 @@
-/* Dropdown menu del perfil */
+/* ===== Usuario logueado (contenedor) ===== */
+.user-profile-circle {
+  position: relative;
+  display: inline-block;
+}
+
+/* ===== Avatar circular ===== */
+.user-avatar-circle {
+  width: 38px; /* tamaño base */
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+  display: flex; /* inline-flex → flex para reuso */
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  padding: 2px;
+}
+
+/* Hover efecto */
+.user-avatar-circle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+  border-color: rgb(0, 255, 94);
+}
+
+/* Imagen dentro del avatar */
+.profile-circle-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ===== Dropdown menu ===== */
+.dropdown-menu,
+.user-profile-circle .dropdown-menu {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Menú contextual del perfil */
 .user-profile-circle .dropdown-menu {
   position: absolute;
   top: 100%;
   right: 0;
   left: auto;
   min-width: 250px;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   padding: 0.5rem 0;
   margin-top: 10px;
   background: #e9ecef;
   backdrop-filter: blur(10px);
-  z-index: 1060; /* Por encima del offcanvas */
+  z-index: 1060;
 }
 
+/* ===== Dropdown header ===== */
 .user-profile-circle .dropdown-header {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #e9ecef;
@@ -22,6 +66,7 @@
   border-radius: 12px 12px 0 0;
 }
 
+/* Usuario dentro del header */
 .user-profile-circle .user-info strong {
   display: block;
   color: #2c3e50;
@@ -29,14 +74,14 @@
   margin-bottom: 0.25rem;
   font-weight: 600;
 }
-
 .user-profile-circle .user-info small {
   color: #6c757d;
   font-size: 0.85rem;
 }
 
+/* ===== Dropdown items ===== */
 .user-profile-circle .dropdown-item {
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.5rem !important;
   color: #05233b !important;
   text-decoration: none;
   display: flex;
@@ -44,10 +89,7 @@
   gap: 0.75rem;
   transition: all 0.3s ease;
   font-size: 0.95rem;
-  padding-left: 1.5rem !important;
-
 }
-
 
 .user-profile-circle .dropdown-item:hover {
   background: linear-gradient(
@@ -58,10 +100,10 @@
   color: #102f44;
 }
 
+/* Estado peligro */
 .user-profile-circle .dropdown-item.text-danger {
   color: #dc3545;
 }
-
 .user-profile-circle .dropdown-item.text-danger:hover {
   background: linear-gradient(
     135deg,
@@ -71,7 +113,8 @@
   color: #c82333;
 }
 
+/* Divider */
 .user-profile-circle .dropdown-divider {
   margin: 0.5rem 0;
   border-color: #e9ecef;
-} 
+}

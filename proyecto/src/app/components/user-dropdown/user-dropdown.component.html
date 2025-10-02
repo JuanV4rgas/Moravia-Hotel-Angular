@@ -1,30 +1,50 @@
-<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-  <li class="dropdown-header">
-    <div class="user-info">
-      <strong th:text="${usuario.nombre}">Nombre Usuario</strong>
-      <small th:text="${usuario.email}">correo@ejemplo.com</small>
-    </div>
-  </li>
-  <li>
-    <hr class="dropdown-divider" />
-  </li>
-  <li>
-    <a
-      class="dropdown-item"
-      th:href="@{/usuarios/{idUsuario}(idUsuario=${usuario.idUsuario})}"
-      >Mi Perfil</a
+<div class="user-profile-circle">
+  <div class="user-dropdown">
+    <button
+      class="user-avatar-circle"
+      id="userDropdown"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
     >
-  </li>
-  <li>
-    <a class="dropdown-item" href="/mis-reservas">Mis Reservas</a>
-  </li>
-  <li>
-    <a class="dropdown-item" href="/configuracion">Configuración</a>
-  </li>
-  <li>
-    <hr class="dropdown-divider" />
-  </li>
-  <li>
-    <a class="dropdown-item text-danger" th:href="@{/logout}">Cerrar Sesión</a>
-  </li>
-</ul>
+      <img
+        [src]="usuario.fotoPerfil || '/assets/img/default-avatar.png'"
+        [alt]="usuario.nombre || 'Usuario'"
+        class="profile-circle-img"
+      />
+    </button>
+
+    <!-- Dropdown Menu -->
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+      <li class="dropdown-header">
+        <div class="user-info">
+          <strong>{{ usuario.nombre }}</strong>
+          <small>{{ usuario.email }}</small>
+        </div>
+      </li>
+      <li><hr class="dropdown-divider" /></li>
+
+      <li>
+        <a
+          class="dropdown-item"
+          [routerLink]="['/usuarios', usuario.idUsuario]"
+        >
+          Mi Perfil
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item" routerLink="/mis-reservas">Mis Reservas</a>
+      </li>
+      <li>
+        <a class="dropdown-item" routerLink="/configuracion">Configuración</a>
+      </li>
+
+      <li><hr class="dropdown-divider" /></li>
+
+      <li>
+        <a class="dropdown-item text-danger" routerLink="/logout">
+          Cerrar Sesión
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
