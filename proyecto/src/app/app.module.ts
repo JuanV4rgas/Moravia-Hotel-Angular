@@ -20,9 +20,9 @@ import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.
 import { RoomTableComponent } from './room/room-table/room-table.component';
 import { RoomDetailComponent } from './room/room-detail/room-detail.component';
 import { RoomFormComponent } from './room/room-form/room-form.component';
-import { HabitacionTableComponent } from './habitacion/habitacion-table/habitacion-table.component';
-import { HabitacionDetailComponent } from './habitacion/habitacion-detail/habitacion-detail.component';
-import { HabitacionFormComponent } from './habitacion/habitacion-form/habitacion-form.component';
+import { HabitacionTableComponent } from './roomtype/roomtype-table/roomtype-table.component';
+import { HabitacionDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
+import { HabitacionFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component';
 import { ClienteDetailComponent } from './cliente/cliente-detail/cliente-detail.component';
 import { ClienteFormComponent } from './cliente/cliente-form/cliente-form.component';

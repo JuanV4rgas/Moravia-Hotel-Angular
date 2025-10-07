@@ -3,15 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RoomType } from '../model/roomtype';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class RoomTypeService {
-  private apiUrl = 'http://localhost:8081/api/RoomTypees'; 
-
+  private apiUrl = 'http://localhost:8081/api/roomtypes';
   constructor(private http: HttpClient) {}
 
-  getRoomTypees(): Observable<RoomType[]> {
+  getRoomTypes(): Observable<RoomType[]> {
     return this.http.get<RoomType[]>(this.apiUrl);
   }
 
@@ -19,12 +16,12 @@ export class RoomTypeService {
     return this.http.get<RoomType>(`${this.apiUrl}/${id}`);
   }
 
-  addRoomType(RoomType: RoomType): Observable<RoomType> {
-    return this.http.post<RoomType>(this.apiUrl, RoomType);
+  addRoomType(payload: RoomType): Observable<RoomType> {
+    return this.http.post<RoomType>(this.apiUrl, payload);
   }
 
-  updateRoomType(id: string, RoomType: RoomType): Observable<RoomType> {
-    return this.http.put<RoomType>(`${this.apiUrl}/${id}`, RoomType);
+  updateRoomType(id: string, payload: RoomType): Observable<RoomType> {
+    return this.http.put<RoomType>(`${this.apiUrl}/${id}`, payload);
   }
 
   deleteRoomType(id: string): Observable<void> {

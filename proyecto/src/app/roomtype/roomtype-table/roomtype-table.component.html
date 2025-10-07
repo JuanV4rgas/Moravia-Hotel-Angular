@@ -1,0 +1,29 @@
+<h2>Tipos de habitación</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Precio</th>
+      <th>Capacidad</th>
+      <th>Camas</th>
+      <th>Categoría</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let h of roomtypes">
+      <td>{{ h.name }}</td>
+      <td>{{ h.description }}</td>
+      <td>{{ h.price | currency }}</td>
+      <td>{{ h.capacity }}</td>
+      <td>{{ h.numberOfBeds }}</td>
+      <td>{{ h.type }}</td>
+      <td>
+        <button [routerLink]="['/roomtypes', h.id]">Ver</button>
+        <button (click)="eliminarRoomType(h.id)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<a [routerLink]="['/roomtypes/new']">Crear nuevo</a>

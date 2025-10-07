@@ -1,4 +1,4 @@
-export interface Habitacion{
+export interface RoomType{
     id:string
     name:string
     description:string

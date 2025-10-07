@@ -1,0 +1,9 @@
+<div *ngIf="roomType">
+  <h2>{{ roomType.name }}</h2>
+  <img *ngIf="roomType.image" [src]="roomType.image" alt="{{ roomType.name }}" width="200">
+  <p><strong>Descripción:</strong> {{ roomType.description }}</p>
+  <p><strong>Precio:</strong> {{ roomType.price | currency }}</p>
+  <p><strong>Capacidad:</strong> {{ roomType.capacity }}</p>
+  <p><strong>Camas:</strong> {{ roomType.numberOfBeds }}</p>
+  <p><strong>Categoría:</strong> {{ roomType.type }}</p>
+</div>

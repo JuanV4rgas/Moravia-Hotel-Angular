@@ -1,0 +1,27 @@
+<h2 *ngIf="!modoEdicion">Nuevo tipo de habitación</h2>
+<h2 *ngIf="modoEdicion">Editar tipo de habitación</h2>
+
+<form (ngSubmit)="guardar()" #roomTypeForm="ngForm">
+  <label>Nombre:</label>
+  <input [(ngModel)]="roomType.name" name="name" required>
+
+  <label>Descripción:</label>
+  <textarea [(ngModel)]="roomType.description" name="description" required></textarea>
+
+  <label>Precio:</label>
+  <input type="number" [(ngModel)]="roomType.price" name="price" required>
+
+  <label>Capacidad:</label>
+  <input [(ngModel)]="roomType.capacity" name="capacity" required>
+
+  <label>Camas:</label>
+  <input type="number" [(ngModel)]="roomType.numberOfBeds" name="numberOfBeds" required>
+
+  <label>Imagen (URL):</label>
+  <input [(ngModel)]="roomType.image" name="image">
+
+  <label>Categoría:</label>
+  <input [(ngModel)]="roomType.type" name="type">
+
+  <button type="submit" [disabled]="roomTypeForm.invalid">Guardar</button>
+</form>

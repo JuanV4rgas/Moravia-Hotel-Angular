@@ -1,9 +1,0 @@
-<div *ngIf="habitacion">
-  <h2>{{ habitacion.name }}</h2>
-  <img *ngIf="habitacion.image" [src]="habitacion.image" alt="{{ habitacion.name }}" width="200">
-  <p><strong>Descripción:</strong> {{ habitacion.description }}</p>
-  <p><strong>Precio:</strong> {{ habitacion.price | currency }}</p>
-  <p><strong>Capacidad:</strong> {{ habitacion.capacity }}</p>
-  <p><strong>Camas:</strong> {{ habitacion.numberOfBeds }}</p>
-  <p><strong>Tipo:</strong> {{ habitacion.type }}</p>
-</div>

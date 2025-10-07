@@ -8,6 +8,5 @@ export interface Reserva {
   fechaFin: string;        
   estado: string;
   usuario: Usuario;      
-  room: Room;
-  cuenta?: Cuenta;       
+  room: Room;       
 }
