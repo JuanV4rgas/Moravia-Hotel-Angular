@@ -17,10 +17,10 @@ const routes: Routes = [
   { path: 'habitacion/table', component: HabitacionTableComponent },//Importamos el comonente del detalle de la habitacion
   { path: 'room/table', component: RoomTableComponent },//Importamos el comonente del detalle de la habitacion
   { path: 'cliente/table', component: ClienteTableComponent },
-  { path: '**', redirectTo: 'home' },
   { path: 'habitaciones', component: HabitacionTableComponent },
   { path: 'habitaciones/:id', component: HabitacionDetailComponent },
-  { path: 'habitaciones/nueva', component: HabitacionFormComponent }
+  { path: 'habitaciones/nueva', component: HabitacionFormComponent },
+  { path: '**', redirectTo: 'home' }
 
 
 ];
