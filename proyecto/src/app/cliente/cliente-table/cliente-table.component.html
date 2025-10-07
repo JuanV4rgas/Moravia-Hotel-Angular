@@ -1,40 +1,30 @@
-<table class="table">
+<div>
+  <h4>LISTA DE CLIENTES</h4>
+
+  <table class="table">
     <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Correo</th>
-            <th scope="col">Clave</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Cédula</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Foto de Perfil</th>
-
-
-        </tr>
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Clave</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Cédula</th>
+        <th>Teléfono</th>
+        <th>Foto Perfil</th>
+      </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let cliente of clientesList">
-            <th scope="row">{{cliente.id}}</th>
-            <td>{{cliente.email}}</td>
-            <td>{{cliente.password}}</td>
-            <td>{{cliente.name}}</td>
-            <td>{{cliente.surename}}</td>
-            <td>{{cliente.cedula}}</td>
-            <td>{{cliente.phone}}</td>
-            <td>{{cliente.pfp}}</td>
-            <td>
-                <button class="btn btn-primary" (click)="mostrarCliente(cliente)">
-                    Seleccionar
-                </button>
-            </td>
-            <td>
-                <button class="btn btn-primary" (click)="eliminarCliente(cliente)">
-                    Eliminar
-                </button>
-            </td>
-        </tr>
+      <tr *ngFor="let cliente of clientes">
+        <td>{{ cliente.idUsuario }}</td>
+        <td>{{ cliente.email }}</td>
+        <td>{{ cliente.clave }}</td>
+        <td>{{ cliente.nombre }}</td>
+        <td>{{ cliente.apellido }}</td>
+        <td>{{ cliente.cedula }}</td>
+        <td>{{ cliente.telefono }}</td>
+        <td>{{ cliente.fotoPerfil }}</td>
+      </tr>
     </tbody>
-</table>
-<app-cliente-detail [cliente] = "selectedCliente"></app-cliente-detail>
-<app-cliente-form (addClienteEvent)="agregarCliente($event)"></app-cliente-form>
+  </table>
+</div>

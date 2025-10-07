@@ -3,11 +3,11 @@ import { Cliente } from './cliente';
 import { Cuenta } from './cuenta';
 
 export interface Reserva {
-  id: number;            
-  fechaInicio: string;   
-  fechaFin: string;        
+  id: number;
+  fechaInicio: string;
+  fechaFin: string;
   estado: string;
-  cliente: Cliente;      
-  cuenta: Cuenta; 
-  rooms: Room[];     
+  cliente: Cliente;
+  cuenta: Cuenta;
+  rooms: Room[];
 }

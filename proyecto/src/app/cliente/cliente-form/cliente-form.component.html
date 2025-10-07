@@ -1,29 +1,31 @@
+<div>
+  <h4>FORMULARIO CLIENTE</h4>
 
-<form #ClienteForm="ngForm" (ngSubmit)="addCliente(ClienteForm)">
-  <label for="id">Id</label><br>
-  <input type="text" id="id" name="id" [(ngModel)]="formCliente.id" required><br>
+  <form (ngSubmit)="guardar()">
+    <label for="idUsuario">Id</label>
+    <input type="text" id="idUsuario" name="idUsuario" [(ngModel)]="formCliente.idUsuario" required><br>
 
-  <label for="correo">Correo</label><br>
-  <input type="email" id="correo" name="correo" [(ngModel)]="formCliente.email" required><br>
+    <label for="email">Correo</label>
+    <input type="email" id="email" name="email" [(ngModel)]="formCliente.email" required><br>
 
-    <label for="clave">Clave</label><br>
-    <input type="password" id="clave" name="clave" [(ngModel)]="formCliente.password" required><br>
+    <label for="clave">Clave</label>
+    <input type="password" id="clave" name="clave" [(ngModel)]="formCliente.clave" required><br>
 
-    <label for="nombre">Nombre</label><br>
-    <input type="text" id="nombre" name="nombre" [(ngModel)]="formCliente.name" required><br>
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" name="nombre" [(ngModel)]="formCliente.nombre" required><br>
 
-    <label for="apellido">Apellido</label><br>
-    <input type="text" id="apellido" name="apellido" [(ngModel)]="formCliente.surename" required><br>
+    <label for="apellido">Apellido</label>
+    <input type="text" id="apellido" name="apellido" [(ngModel)]="formCliente.apellido" required><br>
 
-    <label for="cedula">Cedula</label><br>
+    <label for="cedula">Cédula</label>
     <input type="text" id="cedula" name="cedula" [(ngModel)]="formCliente.cedula" required><br>
 
-    <label for="telefono">Telefono</label><br>   
-    <input type="text" id="telefono" name="telefono" required [(ngModel)]="formCliente.phone"><br>      
+    <label for="telefono">Teléfono</label>
+    <input type="text" id="telefono" name="telefono" [(ngModel)]="formCliente.telefono"><br>
 
-    <label for="fotoPerfil">Foto de Perfil</label><br>
-    <input type="text" id="fotoPerfil" name="fotoPerfil" [(ngModel)]="formCliente.pfp" required><br>
+    <label for="fotoPerfil">Foto Perfil</label>
+    <input type="text" id="fotoPerfil" name="fotoPerfil" [(ngModel)]="formCliente.fotoPerfil"><br>
 
-
-  <button type="submit" [disabled]="!ClienteForm.form.valid">Agregar Cliente</button>
-</form>
+    <button type="submit" class="btn btn-success">Guardar</button>
+  </form>
+</div>

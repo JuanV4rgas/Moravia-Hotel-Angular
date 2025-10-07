@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Cliente } from '../../model/cliente';
+import { Component } from '@angular/core';
+import { Cliente } from 'src/app/model/cliente';
+import { ClienteService } from 'src/app/services/cliente.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cliente-form',
@@ -8,36 +10,26 @@ import { Cliente } from '../../model/cliente';
 })
 export class ClienteFormComponent {
 
-      //Evento
-      @Output()
-      addClienteEvent = new EventEmitter<Cliente>();
-    
-      sendCliente!: Cliente
-    
-      //Modelo
-      formCliente: Cliente = {
-        id: 0,
-      email: '',
-    password: '',
-    name: '',
-    surename: '',
-    cedula: 0,
-    phone: '',
-    pfp: ''
-      }
-  
-       addClienteForm(){
-      console.log(this.formCliente);
-      this.sendCliente = Object.assign({}, this.formCliente);
-      this.addClienteEvent.emit(this.sendCliente);
-  
-    }
-  
-    addCliente(form: any){
-      console.log(this.formCliente);
-      this.sendCliente = Object.assign({}, this.formCliente);
-      this.addClienteEvent.emit(this.sendCliente);
-    }
+  formCliente: Cliente = {
+    idUsuario: 0,
+    email: '',
+    clave: '',
+    nombre: '',
+    apellido: '',
+    cedula: '',
+    telefono: '',
+    fotoPerfil: ''
+  };
 
+  constructor(
+    private clienteService: ClienteService,
+    private router: Router
+  ) { }
 
+  guardar() {
+    this.clienteService.save(this.formCliente).subscribe(() => {
+      console.log("Cliente guardado", this.formCliente);
+      this.router.navigate(['/cliente/table']);
+    });
+  }
 }

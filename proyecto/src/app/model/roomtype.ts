@@ -6,5 +6,4 @@ export interface RoomType {
   capacity: string;
   numberOfBeds: number;
   image: string;
-  type: string;
 }

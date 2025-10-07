@@ -1,6 +1,6 @@
-import { Usuario } from "./usuario"
-import { Reserva } from "./reserva"
+import { Usuario } from "./usuario";
+import { Reserva } from "./reserva";
 
-export interface Cliente extends Usuario{
-    Reservas?: Reserva[]
+export interface Cliente extends Usuario {
+  reservas?: Reserva[];   // reservas asociadas
 }
