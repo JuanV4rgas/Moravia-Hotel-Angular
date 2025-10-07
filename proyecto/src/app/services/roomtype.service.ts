@@ -8,8 +8,8 @@ export class RoomTypeService {
   private apiUrl = 'http://localhost:8081/api/roomtypes';
   constructor(private http: HttpClient) {}
 
-  getRoomTypes(): Observable<RoomType[]> {
-    return this.http.get<RoomType[]>(this.apiUrl);
+  getAllRoomTypes(): Observable<RoomType[]> {
+    return this.http.get<RoomType[]>(`${this.apiUrl}/all`);
   }
 
   getRoomType(id: string): Observable<RoomType> {
