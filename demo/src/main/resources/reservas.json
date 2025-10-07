@@ -1,0 +1,7 @@
+{
+  "reservas": [
+    { "id": 1, "fechaInicio": "2025-10-01", "fechaFin": "2025-10-05", "estado": "CONFIRMADA", "cliente": 1, "cuenta": 1 },
+    { "id": 2, "fechaInicio": "2025-11-10", "fechaFin": "2025-11-15", "estado": "PENDIENTE", "cliente": 2, "cuenta": 2 },
+    { "id": 3, "fechaInicio": "2025-12-01", "fechaFin": "2025-12-08", "estado": "CANCELADA", "cliente": 3, "cuenta": 3 }
+  ]
+}

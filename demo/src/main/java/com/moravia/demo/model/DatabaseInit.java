@@ -33,7 +33,7 @@ public class DatabaseInit implements ApplicationRunner {
     RoomRepository roomRepository;
 
     @Autowired
-    RoomtypeRepository roomTypeRepository;
+    RoomtypeRepository roomtypeRepository;
 
     @Autowired
     ServicioRepository servicioRepository;
@@ -89,10 +89,10 @@ public class DatabaseInit implements ApplicationRunner {
             rt.setNumberOfBeds(rtJson.get("numberOfBeds").asInt());
             rt.setImage(rtJson.get("image").asText());
             rt.setType(rtJson.get("type").asText());
-            roomTypeRepository.save(rt);
+            roomtypeRepository.save(rt);
         }
 
-        List<Roomtype> roomTypes = roomTypeRepository.findAll();
+        List<Roomtype> roomTypes = roomtypeRepository.findAll();
 
         // ========================
         // Load Rooms
@@ -106,7 +106,6 @@ public class DatabaseInit implements ApplicationRunner {
             room.setHabitacionNumber(roomJson.get("numeroHabitacion").asText());
             room.setAvailable(roomJson.get("disponible").asBoolean());
 
-            // asigna un Roomtype aleatorio
             Roomtype rt = roomTypes.get(rand.nextInt(roomTypes.size()));
             room.setType(rt);
 
@@ -144,17 +143,14 @@ public class DatabaseInit implements ApplicationRunner {
             reserva.setFechaFin("2025-10-05");
             reserva.setEstado("CONFIRMADA");
 
-            // habitaciones asignadas
             List<Room> reservaRooms = new ArrayList<>();
             reservaRooms.add(rooms.get(rand.nextInt(rooms.size())));
             reserva.setRooms(reservaRooms);
 
-            // crea cuenta asociada
             Cuenta cuenta = new Cuenta();
             cuenta.setEstado("ABIERTA");
             cuenta.setTotal(0.0);
 
-            // agrega servicios aleatorios
             List<Servicio> cuentaServicios = new ArrayList<>();
             cuentaServicios.add(servicios.get(rand.nextInt(servicios.size())));
             cuenta.setServicios(cuentaServicios);
