@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,13 +28,13 @@ import { AuthWrapComponent } from './auth/auth-wrap/auth-wrap.component';
 import { AuthCardComponent } from './auth/auth-card/auth-card.component';
 import { LoginFormComponent } from './auth/login-form/login-form.component';
 import { RegisterFormComponent } from './auth/register-form/register-form.component';
-import { HttpClientModule } from '@angular/common/http';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
 import { HistoriaComponent } from './historia/historia.component';
 import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
+import { ServiceListComponent } from './servicio/service-list/service-list.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.componen
     MainLayoutComponent,
     AuthLayoutComponent,
     HistoriaComponent,
-    PerfilUsuarioComponent
+    PerfilUsuarioComponent,
+    ServiceListComponent
   ],
   imports: [
     BrowserModule,
