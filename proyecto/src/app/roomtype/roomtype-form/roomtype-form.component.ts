@@ -17,7 +17,6 @@ export class RoomTypeFormComponent implements OnInit {
     capacity: '',
     numberOfBeds: 1,
     image: '',
-    type: ''
   };
 
   modoEdicion = false;

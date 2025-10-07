@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomTypeService } from 'src/app/services/roomtype.service';
 import { RoomType } from '../../model/roomtype';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-roomtype-table',
+  standalone: true,
   templateUrl: './roomtype-table.component.html',
+   imports: [CommonModule, RouterModule],
   styleUrls: ['./roomtype-table.component.css']
 })
 export class RoomTypeTableComponent implements OnInit {
