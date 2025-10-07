@@ -9,68 +9,36 @@ import com.moravia.demo.model.Servicio;
 import com.moravia.demo.service.ServicioService;
 
 @RestController
-@RequestMapping("/servicios")
+@RequestMapping("/servicio")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ServicioController {
 
     @Autowired
-    private ServicioService servicioService;
+    ServicioService servicioService;
 
-    // ============================================================
-    // GET http://localhost:8081/servicios
-    // ➜ Devuelve la lista completa de servicios
-    // ============================================================
-    @GetMapping
-    public List<Servicio> listarServicios() {
-        return servicioService.findAll();
+    @GetMapping("/all")
+    public List<Servicio> mostrarServicios() {
+        return servicioService.searchAll();
     }
 
-    // ============================================================
-    // GET http://localhost:8081/servicios/{idServicio}
-    // ➜ Devuelve un servicio específico según su ID
-    // Ejemplo: http://localhost:8081/servicios/3
-    // ============================================================
-    @GetMapping("/{idServicio}")
-    public Servicio obtenerServicio(@PathVariable Long idServicio) {
-        return servicioService.findById(idServicio);
+    @GetMapping("/find/{id}")
+    public Servicio mostrarServicio(@PathVariable("id") Long id) {
+        return servicioService.searchById(id);
     }
 
-    // ============================================================
-    // POST http://localhost:8081/servicios
-    // ➜ Crea un nuevo servicio
-    // Se debe enviar un JSON en el body con los datos del servicio
-    // Ejemplo:
-    // {
-    //   "nombre": "Spa Deluxe",
-    //   "descripcion": "Masajes relajantes y aromaterapia",
-    //   "precio": 180000,
-    //   "categoria": "Bienestar"
-    // }
-    // ============================================================
-    @PostMapping
-    public void crearServicio(@RequestBody Servicio servicio) {
+    @PostMapping("/add")
+    public void agregarServicio(@RequestBody Servicio servicio) {
         servicioService.add(servicio);
     }
 
-    // ============================================================
-    // PUT http://localhost:8081/servicios/{idServicio}
-    // ➜ Actualiza un servicio existente según su ID
-    // Ejemplo: http://localhost:8081/servicios/5
-    // Se debe enviar el JSON actualizado con los nuevos valores
-    // ============================================================
-    @PutMapping("/{idServicio}")
-    public void actualizarServicio(@PathVariable Long idServicio, @RequestBody Servicio servicio) {
-        servicio.setIdServicio(idServicio);
-        servicioService.update(servicio);
+    @DeleteMapping("/delete/{id}")
+    public void eliminarServicio(@PathVariable("id") Long id) {
+        servicioService.deleteById(id);
     }
 
-    // ============================================================
-    // DELETE http://localhost:8081/servicios/{idServicio}
-    // ➜ Elimina un servicio específico según su ID
-    // Ejemplo: http://localhost:8081/servicios/2
-    // ============================================================
-    @DeleteMapping("/{idServicio}")
-    public void eliminarServicio(@PathVariable Long idServicio) {
-        servicioService.deleteById(idServicio);
+    @PostMapping("/update/{id}")
+    public void actualizarServicio(@RequestBody Servicio servicio, @PathVariable("id") Long id) {
+        servicio.setIdServicio(id);
+        servicioService.update(servicio);
     }
 }

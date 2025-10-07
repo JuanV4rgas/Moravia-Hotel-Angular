@@ -28,7 +28,7 @@ public class AuthController {
   public String login(@RequestParam String email, @RequestParam String clave,
       Model model, HttpSession session) {
     try {
-      Usuario usuario = usuarioService.findByEmail(email);
+      Usuario usuario = usuarioService.searchByEmail(email);
       if (usuario != null) {
         if (usuario.getClave().equals(clave)) {
           // Guardar usuario en sesión

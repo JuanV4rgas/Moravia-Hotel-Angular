@@ -1,135 +1,169 @@
 package com.moravia.demo.model;
 
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Controller;
-
-import com.moravia.demo.repository.UsuarioRepository;
-import com.moravia.demo.repository.HabitacionRepository;
-import com.moravia.demo.repository.ServicioRepository;
-import com.moravia.demo.repository.RoomRepository;
-import com.moravia.demo.repository.OperadorRepository;
-import com.moravia.demo.repository.AdministradorRepository;
-
-import java.util.List;
+import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 
-import jakarta.transaction.Transactional;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moravia.demo.controller.RoomController;
+import com.moravia.demo.repository.*;
+
+import jakarta.transaction.Transactional;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Random;
+import java.util.ArrayList;
 
-@Controller
+@Component
 @Transactional
 public class DatabaseInit implements ApplicationRunner {
+
+    private final RoomController roomController;
 
     @Autowired
     UsuarioRepository usuarioRepository;
 
     @Autowired
-    HabitacionRepository habitacionRepository;
-
-    @Autowired
-    ServicioRepository servicioRepository;
+    ClienteRepository clienteRepository;
 
     @Autowired
     RoomRepository roomRepository;
 
     @Autowired
-    OperadorRepository operadorRepository;
+    RoomtypeRepository roomTypeRepository;
 
     @Autowired
-    AdministradorRepository administradorRepository;
+    ServicioRepository servicioRepository;
+
+    @Autowired
+    ReservaRepository reservaRepository;
+
+    @Autowired
+    CuentaRepository cuentaRepository;
+
+    DatabaseInit(RoomController roomController) {
+        this.roomController = roomController;
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
+        Random rand = new Random();
 
-        // Load usuarios
+        // ========================
+        // Load Usuarios / Clientes
+        // ========================
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("usuarios.json");
         JsonNode jsonNode = mapper.readTree(inputStream);
 
         for (JsonNode usuarioJson : jsonNode.get("usuarios")) {
-            Usuario usuario = new Usuario(
-                    usuarioJson.get("correo").asText(),
-                    usuarioJson.get("clave").asText(),
-                    usuarioJson.get("nombre").asText(),
-                    usuarioJson.get("apellido").asText(),
-                    usuarioJson.get("cedula").asText(),
-                    usuarioJson.get("telefono").asText(),
-                    usuarioJson.get("fotoPerfil").asText());
-            usuarioRepository.save(usuario);
+            Cliente cliente = new Cliente();
+            cliente.setEmail(usuarioJson.get("correo").asText());
+            cliente.setClave(usuarioJson.get("clave").asText());
+            cliente.setNombre(usuarioJson.get("nombre").asText());
+            cliente.setApellido(usuarioJson.get("apellido").asText());
+            cliente.setCedula(usuarioJson.get("cedula").asText());
+            cliente.setTelefono(usuarioJson.get("telefono").asText());
+            cliente.setFotoPerfil(usuarioJson.get("fotoPerfil").asText());
+            clienteRepository.save(cliente);
         }
 
-        List <Usuario> usuarios = usuarioRepository.findAll(); 
+        List<Cliente> clientes = clienteRepository.findAll();
 
-        for(int i = 0; i < 8; i++) {
-            Random rand = new Random();
-            Usuario usuario = usuarios.get(rand.nextInt(usuarios.size()));
-            Operador operador = new Operador(usuario);
-            operador.setId(usuario.getIdUsuario()) ;
-            operadorRepository.save(operador);
-        }
-
-        for(int i = 0; i < 2; i++) {
-            Random rand = new Random();
-            Usuario usuario = usuarios.get(rand.nextInt(usuarios.size()));
-            Administrador administrador = new Administrador(usuario);
-            administrador.setId(usuario.getIdUsuario()) ;
-            administradorRepository.save(administrador);
-        }
-
-        // Load habitaciones
-        inputStream = getClass().getClassLoader().getResourceAsStream("habitaciones.json");
+        // ========================
+        // Load RoomTypes
+        // ========================
+        inputStream = getClass().getClassLoader().getResourceAsStream("roomtypes.json");
         jsonNode = mapper.readTree(inputStream);
 
-        for (JsonNode habitacionJson : jsonNode.get("habitaciones")) {
-            Habitacion habitacion = new Habitacion(
-                    habitacionJson.get("nombre").asText(),
-                    habitacionJson.get("tipo").asText(),
-                    habitacionJson.get("descripcion").asText(),
-                    habitacionJson.get("precio").floatValue(),
-                    habitacionJson.get("capacidad").asText(),
-                    habitacionJson.get("numeroCamas").asInt(),
-                    habitacionJson.get("imagenUrl").asText());
-            habitacionRepository.save(habitacion);
+        for (JsonNode rtJson : jsonNode.get("roomtypes")) {
+            Roomtype rt = new Roomtype();
+            rt.setId(rtJson.get("id").asText());
+            rt.setName(rtJson.get("name").asText());
+            rt.setDescription(rtJson.get("description").asText());
+            rt.setPrice(rtJson.get("price").asDouble());
+            rt.setCapacity(rtJson.get("capacity").asText());
+            rt.setNumberOfBeds(rtJson.get("numberOfBeds").asInt());
+            rt.setImage(rtJson.get("image").asText());
+            rt.setType(rtJson.get("type").asText());
+            roomTypeRepository.save(rt);
         }
 
-        // Load servicios
+        List<Roomtype> roomTypes = roomTypeRepository.findAll();
+
+        // ========================
+        // Load Rooms
+        // ========================
+        inputStream = getClass().getClassLoader().getResourceAsStream("rooms.json");
+        jsonNode = mapper.readTree(inputStream);
+
+        for (JsonNode roomJson : jsonNode.get("rooms")) {
+            Room room = new Room();
+            room.setId(roomJson.get("id").asText());
+            room.setHabitacionNumber(roomJson.get("numeroHabitacion").asText());
+            room.setAvailable(roomJson.get("disponible").asBoolean());
+
+            // asigna un Roomtype aleatorio
+            Roomtype rt = roomTypes.get(rand.nextInt(roomTypes.size()));
+            room.setType(rt);
+
+            roomRepository.save(room);
+        }
+
+        List<Room> rooms = roomRepository.findAll();
+
+        // ========================
+        // Load Servicios
+        // ========================
         inputStream = getClass().getClassLoader().getResourceAsStream("servicios.json");
         jsonNode = mapper.readTree(inputStream);
 
         for (JsonNode servicioJson : jsonNode.get("servicios")) {
-            Servicio servicio = new Servicio(
-                    servicioJson.get("nombre").asText(),
-                    servicioJson.get("descripcion").asText(),
-                    servicioJson.get("precio").asInt(),
-                    servicioJson.get("imagenUrl").asText());
+            Servicio servicio = new Servicio();
+            servicio.setNombre(servicioJson.get("nombre").asText());
+            servicio.setDescripcion(servicioJson.get("descripcion").asText());
+            servicio.setPrecio(servicioJson.get("precio").asDouble());
+            servicio.setImagenUrl(servicioJson.get("imagenUrl").asText());
             servicioRepository.save(servicio);
         }
 
-        // Load rooms
-        inputStream = getClass().getClassLoader().getResourceAsStream("room.json");
-        jsonNode = mapper.readTree(inputStream);
+        List<Servicio> servicios = servicioRepository.findAll();
 
-        List<Habitacion> habitaciones = habitacionRepository.findAll();
-        Random random = new Random();
+        // ========================
+        // Crear Reservas y Cuentas Dummy
+        // ========================
+        for (int i = 0; i < 5; i++) {
+            Cliente cliente = clientes.get(rand.nextInt(clientes.size()));
 
-        for (JsonNode roomJson : jsonNode.get("rooms")) {
-            Room room = new Room(
-                    roomJson.get("numeroHabitacion").asText(),
-                    roomJson.get("disponible").asBoolean());
+            Reserva reserva = new Reserva();
+            reserva.setCliente(cliente);
+            reserva.setFechaInicio("2025-10-01");
+            reserva.setFechaFin("2025-10-05");
+            reserva.setEstado("CONFIRMADA");
 
-            // Selecciona una habitación al azar
-            Habitacion habitacion = habitaciones.get(random.nextInt(habitaciones.size()));
-            room.setTipo(habitacion);
-            roomRepository.save(room);
+            // habitaciones asignadas
+            List<Room> reservaRooms = new ArrayList<>();
+            reservaRooms.add(rooms.get(rand.nextInt(rooms.size())));
+            reserva.setRooms(reservaRooms);
 
-            habitacion.addRoom(room);
-            habitacionRepository.save(habitacion);
+            // crea cuenta asociada
+            Cuenta cuenta = new Cuenta();
+            cuenta.setEstado("ABIERTA");
+            cuenta.setTotal(0.0);
+
+            // agrega servicios aleatorios
+            List<Servicio> cuentaServicios = new ArrayList<>();
+            cuentaServicios.add(servicios.get(rand.nextInt(servicios.size())));
+            cuenta.setServicios(cuentaServicios);
+
+            cuenta.setReserva(reserva);
+            reserva.setCuenta(cuenta);
+
+            reservaRepository.save(reserva);
+            cuentaRepository.save(cuenta);
         }
     }
 }

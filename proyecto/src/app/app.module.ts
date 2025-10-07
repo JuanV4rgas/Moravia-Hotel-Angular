@@ -20,9 +20,6 @@ import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.
 import { RoomTableComponent } from './room/room-table/room-table.component';
 import { RoomDetailComponent } from './room/room-detail/room-detail.component';
 import { RoomFormComponent } from './room/room-form/room-form.component';
-import { HabitacionTableComponent } from './roomtype/roomtype-table/roomtype-table.component';
-import { HabitacionDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
-import { HabitacionFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component';
 import { ClienteDetailComponent } from './cliente/cliente-detail/cliente-detail.component';
 import { ClienteFormComponent } from './cliente/cliente-form/cliente-form.component';
@@ -33,6 +30,8 @@ import { RegisterFormComponent } from './auth/register-form/register-form.compon
 import { HttpClientModule } from '@angular/common/http';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
+import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
 
 @NgModule({
   declarations: [
@@ -53,9 +52,8 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
     RoomTableComponent,
     RoomDetailComponent,
     RoomFormComponent,
-    HabitacionTableComponent,
-    HabitacionDetailComponent,
-    HabitacionFormComponent,
+    RoomTypeFormComponent,
+    RoomTypeDetailComponent,
     ClienteTableComponent,
     ClienteDetailComponent,
     ClienteFormComponent,

@@ -1,26 +1,26 @@
 package com.moravia.demo.service;
 
-import com.moravia.demo.model.Room;
-import com.moravia.demo.repository.RoomRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.moravia.demo.model.Room;
+import com.moravia.demo.repository.RoomRepository;
 
 @Service
 public class RoomServiceImpl implements RoomService {
 
     @Autowired
-    private RoomRepository repo;
+    RoomRepository repo;
 
     @Override
-    public List<Room> findAll() {
-        return repo.findAll();
+    public Room searchById(String id) {
+        return repo.findById(id).orElse(null);
     }
 
     @Override
-    public Room findById(Long id) {
-        return repo.findById(id).orElse(null);
+    public List<Room> searchAll() {
+        return repo.findAll();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         repo.deleteById(id);
     }
 }

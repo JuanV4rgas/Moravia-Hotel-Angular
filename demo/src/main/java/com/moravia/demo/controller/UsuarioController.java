@@ -8,94 +8,58 @@ import org.springframework.web.bind.annotation.*;
 import com.moravia.demo.model.Usuario;
 import com.moravia.demo.service.UsuarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/usuario")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    UsuarioService usuarioService;
 
-    // ============================================================
-    // GET http://localhost:8081/usuarios
-    // ➜ Devuelve la lista completa de usuarios
-    // ============================================================
-    @GetMapping
-    public List<Usuario> listarUsuarios() {
-        return usuarioService.findAll();
+    // http://localhost:8090/usuario/all
+    @GetMapping("/all")
+    @Operation(summary = "Encuentra todos los usuarios")
+    public List<Usuario> mostrarUsuarios() {
+        return usuarioService.searchAll();
     }
 
-    // ============================================================
-    // GET http://localhost:8081/usuarios/{idUsuario}
-    // ➜ Devuelve un usuario específico según su ID
-    // Ejemplo: http://localhost:8081/usuarios/5
-    // ============================================================
-    @GetMapping("/{idUsuario}")
-    public Usuario obtenerUsuario(@PathVariable Long idUsuario) {
-        return usuarioService.findById(idUsuario);
+    // http://localhost:8090/usuario/find?id=1
+    @GetMapping("/find")
+    public Usuario mostrarUsuario(@RequestParam("id") Long id) {
+        return usuarioService.searchById(id);
     }
 
-    // ============================================================
-    // POST http://localhost:8081/usuarios
-    // ➜ Crea un nuevo usuario
-    // Ejemplo de JSON:
-    // {
-    //   "nombre": "Carlos",
-    //   "apellido": "Moreno",
-    //   "email": "carlos@demo.com",
-    //   "clave": "123456",
-    //   "telefono": "3001234567",
-    //   "cedula": "1023456789",
-    //   "fotoPerfil": "foto.jpg"
-    // }
-    // ============================================================
-    @PostMapping
-    public void crearUsuario(@RequestBody Usuario usuario) {
+    // http://localhost:8090/usuario/find/1
+    @GetMapping("/find/{id}")
+    public Usuario mostrarUsuario2(@PathVariable("id") Long id) {
+        return usuarioService.searchById(id);
+    }
+
+    // http://localhost:8090/usuario/add
+    @PostMapping("/add")
+    public void agregarUsuario(@RequestBody Usuario usuario) {
         usuarioService.add(usuario);
     }
 
-    // ============================================================
-    // PUT http://localhost:8081/usuarios/{idUsuario}
-    // ➜ Actualiza un usuario existente según su ID
-    // Ejemplo: http://localhost:8081/usuarios/5
-    // ============================================================
-    @PutMapping("/{idUsuario}")
-    public void actualizarUsuario(@PathVariable Long idUsuario, @RequestBody Usuario usuario) {
-        usuario.setIdUsuario(idUsuario);
+    // http://localhost:8090/usuario/delete/1
+    @DeleteMapping("/delete/{id}")
+    public void eliminarUsuario(@PathVariable("id") Long id) {
+        usuarioService.deleteById(id);
+    }
+
+    // http://localhost:8090/usuario/update/1
+    @PostMapping("/update/{id}")
+    public void actualizarUsuario(@RequestBody Usuario usuario, @PathVariable("id") Long id) {
+        usuario.setIdUsuario(id);
         usuarioService.update(usuario);
     }
 
-    // ============================================================
-    // DELETE http://localhost:8081/usuarios/{idUsuario}
-    // ➜ Elimina un usuario por su ID
-    // Ejemplo: http://localhost:8081/usuarios/5
-    // ============================================================
-    @DeleteMapping("/{idUsuario}")
-    public void eliminarUsuario(@PathVariable Long idUsuario) {
-        usuarioService.deleteById(idUsuario);
-    }
 
-    // ============================================================
-    // GET http://localhost:8081/usuarios/email/{email}
-    // ➜ Busca un usuario por su email
-    // Ejemplo: http://localhost:8081/usuarios/email/carlos@demo.com
-    // ============================================================
-    @GetMapping("/email/{email}")
-    public Usuario obtenerUsuarioPorEmail(@PathVariable String email) {
-        return usuarioService.findByEmail(email);
-    }
-
-    // ============================================================
-    // POST http://localhost:8081/usuarios/validar
-    // ➜ Valida las credenciales de un usuario
-    // Body esperado:
-    // {
-    //   "email": "carlos@demo.com",
-    //   "clave": "123456"
-    // }
-    // ============================================================
-    @PostMapping("/validar")
-    public boolean validarCredenciales(@RequestBody Usuario usuario) {
-        return usuarioService.validarCredenciales(usuario.getEmail(), usuario.getClave());
+    //http://localhost:8090/usuario/find/email?email=juan@mail.com
+    @GetMapping("/find/email")
+    public Usuario mostrarUsuarioPorEmail(@RequestParam("email") String email) {
+        return usuarioService.searchByEmail(email);
     }
 }

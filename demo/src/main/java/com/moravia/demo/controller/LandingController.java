@@ -46,7 +46,7 @@ public class LandingController {
         }
 
         //Agregrar la lista de servicios al modelo 
-        model.addAttribute("servicios", servicioService.findAll());
+        model.addAttribute("servicios", servicioService.searchAll());
 
     
         return "index";

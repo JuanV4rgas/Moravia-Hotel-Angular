@@ -1,25 +1,26 @@
 package com.moravia.demo.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.moravia.demo.model.Usuario;
 import com.moravia.demo.repository.UsuarioRepository;
-import java.util.List;
+
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
-    private UsuarioRepository repo;
+    UsuarioRepository repo;
 
     @Override
-    public List<Usuario> findAll() {
-        return repo.findAll();
+    public Usuario searchById(Long id) {
+        return repo.findById(id).orElse(null);
     }
 
     @Override
-    public Usuario findById(Long idUsuario) {
-        return repo.findById(idUsuario).get();
+    public List<Usuario> searchAll() {
+        return repo.findAll();
     }
 
     @Override
@@ -33,18 +34,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void deleteById(Long idUsuario) {
-        repo.deleteById(idUsuario);
+    public void deleteById(Long id) {
+        repo.deleteById(id);
     }
 
     @Override
-    public Usuario findByEmail(String email) {
+    public Usuario searchByEmail(String email) {
         return repo.findByEmail(email);
-    }
-
-    @Override
-    public boolean validarCredenciales(String email, String clave) {
-        Usuario usuario = repo.findByEmail(email);
-        return usuario != null && usuario.getClave().equals(clave);
     }
 }

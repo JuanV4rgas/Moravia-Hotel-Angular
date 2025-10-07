@@ -7,5 +7,4 @@ export interface Usuario {
   cedula: string;
   telefono?: string;     
   fotoPerfil?: string;   
-  tipo: string;
 }
