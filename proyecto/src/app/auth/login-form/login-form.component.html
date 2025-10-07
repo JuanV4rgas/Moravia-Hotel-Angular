@@ -1,41 +1,35 @@
 <form (ngSubmit)="onLogin()" [formGroup]="loginForm" novalidate>
-  <div class="field mb-3">
+  <div class="field">
     <label for="correo">Correo</label>
     <input
       id="correo"
       formControlName="email"
       type="email"
-      class="form-control"
       required
       placeholder="tu@correo.com"
     />
   </div>
 
-  <div class="field mb-3">
+  <div class="field">
     <label for="clave">Contraseña</label>
     <input
       id="clave"
       formControlName="clave"
       type="password"
-      class="form-control"
       required
       placeholder="••••••••"
     />
   </div>
 </form>
 
-<p class="muted mt-3 text-center">
-  ¿Olvidaste tu contraseña? <a routerLink="/recuperar">Recuperarla</a>
-</p>
-
-<div class="actions d-flex justify-content-between align-items-center">
-  <button class="btn btn-primary" type="submit">Entrar</button>
+<div class="actions">
+  <button class="btn" type="submit">Entrar</button>
   <!-- Aqui cambia al formulario de registro -->
-  <button
-    type="button"
-    class="btn btn-outline-primary"
-    (click)="cambiarARegistro()"
-  >
+  <button class="btn btn--outline" (click)="cambiarARegistro()">
     Crear cuenta
   </button>
+
+  <p class="muted" style="margin-top: 10px">
+    ¿Olvidaste tu contraseña? <a routerLink="/recuperar">Recuperarla</a>
+  </p>
 </div>

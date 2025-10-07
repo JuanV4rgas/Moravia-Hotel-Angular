@@ -30,4 +30,12 @@ body {
 
 body {
   padding-top: var(--header-h, 70px);
+  font-family: "Inter", "Futura PT", "Avenir Next", "Helvetica Neue", Helvetica,
+    Arial, sans-serif, "DM Serif Display";
+}
+
+app-auth-card {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
