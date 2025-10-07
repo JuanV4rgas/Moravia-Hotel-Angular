@@ -8,19 +8,19 @@ import { Cliente } from '../model/cliente';
 })
 export class ClienteService {
 
-  private apiUrl = 'http://localhost:8080/api/clientes'; // 👈 ajusta tu URL
+  private apiUrl = 'http://localhost:8081/api/clientes'; // 👈 ajusta al endpoint real de tu backend
 
   constructor(private http: HttpClient) {}
 
-  findAll(): Observable<Cliente[]> {
+  getAll(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.apiUrl);
   }
 
-  findById(id: number): Observable<Cliente> {
+  getById(id: number): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
   }
 
-  save(cliente: Cliente): Observable<Cliente> {
+  create(cliente: Cliente): Observable<Cliente> {
     return this.http.post<Cliente>(this.apiUrl, cliente);
   }
 

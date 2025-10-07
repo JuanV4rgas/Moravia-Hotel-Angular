@@ -27,7 +27,7 @@ export class ClienteFormComponent {
   ) { }
 
   guardar() {
-    this.clienteService.save(this.formCliente).subscribe(() => {
+    this.clienteService.create(this.formCliente).subscribe(() => {
       console.log("Cliente guardado", this.formCliente);
       this.router.navigate(['/cliente/table']);
     });

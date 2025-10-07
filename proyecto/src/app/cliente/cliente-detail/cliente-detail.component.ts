@@ -25,7 +25,7 @@ export class ClienteDetailComponent {
     console.log("ngOnInit de ClienteDetail");
     this.route.paramMap.subscribe(params => {
       const id = Number(params.get('idUsuario')); 
-      this.clienteService.findById(id).subscribe(
+      this.clienteService.getById(id).subscribe(
         (data) => {
           this.cliente = data;
         }
