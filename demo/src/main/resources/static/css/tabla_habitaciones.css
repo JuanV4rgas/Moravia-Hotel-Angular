@@ -1,0 +1,244 @@
+/* =========================================================
+   TOKENS / RESET / BASE
+   (mismos tokens que tu hoja de servicios)
+   ========================================================= */
+:root {
+  --rose: #ffd8d8;
+  --pink: #c28ba1;
+  --plum: #1f5f87;
+  --sand: #010101;
+  --ink: #1f1a1d;
+  --muted: #5b4f57;
+  --paper: #fff7fb;
+  --surface: #ffffff;
+  --shadow: 0 10px 28px rgba(120, 66, 131, 0.16);
+  --table-shadow: 0 8px 32px rgba(31, 95, 135, 0.12);
+  --nav-accent: #ffcb0e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  font-family: "Inter", "Futura PT", "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: linear-gradient(135deg, var(--plum), color-mix(in srgb, var(--plum) 85%, #000 15%));
+  color: var(--ink);
+}
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
+.habitaciones-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem clamp(16px, 5vw, 32px);
+}
+
+.container-habitaciones {
+  width: min(1400px, 100%);
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+/* =========================================================
+   HEADER SECTION (reutiliza .header-section del HTML)
+   ========================================================= */
+.header-section {
+  background: linear-gradient(135deg, var(--plum), color-mix(in srgb, var(--plum) 90%, var(--pink) 10%));
+  color: #fff;
+  padding: clamp(32px, 6vw, 48px) clamp(24px, 4vw, 40px);
+  text-align: center;
+  position: relative;
+}
+
+.header-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="20" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="20" cy="80" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="90" r="1.2" fill="rgba(255,255,255,0.06)"/></svg>');
+  opacity: 0.4;
+}
+
+.habitaciones-title {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px 0;
+  position: relative;
+  z-index: 1;
+}
+.habitaciones-title em {
+  font-style: normal;
+  color: var(--nav-accent);
+  text-shadow: 0 2px 8px rgba(255, 203, 14, 0.3);
+}
+
+.habitaciones-subtitle {
+  font-size: clamp(14px, 2vw, 18px);
+  color: color-mix(in srgb, #ffffff 88%, var(--rose) 12%);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   TABLA DE HABITACIONES
+   ========================================================= */
+.table-wrapper {
+  padding: clamp(24px, 4vw, 40px);
+  overflow-x: auto;
+}
+
+/* Soporta tanto el nombre correcto como el typo en el HTML */
+.habitaciones-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--table-shadow);
+}
+
+/* Header de la tabla */
+.table-header {
+  background: linear-gradient(90deg, var(--plum), color-mix(in srgb, var(--plum) 95%, var(--pink) 5%));
+  color: #fff;
+}
+.table-header th {
+  padding: 18px clamp(12px, 2vw, 20px);
+  text-align: left;
+  font-family: "DM Serif Display", serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  font-size: clamp(14px, 1.8vw, 16px);
+  text-transform: uppercase;
+  position: relative;
+}
+.table-header th::after {
+  content: '';
+  position: absolute; right: 0; top: 25%;
+  height: 50%; width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.table-header th:last-child::after { display: none; }
+
+/* Anchos sugeridos */
+.th-id        { width: 80px; text-align: center; }
+.th-nombre    { width: 22%; }
+.th-descripcion { width: 36%; }
+.th-precio    { width: 14%; text-align: right; }
+.th-capacidad { width: 14%; }
+.th-camas     { width: 14%; }
+
+/* Filas */
+.habitacion-row {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid color-mix(in srgb, var(--plum) 12%, transparent 88%);
+}
+.habitacion-row:hover {
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--rose) 20%, transparent 80%),
+    color-mix(in srgb, var(--rose) 8%, transparent 92%)
+  );
+  transform: translateY(-1px);
+}
+.habitacion-row:last-child { border-bottom: none; }
+
+.habitacion-row td {
+  padding: 16px clamp(12px, 2vw, 20px);
+  vertical-align: middle;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ID con enlace */
+.habitacion-id { text-align: center; font-weight: 700; }
+.habitacion-link {
+  display: inline-block;
+  padding: 8px 12px;
+  background: var(--plum);
+  color: #fff !important;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(31, 95, 135, 0.2);
+}
+.habitacion-link:hover {
+  background: color-mix(in srgb, var(--plum) 85%, #000 15%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31, 95, 135, 0.3);
+  color: #fff !important;
+}
+.habitacion-link:active { transform: translateY(0); }
+
+/* Nombre / descripción */
+.habitacion-name {
+  font-weight: 700;
+  color: var(--plum);
+  font-family: "DM Serif Display", serif;
+  font-size: 16px;
+}
+.habitacion-description {
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+/* Precio */
+.habitacion-price {
+  text-align: right;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--plum);
+}
+.price-symbol { font-size: 14px; margin-right: 2px; opacity: 0.8; }
+.price-value  { font-family: "DM Serif Display", serif; font-size: 18px; }
+
+/* Capacidad / camas */
+.habitacion-capacidad, .habitacion-camas {
+  color: color-mix(in srgb, var(--ink) 80%, var(--muted) 20%);
+  font-weight: 600;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 992px) {
+  .habitacion-description { max-width: 420px; }
+}
+
+@media (max-width: 768px) {
+  .habitaciones-main { padding: 1rem 12px; }
+  .container-habitaciones { border-radius: 16px; }
+  .table-wrapper { padding: 20px 16px; }
+
+  .habitaciones-table { font-size: 14px; }
+
+  .table-header th { padding: 14px 8px; font-size: 12px; }
+  .habitacion-row td { padding: 12px 8px; font-size: 13px; }
+
+  .habitacion-name { font-size: 14px; }
+  .habitacion-description { font-size: 12px; max-width: 360px; }
+
+  .th-descripcion { width: 40%; }
+  .th-precio { width: 18%; }
+}
+
+@media (max-width: 480px) {
+  .habitaciones-title { font-size: 28px; }
+  .habitaciones-subtitle { font-size: 14px; }
+
+  .table-wrapper { padding: 16px 12px; }
+  .habitaciones-table{ font-size: 12px; }
+
+  .habitacion-link { padding: 6px 8px; font-size: 12px; }
+  .th-id { width: 60px; }
+  .habitacion-description { max-width: 220px; font-size: 11px; }
+}

@@ -1,25 +1,25 @@
-import { Component,Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HabitacionService } from 'src/app/services/habitacion.service';
 import { Habitacion } from '../habitacion';
 
 @Component({
   selector: 'app-habitacion-detail',
-  templateUrl: './habitacion-detail.component.html',
-  styleUrls: ['./habitacion-detail.component.css']
+  templateUrl: './habitacion-detail.component.html'
 })
-export class HabitacionDetailComponent {
-  @Input()
-  habitacion!:Habitacion;
+export class HabitacionDetailComponent implements OnInit {
+  habitacion?: Habitacion;
 
-  //Inyectar dependencias
-  constructor(){}
+  constructor(
+    private route: ActivatedRoute,
+    private habitacionService: HabitacionService
+  ) {}
 
-  //funcion que llama el componente
-  ngOnInit():void{
-    console.log("ngOnInit del detail");
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id')!;
+    this.habitacionService.getHabitacion(id).subscribe({
+      next: (data) => this.habitacion = data,
+      error: (err) => console.error('Error al cargar habitación', err)
+    });
   }
-
-  ngOnChanges():void{
-    console.log("ngOnChanges del detail");
-  } 
-
 }

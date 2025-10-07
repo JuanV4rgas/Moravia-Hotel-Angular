@@ -1,20 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HabitacionService } from 'src/app/services/habitacion.service';
 import { Habitacion } from '../habitacion';
 
 @Component({
   selector: 'app-habitacion-table',
-  templateUrl: './habitacion-table.component.html',
-  styleUrls: ['./habitacion-table.component.css']
+  templateUrl: './habitacion-table.component.html'
 })
-export class HabitacionTableComponent {
 
-
-  //Atributos
-  selectedHabitacion!: Habitacion;
-
-  //Base de datos
-    HabitacionesList: Habitacion[] = [
-       {
+export class HabitacionTableComponent implements OnInit {
+  habitaciones: Habitacion[] = [
+        {
       id: "HAB001",
       name: "Suite Presidencial Castillo",
       description: "Suite de lujo con vistas panorámicas al Castillo de Praga, jacuzzi privado, sala de estar amplia y servicio de mayordomo personal.",
@@ -94,18 +89,21 @@ export class HabitacionTableComponent {
       image: "https://giessbach.ch/images/image_uploads/230_GLWA_neu.jpg",
       type: "Sencilla"
     }
-    ];
 
-      mostrarHabitacion(habitacion:Habitacion){
-        this.selectedHabitacion= habitacion;
-      }
-    
-      agregarHabitacion(habitacion:Habitacion){
-        this.HabitacionesList.push(habitacion);
-      }
-    
-      eliminarHabitacion(habitacion:Habitacion){
-        var index = this.HabitacionesList.indexOf(habitacion);
-        this.HabitacionesList.splice(index,1);
-      }
+  ];
+
+  constructor(private habitacionService: HabitacionService) {}
+
+  ngOnInit(): void {
+    this.habitacionService.getHabitaciones().subscribe({
+      next: (data) => this.habitaciones = data,
+      error: (err) => console.error('Error al cargar habitaciones', err)
+    });
+  }
+
+  eliminarHabitacion(id: string): void {
+    this.habitacionService.deleteHabitacion(id).subscribe(() => {
+      this.habitaciones = this.habitaciones.filter(h => h.id !== id);
+    });
+  }
 }

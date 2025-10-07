@@ -1,0 +1,17 @@
+<div>
+    <h4>service-detail</h4>
+    <ng-container *ngIf="service">
+        <ul>
+            <li>Id:{{service.id}}</li>
+            <li>Nombre: {{service.name}}</li>
+            <li>Precio: ${{service.price}}</li>
+            <li>Descipcion: {{service.description}}</li>
+            <li>{{service.image}}</li>
+        </ul>
+    </ng-container>
+
+    <ng-container *ngIf="!service">
+        <p>No hay servicio seleccionado</p>
+    </ng-container>
+
+</div>

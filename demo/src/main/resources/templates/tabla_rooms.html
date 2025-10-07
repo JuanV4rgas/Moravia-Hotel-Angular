@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooms</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/css/landing.css}" />
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  <link rel="stylesheet" th:href="@{/css/tabla_servicios.css}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600;700;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <header th:replace="~{fragmentos :: header}"></header>
+
+
+  <main class="services-main">
+    <div class="container-servicios">
+
+      <div class="header-section">
+        <h1 class="services-title">Listado de <em>habitaciones</em></h1>
+        <p class="services-subtitle">Rooms disponibles en el sistema</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="services-table">
+          <thead>
+            <tr class="table-header">
+              <th class="th-id">ID</th>
+              <th class="th-nombre">Número de habitación</th>
+              <th class="th-descripcion">Tipo</th>
+              <th class="th-precio">Disponible</th>
+              <th class="th-precio">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr class="service-row" th:each="room : ${rooms}">
+              <!-- ID -->
+              <td class="service-id">
+                <a class="service-link" th:href="@{/rooms/{id}(id=${room.id})}">
+                  [[${room.id}]]
+                </a>
+              </td>
+
+              <!-- Número de habitación -->
+              <td class="service-name">
+                <a class="service-link" th:href="@{/rooms/{id}(id=${room.id})}"
+                   th:text="${room.numeroHabitacion}">101</a>
+              </td>
+
+              <!-- Tipo -->
+              <td class="service-description" th:text="${room.tipo.nombre}">Suite</td>
+
+              <!-- Disponible (alineado a la derecha aprovechando estilos de 'precio') -->
+              <td class="service-price">
+                <span class="price-value" th:text="${room.disponible} ? 'Sí' : 'No'">Sí</span>
+              </td>
+
+              <!-- Acciones (alineadas a la derecha reutilizando estilos) -->
+              <td class="service-price">
+                <div class="d-inline-flex gap-2">
+                  <a  th:href="@{/rooms/{id}(id=${room.id})}" class="ButtonLog">Ver</a>
+                  <a th:href="@{/rooms/editar/{id}(id=${room.id})}" class="ButtonLog">Editar</a>
+                  <a th:href="@{/rooms/delete/{id}(id=${room.id})}" 
+                     onclick="return confirm('¿Eliminar room?')" class="ButtonLog">Eliminar</a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <a type="button" th:href="@{/rooms/nuevo}" class="ButtonLog">+ Agregar room</a>
+      </div>
+    </div>
+  </main>
+
+
+
+  <footer th:replace="~{fragmentos :: footer}"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous">
+  </script>
+
+</body>
+</html>

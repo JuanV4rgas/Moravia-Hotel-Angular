@@ -1,0 +1,84 @@
+{
+  "habitaciones": [
+    {
+      "idHabitacion": "HAB001",
+      "nombre": "Suite Presidencial Castillo",
+      "descripcion": "Suite de lujo con vistas panorámicas al Castillo de Praga, jacuzzi privado, sala de estar amplia y servicio de mayordomo personal.",
+      "precio": 1850,
+      "capacidad": "2 adultos + 1 niño",
+      "numeroCamas": 1,
+      "imagenUrl": "https://giessbach.ch/images/image_uploads/GrandhotelGiessbach_%C2%A9DigitaleMassarbeit_269.jpg",
+      "tipo": "Suite"
+    },
+    {
+      "idHabitacion": "HAB002",
+      "nombre": "Suite Real Bohemia",
+      "descripcion": "Habitación espaciosa decorada con estilo clásico bohemio, chimenea de mármol y terraza privada con vistas al río Moldava.",
+      "precio": 1350,
+      "capacidad": "2 adultos",
+      "numeroCamas": 1,
+      "imagenUrl": "https://giessbach.ch/images/image_uploads/224_Weber-Suite-Wohnzimmer.jpg",
+      "tipo": "Suite"
+    },
+    {
+      "idHabitacion": "HAB003",
+      "nombre": "Junior Suite Imperial",
+      "descripcion": "Suite elegante con sala de estar separada, baño de mármol con bañera profunda y decoración contemporánea de lujo.",
+      "precio": 890,
+      "capacidad": "2 adultos + 1 niño",
+      "numeroCamas": 1,
+      "imagenUrl": "https://giessbach.ch/images/image_uploads/Suite-Horace-Edouard-Zimmer.jpg",
+      "tipo": "Suite"
+    },
+    {
+      "idHabitacion": "HAB004",
+      "nombre": "Habitación Deluxe Panorámica",
+      "descripcion": "Habitación moderna con ventanales de piso a techo, vistas al casco histórico de Praga y cama king-size premium.",
+      "precio": 520,
+      "capacidad": "2 adultos",
+      "numeroCamas": 1,
+      "imagenUrl": "https://giessbach.ch/images/image_uploads/_zimmer/Suite-von-Rappard-Wohnecke.jpg",
+      "tipo": "Doble"
+    },
+    {
+      "idHabitacion": "HAB005",
+      "nombre": "Habitación Superior Doble",
+      "descripcion": "Habitación refinada con dos camas individuales, escritorio de trabajo y baño privado con ducha efecto lluvia.",
+      "precio": 340,
+      "capacidad": "2 adultos",
+      "numeroCamas": 2,
+      "imagenUrl": "https://giessbach.ch/images/image_uploads/_zimmer/307_DDGB-Zimmer.jpg",
+      "tipo": "Doble"
+    },
+    {
+      "idHabitacion": "HAB006",
+      "nombre": "Habitación Familiar Premium",
+      "descripcion": "Amplia habitación diseñada para familias, equipada con cama king-size, sofá cama, área de juegos para niños y balcón privado.",
+      "precio": 610,
+      "capacidad": "2 adultos + 2 niños",
+      "numeroCamas": 2,
+      "imagenUrl": "https://giessbach.ch/images/image_uploads/306_CDGB.jpg",
+      "tipo": "Doble"
+    },
+    {
+      "idHabitacion": "HAB007",
+      "nombre": "Habitación Individual Deluxe",
+      "descripcion": "Habitación individual de lujo con cama queen-size, escritorio de trabajo ergonómico y baño privado con acabados en mármol.",
+      "precio": 270,
+      "capacidad": "1 adulto",
+      "numeroCamas": 1,
+      "imagenUrl": "https://www.hola.com/horizon/original_aspect_ratio/f43d5e2f613c-habitaciones-hotel-8a-a.jpg",
+      "tipo": "Sencilla"
+    },
+    {
+      "idHabitacion": "HAB008",
+      "nombre": "Habitación Individual Estándar",
+      "descripcion": "Habitación sencilla y acogedora equipada con cama individual, escritorio y baño privado. Ideal para estancias cortas.",
+      "precio": 150,
+      "capacidad": "1 adulto",
+      "numeroCamas": 1,
+      "imagenUrl": "https://giessbach.ch/images/image_uploads/230_GLWA_neu.jpg",
+      "tipo": "Sencilla"
+    }
+  ]
+}

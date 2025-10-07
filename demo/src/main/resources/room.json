@@ -1,0 +1,311 @@
+{
+  "rooms": [
+    {
+      "id": "ROOM001",
+      "numeroHabitacion": "101",
+      "tipo": "HAB001",
+      "disponible": true
+    },
+    {
+      "id": "ROOM002",
+      "numeroHabitacion": "102",
+      "tipo": "HAB001",
+      "disponible": false
+    },
+    {
+      "id": "ROOM003",
+      "numeroHabitacion": "103",
+      "tipo": "HAB001",
+      "disponible": true
+    },
+    {
+      "id": "ROOM004",
+      "numeroHabitacion": "104",
+      "tipo": "HAB001",
+      "disponible": false
+    },
+    {
+      "id": "ROOM005",
+      "numeroHabitacion": "105",
+      "tipo": "HAB001",
+      "disponible": true
+    },
+    {
+      "id": "ROOM006",
+      "numeroHabitacion": "106",
+      "tipo": "HAB001",
+      "disponible": false
+    },
+    {
+      "id": "ROOM007",
+      "numeroHabitacion": "107",
+      "tipo": "HAB001",
+      "disponible": true
+    },
+
+    {
+      "id": "ROOM008",
+      "numeroHabitacion": "108",
+      "tipo": "HAB002",
+      "disponible": false
+    },
+    {
+      "id": "ROOM009",
+      "numeroHabitacion": "109",
+      "tipo": "HAB002",
+      "disponible": true
+    },
+    {
+      "id": "ROOM010",
+      "numeroHabitacion": "110",
+      "tipo": "HAB002",
+      "disponible": false
+    },
+    {
+      "id": "ROOM011",
+      "numeroHabitacion": "111",
+      "tipo": "HAB002",
+      "disponible": true
+    },
+    {
+      "id": "ROOM012",
+      "numeroHabitacion": "112",
+      "tipo": "HAB002",
+      "disponible": false
+    },
+    {
+      "id": "ROOM013",
+      "numeroHabitacion": "113",
+      "tipo": "HAB002",
+      "disponible": true
+    },
+    {
+      "id": "ROOM014",
+      "numeroHabitacion": "114",
+      "tipo": "HAB002",
+      "disponible": false
+    },
+
+    {
+      "id": "ROOM015",
+      "numeroHabitacion": "115",
+      "tipo": "HAB003",
+      "disponible": true
+    },
+    {
+      "id": "ROOM016",
+      "numeroHabitacion": "116",
+      "tipo": "HAB003",
+      "disponible": false
+    },
+    {
+      "id": "ROOM017",
+      "numeroHabitacion": "117",
+      "tipo": "HAB003",
+      "disponible": true
+    },
+    {
+      "id": "ROOM018",
+      "numeroHabitacion": "118",
+      "tipo": "HAB003",
+      "disponible": false
+    },
+    {
+      "id": "ROOM019",
+      "numeroHabitacion": "119",
+      "tipo": "HAB003",
+      "disponible": true
+    },
+    {
+      "id": "ROOM020",
+      "numeroHabitacion": "120",
+      "tipo": "HAB003",
+      "disponible": false
+    },
+
+    {
+      "id": "ROOM021",
+      "numeroHabitacion": "121",
+      "tipo": "HAB004",
+      "disponible": true
+    },
+    {
+      "id": "ROOM022",
+      "numeroHabitacion": "122",
+      "tipo": "HAB004",
+      "disponible": false
+    },
+    {
+      "id": "ROOM023",
+      "numeroHabitacion": "123",
+      "tipo": "HAB004",
+      "disponible": true
+    },
+    {
+      "id": "ROOM024",
+      "numeroHabitacion": "124",
+      "tipo": "HAB004",
+      "disponible": false
+    },
+    {
+      "id": "ROOM025",
+      "numeroHabitacion": "125",
+      "tipo": "HAB004",
+      "disponible": true
+    },
+    {
+      "id": "ROOM026",
+      "numeroHabitacion": "126",
+      "tipo": "HAB004",
+      "disponible": false
+    },
+
+    {
+      "id": "ROOM027",
+      "numeroHabitacion": "127",
+      "tipo": "HAB005",
+      "disponible": true
+    },
+    {
+      "id": "ROOM028",
+      "numeroHabitacion": "128",
+      "tipo": "HAB005",
+      "disponible": false
+    },
+    {
+      "id": "ROOM029",
+      "numeroHabitacion": "129",
+      "tipo": "HAB005",
+      "disponible": true
+    },
+    {
+      "id": "ROOM030",
+      "numeroHabitacion": "130",
+      "tipo": "HAB005",
+      "disponible": false
+    },
+    {
+      "id": "ROOM031",
+      "numeroHabitacion": "131",
+      "tipo": "HAB005",
+      "disponible": true
+    },
+    {
+      "id": "ROOM032",
+      "numeroHabitacion": "132",
+      "tipo": "HAB005",
+      "disponible": false
+    },
+
+    {
+      "id": "ROOM033",
+      "numeroHabitacion": "133",
+      "tipo": "HAB006",
+      "disponible": true
+    },
+    {
+      "id": "ROOM034",
+      "numeroHabitacion": "134",
+      "tipo": "HAB006",
+      "disponible": false
+    },
+    {
+      "id": "ROOM035",
+      "numeroHabitacion": "135",
+      "tipo": "HAB006",
+      "disponible": true
+    },
+    {
+      "id": "ROOM036",
+      "numeroHabitacion": "136",
+      "tipo": "HAB006",
+      "disponible": false
+    },
+    {
+      "id": "ROOM037",
+      "numeroHabitacion": "137",
+      "tipo": "HAB006",
+      "disponible": true
+    },
+    {
+      "id": "ROOM038",
+      "numeroHabitacion": "138",
+      "tipo": "HAB006",
+      "disponible": false
+    },
+
+    {
+      "id": "ROOM039",
+      "numeroHabitacion": "139",
+      "tipo": "HAB007",
+      "disponible": true
+    },
+    {
+      "id": "ROOM040",
+      "numeroHabitacion": "140",
+      "tipo": "HAB007",
+      "disponible": false
+    },
+    {
+      "id": "ROOM041",
+      "numeroHabitacion": "141",
+      "tipo": "HAB007",
+      "disponible": true
+    },
+    {
+      "id": "ROOM042",
+      "numeroHabitacion": "142",
+      "tipo": "HAB007",
+      "disponible": false
+    },
+    {
+      "id": "ROOM043",
+      "numeroHabitacion": "143",
+      "tipo": "HAB007",
+      "disponible": true
+    },
+    {
+      "id": "ROOM044",
+      "numeroHabitacion": "144",
+      "tipo": "HAB007",
+      "disponible": false
+    },
+
+    {
+      "id": "ROOM045",
+      "numeroHabitacion": "145",
+      "tipo": "HAB008",
+      "disponible": true
+    },
+    {
+      "id": "ROOM046",
+      "numeroHabitacion": "146",
+      "tipo": "HAB008",
+      "disponible": false
+    },
+    {
+      "id": "ROOM047",
+      "numeroHabitacion": "147",
+      "tipo": "HAB008",
+      "disponible": true
+    },
+    {
+      "id": "ROOM048",
+      "numeroHabitacion": "148",
+      "tipo": "HAB008",
+      "disponible": false
+    },
+    {
+      "id": "ROOM049",
+      "numeroHabitacion": "149",
+      "tipo": "HAB008",
+      "disponible": true
+    },
+    {
+      "id": "ROOM050",
+      "numeroHabitacion": "150",
+      "tipo": "HAB008",
+      "disponible": false
+    }
+  ]
+}

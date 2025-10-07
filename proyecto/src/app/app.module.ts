@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ServiceTableComponent } from './service/service-table/service-table.component';
-import { ServiceDetailComponent } from './service/service-detail/service-detail.component';
-import { ServiceFormComponent } from './service/service-form/service-form.component';
+import { ServiceTableComponent } from './servicio/service-table/service-table.component';
+import { ServiceDetailComponent } from './servicio/servicio-detail/service-detail.component';
+import { ServiceFormComponent } from './servicio/service-form/service-form.component';
 import { HomePageComponent } from './home/home-page/home-page.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -30,6 +30,7 @@ import { AuthWrapComponent } from './auth/auth-wrap/auth-wrap.component';
 import { AuthCardComponent } from './auth/auth-card/auth-card.component';
 import { LoginFormComponent } from './auth/login-form/login-form.component';
 import { RegisterFormComponent } from './auth/register-form/register-form.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { RegisterFormComponent } from './auth/register-form/register-form.compon
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

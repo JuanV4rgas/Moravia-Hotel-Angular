@@ -1,0 +1,401 @@
+/* =========================================================
+   TOKENS / RESET / BASE - Heredados del diseño principal
+   ========================================================= */
+:root {
+  --rose: #ffd8d8;
+  --pink: #c28ba1;
+  --plum: #1f5f87;
+  --sand: #010101;
+  --ink: #1f1a1d;
+  --muted: #5b4f57;
+  --paper: #fff7fb;
+  --surface: #ffffff;
+  --shadow: 0 10px 28px rgba(120, 66, 131, 0.16);
+  --table-shadow: 0 8px 32px rgba(31, 95, 135, 0.12);
+  --nav-accent: #ffcb0e;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: "Inter", "Futura PT", "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: linear-gradient(135deg, var(--plum), color-mix(in srgb, var(--plum) 85%, #000 15%));
+  color: var(--ink);
+}
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
+.services-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem clamp(16px, 5vw, 32px);
+}
+
+.container-servicios {
+  width: min(1400px, 100%);
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+/* =========================================================
+   HEADER SECTION
+   ========================================================= */
+.header-section {
+  background: linear-gradient(135deg, var(--plum), color-mix(in srgb, var(--plum) 90%, var(--pink) 10%));
+  color: #fff;
+  padding: clamp(32px, 6vw, 48px) clamp(24px, 4vw, 40px);
+  text-align: center;
+  position: relative;
+}
+
+.header-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="20" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="20" cy="80" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="90" r="1.2" fill="rgba(255,255,255,0.06)"/></svg>');
+  opacity: 0.4;
+}
+
+.services-title {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.services-title em {
+  font-style: normal;
+  color: var(--nav-accent);
+  text-shadow: 0 2px 8px rgba(255, 203, 14, 0.3);
+}
+
+.services-subtitle {
+  font-size: clamp(14px, 2vw, 18px);
+  color: color-mix(in srgb, #ffffff 88%, var(--rose) 12%);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   TABLA DE SERVICIOS
+   ========================================================= */
+.table-wrapper {
+  padding: clamp(24px, 4vw, 40px);
+  overflow-x: auto;
+}
+
+.services-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background: var(--surface);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--table-shadow);
+}
+
+/* Header de la tabla */
+.table-header {
+  background: linear-gradient(90deg, var(--plum), color-mix(in srgb, var(--plum) 95%, var(--pink) 5%));
+  color: #fff;
+}
+
+.table-header th {
+  padding: 18px clamp(12px, 2vw, 20px);
+  text-align: left;
+  font-family: "DM Serif Display", serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  font-size: clamp(14px, 1.8vw, 16px);
+  text-transform: uppercase;
+  position: relative;
+}
+
+.table-header th::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.table-header th:last-child::after {
+  display: none;
+}
+
+/* Estilos específicos para columnas */
+.th-id {
+  width: 80px;
+  text-align: center;
+}
+
+.th-nombre {
+  width: 25%;
+}
+
+.th-descripcion {
+  width: 45%;
+}
+
+.th-precio {
+  width: 20%;
+  text-align: right;
+}
+
+/* Filas de servicios */
+.service-row {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid color-mix(in srgb, var(--plum) 12%, transparent 88%);
+}
+
+.service-row:hover {
+  background: linear-gradient(90deg, 
+    color-mix(in srgb, var(--rose) 20%, transparent 80%), 
+    color-mix(in srgb, var(--rose) 8%, transparent 92%)
+  );
+  transform: translateY(-1px);
+}
+
+.service-row:last-child {
+  border-bottom: none;
+}
+
+.service-row td {
+  padding: 16px clamp(12px, 2vw, 20px);
+  vertical-align: middle;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ID del servicio con enlace */
+.service-id {
+  text-align: center;
+  font-weight: 700;
+}
+
+.service-link {
+  display: inline-block;
+  padding: 8px 12px;
+  background: var(--plum);
+  color: #fff !important;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(31, 95, 135, 0.2);
+}
+
+.service-link:hover {
+  background: color-mix(in srgb, var(--plum) 85%, #000 15%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31, 95, 135, 0.3);
+  color: #fff !important;
+}
+
+.service-link:active {
+  transform: translateY(0);
+}
+
+/* Nombre del servicio */
+.service-name {
+  font-weight: 700;
+  color: var(--plum);
+  font-family: "DM Serif Display", serif;
+  font-size: 16px;
+}
+
+/* Descripción */
+.service-description {
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 400px;
+}
+
+/* Precio */
+.service-price {
+  text-align: right;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--plum);
+}
+
+.price-symbol {
+  font-size: 14px;
+  margin-right: 2px;
+  opacity: 0.8;
+}
+
+.price-value {
+  font-family: "DM Serif Display", serif;
+  font-size: 18px;
+}
+
+/* =========================================================
+   ACCIONES DE LA TABLA
+   ========================================================= */
+.table-actions {
+  padding: clamp(20px, 3vw, 32px) clamp(24px, 4vw, 40px);
+  background: color-mix(in srgb, var(--rose) 15%, var(--surface) 85%);
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.btn-primary-custom {
+  background: var(--plum);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(31, 95, 135, 0.25);
+}
+
+.btn-primary-custom:hover {
+  background: color-mix(in srgb, var(--plum) 85%, #000 15%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(31, 95, 135, 0.35);
+}
+
+.btn-secondary-custom {
+  background: var(--surface);
+  color: var(--plum);
+  border: 2px solid var(--plum);
+  box-shadow: 0 4px 16px rgba(31, 95, 135, 0.15);
+}
+
+.btn-secondary-custom:hover {
+  background: var(--plum);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(31, 95, 135, 0.3);
+}
+
+.btn-action:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 768px) {
+  .services-main {
+    padding: 1rem 12px;
+  }
+  
+  .container-servicios {
+    border-radius: 16px;
+  }
+  
+  .table-wrapper {
+    padding: 20px 16px;
+  }
+  
+  .services-table {
+    font-size: 14px;
+  }
+  
+  .table-header th {
+    padding: 14px 8px;
+    font-size: 12px;
+  }
+  
+  .service-row td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+  
+  .service-name {
+    font-size: 14px;
+  }
+  
+  .service-description {
+    font-size: 12px;
+  }
+  
+  .th-descripcion {
+    width: 40%;
+  }
+  
+  .th-precio {
+    width: 25%;
+  }
+  
+  .table-actions {
+    flex-direction: column;
+    padding: 20px 16px;
+  }
+  
+  .btn-action {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-title {
+    font-size: 28px;
+  }
+  
+  .services-subtitle {
+    font-size: 14px;
+  }
+  
+  .table-wrapper {
+    padding: 16px 12px;
+  }
+  
+  .services-table {
+    font-size: 12px;
+  }
+  
+  .service-link {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+  
+  .th-id {
+    width: 60px;
+  }
+  
+  .service-description {
+    max-width: 200px;
+    font-size: 11px;
+  }
+}

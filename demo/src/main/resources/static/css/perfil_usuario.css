@@ -1,0 +1,234 @@
+:root {
+  --plum: #7b4283;
+  --pink: #e74c3c;
+  --rose: #d63384;
+  --muted: #6c757d;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+body {
+  background-color: #f8f9fa;
+  font-family: "DM Serif Display", "Segoe UI", Tahoma, Geneva, Verdana,
+    sans-serif;
+}
+
+.profile-header {
+  background: linear-gradient(135deg, #1f5f87, #2c5aa0, #1f5f87);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.8);
+  object-fit: cover;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.05);
+}
+
+.profile-name {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-username {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: none;
+  margin-top: -50px;
+  position: relative;
+  z-index: 10;
+}
+
+.form-section {
+  padding: 2rem;
+}
+
+.section-title {
+  color: #1f5f87;
+  font-size: 1.3rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid color-mix(in srgb, #1f5f87 20%, #e9ecef 80%);
+  font-family: "DM Serif Display";
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #1f5f87;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: #fdfdfd;
+}
+
+.form-control:focus {
+  border-color: #1f5f87;
+  box-shadow: 0 0 0 0.2rem rgba(31, 95, 135, 0.15);
+  background-color: white;
+}
+
+.form-control:read-only {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #1f5f87, #2c5aa0);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-weight: 900;
+  transition: all 0.3s ease;
+  font-family: "DM Serif Display";
+  letter-spacing: 0.4px;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #184a6b, #1f5f87);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(31, 95, 135, 0.3);
+}
+
+.btn-secondary {
+  background-color: var(--muted);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-weight: 900;
+  transition: all 0.3s ease;
+  font-family: "DM Serif Display";
+  letter-spacing: 0.4px;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+  transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+  color: #1f5f87;
+  border: 2px solid #1f5f87;
+  border-radius: 8px;
+  font-weight: 900;
+  transition: all 0.3s ease;
+  font-family: "DM Serif Display";
+  letter-spacing: 0.4px;
+}
+
+.btn-outline-primary:hover {
+  background-color: #1f5f87;
+  border-color: #1f5f87;
+  transform: translateY(-1px);
+}
+
+.btn-outline-danger {
+  color: var(--pink);
+  border: 2px solid var(--pink);
+  border-radius: 8px;
+  font-weight: 900;
+  transition: all 0.3s ease;
+  font-family: "DM Serif Display";
+  letter-spacing: 0.4px;
+}
+
+.btn-outline-danger:hover {
+  background-color: var(--pink);
+  border-color: var(--pink);
+  transform: translateY(-1px);
+}
+
+.input-group .btn {
+  border-radius: 0 8px 8px 0;
+}
+
+.form-text {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-header {
+    padding: 2rem 0;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .form-section {
+    padding: 1.5rem;
+  }
+
+  .profile-card {
+    margin-top: -30px;
+  }
+}
+
+/* Animaciones suaves */
+.card {
+  transition: all 0.3s ease;
+}
+
+.form-control,
+.btn {
+  transition: all 0.3s ease;
+}
+
+/* Efectos hover para los campos del formulario */
+.form-control:not(:read-only):hover {
+  border-color: #1f5f87;
+}
+
+/* Añadido: efecto de acento dorado */
+.profile-username {
+  color: color-mix(in srgb, #ffcb0e 82%, #ffffff 18%);
+}

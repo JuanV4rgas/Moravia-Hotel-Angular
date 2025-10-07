@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Moravia</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/css/landing.css}" />
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body>
+  
+  <header th:replace="~{fragmentos :: header}"></header>
+  
+  <main class="landing">
+
+    <!-- HERO principal con imagen + títulos centrados -->
+    <section class="hero-main">
+      <img
+        src="https://accidentallywesanderson.com/wp-content/uploads/2024/07/GrandhotelGiessbach_24_27.jpg"
+        alt="Fachada The Moravia" class="hero-img">
+
+      <!-- capa oscura suave para contraste del texto -->
+      <div class="hero-overlay"></div>
+
+      <!-- título centrado -->
+      <div class="hero-title">
+        <h1>THE MORAVIA</h1>
+        <img src="/img/logo_gray.png" alt="Escudo The Moravia" class="hero-crest">
+        <h2>HOTEL</h2>
+      </div>
+    </section>
+
+
+    <section class="media-row">
+      <!-- Marco con el VIDEO -->
+      <div class="media-frame">
+        <video class="video-bg" autoplay muted loop playsinline poster="/img/poster.png">
+          <source src="https://giessbach.ch/images/video_uploads/SchiffHD_Web.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="book">
+        <h2>Bienvenidos a</h2>
+        <h2>The Moravia</h2>
+        <p>Somos el hotel de cinco estrellas más emblemático de Praga.</p>
+        <p> Un refugio en Malá Strana,mundialmente famoso por su elegancia histórica,su impecable servicio, sus
+          impresionantes habitaciones y suites, y su legendario kompot cuando cae la noche.</p>
+        <div class="cover">
+          <img th:src=@{/img/logo_blue.png} alt="Logo">
+        </div>
+      </div>
+    </section>
+
+    <!-- RESTAURANTE -->
+    <section class="feature-hero">
+      <img
+        src="https://cldnr.prod.webx.talpa.digital/talpa-network/image/fetch/f_auto,c_limit,w_3840,q_auto/https://images.ctfassets.net/mwdlh7x5m54h/72sO8UnNUwLASrqMK86d3x/bb012a3c1006d7daa6d6ca8bf0fb2690/pexels-cottonbro-6466288.jpg"
+        alt="Restaurante - servicio en habitación">
+
+      <div class="feature-card">
+        <h3>Restaurante de tres estrellas <span>Michelin</span></h3>
+        <p>Agradable para todo tipo de paladares.</p>
+        <p>Reserva ahora una mesa en uno de los comedores más prestigiosos del mundo.</p>
+        <a href="reservas.html" class="button2">Reservar</a>
+      </div>
+    </section>
+
+
+    <!-- SUITES -->
+    <section class="suites-grid">
+      <article class="tile">
+        <div class="tile-media">
+          <img src="https://giessbach.ch/images/image_uploads/Giessbach-Suite-Wohnzimmer.jpg" alt="Suite 1">
+        </div>
+        <div class="tile-content">
+          <h1>Suites <em>Lujosas</em></h1>
+          <h2>Refinadas con una elegancia excepcional y atemporal, nuestras impresionantes suites de 5 estrellas le
+            dejarán sin aliento.</h2>
+          <div class="actions">
+            <button class="cta">
+              <span class="hover-underline-animation"> Más informacion </span>
+              <svg id="arrow-horizontal" xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+                <path id="Path_10" data-name="Path 10"
+                  d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" transform="translate(30)">
+                </path>
+              </svg>
+            </button>
+          </div>
+          <button class="cta">
+            <span class="hover-underline-animation"> Reservar ahora </span>
+            <svg id="arrow-horizontal" xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+              <path id="Path_10" data-name="Path 10"
+                d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" transform="translate(30)">
+              </path>
+            </svg>
+          </button>
+        </div>
+        </div>
+      </article>
+
+      <article class="tile invert">
+        <div class="tile-media">
+          <img src="https://giessbach.ch/images/image_uploads/Suite-Horace-Edouard-Zimmer.jpg" alt="Suite 2">
+        </div>
+        <div class="tile-content">
+          <h1>Habitaciones <em>Inolvidables</em></h1>
+          <h2>Estancias bañadas en luz y detalles artesanales para un descanso perfecto.</h2>
+          <div class="actions">
+            <button class="cta">
+              <span class="hover-underline-animation"> Mas informacion </span>
+              <svg id="arrow-horizontal" xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+                <path id="Path_10" data-name="Path 10"
+                  d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" transform="translate(30)">
+                </path>
+              </svg>
+            </button>
+          </div>
+          <button class="cta">
+            <span class="hover-underline-animation"> Reservar ahora </span>
+            <svg id="arrow-horizontal" xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+              <path id="Path_10" data-name="Path 10"
+                d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" transform="translate(30)">
+              </path>
+            </svg>
+          </button>
+        </div>
+        </div>
+      </article>
+    </section>
+
+
+    <!--TARJETAS-->
+<section class="cards-carousel" style="overflow: hidden;">
+  <button class="cc-arrow cc-prev" aria-label="Anterior">‹</button>
+
+      <div class="cc-track" id="ccTrack">
+      <div class="flip-card" th:each="servicio : ${servicios}">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img th:src="${servicio.imagenUrl}" th:alt="${servicio.nombre}">
+          </div>
+          <div class="flip-card-back">
+            <p class="title-card" th:text="${servicio.nombre}"></p>
+            <a th:href="@{/servicios/{id}(id=${servicio.idServicio})}" class="cta">
+              <span class="hover-underline-animation"> Ver más </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
+                <path d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
+                  transform="translate(30)">
+                </path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <button class="cc-arrow cc-next" aria-label="Siguiente">›</button>
+</section>
+
+    
+  </main>
+
+  <footer th:replace="~{fragmentos :: footer}"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous">
+  </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector('.cc-track');
+    const prevBtn = document.querySelector('.cc-prev');
+    const nextBtn = document.querySelector('.cc-next');
+
+    const scrollAmount = 190 + 16; // Ancho tarjeta + gap
+
+    prevBtn.addEventListener('click', () => {
+      track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+      track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
