@@ -8,30 +8,36 @@ import { Room } from '../../model/room';
 })
 export class RoomFormComponent {
 
-    //Evento
-    @Output()
-    addRoomEvent = new EventEmitter<Room>();
-  
-    sendRoom!: Room
-  
-    //Modelo
-    formRoom: Room = {
+  @Output()
+  addRoomEvent = new EventEmitter<Room>();
+
+  sendRoom!: Room;
+
+  // Modelo inicial corregido
+  formRoom: Room = {
+    id: '',
+    habitacionNumber: '',
+    available: true,
+    type: {
       id: '',
-      habitacionNumber: '',
-      type: '',
-      available: true
+      name: '',
+      description: '',
+      price: 0,
+      capacity: '',
+      numberOfBeds: 0,
+      image: ''
     }
+  };
 
-     addRoomForm(){
+  addRoomForm() {
     console.log(this.formRoom);
-    this.sendRoom = Object.assign({}, this.formRoom);
+    this.sendRoom = { ...this.formRoom };
     this.addRoomEvent.emit(this.sendRoom);
-
   }
 
-  addRoom(form: any){
+  addRoom(form: any) {
     console.log(this.formRoom);
-    this.sendRoom = Object.assign({}, this.formRoom);
+    this.sendRoom = { ...this.formRoom };
     this.addRoomEvent.emit(this.sendRoom);
   }
 }

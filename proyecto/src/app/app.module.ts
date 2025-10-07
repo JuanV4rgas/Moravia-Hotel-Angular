@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceTableComponent } from './servicio/service-table/service-table.component';
@@ -34,6 +35,7 @@ import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.co
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
 import { HistoriaComponent } from './historia/historia.component';
 import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
+import { RoomTypeTableComponent } from './roomtype/roomtype-table/roomtype-table.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,7 @@ import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.componen
     RoomFormComponent,
     RoomTypeFormComponent,
     RoomTypeDetailComponent,
+    RoomTypeTableComponent,
     ClienteTableComponent,
     ClienteDetailComponent,
     ClienteFormComponent,
@@ -73,7 +76,9 @@ import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.componen
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

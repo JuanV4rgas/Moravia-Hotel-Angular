@@ -1,5 +1,6 @@
 <h2>Tipos de habitación</h2>
-<table>
+
+<table class="table">
   <thead>
     <tr>
       <th>Nombre</th>
@@ -7,7 +8,7 @@
       <th>Precio</th>
       <th>Capacidad</th>
       <th>Camas</th>
-      <th>Categoría</th>
+      <th>Imagen</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -18,11 +19,13 @@
       <td>{{ h.price | currency:'COP':'symbol':'1.0-0' }}</td>
       <td>{{ h.capacity }}</td>
       <td>{{ h.numberOfBeds }}</td>
+      <td><img [src]="h.image" alt="{{h.name}}" width="80" /></td>
       <td>
-        <button [routerLink]="['/roomtypes', h.id]">Ver</button>
-        <button (click)="eliminarRoomType(h.id)">Eliminar</button>
+        <a class="btn btn-info" [routerLink]="['/roomtype', h.id]">Ver</a>
+        <button class="btn btn-danger" (click)="eliminarRoomType(h.id)">Eliminar</button>
       </td>
     </tr>
   </tbody>
 </table>
-<a [routerLink]="['/roomtypes/new']">Crear nuevo</a>
+
+<a class="btn btn-success mt-2" [routerLink]="['/roomtype/nueva']">Crear nuevo</a>
