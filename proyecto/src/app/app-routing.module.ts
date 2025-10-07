@@ -10,6 +10,7 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { RoomTypeTableComponent } from './roomtype/roomtype-table/roomtype-table.component';
 import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
+import { ServiceListComponent } from './servicio/service-list/service-list.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'roomtype/table', component: RoomTypeTableComponent },
       { path: 'roomtype/nueva', component: RoomTypeFormComponent }, 
       { path: 'roomtype/:id', component: RoomTypeDetailComponent },
+      { path: 'servicio/lista', component: ServiceListComponent },
     ],
   },
   {

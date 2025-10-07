@@ -1,20 +1,34 @@
-<section class="cards-carousel" style="overflow: hidden;">
-  <button class="cc-arrow cc-prev" (click)="scrollPrev()" aria-label="Anterior">‹</button>
+<section class="cards-carousel" style="overflow: hidden">
+  <button
+    class="cc-arrow cc-prev"
+    (click)="scrollPrev()"
+    aria-label="Anterior"
+    [disabled]="loading"
+  >
+    ‹
+  </button>
 
   <div class="cc-track" #track>
+    <div *ngIf="loading" class="loading">Cargando servicios...</div>
     <div class="flip-card" *ngFor="let servicio of servicios">
       <div class="flip-card-inner">
         <div class="flip-card-front">
-          <img [src]="servicio.imagenUrl" [alt]="servicio.nombre">
+          <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" />
         </div>
         <div class="flip-card-back">
           <p class="title-card">{{ servicio.nombre }}</p>
           <a [routerLink]="['/servicios', servicio.idServicio]" class="cta">
             <span class="hover-underline-animation"> Ver más </span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 46 16">
-              <path d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
-                transform="translate(30)">
-              </path>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="10"
+              viewBox="0 0 46 16"
+            >
+              <path
+                d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
+                transform="translate(30)"
+              ></path>
             </svg>
           </a>
         </div>
@@ -22,5 +36,12 @@
     </div>
   </div>
 
-  <button class="cc-arrow cc-next" (click)="scrollNext()" aria-label="Siguiente">›</button>
+  <button
+    class="cc-arrow cc-next"
+    (click)="scrollNext()"
+    aria-label="Siguiente"
+    [disabled]="loading"
+  >
+    ›
+  </button>
 </section>
