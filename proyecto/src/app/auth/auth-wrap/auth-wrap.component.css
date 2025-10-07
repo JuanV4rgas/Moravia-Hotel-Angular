@@ -1,0 +1,33 @@
+/* Contenedor a pantalla completa */
+.auth-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Imagen de respaldo si el video no carga */
+  background: url("/images/bg-login.jpg") center / cover no-repeat fixed;
+
+  padding: 24px;
+  position: relative;
+  overflow: hidden; /* recorta el video a los bordes */
+}
+
+/* Capa oscura para contraste (sobre el video) */
+.auth-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.35));
+  z-index: 1;
+}
+
+/* Video de fondo */
+.bg-video {
+  position: absolute;
+  inset: 0;           /* top/right/bottom/left: 0 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* llena sin deformar */
+  z-index: 0;         /* debajo del overlay y la tarjeta */
+}

@@ -1,0 +1,30 @@
+<div class="auth-card" [class.expanded]="!mostrarLogin">
+  <!-- Encabezado -->
+  <div class="auth-head">
+    <img
+      src="assets/img/logo_blue.png"
+      alt="Moravia Hotel"
+      class="auth-logo"
+      height="70"
+    />
+    <h1 class="auth-title">Bienvenido</h1>
+    <p class="auth-sub">
+      {{
+        mostrarLogin
+          ? "Ingresa a tu cuenta para continuar"
+          : "Crea una nueva cuenta"
+      }}
+    </p>
+  </div>
+
+  <!-- Formulario renderizado de forma dinámica -->
+  <app-login-form
+    *ngIf="mostrarLogin"
+    (toggleForm)="onToggleForm()"
+  ></app-login-form>
+
+  <app-register-form
+    *ngIf="!mostrarLogin"
+    (toggleForm)="onToggleForm()"
+  ></app-register-form>
+</div>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,7 +26,13 @@ import { HabitacionFormComponent } from './habitacion/habitacion-form/habitacion
 import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component';
 import { ClienteDetailComponent } from './cliente/cliente-detail/cliente-detail.component';
 import { ClienteFormComponent } from './cliente/cliente-form/cliente-form.component';
+import { AuthWrapComponent } from './auth/auth-wrap/auth-wrap.component';
+import { AuthCardComponent } from './auth/auth-card/auth-card.component';
+import { LoginFormComponent } from './auth/login-form/login-form.component';
+import { RegisterFormComponent } from './auth/register-form/register-form.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 
 @NgModule({
   declarations: [
@@ -52,12 +58,19 @@ import { HttpClientModule } from '@angular/common/http';
     HabitacionFormComponent,
     ClienteTableComponent,
     ClienteDetailComponent,
-    ClienteFormComponent
+    ClienteFormComponent,
+    AuthWrapComponent,
+    AuthCardComponent,
+    LoginFormComponent,
+    RegisterFormComponent,
+    MainLayoutComponent,
+    AuthLayoutComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [],

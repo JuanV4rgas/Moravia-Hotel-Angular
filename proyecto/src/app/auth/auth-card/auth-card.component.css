@@ -1,0 +1,51 @@
+/* Tarjeta centrada con ancho dinámico */
+.auth-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px; /* Ancho por defecto para login */
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: saturate(160%) blur(6px);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  padding: 28px;
+  transition: max-width 0.3s ease; /* Transición suave */
+}
+
+/* Ancho expandido para registro */
+.auth-card.expanded {
+  max-width: 680px;
+}
+
+/* Encabezado con logo y textos centrados */
+.auth-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.auth-logo {
+  height: 56px;
+  width: auto;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+}
+
+.auth-title {
+  font-size: 22px;
+  margin: 0;
+}
+
+.auth-sub {
+  color: #666;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-card.expanded {
+    max-width: 100%;
+  }
+}
