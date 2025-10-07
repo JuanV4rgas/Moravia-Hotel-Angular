@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Room } from '../room';
+import { Room } from '../../model/room';
 
 @Component({
   selector: 'app-room-form',
