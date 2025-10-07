@@ -1,13 +1,26 @@
-/* ---- Formulario ---- */
+/* ---- Grid de dos columnas ---- */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+/* Campo individual */
 .field {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 14px;
+}
+
+/* Campo que ocupa toda la fila */
+.field-full {
+  grid-column: 1 / -1;
 }
 
 label {
   font-weight: 600;
+  font-size: 14px;
 }
 
 .field input {
@@ -17,11 +30,12 @@ label {
   font-size: 16px;
   background: #fff;
   outline: none;
+  width: 100%;
 }
 
 .field input:focus-visible {
   border-color: #0b5cff;
-  box-shadow: 0 0 0 3px rgba(11, 92, 255, .12);
+  box-shadow: 0 0 0 3px rgba(11, 92, 255, 0.12);
 }
 
 /* ---- Acciones ---- */
@@ -29,7 +43,7 @@ label {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 6px;
+  margin-top: 16px;
 }
 
 /* Botón principal */
@@ -43,15 +57,22 @@ label {
   color: #fff;
   font-weight: 600;
   cursor: pointer;
-  transition: transform .02s ease-in-out, opacity .2s;
+  transition: transform 0.02s ease-in-out, opacity 0.2s;
   text-align: center;
 }
 
-.btn:hover { opacity: .92; }
-.btn:active { transform: translateY(1px); }
-.btn:disabled { opacity: .6; cursor: not-allowed; }
+.btn:hover {
+  opacity: 0.92;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
-/* Botón secundario (Crear cuenta) */
+/* Botón secundario */
 .btn--outline {
   background: transparent;
   color: #222;
@@ -69,8 +90,14 @@ label {
   font-size: 14px;
 }
 
-.alert.error { background: #ffe8e6; color: #9b1c13; }
-.alert.success { background: #e7f6ec; color: #116d3a; }
+.alert.error {
+  background: #ffe8e6;
+  color: #9b1c13;
+}
+.alert.success {
+  background: #e7f6ec;
+  color: #116d3a;
+}
 
 /* ---- Texto auxiliar ---- */
 .muted {
@@ -85,4 +112,18 @@ label {
   text-decoration: none;
 }
 
-.muted a:hover { text-decoration: underline; }
+.muted a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .field-full {
+    grid-column: 1;
+  }
+}
