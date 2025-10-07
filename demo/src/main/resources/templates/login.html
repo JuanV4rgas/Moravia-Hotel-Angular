@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Moravia Hotel</title>
+
+  <!-- (Opcional) Bootstrap si ya lo usas en el proyecto -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!-- Tus estilos globales, si los necesitas -->
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+  <!-- Hoja de estilos del login (la que armamos) -->
+  <link rel="stylesheet" th:href="@{/css/login.css}" />
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600;700;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div class="auth-wrap">
+    <video class="bg-video" autoplay muted loop playsinline th:poster="@{/images/bg-login.jpg}">
+      <source src="/img/video_login.mp4" type="video/mp4" />
+      <!-- Fallback: si el navegador no soporta video, usa la imagen por CSS -->
+    </video>
+
+
+    <div class="auth-card">
+
+      <!-- Encabezado: logo + bienvenido -->
+      <div class="auth-head">
+        <!-- Usa th:src para servir desde /static -->
+        <img th:src="@{/img/logo_blue.png}" alt="Moravia Hotel" class="auth-logo" height="70px">
+        <h1 class="auth-title">Bienvenido</h1>
+        <p class="auth-sub">Ingresa a tu cuenta para continuar</p>
+      </div>
+
+      <!-- Mensajes (opcional) -->
+      <div class="alert error" th:if="${param.error}">Correo o contraseña incorrectos.</div>
+      <div class="alert success" th:if="${param.logout}">Sesión cerrada correctamente.</div>
+      <div class="alert success" th:if="${param.registered}">Cuenta creada. Inicia sesión.</div>
+
+      <!-- Formulario -->
+      <form th:action="@{/login}" method="post" novalidate>
+
+        <div class="field">
+          <label for="correo">Correo</label>
+          <input id="correo" name="email" type="email" required autocomplete="email" placeholder="tu@correo.com">
+        </div>
+
+        <div class="field">
+          <label for="clave">Contraseña</label>
+          <input id="clave" name="clave" type="password" required autocomplete="current-password"
+            placeholder="••••••••">
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="submit">Entrar</button>
+          <a class="btn btn--outline">Crear cuenta</a>
+        </div>
+      </form>
+
+      <p class="muted" style="margin-top: 10px;">
+        ¿Olvidaste tu contraseña? <a href="#">Recuperarla</a>
+      </p>
+    </div>
+  </div>
+</body>
+
+</html>

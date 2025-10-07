@@ -1,0 +1,1178 @@
+/* =========================================================
+   TOKENS / RESET / BASE
+   ========================================================= */
+:root {
+  --rose: #ffd8d8;
+  --pink: #c28ba1;
+  --plum: #274861;
+  --sand: #010101;
+  --ink: #1f1a1d;
+  --muted: #5b4f57;
+  --paper: #fff7fb;
+  --surface: #ffffff;
+  --shadow: 0 10px 28px rgba(120, 66, 131, 0.16);
+  --header-h: 64px; /* altura de la navbar */
+  --nav-surface: #1f5f87; /* fondo panel */
+  --nav-text: #f7f7f7; /* texto principal */
+  --nav-muted: #d0dde3; /* texto secundario */
+  --nav-hover: rgba(255, 255, 255, 0.12);
+  --nav-accent: #ffcb0e; /* acento (ej: subrayados/activos) */
+  --nav-font: "DM Serif Display", "Inter", system-ui, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", "Futura PT", "Avenir Next", "Helvetica Neue", Helvetica,
+    Arial, sans-serif, "DM Serif Display";
+  background-color: #F6FAFD; /* color de fondo */
+}
+
+/* =========================================================
+   HEADER fijo (logo, CTA reserva, menú offcanvas)
+   ========================================================= */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: var(--header-h);
+  background: var(--plum);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  border-radius: 0;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+/* Logo + título */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 44px;
+}
+
+.titulo-logo img {
+  height: 26px;
+}
+
+.button2 {
+  display: inline-block;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  color: #ffffff;
+  padding: 0.7em 1.7em;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 0.5em;
+  background: #1f5f87;
+  border: 1px solid #e8e8e8;
+  width: 120px;
+  font-family: "DM Serif Display", "Inter", system-ui, sans-serif;
+  margin-left: auto;
+}
+
+.button2:active {
+  color: #666;
+  box-shadow: inset 4px 4px 12px #11ffeb, inset -4px -4px 12px #ffffff;
+}
+
+.button2:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+  width: auto;
+  height: 180%;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button2:after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background-color: #2d6b92;
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button2:hover {
+  color: #ffffff;
+  border: 1px solid #3b90c5;
+}
+
+.button2:hover:before {
+  top: -35%;
+  background-color: #4c918c;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+.button2:hover:after {
+  top: -45%;
+  background-color: #2d6b92;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+/* Botón hamburguesa (visible en móvil) */
+.hamburger {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.16);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 22px;
+  height: 2px;
+  border-radius: 3px;
+  background: #fff;
+  margin: 3px 0;
+}
+
+@media (min-width: 992px) {
+  .hamburger {
+    display: none;
+  }
+}
+
+/* Offcanvas derecha (móvil) y menú como barra (desktop) */
+/* Contenedor del panel */
+.offcanvas-custom {
+  background: var(--nav-surface) !important;
+  color: var(--nav-text) !important;
+  font-family: var(--nav-font);
+}
+
+/* Título y cierre */
+.offcanvas-custom .offcanvas-title {
+  font-family: var(--nav-font);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--nav-text);
+}
+
+.offcanvas-custom .btn-close {
+  filter: invert(1) grayscale(1) contrast(1.2);
+  opacity: 0.8;
+}
+.offcanvas-custom .btn-close:hover {
+  opacity: 1;
+}
+
+/* Menú vertical */
+.offcanvas-custom .menu {
+  font-family: var(--nav-font);
+}
+
+.offcanvas-custom .menu a {
+  color: var(--nav-text);
+  text-decoration: none;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* Hover / foco / activo */
+.offcanvas-custom .menu a:hover,
+.offcanvas-custom .menu a:focus {
+  background: var(--nav-hover);
+  color: var(--nav-text);
+  outline: none;
+}
+
+.offcanvas-custom .menu a.active {
+  background: var(--nav-hover);
+  color: var(--nav-accent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Elimina el oscurecimiento y deja interactuable el fondo */
+.offcanvas-backdrop {
+  background: transparent !important;
+  opacity: 0 !important;
+  pointer-events: none !important; /* no bloquea clics detrás */
+}
+
+/* En desktop, el offcanvas se transforma en menú centrado */
+@media (min-width: 992px) {
+  .offcanvas-custom {
+    position: static;
+    transform: none;
+    visibility: visible;
+    display: block !important;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    width: auto;
+    height: auto;
+    padding: 0;
+  }
+
+  .offcanvas-custom .offcanvas-header {
+    display: none;
+  }
+
+  .offcanvas-custom .offcanvas-body {
+    padding: 0;
+  }
+
+  .menu {
+    display: flex;
+    gap: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu a {
+    padding: 0;
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    font-family: "DM Serif Display";
+  }
+}
+
+/* =========================================================
+   TITULAR (encima del video)  <section.hero_intro>
+   ========================================================= */
+.hero_intro {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  padding: 8px clamp(16px, 5vw, 32px) 14px;
+  margin-top: 100px;
+  background: var(--plum);
+}
+
+/* From Uiverse.io by alexmaracinaru */
+.cta {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: "DM Serif Display";
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  color: #1f5f87;
+  position: relative;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.cta span {
+  padding-bottom: 7px;
+  letter-spacing: 4px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
+}
+
+.cta svg {
+  transform: translateX(-8px);
+  transition: all 0.3s ease;
+}
+
+.cta:hover svg {
+  transform: translateX(0);
+}
+
+.cta:active svg {
+  transform: scale(0.9);
+}
+
+.hover-underline-animation {
+  position: relative;
+  color: #1f5f87;
+  padding-bottom: 20px;
+}
+
+.hover-underline-animation:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #1f5f87;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.cta:hover .hover-underline-animation:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.hero_intro h1 {
+  font-size: clamp(56px, 12vw, 160px);
+  line-height: 0.9;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.hero_intro .nombre_bold {
+  font-family: "Helvetica";
+  color: #ffffff;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.hero_intro h2 {
+  font-family: "DM Serif Display";
+  color: color-mix(in srgb, #ffcb0e 82%, var(--rose) 18%);
+  font-size: clamp(14px, 1.8vw, 18px);
+  max-width: 70ch;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* =========================================================
+   HERO principal con imagen  <section.hero-main>
+   ========================================================= */
+.hero-main {
+  position: relative;
+  width: auto;
+  margin: 0 auto;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.hero-main .hero-img {
+  display: block;
+  width: 100%;
+  height: 850px;
+  object-fit: cover;
+}
+
+/* =========================================================
+   Fila MEDIA (video a la izquierda + tarjeta/book a la derecha)
+   <section.media-row>
+   ========================================================= */
+.media-row {
+  width: min(1400px, 92%);
+  margin: 14px auto 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* video más grande */
+  gap: 18px;
+  align-items: stretch;
+  z-index: 1;
+}
+
+/* Marco del video */
+.media-frame {
+  position: relative;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  min-height: clamp(320px, 48vw, 520px);
+  border-radius: 16px;
+}
+
+.media-frame .video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Tarjeta / botón "Reservar" del costado
+   (en tu HTML usas .book y el botón .media-btn) */
+.media-card {
+  background-color: #ffffff;
+  color: #fff;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: clamp(18px, 2.8vw, 28px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.media-card h3 {
+  color: #1f5f87;
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.media-card p {
+  color: #1f5f87;
+  line-height: 1.55;
+}
+
+.media-btn {
+  align-self: start;
+  margin-top: 6px;
+  background: #fff;
+  color: var(--plum);
+  font-weight: 900;
+  border-radius: 12px;
+  padding: 10px 18px;
+}
+
+.media-btn:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+/*==========================
+              BOOK
+==========================*/
+.book {
+  margin-top: 50px;
+  position: relative;
+  border-radius: 10px;
+  width: 500px;
+  height: 420px;
+  background-color: #3579a3;
+  transform: preserve-3d;
+  perspective: 2000px;
+  display: block;
+  color: #000;
+}
+
+.cover {
+  top: 0;
+  position: absolute;
+  background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.5s;
+  transform-origin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book:hover .cover {
+  transition: all 0.5s;
+  transform: rotateY(-80deg);
+}
+
+.book h2 {
+  margin: 10px;
+  text-align: center;
+  font-family: "Helvetica";
+  font-size: 30px;
+  font-weight: bolder;
+  color: #ffffff;
+}
+
+.book p {
+  margin: 30px;
+  margin-left: 35px;
+  text-align: center;
+  font-family: "DM Serif Display";
+  font-size: 20px;
+  font-weight: lighter;
+  color: #ffffff;
+}
+
+.book img {
+  width: 60%;
+  height: 50%;
+  object-fit: contain;
+}
+
+@media (max-width: 992px) {
+  .media-row {
+    grid-template-columns: 1fr; /* apilar */
+  }
+
+  .media-card {
+    order: 2;
+  }
+}
+
+/* =========================================================
+   FEATURE HERO (Restaurante)  <section.feature-hero>
+   ========================================================= */
+.feature-hero {
+  position: relative;
+  width: min(1400px, 92%);
+  margin: 18px auto 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.feature-hero > img {
+  display: block;
+  width: 100%;
+  height: clamp(360px, 56vw, 560px);
+  object-fit: cover;
+}
+
+/* Tarjeta superpuesta */
+.feature-card {
+  position: absolute;
+  left: -1px;
+  bottom: -1px;
+  z-index: 2;
+  background-color: #1f5f87;
+  color: #fff;
+  padding: 18px 22px;
+  width: min(520px, 70%);
+  opacity: 0.95;
+}
+
+.feature-card h3 {
+  margin: 0 0 6px 0;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  font-family: "DM Serif Display";
+}
+
+.feature-card h3 span {
+  color: var(--pink);
+  font-weight: 900;
+}
+
+.feature-card p {
+  margin: 0.2rem 0;
+  line-height: 1.45;
+  color: color-mix(in srgb, #ffffff 88%, var(--rose) 12%);
+}
+
+.feature-btn {
+  margin-top: 8px;
+  background: #fff;
+  color: #7b8c92;
+  border: 0;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 900;
+}
+
+.feature-btn:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .feature-card {
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+}
+
+/* =========================================================
+   SUITES (grid de tiles)  <section.suites-grid>
+   ========================================================= */
+.suites-grid {
+  position: relative;
+  width: min(1400px, 92%);
+  margin: 18px auto 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.tile {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 360px;
+  background: linear-gradient(
+    180deg,
+    #fff,
+    color-mix(in srgb, var(--rose) 24%, #fff 76%)
+  );
+  border: 1px solid rgba(120, 66, 131, 0.14);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.tile.invert .tile-media {
+  order: 2;
+}
+
+.tile.invert .tile-content {
+  order: 1;
+}
+
+.tile-media {
+  position: relative;
+}
+
+.tile-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tile-content {
+  padding: clamp(18px, 3.2vw, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tile-content h1 {
+  color: var(--plum);
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  font-family: "DM Serif Display";
+  font-size: clamp(22px, 2.6vw, 30px);
+}
+
+.tile-content h1 em {
+  font-style: normal;
+  color: var(--pink);
+}
+
+.tile-content h2 {
+  color: var(--muted);
+  font-size: clamp(14px, 1.4vw, 17px);
+  max-width: 58ch;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-link {
+  color: var(--plum);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+.btn {
+  background: var(--plum);
+  color: #fff;
+  border: 0;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 900;
+  box-shadow: 0 8px 22px rgba(120, 66, 131, 0.22);
+  margin-left: auto;
+}
+
+.btn:hover {
+  filter: brightness(0.98);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .tile {
+    grid-template-columns: 1fr;
+  }
+  .tile-media {
+    min-height: 46vw;
+  }
+}
+
+/* =========================================================
+   TARJETAS
+   ========================================================= */
+
+/* Carrusel contenedor */
+.cards-carousel {
+  position: relative;
+  width: min(1200px, 94%);
+  margin: 24px auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Pista desplazable */
+.cc-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 8px;
+}
+
+.cc-track::-webkit-scrollbar {
+  height: 8px;
+}
+.cc-track::-webkit-scrollbar-thumb {
+  background: #b7c4cf;
+  border-radius: 8px;
+}
+
+.flip-card {
+  position: relative;
+  width: min(1400px, 92%);
+  margin: 18px auto 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  background-color: transparent;
+  width: 190px;
+  height: 254px;
+  perspective: 1000px;
+  font-family: sans-serif;
+}
+
+.flip-card {
+  scroll-snap-align: start;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid #ffffff;
+  border-radius: 1rem;
+}
+
+.flip-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* La imagen se recorta para llenar toda la tarjeta */
+  border-radius: 1rem;
+  display: block;
+}
+
+.flip-card-back {
+  background-color: #ffffff;
+  color: #1f5f87;
+  transform: rotateY(180deg);
+}
+
+.title-card {
+  font-family: "DM Serif Display";
+  font-size: clamp(22px, 2.6vw, 30px);
+  margin: 0;
+  color: #1f5f87;
+  text-align: center;
+}
+
+.cc-arrow {
+  border: none;
+  background: #1f5f87;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+}
+.cc-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Responsive: reducir tarjeta en pantallas pequeñas */
+@media (max-width: 768px) {
+  .flip-card {
+    width: 180px;
+    height: 240px;
+  }
+}
+/* =========================================================
+   FOOTER (mapa, newsletter, contacto, marca)
+   ========================================================= */
+footer {
+  background: linear-gradient(
+    180deg,
+    var(--plum),
+    color-mix(in srgb, var(--plum) 88%, #000 12%)
+  );
+  color: #fff;
+  padding: 18px 20px 8px;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  margin-top: clamp(26px, 5vw, 64px);
+}
+
+.footer-map img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: var(--shadow);
+}
+
+.footer-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px clamp(12px, 3vw, 24px) 32px;
+  display: grid;
+  grid-template-columns: 1.2fr 1.1fr 0.7fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.label {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.signup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.signup input {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  padding: 8px 2px;
+  width: clamp(220px, 22vw, 280px);
+  outline: none;
+}
+
+.signup input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.ButtonLog {
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.7em 2em;
+  border: 3px solid #1f5f87;
+  border-radius: 2px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1);
+  color: #1f5f87;
+  text-decoration: none;
+  transition: 0.3s ease all;
+  z-index: 1;
+}
+
+.ButtonLog:before {
+  transition: 0.5s all ease;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  bottom: 0;
+  opacity: 0;
+  content: "";
+  background-color: #0e4567;
+  z-index: -1;
+}
+
+.ButtonLog:hover,
+.ButtonLog:focus {
+  color: white;
+}
+
+.ButtonLog:hover:before,
+.ButtonLog:focus:before {
+  transition: 0.5s all ease;
+  left: 0;
+  right: 0;
+  opacity: 1;
+}
+
+button:active {
+  transform: scale(0.9);
+}
+
+
+.datos {
+  border: 0;
+  height: 2px;
+  width: 60px;
+  background: rgba(255, 255, 255, 0.55);
+  margin: 8px 0 6px;
+}
+
+address {
+  font-style: normal;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+address a {
+  color: #fff;
+  text-decoration: none;
+}
+
+address a:hover {
+  text-decoration: underline;
+}
+
+.crest {
+  width: 90px;
+  height: auto;
+  opacity: 0.95;
+  margin-top: 24px;
+}
+
+.legal {
+  text-align: center;
+  padding: 14px 12px 20px;
+  opacity: 0.92;
+  font-size: 0.9rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.22);
+  margin-top: 8px;
+}
+
+.lead {
+  font-family: "DM Seriff Display";
+  font-weight: medium;
+}
+
+@media (max-width: 900px) {
+  .footer-wrap {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+
+/* =========================================================
+   REDES (iconos SVG en footer)  <div.footer-socials>
+   ========================================================= */
+.footer-socials {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin-top: 6px;
+}
+
+.footer-socials .socialContainer {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.25s ease;
+}
+
+.footer-socials .socialSvg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.footer-socials .socialSvg * {
+  fill: #fff !important; /* algunos paths vienen sin fill */
+  stroke: #fff !important; /* por si usan stroke */
+  stroke-width: 1; /* sutil */
+}
+
+/* Hover por red */
+.footer-socials .containerOne:hover {
+  background: #d62976;
+} /* Instagram */
+.footer-socials .containerTwo:hover {
+  background: #00acee;
+} /* Twitter/X */
+.footer-socials .containerThree:hover {
+  background: #0072b1;
+} /* LinkedIn */
+.footer-socials .containerFour:hover {
+  background: #128c7e;
+} /* WhatsApp */
+
+.footer-socials .socialContainer:active {
+  transform: scale(0.92);
+}
+
+/* ==== NAV: visibilidad y layout del botón hamburguesa ==== */
+.hamburger {
+  display: flex; /* visible en móvil y desktop */
+  justify-self: end; /* empuja a la esquina derecha de la grid */
+  z-index: 1002; /* por encima de cualquier enlace */
+}
+
+.reservas {
+  justify-self: end; /* botón a la derecha, sin pisar el hamburguer */
+}
+
+/* =========================================================
+   SIDE NAVBAR (derecha) – usando el mismo contenedor .offcanvas-custom
+   ========================================================= */
+.offcanvas-custom {
+  position: fixed !important;
+  top: var(--header-h);
+  right: 0;
+  left: auto;
+  bottom: 0;
+  width: min(360px, 92vw);
+  height: calc(100vh - var(--header-h));
+  transform: translateX(100%);
+  visibility: hidden;
+  opacity: 0;
+  transition: transform 0.35s ease, opacity 0.25s ease, visibility 0.25s;
+  background-color: #1f5f87;
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 0;
+  border-radius: 0 0 0 16px;
+  z-index: 1001; /* por encima del contenido */
+}
+
+.offcanvas-custom.show {
+  transform: translateX(0); /* entra desde la derecha */
+  visibility: visible;
+  opacity: 1;
+}
+
+/* cabecera del panel */
+.offcanvas-custom .offcanvas-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* cuerpo del panel + menú vertical */
+.offcanvas-custom .offcanvas-body {
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.offcanvas-custom .menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column; /* vertical */
+  gap: 8px;
+}
+
+.offcanvas-custom .menu a {
+  display: block;
+  padding: 0.85rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.offcanvas-custom .menu a:hover {
+  background-color: #00acee;
+}
+
+/* Hamburguesa siempre por encima del panel */
+.hamburger {
+  z-index: 1002;
+}
+
+/* Backdrop más sutil (opcional) */
+.offcanvas-backdrop.show {
+  opacity: 0.25;
+}
+
+/* Asegura que NUNCA se convierta en menú fijo en desktop */
+@media (min-width: 992px) {
+  .offcanvas-custom {
+    transform: translateX(100%);
+    visibility: hidden;
+    opacity: 0;
+  }
+  .menu {
+    display: block; /* mantenemos vertical dentro del panel */
+  }
+}
+
+/* =========================================================
+   FIN
+   ========================================================= */

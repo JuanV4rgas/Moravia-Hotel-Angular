@@ -1,0 +1,389 @@
+/* =========================================================
+   TOKENS / RESET / BASE (copiado de landing)
+   ========================================================= */
+:root {
+  --rose: #ffd8d8;
+  --pink: #c28ba1;
+  --plum: #1f5f87;
+  --sand: #010101;
+  --ink: #1f1a1d;
+  --muted: #5b4f57;
+  --paper: #fff7fb;
+  --surface: #ffffff;
+  --shadow: 0 10px 28px rgba(120, 66, 131, 0.16);
+  --header-h: 64px;
+  --nav-surface: #1f5f87;
+  --nav-text: #f7f7f7;
+  --nav-muted: #d0dde3;
+  --nav-hover: rgba(255, 255, 255, 0.12);
+  --nav-accent: #ffcb0e;
+  --nav-font: "DM Serif Display", "Inter", system-ui, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", "Futura PT", "Avenir Next", "Helvetica Neue", Helvetica,
+    Arial, sans-serif;
+  background: linear-gradient(135deg, var(--plum) 0%, #2d6b92 100%);
+  min-height: 100vh;
+  color: var(--ink);
+}
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
+.detail-main {
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+  padding: 20px 0;
+}
+
+.detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* =========================================================
+   HERO DEL SERVICIO
+   ========================================================= */
+.service-hero {
+  background: linear-gradient(
+    135deg,
+    rgba(31, 95, 135, 0.95) 0%,
+    rgba(45, 107, 146, 0.95) 100%
+  );
+  border-radius: 20px;
+  padding: clamp(40px, 8vw, 80px) clamp(20px, 4vw, 40px);
+  margin-bottom: 30px;
+  text-align: center;
+  color: white;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.service-hero::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.service-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.service-title {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.service-id {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+.service-label {
+  color: var(--nav-accent);
+  font-weight: 600;
+}
+
+/* =========================================================
+   TARJETA PRINCIPAL DEL SERVICIO
+   ========================================================= */
+.service-card {
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  margin-bottom: 40px;
+  min-height: 400px;
+}
+
+.service-content {
+  padding: clamp(30px, 5vw, 50px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.service-name {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(24px, 4vw, 32px);
+  color: var(--plum);
+  font-weight: 700;
+  margin: 0;
+}
+
+.service-price {
+  text-align: right;
+  background: linear-gradient(135deg, var(--plum), var(--pink));
+  color: white;
+  padding: 15px 20px;
+  border-radius: 15px;
+  min-width: 120px;
+}
+
+.price-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+  margin-bottom: 5px;
+}
+
+.price-value {
+  display: block;
+  font-size: 24px;
+  font-weight: 900;
+  font-family: "DM Serif Display", serif;
+}
+
+.service-description {
+  flex: 1;
+  margin-bottom: 30px;
+}
+
+.service-description h3 {
+  font-family: "DM Serif Display", serif;
+  color: var(--plum);
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.service-description p {
+  line-height: 1.6;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.service-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: "Inter", sans-serif;
+}
+
+.btn-primary {
+  background: var(--plum);
+  color: white;
+  box-shadow: 0 8px 25px rgba(31, 95, 135, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--pink);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(31, 95, 135, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--plum);
+  border: 2px solid var(--plum);
+}
+
+.btn-secondary:hover {
+  background: var(--plum);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Sección visual */
+.service-visual {
+  background: linear-gradient(135deg, var(--paper), var(--rose));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  min-height: 420px;
+}
+
+.service-image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.service-image-placeholder svg {
+  opacity: 0.6;
+}
+
+.service-image-placeholder span {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.service-image-placeholder img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .service-card {
+    grid-template-columns: 1fr;
+  }
+  
+  .service-visual {
+    order: -1;
+    min-height: 200px;
+  }
+  
+  .service-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .service-price {
+    align-self: flex-start;
+  }
+}
+
+/* =========================================================
+   DETALLES DEL SERVICIO
+   ========================================================= */
+.service-details {
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.detail-item {
+  background: linear-gradient(135deg, var(--paper), rgba(255, 216, 216, 0.5));
+  border-radius: 15px;
+  padding: 25px;
+  border-left: 4px solid var(--plum);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.detail-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(120, 66, 131, 0.15);
+}
+
+.detail-label {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--plum);
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.detail-value {
+  font-family: "DM Serif Display", serif;
+  font-size: 18px;
+  color: var(--ink);
+  font-weight: 400;
+  line-height: 1.4;
+  display: block;
+}
+
+.price-highlight {
+  color: var(--plum);
+  font-weight: 700;
+  font-size: 24px;
+}
+
+@media (max-width: 768px) {
+  .service-details {
+    grid-template-columns: 1fr;
+    padding: 25px;
+  }
+}
+
+/* =========================================================
+   ANIMACIONES Y EFECTOS ADICIONALES
+   ========================================================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.service-card,
+.service-details {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.detail-item {
+  animation: fadeInUp 0.6s ease-out;
+  animation-delay: calc(var(--delay, 0) * 0.1s);
+}
+
+.detail-item:nth-child(1) { --delay: 1; }
+.detail-item:nth-child(2) { --delay: 2; }
+.detail-item:nth-child(3) { --delay: 3; }
+.detail-item:nth-child(4) { --delay: 4; }

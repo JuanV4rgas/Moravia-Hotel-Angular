@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle Habitación</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    crossorigin="anonymous" />
+
+  <!-- Tipografías y estilos -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/detalle_servicio.css" />
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header th:replace="~{fragmentos :: header}"></header>
+
+  <main class="detail-main">
+    <div class="detail-container">
+      <!-- HERO -->
+      <section class="service-hero">
+        <div class="service-hero-content">
+          <h1 class="service-title">
+            <span th:text="${room.tipo.getNombre()}">Tipo</span>
+            <span> – </span>
+            <span th:text="${room.numeroHabitacion}">Número</span>
+          </h1>
+          <div class="service-id">
+            <span class="service-label">ID:</span>
+            <span class="service-value" th:text="${room.id}">ROOM001</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARD PRINCIPAL (solo información, sin imagen) -->
+      <div class="service-card">
+        <div class="service-content">
+          <div class="service-header">
+            <h2 class="service-name">
+              Habitación <span th:text="${room.numeroHabitacion}">101</span>
+            </h2>
+
+            <div class="service-price">
+              <span class="price-label">Estado</span>
+              <span class="price-value" th:text="${room.disponible} ? 'Disponible' : 'No disponible'">Disponible</span>
+            </div>
+          </div>
+
+          <div class="service-description">
+            <h3>Descripción</h3>
+            <p>
+              Disfruta de una estancia cómoda con el estilo clásico de The
+              Moravia.
+            </p>
+          </div>
+
+          <div class="service-actions">
+            <button class="btn btn-primary">Reservar ahora</button>
+            <button class="btn btn-secondary">Más información</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DETALLES -->
+      <div class="service-details">
+        <div class="detail-item">
+          <dt class="detail-label">ID de la habitación</dt>
+          <dd class="detail-value" th:text="${room.id}">ROOM001</dd>
+        </div>
+        <div class="detail-item">
+          <dt class="detail-label">Habitación</dt>
+          <dd class="detail-value" th:text="${room.numeroHabitacion}">101</dd>
+        </div>
+        <div class="detail-item">
+          <dt class="detail-label">Tipo</dt>
+          <dd class="detail-value" th:text="${tipo}">Suite</dd>
+        </div>
+        <div class="detail-item">
+          <dt class="detail-label">Estado</dt>
+          <dd class="detail-value" th:text="${room.disponible} ? 'Disponible' : 'No disponible'">
+            Disponible
+          </dd>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer th:replace="~{fragmentos :: footer}"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

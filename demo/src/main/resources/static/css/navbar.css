@@ -1,0 +1,197 @@
+/* Offcanvas derecha (móvil) y menú como barra (desktop) */
+/* Contenedor del panel */
+.offcanvas-custom {
+  background: var(--nav-surface) !important;
+  color: var(--nav-text) !important;
+  font-family: var(--nav-font);
+}
+
+/* Título y cierre */
+.offcanvas-custom .offcanvas-title {
+  font-family: var(--nav-font);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--nav-text);
+}
+
+.offcanvas-custom .btn-close {
+  filter: invert(1) grayscale(1) contrast(1.2);
+  opacity: 0.8;
+}
+.offcanvas-custom .btn-close:hover {
+  opacity: 1;
+}
+
+/* Menú vertical */
+.offcanvas-custom .menu {
+  font-family: var(--nav-font);
+}
+
+.offcanvas-custom .menu a {
+  color: var(--nav-text);
+  text-decoration: none;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* Hover / foco / activo */
+.offcanvas-custom .menu a:hover,
+.offcanvas-custom .menu a:focus {
+  background: var(--nav-hover);
+  color: var(--nav-text);
+  outline: none;
+}
+
+.offcanvas-custom .menu a.active {
+  background: var(--nav-hover);
+  color: var(--nav-accent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Elimina el oscurecimiento y deja interactuable el fondo */
+.offcanvas-backdrop {
+  background: transparent !important;
+  opacity: 0 !important;
+  pointer-events: none !important; /* no bloquea clics detrás */
+}
+
+/* En desktop, el offcanvas se transforma en menú centrado */
+@media (min-width: 992px) {
+  .offcanvas-custom {
+    position: static;
+    transform: none;
+    visibility: visible;
+    display: block !important;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    width: auto;
+    height: auto;
+    padding: 0;
+  }
+
+  .offcanvas-custom .offcanvas-header {
+    display: none;
+  }
+
+  .offcanvas-custom .offcanvas-body {
+    padding: 0;
+  }
+
+  .menu {
+    display: flex;
+    gap: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu a {
+    padding: 0;
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    font-family: "DM Serif Display";
+  }
+}
+
+/*para que salga de la izqiuerda*/
+/* Estado cerrado (izquierda) */
+.offcanvas-start .offcanvas-custom {
+  position: fixed !important;
+  top: var(--header-h);
+  left: 0 !important;
+  right: auto !important;
+  bottom: 0;
+  width: min(360px, 92vw);
+  height: calc(100vh - var(--header-h));
+  transform: translateX(-100%) !important;
+  visibility: hidden;
+  opacity: 0;
+  transition: transform 0.35s ease, opacity 0.25s ease, visibility 0.25s;
+  background-color: #1f5f87;
+  border-right: 1px solid rgba(255,255,255,0.18); /* borde del lado interior */
+  border-left: 0;
+  border-radius: 0 0 16px 0;
+  z-index: 1001;
+}
+
+/* Abierto */
+.offcanvas-start.offcanvas-custom.show {
+  transform: translateX(0) !important;
+  visibility: visible;
+  opacity: 1;
+}
+
+
+/* cabecera del panel */
+.offcanvas-custom .offcanvas-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* cuerpo del panel + menú vertical */
+.offcanvas-custom .offcanvas-body {
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.offcanvas-custom .menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column; /* vertical */
+  gap: 8px;
+}
+
+.offcanvas-custom .menu a {
+  display: block;
+  padding: 0.85rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.offcanvas-custom .menu a:hover {
+  background-color: #00acee;
+}
+
+/* Hamburguesa siempre por encima del panel */
+.hamburger {
+  z-index: 1002;
+}
+
+/* Backdrop más sutil (opcional) */
+.offcanvas-backdrop.show {
+  opacity: 0.25;
+}
+
+/* Asegura que NUNCA se convierta en menú fijo en desktop */
+@media (min-width: 992px) {
+  .offcanvas-custom {
+    transform: translateX(100%);
+    visibility: hidden;
+    opacity: 0;
+  }
+  .menu {
+    display: block; /* mantenemos vertical dentro del panel */
+  }
+}
+
+/* ==== NAV: visibilidad y layout del botón hamburguesa ==== */
+.hamburger {
+  display: flex; /* visible en móvil y desktop */
+  justify-self: end; /* empuja a la esquina derecha de la grid */
+  z-index: 1002; /* por encima de cualquier enlace */
+}
+
+.reservas {
+  justify-self: end; /* botón a la derecha, sin pisar el hamburguer */
+}

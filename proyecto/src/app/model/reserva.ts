@@ -1,5 +1,5 @@
 import { Cliente } from './cliente';
-import { Habitacion } from './habitacion';
+import { Habitacion } from './room';
 import { Cuenta } from './cuenta';
 
 export interface Reserva {

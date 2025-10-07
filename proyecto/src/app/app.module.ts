@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ServiceTableComponent } from './service/service-table/service-table.component';
-import { ServiceDetailComponent } from './service/service-detail/service-detail.component';
-import { ServiceFormComponent } from './service/service-form/service-form.component';
+import { ServiceTableComponent } from './servicio/service-table/service-table.component';
+import { ServiceDetailComponent } from './servicio/servicio-detail/service-detail.component';
+import { ServiceFormComponent } from './servicio/service-form/service-form.component';
 import { HomePageComponent } from './home/home-page/home-page.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -26,6 +26,7 @@ import { HabitacionFormComponent } from './habitacion/habitacion-form/habitacion
 import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component';
 import { ClienteDetailComponent } from './cliente/cliente-detail/cliente-detail.component';
 import { ClienteFormComponent } from './cliente/cliente-form/cliente-form.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ClienteFormComponent } from './cliente/cliente-form/cliente-form.compon
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

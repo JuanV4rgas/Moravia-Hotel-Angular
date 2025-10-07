@@ -1,30 +1,29 @@
-<p>habitacion-form works!</p>
-<form #HabitacionForm="ngForm" (ngSubmit)="addHabitacion(HabitacionForm)">
-  <label for="id">Id</label><br>
-  <input type="text" id="id" name="id" [(ngModel)]="formHabitacion.id" required><br>
+<h2 *ngIf="!modoEdicion">Nueva Habitación</h2>
+<h2 *ngIf="modoEdicion">Editar Habitación</h2>
 
-  <label for="name">Nombre</label><br>
-  <input type="text" id="name" name="name" [(ngModel)]="formHabitacion.name" required><br>
+<form (ngSubmit)="guardar()" #habitacionForm="ngForm">
+  <label>Nombre:</label>
+  <input [(ngModel)]="habitacion.name" name="name" required>
 
-   <label for="description">Descripción</label><br>
-  <textarea id="description" name="description" [(ngModel)]="formHabitacion.description"></textarea><br>
+  <label>Descripción:</label>
+  <textarea [(ngModel)]="habitacion.description" name="description" required></textarea>
 
-  <label for="price">Precio</label><br>
-  <input type="number" id="price" name="price" [(ngModel)]="formHabitacion.price" required><br>
+  <label>Precio:</label>
+  <input type="number" [(ngModel)]="habitacion.price" name="price" required>
 
-  <label for="capacity">Capacidad</label><br>
-  <input type="text" id="capacity" name="capacity" [(ngModel)]="formHabitacion.capacity" required><br>
+  <label>Capacidad:</label>
+  <input [(ngModel)]="habitacion.capacity" name="capacity" required>
 
-  <label for="numberOfBeds">Numero de camas</label><br>
-  <input type="number" id="numberOfBeds" name="numberOfBeds" [(ngModel)]="formHabitacion.numberOfBeds" required><br>
+  <label>Número de camas:</label>
+  <input type="number" [(ngModel)]="habitacion.numberOfBeds" name="numberOfBeds" required>
 
-  <label for="image">Imagen (URL)</label><br>   
-  <input type="text" id="image" name="image" required [(ngModel)]="formHabitacion.image"><br>
+  <label>Imagen (URL):</label>
+  <input [(ngModel)]="habitacion.image" name="image">
 
-  <label for="type">Tipo</label><br>   
-  <input type="text" id="type" name="type" required [(ngModel)]="formHabitacion.type"><br>
+  <label>Tipo:</label>
+  <input [(ngModel)]="habitacion.type" name="type" required>
 
-  <button type="submit" [disabled]="!HabitacionForm.form.valid">Agregar Servicio</button>
-
+  <button type="submit" [disabled]="habitacionForm.invalid">
+    {{ modoEdicion ? 'Actualizar' : 'Guardar' }}
+  </button>
 </form>
-<!--Revisar-->

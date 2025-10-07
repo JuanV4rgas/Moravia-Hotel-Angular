@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habitaciones</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/css/landing.css}" />
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  <link rel="stylesheet" th:href="@{/css/tabla_habitaciones.css}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;600;700;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <header th:replace="~{fragmentos :: header}"></header>
+
+  <main class="habitaciones-main">
+    <div class="container-habitaciones">
+      <div class="header-section">
+        <h1 class="habitaciones-title">Nuestras <em>Habitaciones</em></h1>
+        <p class="habitaciones-subtitle">(Solo para uso administrativo)</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="habitaciones-table">
+          <thead>
+            <tr class="table-header">
+              <th class="th-id">ID</th>
+              <th class="th-nombre">Habitación</th>
+              <th class="th-acciones">Tipo</th>
+              <th class="th-descripcion">Descripción</th>
+              <th class="th-precio">Precio</th>
+              <th class="th-capacidad">Capacidad</th>
+              <th class="th-camas">Número de camas</th>
+              <th class="th-acciones">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="habitacion-row" th:each="habitacion : ${habitaciones}">
+              <td class="habitacion-id">
+                <a class="habitacion-link"
+                   th:href="@{/habitaciones/{idHabitacion}(idHabitacion=${habitacion.idHabitacion})}">
+                  [[${habitacion.idHabitacion}]]
+                </a>
+              </td>
+              <td class="habitacion-name" th:text="${habitacion.nombre}">Nombre</td>
+              <td class="habitacion-tipo" th:text="${habitacion.tipo}">Tipo</td>
+              <td class="habitacion-description" th:text="${habitacion.descripcion}">Descripción</td>
+              <td class="habitacion-price">
+                <span class="price-symbol">$</span>
+                <span class="price-value" th:text="${habitacion.precio}">0</span>
+              </td>s
+              <td class="habitacion-capacidad" th:text="${habitacion.capacidad}">0</td>
+              <td class="habitacion-camas" th:text="${habitacion.numeroCamas}">0</td>
+              <td class="habitacion-actions">
+                <a th:href="@{/habitaciones/editar/{idHabitacion}(idHabitacion=${habitacion.idHabitacion})}" class="ButtonLog">
+                  Editar
+                </a>
+                <a th:href="@{/habitaciones/delete/{idHabitacion}(idHabitacion=${habitacion.idHabitacion})}" class="ButtonLog">
+                  Eliminar
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <a type="button" th:href="@{/habitaciones/nuevo}" class="ButtonLog">
+          Agregar habitación
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer th:replace="~{fragmentos :: footer}"></footer>
+
+  <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+</body>
+</html>
