@@ -7,7 +7,7 @@ import { RoomTableComponent } from './room/room-table/room-table.component'
 import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component'
 import { HabitacionDetailComponent } from './habitacion/habitacion-detail/habitacion-detail.component';
 import { HabitacionFormComponent } from './habitacion/habitacion-form/habitacion-form.component';
-
+import { HistoriaComponent } from './historia/historia.component';
 
 const routes: Routes = [
   //definimos rutas
@@ -20,7 +20,8 @@ const routes: Routes = [
   { path: 'habitaciones', component: HabitacionTableComponent },
   { path: 'habitaciones/:id', component: HabitacionDetailComponent },
   { path: 'habitaciones/nueva', component: HabitacionFormComponent },
-  { path: '**', redirectTo: 'home' }
+  { path: '**', redirectTo: 'home' },
+  { path: 'historia', component: HistoriaComponent }
 
 
 ];
