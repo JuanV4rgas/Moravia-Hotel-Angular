@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomePageComponent } from './home/home-page/home-page.component';  
+import { HomePageComponent } from './home/home-page/home-page.component';
 import { ServiceTableComponent } from './servicio/service-table/service-table.component';
-import { HabitacionTableComponent } from './habitacion/habitacion-table/habitacion-table.component'
-import { RoomTableComponent } from './room/room-table/room-table.component'
-import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component'
+import { HabitacionTableComponent } from './habitacion/habitacion-table/habitacion-table.component';
+import { RoomTableComponent } from './room/room-table/room-table.component';
+import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component';
 import { HabitacionDetailComponent } from './habitacion/habitacion-detail/habitacion-detail.component';
 import { HabitacionFormComponent } from './habitacion/habitacion-form/habitacion-form.component';
-import { HistoriaComponent } from './historia/historia.component';
+
 
 const routes: Routes = [
   //definimos rutas
@@ -20,16 +20,13 @@ const routes: Routes = [
   { path: 'habitaciones', component: HabitacionTableComponent },
   { path: 'habitaciones/:id', component: HabitacionDetailComponent },
   { path: 'habitaciones/nueva', component: HabitacionFormComponent },
-  { path: '**', redirectTo: 'home' },
-  { path: 'historia', component: HistoriaComponent }
+  { path: '**', redirectTo: 'home' }
 
 
 ];
 
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

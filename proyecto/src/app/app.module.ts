@@ -31,7 +31,6 @@ import { AuthCardComponent } from './auth/auth-card/auth-card.component';
 import { LoginFormComponent } from './auth/login-form/login-form.component';
 import { RegisterFormComponent } from './auth/register-form/register-form.component';
 import { HttpClientModule } from '@angular/common/http';
-import { HistoriaComponent } from './historia/historia.component';
 
 
 @NgModule({
@@ -62,8 +61,7 @@ import { HistoriaComponent } from './historia/historia.component';
     AuthWrapComponent,
     AuthCardComponent,
     LoginFormComponent,
-    RegisterFormComponent,
-    HistoriaComponent
+    RegisterFormComponent
   ],
   imports: [
     BrowserModule,

@@ -1,12 +1,10 @@
 import { Reserva } from './reserva';
-import { ItemCuenta } from './item-cuenta';
-import { Pago } from './pago';
+import { Servicio } from './servicio';
 
 export interface Cuenta {
   id: number;          
   estado: string;
   total: number;       
   reserva: Reserva;    
-  items: ItemCuenta[]; 
-  pagos: Pago[];       
+  servicios: Servicio[];   
 }

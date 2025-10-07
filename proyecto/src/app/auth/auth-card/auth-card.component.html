@@ -1,4 +1,4 @@
-<div class="auth-card text-center">
+<div class="auth-card" [class.expanded]="!mostrarLogin">
   <!-- Encabezado -->
   <div class="auth-head">
     <img
@@ -17,7 +17,7 @@
     </p>
   </div>
 
-  <!-- Formulario renderizado de forma dinamica -->
+  <!-- Formulario renderizado de forma dinámica -->
   <app-login-form
     *ngIf="mostrarLogin"
     (toggleForm)="onToggleForm()"

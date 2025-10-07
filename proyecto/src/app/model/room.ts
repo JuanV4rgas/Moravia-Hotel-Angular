@@ -1,8 +1,9 @@
-import { Habitacion } from 'src/app/habitacion/habitacion';
+import { Habitacion } from "../habitacion/habitacion"
 
-export interface Room {
-  id: number;               // Long -> number
-  numeroHabitacion: string;
-  disponible: boolean;
-  tipo: Habitacion;         // Relación ManyToOne con Habitacion
+//import { Habitacion } from './../habitacion/habitacion';
+export interface Room{
+    id:string
+    habitacionNumber:string
+    type: Habitacion
+    available:boolean
 }
