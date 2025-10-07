@@ -32,6 +32,8 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
+import { HistoriaComponent } from './historia/historia.component';
+import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,9 @@ import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-de
     LoginFormComponent,
     RegisterFormComponent,
     MainLayoutComponent,
-    AuthLayoutComponent
+    AuthLayoutComponent,
+    HistoriaComponent,
+    PerfilUsuarioComponent
   ],
   imports: [
     BrowserModule,

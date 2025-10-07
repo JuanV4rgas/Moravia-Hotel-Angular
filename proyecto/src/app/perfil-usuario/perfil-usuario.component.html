@@ -1,0 +1,265 @@
+<!-- Header con perfil -->
+<div class="profile-header">
+  <div class="container">
+    <div class="text-center">
+      <img
+        [src]="usuario?.fotoPerfil || ('https://via.placeholder.com/280x280.png?text=' + (usuario?.nombre?.charAt(0) || 'U') + '+' + (usuario?.apellido?.charAt(0) || 'S'))"
+        [alt]="'Foto de perfil de ' + (usuario?.nombre || 'Usuario')"
+        class="profile-avatar"
+      />
+
+      <h1 class="profile-name">
+        {{ usuario?.nombre }} {{ usuario?.apellido }}
+      </h1>
+
+      <p class="profile-username">
+        @{{ (usuario?.email || '').split('@')[0] }}
+      </p>
+
+      <div class="mt-3">
+        <span
+          class="badge"
+          [ngClass]="{
+            'bg-warning text-dark': form?.dirty,
+            'bg-success text-white': !form?.dirty
+          }"
+          id="status-badge"
+        >
+          <i
+            class="bi me-1"
+            [ngClass]="form?.dirty ? 'bi-pencil' : 'bi-person-check'"
+          ></i>
+          {{ form?.dirty ? 'Modificando' : 'Perfil de Usuario' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mensajes de éxito / error -->
+<div class="container" *ngIf="mensaje || error">
+  <div
+    *ngIf="mensaje"
+    class="alert alert-success alert-dismissible fade show mx-4 mt-4"
+    role="alert"
+  >
+    {{ mensaje }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger alert-dismissible fade show mx-4 mt-4"
+    role="alert"
+  >
+    {{ error }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+</div>
+
+<!-- Formulario principal -->
+<main class="container pb-5" [formGroup]="form">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <div class="card profile-card">
+
+        <form class="form-section" novalidate (ngSubmit)="onSubmit()">
+
+          <!-- Información Personal -->
+          <div class="mb-4">
+            <h4 class="section-title">
+              <i class="bi bi-person me-2"></i>
+              Información Personal
+            </h4>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="nombre" class="form-label">Nombres *</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  class="form-control"
+                  formControlName="nombre"
+                  required
+                  [class.is-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched"
+                />
+                <div class="text-danger small mt-1" *ngIf="form.get('nombre')?.errors && form.get('nombre')?.touched">
+                  {{ form.get('nombre')?.errors?.['required'] ? 'El nombre es requerido' : '' }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="apellido" class="form-label">Apellidos *</label>
+                <input
+                  type="text"
+                  id="apellido"
+                  class="form-control"
+                  formControlName="apellido"
+                  required
+                  [class.is-invalid]="form.get('apellido')?.invalid && form.get('apellido')?.touched"
+                />
+                <div class="text-danger small mt-1" *ngIf="form.get('apellido')?.errors && form.get('apellido')?.touched">
+                  {{ form.get('apellido')?.errors?.['required'] ? 'El apellido es requerido' : '' }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="email" class="form-label">Email *</label>
+                <input
+                  type="email"
+                  id="email"
+                  class="form-control"
+                  formControlName="email"
+                  required
+                  [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
+                />
+                <div class="text-danger small mt-1" *ngIf="form.get('email')?.errors && form.get('email')?.touched">
+                  <ng-container *ngIf="form.get('email')?.errors?.['required']">El email es requerido</ng-container>
+                  <ng-container *ngIf="form.get('email')?.errors?.['email']">Formato de email inválido</ng-container>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="cedula" class="form-label">Cédula *</label>
+                <input
+                  type="text"
+                  id="cedula"
+                  class="form-control"
+                  formControlName="cedula"
+                  required
+                  [class.is-invalid]="form.get('cedula')?.invalid && form.get('cedula')?.touched"
+                />
+                <div class="text-danger small mt-1" *ngIf="form.get('cedula')?.errors && form.get('cedula')?.touched">
+                  {{ form.get('cedula')?.errors?.['required'] ? 'La cédula es requerida' : '' }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Información de Contacto -->
+          <div class="mb-4">
+            <h4 class="section-title">
+              <i class="bi bi-telephone me-2"></i>
+              Información de Contacto
+            </h4>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input
+                  type="tel"
+                  id="telefono"
+                  class="form-control"
+                  formControlName="telefono"
+                  placeholder="+57 300 123 4567"
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label for="fotoPerfil" class="form-label">URL Foto de Perfil</label>
+                <input
+                  type="url"
+                  id="fotoPerfil"
+                  class="form-control"
+                  formControlName="fotoPerfil"
+                  placeholder="https://ejemplo.com/tu-foto.jpg"
+                />
+                <small class="form-text">Deja en blanco para usar avatar por defecto</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seguridad -->
+          <div class="mb-4">
+            <h4 class="section-title">
+              <i class="bi bi-shield-lock me-2"></i>
+              Cambiar Contraseña
+            </h4>
+
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle me-2"></i>
+              Debes confirmar tu contraseña si quieres que se guarden los cambios.
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="nuevaClave" class="form-label">Nueva Contraseña</label>
+                <div class="input-group">
+                  <input
+                    [type]="showNuevaClave ? 'text' : 'password'"
+                    id="nuevaClave"
+                    class="form-control"
+                    formControlName="nuevaClave"
+                    minlength="6"
+                    placeholder="Nueva contraseña"
+                  />
+                  <button class="btn btn-outline-secondary" type="button" (click)="togglePassword('nuevaClave')">
+                    <i class="bi" [ngClass]="showNuevaClave ? 'bi-eye' : 'bi-eye-slash'"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="confirmarClave" class="form-label">Confirmar Contraseña</label>
+                <div class="input-group">
+                  <input
+                    [type]="showConfirmarClave ? 'text' : 'password'"
+                    id="confirmarClave"
+                    class="form-control"
+                    formControlName="confirmarClave"
+                    minlength="6"
+                    placeholder="Confirmar contraseña"
+                    [class.is-invalid]="form.get('confirmarClave')?.invalid && form.get('confirmarClave')?.touched"
+                  />
+                  <button class="btn btn-outline-secondary" type="button" (click)="togglePassword('confirmarClave')">
+                    <i class="bi" [ngClass]="showConfirmarClave ? 'bi-eye' : 'bi-eye-slash'"></i>
+                  </button>
+                </div>
+                <div class="text-danger small mt-1" *ngIf="form.get('confirmarClave')?.errors?.['mismatch'] && form.get('confirmarClave')?.touched">
+                  Las contraseñas no coinciden
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="d-flex justify-content-between flex-wrap gap-2">
+            <div>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="resetBtn"
+                (click)="onReset()"
+                [disabled]="!form?.dirty"
+              >
+                <i class="bi bi-arrow-clockwise me-1"></i>
+                Restaurar
+              </button>
+            </div>
+
+            <div class="d-flex gap-2">
+              <a
+                [routerLink]="'/usuarios/' + usuario?.idUsuario + '/confirmar-eliminar'"
+                class="btn btn-outline-danger"
+              >
+                <i class="bi bi-trash me-1"></i>
+                Eliminar
+              </a>
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="saveBtn"
+                [disabled]="!form?.dirty || form?.invalid"
+              >
+                <i class="bi bi-check-lg me-1"></i>
+                Guardar cambios
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
