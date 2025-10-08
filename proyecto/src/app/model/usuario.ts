@@ -5,6 +5,6 @@ export interface Usuario {
   nombre: string;         // nombre de pila
   apellido: string;       // apellido
   cedula: string;         // documento de identidad (string para no perder ceros iniciales)
-  telefono?: string;      // opcional
+  telefono: string;     
   fotoPerfil?: string;    // opcional (url o base64)
 }
