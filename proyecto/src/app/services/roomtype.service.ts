@@ -5,7 +5,7 @@ import { RoomType } from '../model/roomtype';
 
 @Injectable({ providedIn: 'root' })
 export class RoomTypeService {
-  private apiUrl = 'http://localhost:8081/api/roomtypes';
+  private apiUrl = 'http://localhost:8081/roomtype';
   constructor(private http: HttpClient) {}
 
   getAllRoomTypes(): Observable<RoomType[]> {
