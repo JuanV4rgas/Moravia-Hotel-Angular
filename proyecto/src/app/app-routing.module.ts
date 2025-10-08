@@ -9,6 +9,8 @@ import { RoomTableComponent } from './room/room-table/room-table.component';
 import { RoomFormComponent } from './room/room-form/room-form.component';
 import { RoomDetailComponent } from './room/room-detail/room-detail.component';
 import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component';
+import { ClienteFormComponent } from './cliente/cliente-form/cliente-form.component';
+import { ClienteDetailComponent } from './cliente/cliente-detail/cliente-detail.component';
 import { AuthWrapComponent } from './auth/auth-wrap/auth-wrap.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
@@ -32,10 +34,12 @@ const routes: Routes = [
       { path: 'room/nueva', component: RoomFormComponent },
       { path: 'room/detail', component: RoomDetailComponent },
       { path: 'cliente/table', component: ClienteTableComponent },
+      { path: 'cliente/nueva', component: ClienteFormComponent },
+      { path: 'cliente/detail', component: ClienteDetailComponent },
       { path: 'roomtype/table', component: RoomTypeTableComponent },
       { path: 'roomtype/lista', component: RoomtypeListComponent },
       { path: 'roomtype/nueva', component: RoomTypeFormComponent },
-      { path: 'roomtype/:id', component: RoomTypeDetailComponent },
+      { path: 'roomtype/detail', component: RoomTypeDetailComponent },
     ],
   },
   {
