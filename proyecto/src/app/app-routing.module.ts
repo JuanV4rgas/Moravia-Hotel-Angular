@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home/home-page/home-page.component';
 import { ServiceTableComponent } from './servicio/service-table/service-table.component';
+import { ServiceDetailComponent } from './servicio/servicio-detail/service-detail.component';
+import { ServiceFormComponent } from './servicio/service-form/service-form.component';
 import { RoomTableComponent } from './room/room-table/room-table.component';
 import { ClienteTableComponent } from './cliente/cliente-table/cliente-table.component';
 import { AuthWrapComponent } from './auth/auth-wrap/auth-wrap.component';
@@ -21,6 +23,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
       { path: 'servicio/table', component: ServiceTableComponent },
+      { path: 'servicio/detail', component: ServiceDetailComponent },
+      { path: 'servicio/nueva', component: ServiceFormComponent },
       { path: 'room/table', component: RoomTableComponent },
       { path: 'cliente/table', component: ClienteTableComponent },
       { path: 'roomtype/table', component: RoomTypeTableComponent },

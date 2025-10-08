@@ -1,4 +1,3 @@
-<p>service-table works!</p>
 <table class="table">
     <thead>
         <tr>
@@ -17,7 +16,7 @@
             <td>{{service.description}}</td>
             <td>{{service.image}}</td>
             <td>
-                <button class="btn btn-primary" (click)="mostrarServicio(service)">
+                <button class="btn btn-primary" [routerLink]="['/servicio/detail']">
                     Seleccionar
                 </button>
             </td>
@@ -29,5 +28,3 @@
         </tr>
     </tbody>
 </table>
-<app-service-detail [service] = "selectedService"></app-service-detail>
-<app-service-form (addServiceEvent)="agregarServicio($event)"></app-service-form>
