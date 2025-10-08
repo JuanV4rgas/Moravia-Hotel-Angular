@@ -37,6 +37,7 @@ import { HistoriaComponent } from './historia/historia.component';
 import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
 import { RoomTypeTableComponent } from './roomtype/roomtype-table/roomtype-table.component';
 import { ServiceListComponent } from './servicio/service-list/service-list.component';
+import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { ServiceListComponent } from './servicio/service-list/service-list.compo
     AuthLayoutComponent,
     HistoriaComponent,
     PerfilUsuarioComponent,
-    ServiceListComponent
+    ServiceListComponent,
+    RoomtypeListComponent
   ],
   imports: [
     BrowserModule,

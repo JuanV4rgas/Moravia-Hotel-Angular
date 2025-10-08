@@ -14,13 +14,10 @@ export class RoomTypeTableComponent implements OnInit {
   constructor(private roomTypeService: RoomTypeService) {}
 
   ngOnInit(): void {
-    this.loadRoomTypes();
-  }
 
-  loadRoomTypes(): void {
-    this.roomTypeService.getRoomTypes().subscribe({
-      next: (data) => this.roomtypes = data,
-      error: (err) => console.error('Error al cargar tipos de habitación:', err)
+    this.roomTypeService.getAllRoomTypes().subscribe({
+      next: (data) => (this.roomtypes = data),
+      error: (err) => console.error('Error al cargar roomtypes', err)
     });
   }
 
