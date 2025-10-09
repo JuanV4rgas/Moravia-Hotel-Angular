@@ -36,6 +36,9 @@ import { HistoriaComponent } from './historia/historia.component';
 import { ServiceListComponent } from './servicio/service-list/service-list.component';
 import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
 import { ProfileComponent } from './user/profile/profile.component';
+import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.component';
+import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
+import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,7 @@ import { ProfileComponent } from './user/profile/profile.component';
     HamburgerComponent,
     UserDropdownComponent,
     //RoomTableComponent,
-    RoomDetailComponent,
+    //RoomDetailComponent,
     RoomFormComponent,
     RoomTypeFormComponent,
     RoomTypeDetailComponent,
@@ -71,6 +74,10 @@ import { ProfileComponent } from './user/profile/profile.component';
     ServiceListComponent,
     RoomtypeListComponent,
     ProfileComponent,
+   // UsuarioTableComponent,
+    UsuarioDetailComponent,
+    UsuarioFormComponent
+    //RoomtypeListComponent,
   ],
   imports: [
     BrowserModule,

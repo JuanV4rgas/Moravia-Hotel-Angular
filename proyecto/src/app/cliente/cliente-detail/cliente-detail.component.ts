@@ -1,45 +1,30 @@
-import { Component, Input } from '@angular/core';
-import { Cliente } from 'src/app/model/cliente';
-import { ClienteService } from 'src/app/services/cliente.service';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Cliente } from '../../model/cliente';
+import { ClienteService } from '../../services/cliente.service';
 
 @Component({
   selector: 'app-cliente-detail',
-  templateUrl: './cliente-detail.component.html',
-  styleUrls: ['./cliente-detail.component.css']
+  templateUrl: './cliente-detail.component.html'
 })
-export class ClienteDetailComponent {
+export class ClienteDetailComponent implements OnInit {
+  cliente?: Cliente;
+  loading = true;
+  error?: string;
 
-  @Input()
-  cliente!: Cliente;
-
-  //Inyectar dependencias
   constructor(
-    private clienteService: ClienteService,
     private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    private router: Router,
+    private clienteService: ClienteService
+  ) {}
 
-  //Se llama una única vez cuando el componente se renderiza
   ngOnInit(): void {
-    console.log("ngOnInit de ClienteDetail");
-    this.route.paramMap.subscribe(params => {
-      const id = Number(params.get('idUsuario')); 
-      this.clienteService.getById(id).subscribe(
-        (data) => {
-          this.cliente = data;
-        }
-      )
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.clienteService.getCliente(id).subscribe({
+      next: (c) => { this.cliente = c; this.loading = false; },
+      error: (err) => { this.error = 'No se pudo cargar el cliente.'; console.error(err); this.loading = false; }
     });
   }
 
-  //Dado que el componente tiene una propiedad input
-  ngOnChanges(): void {
-    console.log("ngOnChanges de ClienteDetail");
-  }
-
-  siguiente() {
-    let nextID = this.cliente.idUsuario + 1;
-    this.router.navigate(['/cliente/detail', nextID]);
-  }
+  volver(): void { this.router.navigate(['/cliente/lista']); }
 }

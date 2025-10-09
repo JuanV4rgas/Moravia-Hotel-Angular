@@ -1,34 +1,45 @@
+// src/app/services/cliente.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cliente } from '../model/cliente';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ClienteService {
-
-  private apiUrl = 'http://localhost:8081/api/clientes'; // 👈 ajusta al endpoint real de tu backend
+  private apiUrl = 'http://localhost:8081/cliente';
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(this.apiUrl);
+  getAllClientes(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(`${this.apiUrl}/all`);
   }
 
-  getById(id: number): Observable<Cliente> {
-    return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
+  // ----- Nombres "oficiales" -----
+  getCliente(idUsuario: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.apiUrl}/find/${idUsuario}`);
   }
 
-  create(cliente: Cliente): Observable<Cliente> {
-    return this.http.post<Cliente>(this.apiUrl, cliente);
+  addCliente(payload: Cliente): Observable<Cliente> {
+    return this.http.post<Cliente>(`${this.apiUrl}/add`, payload);
   }
 
-  update(id: number, cliente: Cliente): Observable<Cliente> {
-    return this.http.put<Cliente>(`${this.apiUrl}/${id}`, cliente);
+  updateCliente(idUsuario: number, payload: Cliente): Observable<Cliente> {
+    // Tu backend usa POST en /update/{id}
+    return this.http.post<Cliente>(`${this.apiUrl}/update/${idUsuario}`, payload);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteCliente(idUsuario: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${idUsuario}`);
+  }
+
+  // ----- ALIAS para compatibilidad con componentes existentes -----
+  /** alias de getCliente */
+  getById(idUsuario: number): Observable<Cliente> {
+    return this.getCliente(idUsuario);
+  }
+
+  /** alias de updateCliente */
+  update(idUsuario: number, payload: Cliente): Observable<Cliente> {
+    return this.updateCliente(idUsuario, payload);
   }
 }

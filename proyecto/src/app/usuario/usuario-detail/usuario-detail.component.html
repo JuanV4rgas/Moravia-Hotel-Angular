@@ -1,0 +1,18 @@
+<div>
+  <h4>Usuario - detalle</h4>
+
+  <ng-container *ngIf="usuario; else noSel">
+    <ul>
+      <li>ID: {{ usuario.idUsuario }}</li>
+      <li>Nombre: {{ usuario.nombre }}</li>
+      <li>Apellido: {{ usuario.apellido }}</li>
+      <li>Email: {{ usuario.email }}</li>
+      <li>Cédula: {{ usuario.cedula }}</li>
+      <li>Teléfono: {{ usuario.telefono }}</li>
+    </ul>
+  </ng-container>
+
+  <ng-template #noSel>
+    <p>No hay usuario seleccionado</p>
+  </ng-template>
+</div>

@@ -1,17 +1,29 @@
+<div class="p-3">
+  <h2>Detalle de Habitación</h2>
 
-<div>
-    <h4>Room-detail</h4>
-    <ng-container *ngIf="room">
-        <ul>
-            <li>Id:{{room.id}}</li>
-            <li>Numero de Habitacion: {{room.habitacionNumber}}</li>
-            <li>Tipo: {{room.type?.name}}</li>
-            <li>Disponible: {{room.available}}</li>
-        </ul>
-    </ng-container>
+  <div *ngIf="loading">Cargando...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-    <ng-container *ngIf="!room">
-        <p>No hay Room seleccionada</p>
-    </ng-container>
+  <ng-container *ngIf="!loading && !error && room; else noRoom">
+    <ul class="list-group mb-3">
+      <li class="list-group-item"><strong>ID:</strong> {{ room?.id }}</li>
+      <li class="list-group-item">
+        <strong>Número de Habitación:</strong> {{ room?.habitacionNumber }}
+      </li>
+      <li class="list-group-item">
+        <strong>Tipo:</strong> {{ room?.type?.name }}
+      </li>
+      <li class="list-group-item">
+        <strong>Disponible:</strong> {{ room?.available ? 'Sí' : 'No' }}
+      </li>
+    </ul>
 
+    <button type="button" class="btn btn-secondary" (click)="volver()">
+      Volver
+    </button>
+  </ng-container>
+
+  <ng-template #noRoom>
+    <p class="text-muted">Room no seleccionada.</p>
+  </ng-template>
 </div>
