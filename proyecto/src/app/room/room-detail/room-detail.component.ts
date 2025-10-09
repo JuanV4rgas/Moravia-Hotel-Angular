@@ -41,6 +41,6 @@ export class RoomDetailComponent implements OnInit {
   }
 
   volver(): void {
-    this.router.navigate(['/room/lista']);
+    this.router.navigate(['/room/table']);
   }
 }
