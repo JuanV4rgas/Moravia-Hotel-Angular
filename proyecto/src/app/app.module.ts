@@ -75,7 +75,7 @@ import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.compon
    // UsuarioTableComponent,
     UsuarioDetailComponent,
     UsuarioFormComponent
-    RoomtypeListComponent,
+    //RoomtypeListComponent,
   ],
   imports: [
     BrowserModule,
