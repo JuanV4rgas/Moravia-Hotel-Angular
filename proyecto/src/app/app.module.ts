@@ -33,7 +33,6 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
 import { HistoriaComponent } from './historia/historia.component';
-import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
 import { ServiceListComponent } from './servicio/service-list/service-list.component';
 import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
 import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.component';
@@ -71,12 +70,12 @@ import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.compon
     MainLayoutComponent,
     AuthLayoutComponent,
     HistoriaComponent,
-    PerfilUsuarioComponent,
     ServiceListComponent,
     RoomtypeListComponent,
    // UsuarioTableComponent,
     UsuarioDetailComponent,
     UsuarioFormComponent
+    RoomtypeListComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,14 @@
 <form (ngSubmit)="onRegister()" [formGroup]="registerForm" novalidate>
+  <!-- Mensaje de error -->
+  <div class="alert error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Mensaje de éxito -->
+  <div class="alert success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
   <div class="form-grid">
     <!-- Fila 1: Nombre - Apellido -->
     <div class="field">
@@ -80,11 +90,22 @@
       />
     </div>
   </div>
-</form>
 
-<div class="actions">
-  <button class="btn" type="submit">Registrar</button>
-  <button class="btn btn--outline" (click)="cambiarALogin()">
-    Ya tengo cuenta
-  </button>
-</div>
+  <div class="actions">
+    <button
+      class="btn"
+      type="submit"
+      [disabled]="isLoading || registerForm.invalid"
+    >
+      {{ isLoading ? 'Registrando...' : 'Registrar' }}
+    </button>
+    <button
+      class="btn btn--outline"
+      type="button"
+      (click)="cambiarALogin()"
+      [disabled]="isLoading"
+    >
+      Ya tengo cuenta
+    </button>
+  </div>
+</form>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { Usuario } from '../../model/usuario';
 
 @Component({
   selector: 'app-header',
@@ -6,42 +9,36 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  
-  // Simulando datos del usuario - en una app real vendrían de un servicio
-  authenticated = false; // Cambiar según tu lógica de autenticación
-  usuario = {
-    nombre: 'Usuario Demo',
-    email: 'usuario@ejemplo.com',
-    fotoPerfil: '',
-    idUsuario: 1
-  };
+  authenticated: boolean = false;
+  usuario: Usuario | null = null;
+  loginSuccess: boolean = false;
+  logoutSuccess: boolean = false;
 
-  // Mensajes de estado
-  loginSuccess = false;
-  logoutSuccess = false;
-
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Aquí inicializarías la verificación de autenticación
-    // this.checkAuthentication();
-  }
+    // Suscribirse al estado de autenticación
+    this.authService.authenticated$.subscribe(
+      authenticated => this.authenticated = authenticated
+    );
 
-  toggleOffcanvas(): void {
-    // Lógica para manejar el toggle del offcanvas
-    // En Angular, podrías usar una variable de estado local
-    // o integrar con Bootstrap JS
+    // Suscribirse al usuario actual
+    this.authService.usuario$.subscribe(
+      usuario => this.usuario = usuario
+    );
+
+    this.loginSuccess = this.authenticated
   }
 
   logout(): void {
-    // Lógica de logout
-    this.authenticated = false;
+    this.authService.logout();
     this.logoutSuccess = true;
-    // Redirigir o mostrar mensaje
   }
 
-  dismissAlert(): void {
-    this.loginSuccess = false;
-    this.logoutSuccess = false;
+  goToProfile(): void {
+    this.router.navigate(['/perfil']);
   }
 }
