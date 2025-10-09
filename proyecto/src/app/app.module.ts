@@ -61,7 +61,6 @@ import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.compon
     RoomFormComponent,
     RoomTypeFormComponent,
     RoomTypeDetailComponent,
-    RoomTypeTableComponent,
     ClienteTableComponent,
     ClienteDetailComponent,
     ClienteFormComponent,
