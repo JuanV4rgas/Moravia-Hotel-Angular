@@ -34,10 +34,11 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
 import { HistoriaComponent } from './historia/historia.component';
-import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
-import { RoomTypeTableComponent } from './roomtype/roomtype-table/roomtype-table.component';
 import { ServiceListComponent } from './servicio/service-list/service-list.component';
 import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
+import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.component';
+import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
+import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
 
 @NgModule({
   declarations: [
@@ -55,8 +56,8 @@ import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.co
     MediaRowComponent,
     HamburgerComponent,
     UserDropdownComponent,
-    RoomTableComponent,
-    RoomDetailComponent,
+    //RoomTableComponent,
+    //RoomDetailComponent,
     RoomFormComponent,
     RoomTypeFormComponent,
     RoomTypeDetailComponent,
@@ -71,9 +72,12 @@ import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.co
     MainLayoutComponent,
     AuthLayoutComponent,
     HistoriaComponent,
-    PerfilUsuarioComponent,
     ServiceListComponent,
-    RoomtypeListComponent
+    RoomtypeListComponent,
+   // UsuarioTableComponent,
+    UsuarioDetailComponent,
+    UsuarioFormComponent
+    //RoomtypeListComponent,
   ],
   imports: [
     BrowserModule,

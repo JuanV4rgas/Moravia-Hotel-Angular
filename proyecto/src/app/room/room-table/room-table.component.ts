@@ -1,47 +1,39 @@
 import { Component, OnInit } from '@angular/core';
+import { RoomService } from 'src/app/services/room.service';
 import { Room } from '../../model/room';
-import { RoomService } from '../../services/room.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-room-table',
+   standalone: true,
   templateUrl: './room-table.component.html',
+  imports: [CommonModule, RouterModule],
   styleUrls: ['./room-table.component.css']
 })
-export class RoomTableComponent implements OnInit {
+export class RoomTableComponent {
 
-  RoomsList: Room[] = [];
-  selectedRoom: Room | null = null;  // 👈 corregido
+  //Atributos 
+  selectedRoom!: Room;
 
-  constructor(private roomService: RoomService) {}
+  //Base de datos
+    rooms: Room[] = [];
 
-  ngOnInit(): void {
-    this.loadRooms();
-  }
+      constructor(private roomService: RoomService) {}
 
-  loadRooms(): void {
-    this.roomService.getRooms().subscribe({
-      next: (data) => this.RoomsList = data,
-      error: (err) => console.error('Error al cargar habitaciones:', err)
-    });
-  }
-
-  mostrarRoom(room: Room): void {
-    this.selectedRoom = room;
-  }
-
-  agregarRoom(room: Room): void {
-    this.roomService.createRoom(room).subscribe({
-      next: (newRoom) => this.RoomsList.push(newRoom),
-      error: (err) => console.error('Error al agregar habitación:', err)
-    });
-  }
-
-  eliminarRoom(room: Room): void {
-    this.roomService.deleteRoom(room.id).subscribe({
-      next: () => {
-        this.RoomsList = this.RoomsList.filter(r => r.id !== room.id);
-      },
-      error: (err) => console.error('Error al eliminar habitación:', err)
-    });
-  }
+    ngOnInit(){
+  this.roomService.getAllRooms().subscribe({
+    next: (data) => (this.rooms = data),
+      error: (err) => console.error('Error al cargar roomtypes', err),
+  });
 }
+
+ eliminarRoom(id: string): void {
+    this.roomService.deleteRoom(id).subscribe({
+      next: () => (this.rooms = this.rooms.filter((h) => h.id !== id)),
+      error: (err) => console.error('Error al eliminar roomtype', err),
+    });
+  }
+  
+}
+

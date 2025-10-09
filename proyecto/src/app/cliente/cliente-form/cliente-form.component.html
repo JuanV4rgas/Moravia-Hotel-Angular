@@ -1,31 +1,50 @@
-<div>
-  <h4>FORMULARIO CLIENTE</h4>
+<h2 class="mb-3">{{ isEdit ? 'Editar cliente' : 'Nuevo cliente' }}</h2>
 
-  <form (ngSubmit)="guardar()">
-    <label for="idUsuario">Id</label>
-    <input type="text" id="idUsuario" name="idUsuario" [(ngModel)]="formCliente.idUsuario" required><br>
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-    <label for="email">Correo</label>
-    <input type="email" id="email" name="email" [(ngModel)]="formCliente.email" required><br>
+<form (ngSubmit)="guardar()" class="p-3" *ngIf="!loading">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label" for="nombre">Nombre</label>
+      <input id="nombre" name="nombre" class="form-control" type="text"
+             [(ngModel)]="cliente.nombre" [ngModelOptions]="{standalone:true}" required />
+    </div>
+    <div class="col-md-6">
+      <label class="form-label" for="apellido">Apellido</label>
+      <input id="apellido" name="apellido" class="form-control" type="text"
+             [(ngModel)]="cliente.apellido" [ngModelOptions]="{standalone:true}" required />
+    </div>
+    <div class="col-md-6">
+      <label class="form-label" for="email">Email</label>
+      <input id="email" name="email" class="form-control" type="email"
+             [(ngModel)]="cliente.email" [ngModelOptions]="{standalone:true}" required />
+    </div>
+    <div class="col-md-6" *ngIf="!isEdit">
+      <label class="form-label" for="clave">Clave</label>
+      <input id="clave" name="clave" class="form-control" type="password"
+             [(ngModel)]="cliente.clave" [ngModelOptions]="{standalone:true}" required />
+    </div>
+    <div class="col-md-6">
+      <label class="form-label" for="cedula">Cédula</label>
+      <input id="cedula" name="cedula" class="form-control" type="text"
+             [(ngModel)]="cliente.cedula" [ngModelOptions]="{standalone:true}" required />
+    </div>
+    <div class="col-md-6">
+      <label class="form-label" for="telefono">Teléfono</label>
+      <input id="telefono" name="telefono" class="form-control" type="text"
+             [(ngModel)]="cliente.telefono" [ngModelOptions]="{standalone:true}" />
+    </div>
+    <div class="col-12">
+      <label class="form-label" for="fotoPerfil">Foto (URL/Base64) — opcional</label>
+      <input id="fotoPerfil" name="fotoPerfil" class="form-control" type="text"
+             [(ngModel)]="cliente.fotoPerfil" [ngModelOptions]="{standalone:true}" />
+    </div>
+  </div>
 
-    <label for="clave">Clave</label>
-    <input type="password" id="clave" name="clave" [(ngModel)]="formCliente.clave" required><br>
-
-    <label for="nombre">Nombre</label>
-    <input type="text" id="nombre" name="nombre" [(ngModel)]="formCliente.nombre" required><br>
-
-    <label for="apellido">Apellido</label>
-    <input type="text" id="apellido" name="apellido" [(ngModel)]="formCliente.apellido" required><br>
-
-    <label for="cedula">Cédula</label>
-    <input type="text" id="cedula" name="cedula" [(ngModel)]="formCliente.cedula" required><br>
-
-    <label for="telefono">Teléfono</label>
-    <input type="text" id="telefono" name="telefono" [(ngModel)]="formCliente.telefono"><br>
-
-    <label for="fotoPerfil">Foto Perfil</label>
-    <input type="text" id="fotoPerfil" name="fotoPerfil" [(ngModel)]="formCliente.fotoPerfil"><br>
-
-    <button type="submit" class="btn btn-success">Guardar</button>
-  </form>
-</div>
+  <div class="d-flex gap-2 mt-3">
+    <button type="submit" class="btn btn-primary">{{ isEdit ? 'Actualizar' : 'Guardar' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="onClear()">Limpiar</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="cancelar()">Cancelar</button>
+  </div>
+</form>

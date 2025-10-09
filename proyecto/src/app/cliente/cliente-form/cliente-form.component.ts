@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
-import { Cliente } from 'src/app/model/cliente';
-import { ClienteService } from 'src/app/services/cliente.service';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Cliente } from '../../model/cliente';
+import { ClienteService } from '../../services/cliente.service';
 
 @Component({
   selector: 'app-cliente-form',
-  templateUrl: './cliente-form.component.html',
-  styleUrls: ['./cliente-form.component.css']
+  templateUrl: './cliente-form.component.html'
 })
-export class ClienteFormComponent {
+export class ClienteFormComponent implements OnInit {
+  isEdit = false;
+  loading = false;
+  error?: string;
 
-  formCliente: Cliente = {
+  cliente: Cliente = {
     idUsuario: 0,
     email: '',
     clave: '',
@@ -22,14 +24,47 @@ export class ClienteFormComponent {
   };
 
   constructor(
-    private clienteService: ClienteService,
-    private router: Router
-  ) { }
+    private route: ActivatedRoute,
+    private router: Router,
+    private clienteService: ClienteService
+  ) {}
 
-  guardar() {
-    this.clienteService.create(this.formCliente).subscribe(() => {
-      console.log("Cliente guardado", this.formCliente);
-      this.router.navigate(['/cliente/table']);
+  ngOnInit(): void {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.isEdit = true;
+      this.loading = true;
+      const id = Number(idParam);
+      this.clienteService.getCliente(id).subscribe({
+        next: (c) => { this.cliente = c; this.loading = false; },
+        error: (err) => { this.error = 'No se pudo cargar el cliente.'; console.error(err); this.loading = false; }
+      });
+    }
+  }
+
+  guardar(): void {
+    if (!this.cliente.nombre?.trim() || !this.cliente.apellido?.trim() ||
+        !this.cliente.email?.trim() || (!this.isEdit && !this.cliente.clave?.trim())) {
+      this.error = 'Nombre, apellido, email y clave (al crear) son obligatorios.';
+      return;
+    }
+    this.loading = true;
+    const req$ = this.isEdit
+      ? this.clienteService.updateCliente(this.cliente.idUsuario, this.cliente)
+      : this.clienteService.addCliente(this.cliente);
+
+    req$.subscribe({
+      next: () => { this.loading = false; this.router.navigate(['/cliente/lista']); },
+      error: (err) => { this.error = 'No se pudo guardar el cliente.'; console.error(err); this.loading = false; }
     });
+  }
+
+  cancelar(): void { this.router.navigate(['/cliente/lista']); }
+
+  onClear(): void {
+    this.cliente = {
+      idUsuario: 0, email: '', clave: '',
+      nombre: '', apellido: '', cedula: '', telefono: '', fotoPerfil: ''
+    };
   }
 }

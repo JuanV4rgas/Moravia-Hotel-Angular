@@ -1,25 +1,46 @@
-import { Component, Input } from '@angular/core';
-import { Room } from '../../model/room';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Room } from 'src/app/model/room';
+import { RoomService } from 'src/app/services/room.service';
 
 @Component({
   selector: 'app-room-detail',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './room-detail.component.html',
   styleUrls: ['./room-detail.component.css']
 })
-export class RoomDetailComponent {
+export class RoomDetailComponent implements OnInit {
+  room?: Room;
+  loading = false;
+  error?: string;
 
-  @Input()
-  room!:Room;
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private roomService: RoomService
+  ) {}
 
-  //Inyectar dependencias
-  constructor(){}
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      this.error = 'ID de habitación no encontrado en la ruta.';
+      return;
+    }
 
-  //funcion que llama el componente
-  ngOnInit():void{
-    console.log("ngOnInit del detail");
+    this.loading = true;
+    this.roomService.getRoom(id).subscribe({
+      next: (r) => { this.room = r; this.loading = false; },
+      error: (err) => {
+        this.error = 'No se pudo cargar la habitación.';
+        console.error(err);
+        this.loading = false;
+      }
+    });
   }
 
-  ngOnChanges():void{
-    console.log("ngOnChanges del detail");
-  } 
+  volver(): void {
+    this.router.navigate(['/room/lista']);
+  }
 }

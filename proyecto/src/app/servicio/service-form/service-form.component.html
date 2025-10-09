@@ -14,5 +14,5 @@
   <label for="image">Imagen (URL)</label><br>   
   <input type="text" id="image" name="image" required [(ngModel)]="formService.image"><br>
 
-  <button type="submit" [disabled]="!serviceForm.form.valid">Agregar Servicio</button>
+  <button type="submit" [disabled]="!serviceForm.form.valid" [routerLink]="['/servicio/table']">Agregar Servicio</button>
 </form>

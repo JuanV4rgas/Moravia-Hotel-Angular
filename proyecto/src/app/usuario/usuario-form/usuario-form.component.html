@@ -1,0 +1,51 @@
+<!-- Formulario para crear/editar Usuario -->
+<form (ngSubmit)="addUsuarioForm()" class="p-3" novalidate>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input id="nombre" name="nombre" class="form-control" type="text" required
+             [(ngModel)]="usuario.nombre" [ngModelOptions]="{ standalone: true }" />
+    </div>
+
+    <div class="col-md-6">
+      <label for="apellido" class="form-label">Apellido</label>
+      <input id="apellido" name="apellido" class="form-control" type="text" required
+             [(ngModel)]="usuario.apellido" [ngModelOptions]="{ standalone: true }" />
+    </div>
+
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email</label>
+      <input id="email" name="email" class="form-control" type="email" required
+             [(ngModel)]="usuario.email" [ngModelOptions]="{ standalone: true }" />
+    </div>
+
+    <div class="col-md-6" *ngIf="!isEdit">
+      <label for="clave" class="form-label">Clave</label>
+      <input id="clave" name="clave" class="form-control" type="password" required
+             [(ngModel)]="usuario.clave" [ngModelOptions]="{ standalone: true }" />
+    </div>
+
+    <div class="col-md-6">
+      <label for="cedula" class="form-label">Cédula</label>
+      <input id="cedula" name="cedula" class="form-control" type="text" required
+             [(ngModel)]="usuario.cedula" [ngModelOptions]="{ standalone: true }" />
+    </div>
+
+    <div class="col-md-6">
+      <label for="telefono" class="form-label">Teléfono</label>
+      <input id="telefono" name="telefono" class="form-control" type="text"
+             [(ngModel)]="usuario.telefono" [ngModelOptions]="{ standalone: true }" />
+    </div>
+
+    <div class="col-12">
+      <label for="fotoPerfil" class="form-label">Foto (URL/Base64) — opcional</label>
+      <input id="fotoPerfil" name="fotoPerfil" class="form-control" type="text"
+             [(ngModel)]="usuario.fotoPerfil" [ngModelOptions]="{ standalone: true }" />
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-3">
+    <button type="submit" class="btn btn-primary">{{ isEdit ? 'Actualizar' : 'Guardar' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="onClear()">Limpiar</button>
+  </div>
+</form>

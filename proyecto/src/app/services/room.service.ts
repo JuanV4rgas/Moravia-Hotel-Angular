@@ -3,24 +3,29 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Room } from '../model/room';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class RoomService {
-
-  private apiUrl = 'http://localhost:8081/api/rooms';  // ajusta tu endpoint del back
-
+  private apiUrl = 'http://localhost:8081/room';
   constructor(private http: HttpClient) {}
 
-  getRooms(): Observable<Room[]> {
-    return this.http.get<Room[]>(this.apiUrl);
+  getAllRooms(): Observable<Room[]> {
+    return this.http.get<Room[]>(`${this.apiUrl}/all`);
   }
 
-  createRoom(room: Room): Observable<Room> {
-    return this.http.post<Room>(this.apiUrl, room);
+  getRoom(id: string): Observable<Room> {
+    return this.http.get<Room>(`${this.apiUrl}/find/${id}`);
+  }
+
+  addRoom(payload: Room): Observable<Room> {
+    return this.http.post<Room>(`${this.apiUrl}/add`, payload);
+  }
+
+
+  updateRoom(id: string, payload: Room): Observable<Room> {
+    return this.http.post<Room>(`${this.apiUrl}/update/${id}`, payload);
   }
 
   deleteRoom(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 }

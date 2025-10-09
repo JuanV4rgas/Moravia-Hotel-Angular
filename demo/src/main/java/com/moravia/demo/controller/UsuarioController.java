@@ -32,10 +32,11 @@ public class UsuarioController {
     }
 
     // http://localhost:8081/usuario/find/1
-    @GetMapping("/find/{id}")
-    public Usuario mostrarUsuario2(@PathVariable("id") Long id) {
-        return usuarioService.searchById(id);
-    }
+    @GetMapping("/find/id")
+    public Usuario mostrarUsuarioPorId(@RequestParam("id") Long id) {
+    return usuarioService.searchById(id);
+}
+
 
     // http://localhost:8081/usuario/add
     @PostMapping("/add")
