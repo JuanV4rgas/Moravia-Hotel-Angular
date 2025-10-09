@@ -1,17 +1,56 @@
+<!-- Formulario para crear/editar Room -->
+<form (ngSubmit)="addRoomForm()" class="p-3" novalidate>
+  <div class="mb-3">
+    <label for="numeroHabitacion" class="form-label">Número de habitación</label>
+    <input
+      id="numeroHabitacion"
+      name="numeroHabitacion"
+      class="form-control"
+      type="text"
+      required
+      [(ngModel)]="formRoom.habitacionNumber"
+      [ngModelOptions]="{ standalone: true }"
+      placeholder="Ej: 302A"
+    />
+  </div>
 
-<form #RoomForm="ngForm" (ngSubmit)="addRoom(RoomForm)">
-  <label for="id">Id</label><br>
-  <input type="text" id="id" name="id" [(ngModel)]="formRoom.id" required><br>
+  <div class="form-check form-switch mb-3">
+    <input
+      id="disponible"
+      name="disponible"
+      class="form-check-input"
+      type="checkbox"
+      [(ngModel)]="formRoom.available"
+      [ngModelOptions]="{ standalone: true }"
+    />
+    <label class="form-check-label" for="disponible">Disponible</label>
+  </div>
 
-  <label for="habitacionNumber">Numero de Habitacion</label><br>
-  <input type="text" id="habitacionNumber" name="habitacionNumber" [(ngModel)]="formRoom.habitacionNumber" required><br>
+  <div class="mb-3">
+    <label for="type" class="form-label">Tipo de habitación</label>
+    <!-- Bindea el OBJETO completo RoomType -->
+    <select
+      id="type"
+      name="type"
+      class="form-select"
+      required
+      [(ngModel)]="formRoom.type"
+      [ngModelOptions]="{ standalone: true }"
+    >
+      <option value="" disabled selected>Seleccione un tipo</option>
+      <option *ngFor="let rt of roomTypes" [ngValue]="rt">
+        {{ rt.name }} <!-- ajusta a tu propiedad (name / nombre) -->
+      </option>
+    </select>
+  </div>
 
-  <label for="type">Tipo</label><br>
-    <input type="text" id="type" name="type" [(ngModel)]="formRoom.type" required><br>
-
-    <label for="available">Disponible</label><br>
-    <input type="checkbox" id="available" name="available" [(ngModel)]="formRoom.available" required><br>
-
-
-  <button type="submit" [disabled]="!RoomForm.form.valid">Agregar Room</button>
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button
+  type="button"
+  class="btn btn-secondary"
+  (click)="onClear()">
+  Limpiar
+</button>
+  </div>
 </form>

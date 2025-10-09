@@ -53,7 +53,7 @@ import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.co
     MediaRowComponent,
     HamburgerComponent,
     UserDropdownComponent,
-    RoomTableComponent,
+    //RoomTableComponent,
     RoomDetailComponent,
     RoomFormComponent,
     RoomTypeFormComponent,

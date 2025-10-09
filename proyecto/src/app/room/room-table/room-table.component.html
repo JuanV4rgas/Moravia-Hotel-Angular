@@ -1,31 +1,23 @@
-
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Room Number</th>
-            <th scope="col">Type</th>
-            <th scope="col">Available</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let room of RoomsList">
-            <th scope="row">{{room.id}}</th>
-            <td>{{room.habitacionNumber}}</td>
-            <td>{{room.type}}</td>
-            <td>{{room.available}}</td>
-            <td>
-                <button class="btn btn-primary" [routerLink]="['/room/detail']" >
-                    Seleccionar
-                </button>
-            </td>
-            
-            <td>
-                <button class="btn btn-primary" (click)="eliminarRoom(room)">
-                    Eliminar
-                </button>
-            </td>
-        </tr>
-    </tbody>
+<h2>Habitaciones</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Núumero de Habitación</th>
+        <th>Tipo</th>
+        <th>Disponible</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let h of rooms">
+      <td>{{ h.habitacionNumber }}</td>
+        <td>{{ h.type?.name }}</td>
+        <td>{{ h.available }}</td>
+ 
+      <td>
+        <button [routerLink]="['/roomss', h.id]">Ver</button>
+        <button (click)="eliminarRoom(h.id)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
 </table>
-<app-room-form (addRoomEvent)="agregarRoom($event)"></app-room-form>
+<button [routerLink]="['room/nueva']">Crear nuevo</button>

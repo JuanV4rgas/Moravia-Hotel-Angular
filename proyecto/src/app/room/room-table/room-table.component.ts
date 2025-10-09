@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { RoomService } from 'src/app/services/room.service';
 import { Room } from '../../model/room';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-room-table',
+   standalone: true,
   templateUrl: './room-table.component.html',
+  imports: [CommonModule, RouterModule],
   styleUrls: ['./room-table.component.css']
 })
 export class RoomTableComponent {
@@ -12,51 +17,23 @@ export class RoomTableComponent {
   selectedRoom!: Room;
 
   //Base de datos
-    RoomsList: Room[] = [
-      {
-      id: "ROOM001",
-      habitacionNumber: "101",
-      type: "Suite",
-      available: true
-    },
-    {
-      id: "ROOM002",
-      habitacionNumber: "102",
-      type: "Doble",
-      available: false
-    },
-    {
-      id: "ROOM003",
-      habitacionNumber: "103",
-      type: "Sencilla",
-      available: true
-    },
-    {
-      id: "ROOM004",
-      habitacionNumber: "201",
-      type: "Doble",
-      available: true
-    },
-    {
-      id: "ROOM005",
-      habitacionNumber: "202",
-      type: "Suite",
-      available: false
-    }
-  ];
-  
-    mostrarRoom(Room:Room){
-      this.selectedRoom= Room;
-    }
-  
-    agregarRoom(Room:Room){
-      this.RoomsList.push(Room);
-    }
-  
-    eliminarRoom(Room:Room){
-      var index = this.RoomsList.indexOf(Room);
-      this.RoomsList.splice(index,1);
-    }
+    rooms: Room[] = [];
+
+      constructor(private roomService: RoomService) {}
+
+    ngOnInit(){
+  this.roomService.getAllRooms().subscribe({
+    next: (data) => (this.rooms = data),
+      error: (err) => console.error('Error al cargar roomtypes', err),
+  });
+}
+
+ eliminarRoom(id: string): void {
+    this.roomService.deleteRoom(id).subscribe({
+      next: () => (this.rooms = this.rooms.filter((h) => h.id !== id)),
+      error: (err) => console.error('Error al eliminar roomtype', err),
+    });
+  }
   
 }
 
