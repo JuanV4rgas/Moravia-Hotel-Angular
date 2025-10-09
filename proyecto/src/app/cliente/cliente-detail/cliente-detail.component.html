@@ -1,18 +1,34 @@
-<div>
-  <ng-container *ngIf="cliente">
-    <h4>INFORMACIÓN CLIENTE</h4>
+<div *ngIf="loading">Cargando cliente...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-    <ul>
-      <li>Id: {{ cliente.idUsuario }}</li>
-      <li>Correo: {{ cliente.email }}</li>
-      <li>Clave: {{ cliente.clave }}</li>
-      <li>Nombre: {{ cliente.nombre }}</li>
-      <li>Apellido: {{ cliente.apellido }}</li>
-      <li>Cédula: {{ cliente.cedula }}</li>
-      <li>Teléfono: {{ cliente.telefono }}</li>
-      <li>Foto de Perfil: {{ cliente.fotoPerfil }}</li>
+<div *ngIf="!loading && !error && cliente" class="card">
+  <div class="card-body">
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <img
+        *ngIf="cliente.fotoPerfil; else avatar"
+        [src]="cliente.fotoPerfil"
+        alt="Foto de perfil"
+        width="96" height="96" class="rounded-circle object-fit-cover"
+      />
+      <ng-template #avatar>
+        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+             style="width:96px;height:96px;font-size:32px;">
+          {{ (cliente.nombre?.[0] || 'C') + (cliente.apellido?.[0] || '') }}
+        </div>
+      </ng-template>
+      <div>
+        <h5 class="card-title mb-1">{{ cliente.nombre }} {{ cliente.apellido }}</h5>
+        <small class="text-muted">ID: {{ cliente.idUsuario }}</small>
+      </div>
+    </div>
+
+    <ul class="list-unstyled mb-3">
+      <li><b>Email:</b> {{ cliente.email }}</li>
+      <li><b>Cédula:</b> {{ cliente.cedula }}</li>
+      <li><b>Teléfono:</b> {{ cliente.telefono }}</li>
     </ul>
 
-    <button (click)="siguiente()" class="btn btn-primary">SIGUIENTE</button>
-  </ng-container>
+    <a class="btn btn-outline-primary me-2" [routerLink]="['/cliente/editar', cliente.idUsuario]">Editar</a>
+    <button class="btn btn-secondary" (click)="volver()">Volver</button>
+  </div>
 </div>
