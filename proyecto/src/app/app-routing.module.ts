@@ -18,6 +18,7 @@ import { RoomTypeTableComponent } from './roomtype/roomtype-table/roomtype-table
 import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
 import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
+import { ProfileComponent } from './user/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,7 @@ const routes: Routes = [
       { path: 'roomtype/lista', component: RoomtypeListComponent },
       { path: 'roomtype/nueva', component: RoomTypeFormComponent },
       { path: 'roomtype/detail', component: RoomTypeDetailComponent },
+      { path: 'profile', component: ProfileComponent },
     ],
   },
   {
