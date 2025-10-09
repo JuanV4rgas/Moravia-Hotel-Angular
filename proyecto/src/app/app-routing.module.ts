@@ -22,6 +22,7 @@ import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.co
 import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
 import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.component';
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
+import { HistoriaComponent } from './historia/historia.component';
 
 
 
@@ -46,6 +47,7 @@ const routes: Routes = [
       { path: 'roomtype/lista', component: RoomtypeListComponent },
       { path: 'roomtype/nueva', component: RoomTypeFormComponent },
       { path: 'roomtype/detail', component: RoomTypeDetailComponent },
+      { path: 'historia', component: HistoriaComponent },
 
       { path: 'usuario/table', component: UsuarioTableComponent },
       { path: 'usuario/detalle/:id', component: UsuarioDetailComponent },
