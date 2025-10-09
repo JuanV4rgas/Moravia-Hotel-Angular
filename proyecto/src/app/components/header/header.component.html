@@ -28,7 +28,7 @@
     </div>
 
     <!-- Si está autenticado -->
-    <app-user-dropdown *ngIf="authenticated"></app-user-dropdown>
+    <app-user-dropdown *ngIf="authenticated" [usuario]="usuario" [logoutFn]="logout.bind(this)"></app-user-dropdown>
   </div>
 
   <!-- Offcanvas DESDE LA IZQUIERDA Y ALTURA COMPLETA -->

@@ -33,9 +33,11 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
 import { HistoriaComponent } from './historia/historia.component';
-import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
 import { ServiceListComponent } from './servicio/service-list/service-list.component';
 import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
+import { ProfileComponent } from './user/profile/profile.component';
+import { ProfileHeaderComponent } from './user/profile-header/profile-header.component';
+import { ProfileFormComponent } from './user/profile-form/profile-form.component';
 
 @NgModule({
   declarations: [
@@ -68,9 +70,11 @@ import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.co
     MainLayoutComponent,
     AuthLayoutComponent,
     HistoriaComponent,
-    PerfilUsuarioComponent,
     ServiceListComponent,
-    RoomtypeListComponent
+    RoomtypeListComponent,
+    ProfileComponent,
+    ProfileHeaderComponent,
+    ProfileFormComponent
   ],
   imports: [
     BrowserModule,
