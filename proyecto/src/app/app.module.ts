@@ -35,9 +35,6 @@ import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-de
 import { HistoriaComponent } from './historia/historia.component';
 import { ServiceListComponent } from './servicio/service-list/service-list.component';
 import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
-import { ProfileComponent } from './user/profile/profile.component';
-import { ProfileHeaderComponent } from './user/profile-header/profile-header.component';
-import { ProfileFormComponent } from './user/profile-form/profile-form.component';
 
 @NgModule({
   declarations: [
@@ -72,9 +69,6 @@ import { ProfileFormComponent } from './user/profile-form/profile-form.component
     HistoriaComponent,
     ServiceListComponent,
     RoomtypeListComponent,
-    ProfileComponent,
-    ProfileHeaderComponent,
-    ProfileFormComponent
   ],
   imports: [
     BrowserModule,
