@@ -35,6 +35,7 @@ import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-de
 import { HistoriaComponent } from './historia/historia.component';
 import { ServiceListComponent } from './servicio/service-list/service-list.component';
 import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
+import { ProfileComponent } from './user/profile/profile.component';
 import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.component';
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
 import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
@@ -72,6 +73,7 @@ import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.compon
     HistoriaComponent,
     ServiceListComponent,
     RoomtypeListComponent,
+    ProfileComponent,
    // UsuarioTableComponent,
     UsuarioDetailComponent,
     UsuarioFormComponent
