@@ -1,5 +1,9 @@
 <h2>Tipos de habitación</h2>
-<table>
+
+<div *ngIf="loading">Cargando…</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<table class="table table-striped" *ngIf="!loading && !error">
   <thead>
     <tr>
       <th>Nombre</th>
@@ -7,7 +11,6 @@
       <th>Precio</th>
       <th>Capacidad</th>
       <th>Camas</th>
-      <th>Categoría</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -15,14 +18,15 @@
     <tr *ngFor="let h of roomtypes">
       <td>{{ h.name }}</td>
       <td>{{ h.description }}</td>
-      <td>{{ h.price | currency:'COP':'symbol':'1.0-0' }}</td>
+      <td>{{ h.price  }}</td>
       <td>{{ h.capacity }}</td>
       <td>{{ h.numberOfBeds }}</td>
-      <td>
-        <button [routerLink]="['/roomtypes', h.id]">Ver</button>
-        <button (click)="eliminarRoomType(h.id)">Eliminar</button>
+      <td class="d-flex gap-2">
+        <a class="btn btn-outline-primary btn-sm" [routerLink]="['/roomtype/detail', h.id]">Ver</a>
+        <button class="btn btn-outline-danger btn-sm" (click)="eliminarRoomType(h.id)">Eliminar</button>
       </td>
     </tr>
   </tbody>
 </table>
-<button [routerLink]="['roomtype/nueva']">Crear nuevo</button>
+
+<a class="btn btn-primary mt-2" [routerLink]="['/roomtype/nueva']">Crear nuevo</a>

@@ -43,11 +43,11 @@ const routes: Routes = [
       { path: 'room/detail/:id', component: RoomDetailComponent },
       { path: 'cliente/table', component: ClienteTableComponent },
       { path: 'cliente/nueva', component: ClienteFormComponent },
-      { path: 'cliente/detail', component: ClienteDetailComponent },
+      { path: 'cliente/detail/:id', component: ClienteDetailComponent },
       { path: 'roomtype/table', component: RoomTypeTableComponent },
       { path: 'roomtype/lista', component: RoomtypeListComponent },
       { path: 'roomtype/nueva', component: RoomTypeFormComponent },
-      { path: 'roomtype/detail', component: RoomTypeDetailComponent },
+      { path: 'roomtype/detail/:id', component: RoomTypeDetailComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'historia', component: HistoriaComponent },
 

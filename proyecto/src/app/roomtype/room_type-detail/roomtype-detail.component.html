@@ -1,8 +1,19 @@
-<div *ngIf="roomType">
-  <h2>{{ roomType.name }}</h2>
-  <img *ngIf="roomType.image" [src]="roomType.image" alt="{{ roomType.name }}" width="200">
-  <p><strong>Descripción:</strong> {{ roomType.description }}</p>
-  <p><strong>Precio:</strong> {{ roomType.price | currency }}</p>
-  <p><strong>Capacidad:</strong> {{ roomType.capacity }}</p>
-  <p><strong>Camas:</strong> {{ roomType.numberOfBeds }}</p>
+<div *ngIf="roomtype as rt; else cargando">
+  <h4>{{ rt.name }}</h4>
+  <ul>
+    <li>Id: {{ rt.id }}</li>
+    <li>Descripción: {{ rt.description }}</li>
+    <li>Precio: {{ rt.price }}</li>
+    <li>Capacidad: {{ rt.capacity }}</li>
+    <li>Camas: {{ rt.numberOfBeds }}</li>
+    <li *ngIf="rt.image">
+      Imagen:
+      <a [href]="rt.image" target="_blank" rel="noopener noreferrer">ver</a>
+    </li>
+  </ul>
 </div>
+
+<ng-template #cargando>
+  <p *ngIf="!error">Cargando tipo de habitación…</p>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+</ng-template>

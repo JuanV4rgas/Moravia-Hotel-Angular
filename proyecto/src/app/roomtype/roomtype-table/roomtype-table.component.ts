@@ -1,32 +1,34 @@
+// src/app/roomtype/roomtype-table/roomtype-table.component.ts
 import { Component, OnInit } from '@angular/core';
-import { RoomTypeService } from 'src/app/services/roomtype.service';
-import { RoomType } from '../../model/roomtype';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
+import { RoomTypeService } from 'src/app/services/roomtype.service';
+import { RoomType } from '../../model/roomtype';
 
 @Component({
   selector: 'app-roomtype-table',
   standalone: true,
+  imports: [CommonModule, RouterModule],   // 👈 necesario para [routerLink]
   templateUrl: './roomtype-table.component.html',
-   imports: [CommonModule, RouterModule],
   styleUrls: ['./roomtype-table.component.css']
 })
 export class RoomTypeTableComponent implements OnInit {
   roomtypes: RoomType[] = [];
+  loading = false;
+  error?: string;
 
-  constructor(private roomTypeService: RoomTypeService) {}
-
+  constructor(private service: RoomTypeService) {}
   ngOnInit(): void {
-    this.roomTypeService.getAllRoomTypes().subscribe({
-      next: (data) => (this.roomtypes = data),
-      error: (err) => console.error('Error al cargar roomtypes', err),
+    this.loading = true;
+    this.service.getAllRoomTypes().subscribe({
+      next: (data) => { this.roomtypes = data; this.loading = false; },
+      error: (err) => { this.error = `No se pudieron cargar los tipos (HTTP ${err?.status ?? '—'})`; this.loading = false; }
     });
   }
 
   eliminarRoomType(id: string): void {
-    this.roomTypeService.deleteRoomType(id).subscribe({
-      next: () => (this.roomtypes = this.roomtypes.filter((h) => h.id !== id)),
+    this.service.deleteRoomType(id).subscribe({
+      next: () => this.roomtypes = this.roomtypes.filter(rt => rt.id !== id),
       error: (err) => console.error('Error al eliminar roomtype', err),
     });
   }

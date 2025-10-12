@@ -1,24 +1,46 @@
-<h2 *ngIf="!modoEdicion">Nuevo tipo de habitación</h2>
-<h2 *ngIf="modoEdicion">Editar tipo de habitación</h2>
+<form (ngSubmit)="save()" class="p-3" novalidate>
+  <div class="mb-3">
+    <label class="form-label" for="name">Nombre</label>
+    <input id="name" class="form-control" type="text"
+           [(ngModel)]="form.name" [ngModelOptions]="{standalone:true}" required />
+  </div>
 
-<form (ngSubmit)="guardar()" #roomTypeForm="ngForm">
-  <label>Nombre:</label>
-  <input [(ngModel)]="roomType.name" name="name" required>
+  <div class="mb-3">
+    <label class="form-label" for="description">Descripción</label>
+    <textarea id="description" class="form-control" rows="3"
+              [(ngModel)]="form.description" [ngModelOptions]="{standalone:true}"></textarea>
+  </div>
 
-  <label>Descripción:</label>
-  <textarea [(ngModel)]="roomType.description" name="description" required></textarea>
+  <div class="mb-3">
+    <label class="form-label" for="price">Precio</label>
+    <input id="price" class="form-control" type="number" min="0"
+           [(ngModel)]="form.price" [ngModelOptions]="{standalone:true}" />
+  </div>
 
-  <label>Precio:</label>
-  <input type="number" [(ngModel)]="roomType.price" name="price" required>
+  <div class="mb-3">
+    <label class="form-label" for="capacity">Capacidad</label>
+    <input id="capacity" class="form-control" type="text"
+           [(ngModel)]="form.capacity" [ngModelOptions]="{standalone:true}" />
+  </div>
 
-  <label>Capacidad:</label>
-  <input [(ngModel)]="roomType.capacity" name="capacity" required>
+  <div class="mb-3">
+    <label class="form-label" for="beds">Camas</label>
+    <input id="beds" class="form-control" type="number" min="1"
+           [(ngModel)]="form.numberOfBeds" [ngModelOptions]="{standalone:true}" />
+  </div>
 
-  <label>Camas:</label>
-  <input type="number" [(ngModel)]="roomType.numberOfBeds" name="numberOfBeds" required>
+  <div class="mb-3">
+    <label class="form-label" for="image">Imagen (URL)</label>
+    <input id="image" class="form-control" type="url"
+           [(ngModel)]="form.image" [ngModelOptions]="{standalone:true}" />
+  </div>
 
-  <label>Imagen (URL):</label>
-  <input [(ngModel)]="roomType.image" name="image">
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary" type="submit" [disabled]="loading">
+      {{ isEdit ? 'Actualizar' : 'Guardar' }}
+    </button>
+    <button class="btn btn-secondary" type="button" (click)="onClear()">Limpiar</button>
+  </div>
 
-  <button type="submit" [disabled]="roomTypeForm.invalid">Guardar</button>
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
 </form>
