@@ -18,11 +18,12 @@
     <tr *ngFor="let h of roomtypes">
       <td>{{ h.name }}</td>
       <td>{{ h.description }}</td>
-      <td>{{ h.price  }}</td>
+      <td>{{ h.price | currency:'COP':'symbol':'1.0-0' }}</td>
       <td>{{ h.capacity }}</td>
       <td>{{ h.numberOfBeds }}</td>
       <td class="d-flex gap-2">
-        <a class="btn btn-outline-primary btn-sm" [routerLink]="['/roomtype/detail', h.id]">Ver</a>
+        <a class="btn btn-outline-primary btn-sm" [routerLink]="['/roomtype', h.id]">Ver</a>
+        <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/roomtype/editar', h.id]">Editar</a>
         <button class="btn btn-outline-danger btn-sm" (click)="eliminarRoomType(h.id)">Eliminar</button>
       </td>
     </tr>
