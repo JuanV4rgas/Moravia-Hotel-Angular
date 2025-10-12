@@ -40,6 +40,8 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.component';
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
 import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
+import { RoomtypeEditarComponent } from './roomtype/roomtype-editar/roomtype-editar.component';
+import { RoomEditarComponent } from './room/room-editar/room-editar.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,9 @@ import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.compon
     ProfileComponent,
    // UsuarioTableComponent,
     UsuarioDetailComponent,
-    UsuarioFormComponent
+    UsuarioFormComponent,
+    RoomtypeEditarComponent,
+    RoomEditarComponent
     //RoomtypeListComponent,
   ],
   imports: [

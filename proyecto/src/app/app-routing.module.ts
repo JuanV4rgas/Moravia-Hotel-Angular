@@ -38,16 +38,22 @@ const routes: Routes = [
       { path: 'servicio/detail', component: ServiceDetailComponent },
       { path: 'servicio/nueva', component: ServiceFormComponent },
       { path: 'servicio/lista', component: ServiceListComponent },
+
       { path: 'room/table', component: RoomTableComponent },
       { path: 'room/nueva', component: RoomFormComponent },
       { path: 'room/detail/:id', component: RoomDetailComponent },
+      { path: 'room/editar/:id', component: RoomFormComponent },
+
       { path: 'cliente/table', component: ClienteTableComponent },
       { path: 'cliente/nueva', component: ClienteFormComponent },
       { path: 'cliente/detail/:id', component: ClienteDetailComponent },
+
       { path: 'roomtype/table', component: RoomTypeTableComponent },
       { path: 'roomtype/lista', component: RoomtypeListComponent },
       { path: 'roomtype/nueva', component: RoomTypeFormComponent },
       { path: 'roomtype/detail/:id', component: RoomTypeDetailComponent },
+      { path: 'roomtype/editar/:id', component: RoomTypeFormComponent },
+      
       { path: 'profile', component: ProfileComponent },
       { path: 'historia', component: HistoriaComponent },
 
