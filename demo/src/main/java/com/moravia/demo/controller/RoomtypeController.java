@@ -37,7 +37,7 @@ public class RoomtypeController {
     }
 
     @PostMapping("/update/{id}")
-    public void actualizarTipo(@RequestBody Roomtype roomtype, @PathVariable("id") String id) {
+    public void actualizarTipo(@RequestBody Roomtype roomtype, @PathVariable("id") Integer id) {
         roomtype.setId(id);
         roomtypeService.update(roomtype);
     }

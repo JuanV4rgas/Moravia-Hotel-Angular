@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import com.moravia.demo.model.Roomtype;
 
 @Repository
-public interface RoomtypeRepository extends JpaRepository<Roomtype, String> {
+public interface RoomtypeRepository extends JpaRepository<Roomtype, Integer> {
 }

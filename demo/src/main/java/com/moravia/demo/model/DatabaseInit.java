@@ -4,6 +4,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
+import java.time.LocalDate;
+
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,7 +85,6 @@ public class DatabaseInit implements ApplicationRunner {
 
         for (JsonNode rtJson : jsonNode.get("roomtypes")) {
             Roomtype rt = new Roomtype();
-            rt.setId(rtJson.get("id").asText());
             rt.setName(rtJson.get("name").asText());
             rt.setDescription(rtJson.get("description").asText());
             rt.setPrice(rtJson.get("price").asDouble());
@@ -104,7 +105,6 @@ public class DatabaseInit implements ApplicationRunner {
 
         for (JsonNode roomJson : jsonNode.get("rooms")) {
             Room room = new Room();
-            room.setId(roomJson.get("id").asText());
             room.setHabitacionNumber(roomJson.get("numeroHabitacion").asText());
             room.setAvailable(roomJson.get("disponible").asBoolean());
 
@@ -141,8 +141,8 @@ public class DatabaseInit implements ApplicationRunner {
 
             Reserva reserva = new Reserva();
             reserva.setCliente(cliente);
-            reserva.setFechaInicio("2025-10-01");
-            reserva.setFechaFin("2025-10-05");
+            reserva.setFechaInicio(LocalDate.parse("2025-10-15"));
+            reserva.setFechaFin(LocalDate.parse("2025-10-18"));
             reserva.setEstado("CONFIRMADA");
 
             List<Room> reservaRooms = new ArrayList<>();

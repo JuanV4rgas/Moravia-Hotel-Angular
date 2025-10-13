@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import com.moravia.demo.model.Reserva;
 
 @Repository
-public interface ReservaRepository extends JpaRepository<Reserva, Long> {
+public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 }

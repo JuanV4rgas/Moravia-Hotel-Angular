@@ -1,7 +1,6 @@
 package com.moravia.demo.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,7 @@ import com.moravia.demo.service.RoomService;
 public class RoomController {
 
     @Autowired
-    RoomService roomService;
+    private RoomService roomService;
 
     @GetMapping("/all")
     public List<Room> mostrarRooms() {
@@ -22,7 +21,7 @@ public class RoomController {
     }
 
     @GetMapping("/find/{id}")
-    public Room mostrarRoom(@PathVariable("id") String id) {
+    public Room mostrarRoom(@PathVariable("id") Integer id) {
         return roomService.searchById(id);
     }
 
@@ -32,12 +31,12 @@ public class RoomController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void eliminarRoom(@PathVariable("id") String id) {
+    public void eliminarRoom(@PathVariable("id") Integer id) {
         roomService.deleteById(id);
     }
 
-    @PostMapping("/update/{id}")
-    public void actualizarRoom(@RequestBody Room room, @PathVariable("id") String id) {
+    @PutMapping("/update/{id}")
+    public void actualizarRoom(@RequestBody Room room, @PathVariable("id") Integer id) {
         room.setId(id);
         roomService.update(room);
     }
