@@ -1,24 +1,9 @@
-<!-- src/app/servicio/service-form/service-form.component.html -->
-<h2>Crear servicio</h2>
+<h3>Editar servicio</h3>
 
 <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-<div *ngIf="saving" class="alert alert-info">Guardando…</div>
+<div *ngIf="loading" class="alert alert-info">Cargando…</div>
 
-<form (ngSubmit)="guardar()" class="p-3" *ngIf="!saving">
-  <!-- ID -->
-  <div class="mb-3">
-    <label class="form-label">ID de servicio</label>
-    <input
-      type="number"
-      class="form-control"
-      [(ngModel)]="form.idServicio"
-      name="idServicio"
-      min="1"
-      required
-    />
-    <small class="text-muted">Debe ser un número entero positivo.</small>
-  </div>
-
+<form (ngSubmit)="guardar()" class="p-3" *ngIf="!loading">
   <div class="mb-3">
     <label class="form-label">Nombre</label>
     <input class="form-control" [(ngModel)]="form.nombre" name="nombre" required />
@@ -41,7 +26,6 @@
 
   <div class="d-flex gap-2">
     <button type="submit" class="btn btn-primary">Guardar</button>
-    <button type="button" class="btn btn-secondary" (click)="onClear()">Limpiar</button>
     <button type="button" class="btn btn-outline-secondary" (click)="cancelar()">Cancelar</button>
   </div>
 </form>

@@ -1,30 +1,42 @@
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Description</th>
-            <th scope="col">Image</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let service of servicesList">
-            <th scope="row">{{service.id}}</th>
-            <td>{{service.name}}</td>
-            <td>{{service.price}}</td>
-            <td>{{service.description}}</td>
-            <td>{{service.image}}</td>
-            <td>
-                <button class="btn btn-primary" [routerLink]="['/servicio/detail']">
-                    Seleccionar
-                </button>
-            </td>
-            <td>
-                <button class="btn btn-primary" (click)="eliminarServicio(service)">
-                    Eliminar
-                </button>
-            </td>
-        </tr>
-    </tbody>
+<h2>Servicios</h2>
+
+<div *ngIf="loading" class="alert alert-info">Cargando…</div>
+<div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
+<div *ngIf="!error && !loading && servicios?.length === 0" class="alert alert-warning mt-2">
+  No hay servicios.
+</div>
+
+<table class="table table-hover" *ngIf="!loading && servicios?.length">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th class="text-end">Precio</th>
+      <th>Imagen</th>
+      <th style="width: 260px;">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let s of servicios; trackBy: trackById">
+      <td>{{ s.nombre }}</td>
+      <td>{{ s.descripcion }}</td>
+      <td class="text-end">{{ s.precio | currency:'COP':'symbol' }}</td>
+      <td>
+        <!-- SOLO abre la imagen si existe (esto NO es el detalle) -->
+        <a *ngIf="s.imagenUrl" [href]="s.imagenUrl" target="_blank">imagen</a>
+      </td>
+      <td class="d-flex gap-2">
+        <!-- 👇 ESTE ES EL “VER” que pediste: navega al detalle -->
+        <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/servicio/detail', s.idServicio]">Ver</a>
+
+        <!-- Editar -->
+        <a class="btn btn-outline-primary btn-sm" [routerLink]="['/servicio/editar', s.idServicio]">Editar</a>
+
+        <!-- Eliminar -->
+        <button class="btn btn-outline-danger btn-sm" (click)="eliminar(s.idServicio, $event)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
 </table>
+
+<a class="btn btn-primary mt-2" [routerLink]="['/servicio/nueva']">Crear nuevo</a>

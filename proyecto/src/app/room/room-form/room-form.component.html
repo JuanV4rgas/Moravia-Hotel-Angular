@@ -1,5 +1,20 @@
 <!-- Formulario para crear/editar Room -->
 <form (ngSubmit)="addRoomForm()" class="p-3" novalidate>
+
+<div class="mb-3">
+    <label for="id" class="form-label">ID</label>
+    <input
+      id="id"
+      name="id"
+      class="form-control"
+      type="text"
+      required
+      [(ngModel)]="formRoom.id"
+      [ngModelOptions]="{ standalone: true }"
+      placeholder="Ej: ROOM011"
+    />
+  </div>
+
   <div class="mb-3">
     <label for="numeroHabitacion" class="form-label">Número de habitación</label>
     <input

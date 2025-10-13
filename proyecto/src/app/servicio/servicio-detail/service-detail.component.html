@@ -1,17 +1,27 @@
 <div>
-    <h4>service-detail</h4>
-    <ng-container *ngIf="service">
-        <ul>
-            <li>Id:{{service.id}}</li>
-            <li>Nombre: {{service.name}}</li>
-            <li>Precio: ${{service.price}}</li>
-            <li>Descipcion: {{service.description}}</li>
-            <li>{{service.image}}</li>
-        </ul>
-    </ng-container>
+  <h4>Servicio - Detalle</h4>
 
-    <ng-container *ngIf="!service">
-        <p>No hay servicio seleccionado</p>
-    </ng-container>
+  <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
+  <ng-container *ngIf="!loading && !error && servicio; else noSel">
+    <ul>
+      <li><strong>ID:</strong> {{ servicio.idServicio }}</li>
+      <li><strong>Nombre:</strong> {{ servicio.nombre }}</li>
+      <li><strong>Descripción:</strong> {{ servicio.descripcion }}</li>
+      <li><strong>Precio:</strong> {{ servicio.precio | currency:'COP':'symbol' }}</li>
+      <li *ngIf="servicio.imagenUrl">
+        <strong>Imagen:</strong> <a [href]="servicio.imagenUrl" target="_blank">ver</a>
+      </li>
+    </ul>
+
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-primary" [routerLink]="['/servicio/editar', servicio.idServicio]">Editar</a>
+      <button class="btn btn-secondary" (click)="volver()">Volver</button>
+    </div>
+  </ng-container>
+
+  <ng-template #noSel>
+    <p>No hay servicio seleccionado.</p>
+  </ng-template>
 </div>

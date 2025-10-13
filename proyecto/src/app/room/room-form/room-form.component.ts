@@ -74,6 +74,10 @@ export class RoomFormComponent implements OnInit {
   }
 
   addRoomForm(): void {
+    if (!this.formRoom.id?.trim()) {
+      this.error = 'El id es obligatorio.';
+      return;
+    }
     if (!this.formRoom.habitacionNumber?.trim()) {
       this.error = 'El número de habitación es obligatorio.';
       return;

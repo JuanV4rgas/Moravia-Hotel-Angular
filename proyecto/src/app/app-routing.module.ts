@@ -34,10 +34,12 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
+
       { path: 'servicio/table', component: ServiceTableComponent},
-      { path: 'servicio/detail', component: ServiceDetailComponent },
+      { path: 'servicio/detail/:id', component: ServiceDetailComponent },
       { path: 'servicio/nueva', component: ServiceFormComponent },
       { path: 'servicio/lista', component: ServiceListComponent },
+      { path: 'servicio/editar/:id', component: ServiceFormComponent },
 
       { path: 'room/table', component: RoomTableComponent },
       { path: 'room/nueva', component: RoomFormComponent },

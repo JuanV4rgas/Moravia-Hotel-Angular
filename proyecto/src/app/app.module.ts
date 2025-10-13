@@ -42,13 +42,14 @@ import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.
 import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
 import { RoomtypeEditarComponent } from './roomtype/roomtype-editar/roomtype-editar.component';
 import { RoomEditarComponent } from './room/room-editar/room-editar.component';
+import { ServiceEditarComponent } from './servicio/service-editar/service-editar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ServiceTableComponent,
-    ServiceDetailComponent,
-    ServiceFormComponent,
+    //ServiceTableComponent,
+    //ServiceDetailComponent,
+    //ServiceFormComponent,
     HomePageComponent,
     FooterComponent,
     HeaderComponent,
@@ -81,7 +82,8 @@ import { RoomEditarComponent } from './room/room-editar/room-editar.component';
     UsuarioDetailComponent,
     UsuarioFormComponent,
     RoomtypeEditarComponent,
-    RoomEditarComponent
+    RoomEditarComponent,
+   // ServiceEditarComponent
     //RoomtypeListComponent,
   ],
   imports: [
