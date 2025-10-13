@@ -1,18 +1,84 @@
 {
-  "usuarios": [
-    { "correo": "juan.perez@example.com", "clave": "clave123", "nombre": "Juan", "apellido": "Pérez", "cedula": "1234567890", "telefono": "+57 3001234567", "fotoPerfil": "https://randomuser.me/api/portraits/men/1.jpg" },
-    { "correo": "maria.gomez@example.com", "clave": "pass456", "nombre": "María", "apellido": "Gómez", "cedula": "9876543210", "telefono": "+57 3012345678", "fotoPerfil": "https://randomuser.me/api/portraits/women/2.jpg" },
-    { "correo": "carlos.lopez@example.com", "clave": "secure789", "nombre": "Carlos", "apellido": "López", "cedula": "1122334455", "telefono": "+57 3023456789", "fotoPerfil": "https://randomuser.me/api/portraits/men/3.jpg" },
-    { "correo": "laura.martinez@example.com", "clave": "clave987", "nombre": "Laura", "apellido": "Martínez", "cedula": "2233445566", "telefono": "+57 3034567890", "fotoPerfil": "https://randomuser.me/api/portraits/women/4.jpg" },
-    { "correo": "andres.ramirez@example.com", "clave": "pass321", "nombre": "Andrés", "apellido": "Ramírez", "cedula": "3344556677", "telefono": "+57 3045678901", "fotoPerfil": "https://randomuser.me/api/portraits/men/5.jpg" },
-    { "correo": "sofia.torres@example.com", "clave": "sofia456", "nombre": "Sofía", "apellido": "Torres", "cedula": "4455667788", "telefono": "+57 3056789012", "fotoPerfil": "https://randomuser.me/api/portraits/women/6.jpg" },
-    { "correo": "pedro.morales@example.com", "clave": "pedro789", "nombre": "Pedro", "apellido": "Morales", "cedula": "5566778899", "telefono": "+57 3067890123", "fotoPerfil": "https://randomuser.me/api/portraits/men/7.jpg" },
-    { "correo": "camila.hernandez@example.com", "clave": "camila123", "nombre": "Camila", "apellido": "Hernández", "cedula": "6677889900", "telefono": "+57 3078901234", "fotoPerfil": "https://randomuser.me/api/portraits/women/8.jpg" },
-    { "correo": "diego.flores@example.com", "clave": "diego456", "nombre": "Diego", "apellido": "Flores", "cedula": "7788990011", "telefono": "+57 3089012345", "fotoPerfil": "https://randomuser.me/api/portraits/men/9.jpg" },
-    { "correo": "valentina.rojas@example.com", "clave": "valen789", "nombre": "Valentina", "apellido": "Rojas", "cedula": "8899001122", "telefono": "+57 3090123456", "fotoPerfil": "https://randomuser.me/api/portraits/women/10.jpg" },
-    { "correo": "david.martinez@example.com", "clave": "david2024", "nombre": "David", "apellido": "Martínez", "cedula": "999111222", "telefono": "+57 3101239876", "fotoPerfil": "https://randomuser.me/api/portraits/men/20.jpg" },
-    { "correo": "isabela.navarro@example.com", "clave": "isabela333", "nombre": "Isabela", "apellido": "Navarro", "cedula": "888777666", "telefono": "+57 3114567890", "fotoPerfil": "https://randomuser.me/api/portraits/women/22.jpg" },
-    { "correo": "felipe.sanchez@example.com", "clave": "felipe555", "nombre": "Felipe", "apellido": "Sánchez", "cedula": "444555666", "telefono": "+57 3126549870", "fotoPerfil": "https://randomuser.me/api/portraits/men/23.jpg" },
-    { "correo": "daniela.ospina@example.com", "clave": "daniela888", "nombre": "Daniela", "apellido": "Ospina", "cedula": "222333444", "telefono": "+57 3139513570", "fotoPerfil": "https://randomuser.me/api/portraits/women/24.jpg" }
-  ]
+    "usuarios": [
+        {
+            "correo": "juan.perez@example.com",
+            "clave": "clave123",
+            "nombre": "Juan",
+            "apellido": "Pérez",
+            "cedula": "1234567890",
+            "telefono": "+57 3001234567",
+            "fotoPerfil": "https://randomuser.me/api/portraits/men/1.jpg",
+            "tipo": "trabajador"
+        },
+        {
+            "correo": "maria.gomez@example.com",
+            "clave": "pass456",
+            "nombre": "María",
+            "apellido": "Gómez",
+            "cedula": "9876543210",
+            "telefono": "+57 3012345678",
+            "fotoPerfil": "https://randomuser.me/api/portraits/women/2.jpg",
+            "tipo": "cliente"
+        },
+        {
+            "correo": "carlos.rojas@example.com",
+            "clave": "carlos123",
+            "nombre": "Carlos",
+            "apellido": "Rojas",
+            "cedula": "1112233445",
+            "telefono": "+57 3024567890",
+            "fotoPerfil": "https://randomuser.me/api/portraits/men/3.jpg",
+            "tipo": "trabajador"
+        },
+        {
+            "correo": "laura.martinez@example.com",
+            "clave": "laura456",
+            "nombre": "Laura",
+            "apellido": "Martínez",
+            "cedula": "5544332211",
+            "telefono": "+57 3041234567",
+            "fotoPerfil": "https://randomuser.me/api/portraits/women/4.jpg",
+            "tipo": "cliente"
+        },
+        {
+            "correo": "andres.mendoza@example.com",
+            "clave": "andres789",
+            "nombre": "Andrés",
+            "apellido": "Mendoza",
+            "cedula": "1029384756",
+            "telefono": "+57 3056789123",
+            "fotoPerfil": "https://randomuser.me/api/portraits/men/5.jpg",
+            "tipo": "cliente"
+        },
+        {
+            "correo": "paola.rivera@example.com",
+            "clave": "paola789",
+            "nombre": "Paola",
+            "apellido": "Rivera",
+            "cedula": "0192837465",
+            "telefono": "+57 3065432189",
+            "fotoPerfil": "https://randomuser.me/api/portraits/women/6.jpg",
+            "tipo": "trabajador"
+        },
+        {
+            "correo": "felipe.sanchez@example.com",
+            "clave": "felipe321",
+            "nombre": "Felipe",
+            "apellido": "Sánchez",
+            "cedula": "1230984567",
+            "telefono": "+57 3071112233",
+            "fotoPerfil": "https://randomuser.me/api/portraits/men/7.jpg",
+            "tipo": "cliente"
+        },
+        {
+            "correo": "camila.ortiz@example.com",
+            "clave": "camila654",
+            "nombre": "Camila",
+            "apellido": "Ortiz",
+            "cedula": "7654321098",
+            "telefono": "+57 3089988776",
+            "fotoPerfil": "https://randomuser.me/api/portraits/women/8.jpg",
+            "tipo": "trabajador"
+        }
+    ]
 }

@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
   constructor(private fb: FormBuilder, private usuarioService: UsuarioService,private authService: AuthService,
       private router: Router) {}
 ngOnInit(): void {
-    // Suscribirse al usuario actual
+
     this.authService.usuario$.subscribe(
       usuario => this.usuario = usuario!
     );
@@ -39,6 +39,7 @@ ngOnInit(): void {
       cedula: [this.usuario.cedula],
       telefono: [this.usuario.telefono],
       fotoPerfil: [this.usuario.fotoPerfil],
+      tipo: [this.usuario.tipo],
       nuevaClave: [''],
       confirmarClave: ['']
     });
@@ -68,16 +69,24 @@ ngOnInit(): void {
   }
 
   onSubmit(): void {
-    if (this.perfilForm.valid) {
-      this.usuarioService.updateUsuario(this.usuario.idUsuario!, this.perfilForm.value).subscribe({
-        next: () => {
-          this.mensaje = 'Cambios guardados correctamente.';
-          this.formChanged = false;
-        },
-        error: () => (this.error = 'Error al guardar los cambios.')
-      });
-    }
+  if (this.perfilForm.valid) {
+    const datosActualizados = { ...this.perfilForm.value };
+
+    // No enviar claves vacías
+    if (!datosActualizados.nuevaClave) delete datosActualizados.nuevaClave;
+    if (!datosActualizados.confirmarClave) delete datosActualizados.confirmarClave;
+    if (!datosActualizados.tipo) datosActualizados.tipo = this.usuario.tipo;
+
+    this.usuarioService.updateUsuario(this.usuario.idUsuario!, datosActualizados).subscribe({
+      next: () => {
+        this.mensaje = 'Cambios guardados correctamente.';
+        this.formChanged = false;
+      },
+      error: () => (this.error = 'Error al guardar los cambios.')
+    });
   }
+}
+
 
   eliminarUsuario(): void {
     if (confirm('¿Seguro que deseas eliminar tu cuenta?')) {

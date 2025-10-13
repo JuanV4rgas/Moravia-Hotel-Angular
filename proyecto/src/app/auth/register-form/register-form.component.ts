@@ -28,6 +28,7 @@ export class RegisterFormComponent {
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
       fotoPerfil: [''],
       clave: ['', Validators.required],
+      tipo: ['cliente', Validators.required] // 👈 nuevo campo agregado
     });
   }
 
@@ -46,7 +47,7 @@ export class RegisterFormComponent {
           this.successMessage = '¡Registro exitoso! Redirigiendo al login...';
           setTimeout(() => {
             this.toggleForm.emit();
-          }, 2000); // Mostrar mensaje por 2 segundos y luego cambiar a login
+          }, 2000);
         },
         error: (error) => {
           console.error('Error en registro:', error);
@@ -60,6 +61,6 @@ export class RegisterFormComponent {
   }
 
   cambiarALogin() {
-    this.toggleForm.emit(); // Esto notifica al padre para mostrar el login
+    this.toggleForm.emit();
   }
 }

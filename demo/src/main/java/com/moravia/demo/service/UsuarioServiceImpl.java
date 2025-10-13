@@ -28,10 +28,27 @@ public class UsuarioServiceImpl implements UsuarioService {
         repo.save(usuario);
     }
 
-    @Override
     public void update(Usuario usuario) {
-        repo.save(usuario);
+    Usuario existing = repo.findById(usuario.getIdUsuario())
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    // Solo actualizamos los campos modificables
+    existing.setNombre(usuario.getNombre());
+    existing.setApellido(usuario.getApellido());
+    existing.setEmail(usuario.getEmail());
+    existing.setTelefono(usuario.getTelefono());
+    existing.setCedula(usuario.getCedula());
+    existing.setFotoPerfil(usuario.getFotoPerfil());
+    existing.setTipo(usuario.getTipo());
+
+    // ⚠️ Solo actualiza la clave si el campo no está vacío
+    if (usuario.getClave() != null && !usuario.getClave().trim().isEmpty()) {
+        existing.setClave(usuario.getClave());
     }
+
+    repo.save(existing);
+}
+
 
     @Override
     public void deleteById(Long id) {

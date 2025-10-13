@@ -13,7 +13,7 @@
       <ng-template #avatar>
         <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
              style="width:96px;height:96px;font-size:32px;">
-          {{ (cliente.nombre?.[0] || 'C') + (cliente.apellido?.[0] || '') }}
+          {{ (cliente.nombre[0] || 'C') + (cliente.apellido[0] || '') }}
         </div>
       </ng-template>
       <div>

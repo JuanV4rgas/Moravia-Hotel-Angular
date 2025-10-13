@@ -2,10 +2,12 @@ package com.moravia.demo.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
 
     @Id
@@ -19,4 +21,9 @@ public class Usuario {
     private String cedula;
     private String telefono;
     private String fotoPerfil;
+    private String tipo;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Reserva> reservas;
 }

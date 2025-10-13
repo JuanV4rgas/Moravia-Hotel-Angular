@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Data
 @Entity
 public class Reserva {
@@ -18,9 +21,11 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    @JsonBackReference
+    private Usuario cliente;
 
-    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "reserva")
+    @JsonManagedReference
     private Cuenta cuenta;
 
     @ManyToMany

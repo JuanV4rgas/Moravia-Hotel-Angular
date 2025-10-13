@@ -6,15 +6,15 @@
 
   <ng-container *ngIf="!loading && !error && room; else noRoom">
     <ul class="list-group mb-3">
-      <li class="list-group-item"><strong>ID:</strong> {{ room?.id }}</li>
+      <li class="list-group-item"><strong>ID:</strong> {{ room.id }}</li>
       <li class="list-group-item">
-        <strong>Número de Habitación:</strong> {{ room?.habitacionNumber }}
+        <strong>Número de Habitación:</strong> {{ room.habitacionNumber }}
       </li>
       <li class="list-group-item">
-        <strong>Tipo:</strong> {{ room?.type?.name }}
+        <strong>Tipo:</strong> {{ room.type?.name }}
       </li>
       <li class="list-group-item">
-        <strong>Disponible:</strong> {{ room?.available ? 'Sí' : 'No' }}
+        <strong>Disponible:</strong> {{ room.available ? 'Sí' : 'No' }}
       </li>
     </ul>
 

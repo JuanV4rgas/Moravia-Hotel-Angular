@@ -1,9 +1,0 @@
-{
-  "clientes": [
-    { "idUsuario": 1 },
-    { "idUsuario": 2 },
-    { "idUsuario": 3 },
-    { "idUsuario": 5 },
-    { "idUsuario": 7 }
-  ]
-}

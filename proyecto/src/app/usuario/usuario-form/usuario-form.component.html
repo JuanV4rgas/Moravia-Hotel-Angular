@@ -1,6 +1,6 @@
-<!-- Formulario para crear/editar Usuario -->
 <form (ngSubmit)="addUsuarioForm()" class="p-3" novalidate>
   <div class="row g-3">
+    <!-- Nombre y Apellido -->
     <div class="col-md-6">
       <label for="nombre" class="form-label">Nombre</label>
       <input id="nombre" name="nombre" class="form-control" type="text" required
@@ -13,6 +13,7 @@
              [(ngModel)]="usuario.apellido" [ngModelOptions]="{ standalone: true }" />
     </div>
 
+    <!-- Email y Clave -->
     <div class="col-md-6">
       <label for="email" class="form-label">Email</label>
       <input id="email" name="email" class="form-control" type="email" required
@@ -25,6 +26,7 @@
              [(ngModel)]="usuario.clave" [ngModelOptions]="{ standalone: true }" />
     </div>
 
+    <!-- Cédula y Teléfono -->
     <div class="col-md-6">
       <label for="cedula" class="form-label">Cédula</label>
       <input id="cedula" name="cedula" class="form-control" type="text" required
@@ -37,6 +39,18 @@
              [(ngModel)]="usuario.telefono" [ngModelOptions]="{ standalone: true }" />
     </div>
 
+    <!-- Tipo de Usuario -->
+    <div class="col-md-6">
+      <label for="tipo" class="form-label">Tipo de Usuario</label>
+      <select id="tipo" name="tipo" class="form-select" required
+              [(ngModel)]="usuario.tipo" [ngModelOptions]="{ standalone: true }">
+        <option value="">-- Selecciona --</option>
+        <option value="cliente">Cliente</option>
+        <option value="trabajador">Trabajador</option>
+      </select>
+    </div>
+
+    <!-- Foto -->
     <div class="col-12">
       <label for="fotoPerfil" class="form-label">Foto (URL/Base64) — opcional</label>
       <input id="fotoPerfil" name="fotoPerfil" class="form-control" type="text"

@@ -24,27 +24,24 @@ public class DatabaseInit implements ApplicationRunner {
     private final RoomController roomController;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    ClienteRepository clienteRepository;
+    private RoomRepository roomRepository;
 
     @Autowired
-    RoomRepository roomRepository;
+    private RoomtypeRepository roomtypeRepository;
 
     @Autowired
-    RoomtypeRepository roomtypeRepository;
+    private ServicioRepository servicioRepository;
 
     @Autowired
-    ServicioRepository servicioRepository;
+    private ReservaRepository reservaRepository;
 
     @Autowired
-    ReservaRepository reservaRepository;
+    private CuentaRepository cuentaRepository;
 
-    @Autowired
-    CuentaRepository cuentaRepository;
-
-    DatabaseInit(RoomController roomController) {
+    public DatabaseInit(RoomController roomController) {
         this.roomController = roomController;
     }
 
@@ -54,24 +51,29 @@ public class DatabaseInit implements ApplicationRunner {
         Random rand = new Random();
 
         // ========================
-        // Load Usuarios / Clientes
+        // Load Usuarios
         // ========================
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("usuarios.json");
         JsonNode jsonNode = mapper.readTree(inputStream);
 
         for (JsonNode usuarioJson : jsonNode.get("usuarios")) {
-            Cliente cliente = new Cliente();
-            cliente.setEmail(usuarioJson.get("correo").asText());
-            cliente.setClave(usuarioJson.get("clave").asText());
-            cliente.setNombre(usuarioJson.get("nombre").asText());
-            cliente.setApellido(usuarioJson.get("apellido").asText());
-            cliente.setCedula(usuarioJson.get("cedula").asText());
-            cliente.setTelefono(usuarioJson.get("telefono").asText());
-            cliente.setFotoPerfil(usuarioJson.get("fotoPerfil").asText());
-            clienteRepository.save(cliente);
+            Usuario usuario = new Usuario();
+            usuario.setEmail(usuarioJson.get("correo").asText());
+            usuario.setClave(usuarioJson.get("clave").asText());
+            usuario.setNombre(usuarioJson.get("nombre").asText());
+            usuario.setApellido(usuarioJson.get("apellido").asText());
+            usuario.setCedula(usuarioJson.get("cedula").asText());
+            usuario.setTelefono(usuarioJson.get("telefono").asText());
+            usuario.setFotoPerfil(usuarioJson.get("fotoPerfil").asText());
+            usuario.setTipo(usuarioJson.get("tipo").asText());
+            usuarioRepository.save(usuario);
         }
 
-        List<Cliente> clientes = clienteRepository.findAll();
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        // Filtrar solo los clientes (usuarios con tipo = "cliente")
+        List<Usuario> clientes = usuarios.stream()
+                .filter(u -> "cliente".equalsIgnoreCase(u.getTipo()))
+                .toList();
 
         // ========================
         // Load RoomTypes
@@ -135,7 +137,7 @@ public class DatabaseInit implements ApplicationRunner {
         // Crear Reservas y Cuentas Dummy
         // ========================
         for (int i = 0; i < 5; i++) {
-            Cliente cliente = clientes.get(rand.nextInt(clientes.size()));
+            Usuario cliente = clientes.get(rand.nextInt(clientes.size()));
 
             Reserva reserva = new Reserva();
             reserva.setCliente(cliente);

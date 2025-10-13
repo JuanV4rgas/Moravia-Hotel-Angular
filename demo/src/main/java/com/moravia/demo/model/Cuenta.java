@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Data
 @Entity
 public class Cuenta {
@@ -16,7 +18,8 @@ public class Cuenta {
     private Double total;
 
     @OneToOne
-    @JoinColumn(name = "reserva_id")
+    @JoinColumn(name = "id_reserva")
+    @JsonBackReference
     private Reserva reserva;
 
     @ManyToMany

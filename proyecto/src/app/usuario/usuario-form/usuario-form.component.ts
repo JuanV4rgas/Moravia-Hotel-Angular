@@ -20,6 +20,7 @@ export class UsuarioFormComponent implements OnInit {
     apellido: '',
     cedula: '',
     telefono: '',
+    tipo: 'cliente',
     fotoPerfil: ''
   };
 
@@ -80,6 +81,7 @@ export class UsuarioFormComponent implements OnInit {
       apellido: '',
       cedula: '',
       telefono: '',
+      tipo: 'cliente',
       fotoPerfil: ''
     };
     this.error = undefined;
