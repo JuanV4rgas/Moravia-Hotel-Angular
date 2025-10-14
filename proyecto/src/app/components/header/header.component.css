@@ -89,7 +89,7 @@ body {
   cursor: pointer;
   font-size: 16px;
   border-radius: 8px;
-  background: transparent;
+  background: var(--plum);
   border: 3px solid transparent;
   width: 120px;
   text-align: center;

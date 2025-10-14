@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Usuario } from 'src/app/model/usuario';
 
 @Component({
@@ -7,6 +7,6 @@ import { Usuario } from 'src/app/model/usuario';
   styleUrls: ['./profile-header.component.css']
 })
 export class ProfileHeaderComponent {
-formChanged: boolean = false;
-usuario!: Usuario;
+  @Input() formChanged: boolean = false;
+  @Input() usuario!: Usuario;
 }

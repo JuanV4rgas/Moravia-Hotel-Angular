@@ -14,7 +14,8 @@
   --nav-muted: #d0dde3; /* texto secundario */
   --nav-hover: rgba(255, 255, 255, 0.12);
   --nav-accent: #ffcb0e; /* acento (ej: subrayados/activos) */
-  --nav-font: "DM Serif Display", "Inter", system-ui, sans-serif;
+  --nav-font: "Inter", "Futura PT", "Avenir Next", "Helvetica Neue", Helvetica,
+    Arial, sans-serif, "DM Serif Display", system-ui, sans-serif;
 }
 
 * {
@@ -42,3 +43,4 @@ app-auth-card {
   justify-content: center;
   width: 100%;
 }
+

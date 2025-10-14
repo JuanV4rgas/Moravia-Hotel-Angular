@@ -19,8 +19,9 @@ import { RoomTypeTableComponent } from './roomtype/roomtype-table/roomtype-table
 import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
 import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
+import { ProfileHeaderComponent } from './user/profile-header/profile-header.component';
 import { ProfileComponent } from './user/profile/profile.component';
-
+import { ProfileFormComponent } from './user/profile-form/profile-form.component';
 import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
 import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.component';
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
