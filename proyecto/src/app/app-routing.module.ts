@@ -4,6 +4,7 @@ import { HomePageComponent } from './home/home-page/home-page.component';
 import { ServiceTableComponent } from './servicio/service-table/service-table.component';
 import { ServiceDetailComponent } from './servicio/servicio-detail/service-detail.component';
 import { ServiceFormComponent } from './servicio/service-form/service-form.component';
+import { ServiceEditarComponent } from './servicio/service-editar/service-editar.component';
 import { ServiceListComponent } from './servicio/service-list/service-list.component';
 import { RoomTableComponent } from './room/room-table/room-table.component';
 import { RoomFormComponent } from './room/room-form/room-form.component';
@@ -39,7 +40,7 @@ const routes: Routes = [
       { path: 'servicio/detail/:id', component: ServiceDetailComponent },
       { path: 'servicio/nueva', component: ServiceFormComponent },
       { path: 'servicio/lista', component: ServiceListComponent },
-      { path: 'servicio/editar/:id', component: ServiceFormComponent },
+      { path: 'servicio/editar/:id', component: ServiceEditarComponent },
 
       { path: 'room/table', component: RoomTableComponent },
       { path: 'room/nueva', component: RoomFormComponent },
