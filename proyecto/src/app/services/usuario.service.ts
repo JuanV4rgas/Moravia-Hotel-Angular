@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from '../model/usuario';
 
@@ -8,6 +8,13 @@ import { Usuario } from '../model/usuario';
 })
 export class UsuarioService {
   private apiUrl = 'http://localhost:8081/usuario';
+  
+  // Headers para todas las peticiones POST
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +29,6 @@ export class UsuarioService {
   // BUSCAR USUARIO POR ID
   // ======================
   getUsuarioById(id: number): Observable<Usuario> {
-    // tu backend usa /find?id=1 (con @RequestParam)
     const params = new HttpParams().set('id', id.toString());
     return this.http.get<Usuario>(`${this.apiUrl}/find`, { params });
   }
@@ -31,23 +37,20 @@ export class UsuarioService {
   // CREAR USUARIO
   // ======================
   addUsuario(usuario: Usuario): Observable<void> {
-    // tu backend usa POST /usuario/add
-    return this.http.post<void>(`${this.apiUrl}/add`, usuario);
+    return this.http.post<void>(`${this.apiUrl}/add`, usuario, this.httpOptions);
   }
 
   // ======================
   // ACTUALIZAR USUARIO
   // ======================
   updateUsuario(id: number, usuario: Usuario): Observable<void> {
-    // tu backend usa POST /usuario/update/{id}
-    return this.http.post<void>(`${this.apiUrl}/update/${id}`, usuario);
+    return this.http.post<void>(`${this.apiUrl}/update/${id}`, usuario, this.httpOptions);
   }
 
   // ======================
   // ELIMINAR USUARIO
   // ======================
   deleteUsuario(id: number): Observable<void> {
-    // tu backend usa DELETE /usuario/delete/{id}
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 

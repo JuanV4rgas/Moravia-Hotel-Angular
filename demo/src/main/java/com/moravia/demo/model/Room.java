@@ -25,7 +25,7 @@ public class Room {
     private Roomtype type;
 
     @ManyToMany(mappedBy = "rooms")
-    @JsonManagedReference
+    @JsonBackReference("reserva-rooms")
     private List<Reserva> reservas;
 
 
