@@ -80,11 +80,10 @@ export class AuthService {
    * Registro: crear nuevo usuario
    */
   register(usuario: Usuario): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/add`, usuario).pipe(
+    const headers = { 'Content-Type': 'application/json' };
+    return this.http.post<void>(`${this.apiUrl}/add`, usuario, { headers }).pipe(
       tap(() => {
         console.log('Usuario registrado exitosamente');
-        // Opcionalmente, hacer login automático después del registro
-        // this.login(usuario.email, usuario.clave).subscribe();
       }),
       catchError((error) => {
         console.error('Error en registro:', error);

@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
@@ -26,15 +27,15 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @JsonBackReference
+    @JsonIgnore
     private Usuario cliente;
 
     @OneToOne(mappedBy = "reserva")
-    @JsonManagedReference
+    @JsonIgnore
     private Cuenta cuenta;
 
     @ManyToMany
     @JoinTable(name = "reserva_rooms", joinColumns = @JoinColumn(name = "reserva_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
-    @JsonBackReference
+    @JsonIgnore
     private List<Room> rooms;
 }

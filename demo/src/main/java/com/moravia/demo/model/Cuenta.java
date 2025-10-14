@@ -19,7 +19,7 @@ public class Cuenta {
 
     @OneToOne
     @JoinColumn(name = "id_reserva")
-    @JsonBackReference
+    @JsonBackReference("reserva-cuenta")
     private Reserva reserva;
 
     @ManyToMany
