@@ -34,10 +34,7 @@ public class Reserva {
     private Cuenta cuenta;
 
     @ManyToMany
-    @JoinTable(
-        name = "reserva_rooms",
-        joinColumns = @JoinColumn(name = "reserva_id"),
-        inverseJoinColumns = @JoinColumn(name = "room_id")
-    )
+    @JoinTable(name = "reserva_rooms", joinColumns = @JoinColumn(name = "reserva_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
+    @JsonBackReference
     private List<Room> rooms;
 }

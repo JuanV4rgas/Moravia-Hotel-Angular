@@ -14,7 +14,7 @@ public class RoomtypeServiceImpl implements RoomtypeService {
     RoomtypeRepository repo;
 
     @Override
-    public Roomtype searchById(String id) {
+    public Roomtype searchById(Integer id) {
         return repo.findById(id).orElse(null);
     }
 
@@ -34,7 +34,7 @@ public class RoomtypeServiceImpl implements RoomtypeService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Integer id) {
         repo.deleteById(id);
     }
 }

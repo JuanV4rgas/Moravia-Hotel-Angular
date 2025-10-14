@@ -22,7 +22,7 @@ public class RoomtypeController {
     }
 
     @GetMapping("/find/{id}")
-    public Roomtype mostrarTipo(@PathVariable("id") String id) {
+    public Roomtype mostrarTipo(@PathVariable("id") Integer id) {
         return roomtypeService.searchById(id);
     }
 
@@ -32,7 +32,7 @@ public class RoomtypeController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void eliminarTipo(@PathVariable("id") String id) {
+    public void eliminarTipo(@PathVariable("id") Integer id) {
         roomtypeService.deleteById(id);
     }
 

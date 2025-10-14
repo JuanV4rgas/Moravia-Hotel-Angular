@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Data
 @Entity
 public class Roomtype {
@@ -21,5 +23,6 @@ public class Roomtype {
     private String type;           // Ej: Premium, Estándar, Familiar
 
     @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Room> rooms;
 }

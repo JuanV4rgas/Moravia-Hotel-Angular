@@ -4,9 +4,9 @@ import java.util.List;
 import com.moravia.demo.model.Roomtype;
 
 public interface RoomtypeService {
-    public Roomtype searchById(String id);
+    public Roomtype searchById(Integer id);
     public List<Roomtype> searchAll();
     public void add(Roomtype roomtype);
     public void update(Roomtype roomtype);
-    public void deleteById(String id);
+    public void deleteById(Integer id);
 }

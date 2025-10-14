@@ -5,6 +5,9 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Data
 @Entity
 public class Room {
@@ -18,10 +21,13 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name = "roomtype_id")
+    @JsonBackReference
     private Roomtype type;
 
     @ManyToMany(mappedBy = "rooms")
+    @JsonManagedReference
     private List<Reserva> reservas;
+
 
     // ===============================
     // MÉTODOS DE NEGOCIO
