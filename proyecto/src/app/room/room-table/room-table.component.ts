@@ -29,8 +29,8 @@ export class RoomTableComponent {
 }
 
  eliminarRoom(id: string): void {
-    this.roomService.deleteRoom(id).subscribe({
-      next: () => (this.rooms = this.rooms.filter((h) => h.id !== id)),
+    this.roomService.deleteRoom(Number(id)).subscribe({
+      next: () => (this.rooms = this.rooms.filter((h) => h.id !== Number(id))),
       error: (err) => console.error('Error al eliminar roomtype', err),
     });
   }

@@ -35,7 +35,7 @@ public class ReservaController {
 
     // ✅ 3️⃣ Crear una nueva reserva
     // http://localhost:8081/reserva/add
-    @PostMapping("/add")
+    @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
     public void agregarReserva(@RequestBody Reserva reserva) {
         reservaService.add(reserva);
     }
@@ -49,7 +49,7 @@ public class ReservaController {
 
     // ✅ 5️⃣ Actualizar una reserva existente
     // http://localhost:8081/reserva/update/1
-    @PutMapping("/update/{id}")
+    @PutMapping(value = "/update/{id}", consumes = "application/json", produces = "application/json")
     public void actualizarReserva(@RequestBody Reserva reserva, @PathVariable("id") Integer id) {
         reserva.setId(id);
         reservaService.update(reserva);

@@ -30,7 +30,7 @@ export class RoomDetailComponent implements OnInit {
     }
 
     this.loading = true;
-    this.roomService.getRoom(id).subscribe({
+    this.roomService.getRoom(Number(id)).subscribe({
       next: (r) => { this.room = r; this.loading = false; },
       error: (err) => {
         this.error = 'No se pudo cargar la habitación.';

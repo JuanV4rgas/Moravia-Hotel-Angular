@@ -21,7 +21,6 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name = "roomtype_id")
-    @JsonBackReference
     private Roomtype type;
 
     @ManyToMany(mappedBy = "rooms")

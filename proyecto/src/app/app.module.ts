@@ -45,6 +45,9 @@ import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.compon
 import { RoomtypeEditarComponent } from './roomtype/roomtype-editar/roomtype-editar.component';
 import { RoomEditarComponent } from './room/room-editar/room-editar.component';
 import { ServiceEditarComponent } from './servicio/service-editar/service-editar.component';
+import { ReservaFormComponent } from './reserva/reserva-form/reserva-form.component';
+import { RoomSelectorComponent } from './reserva/room-selector/room-selector.component';
+import { RoomTypeSelectorComponent } from './reserva/room-type-selector/room-type-selector.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +90,9 @@ import { ServiceEditarComponent } from './servicio/service-editar/service-editar
     UsuarioFormComponent,
     RoomtypeEditarComponent,
     RoomEditarComponent,
+    ReservaFormComponent,
+    RoomSelectorComponent,
+    RoomTypeSelectorComponent,
    // ServiceEditarComponent
     //RoomtypeListComponent,
   ],

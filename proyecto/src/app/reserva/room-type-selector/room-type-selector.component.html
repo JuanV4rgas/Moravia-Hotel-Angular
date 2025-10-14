@@ -1,0 +1,68 @@
+<div class="room-type-selector">
+  <h3>Seleccionar Tipo de Habitación</h3>
+  
+  <!-- Mensajes de estado -->
+  <div class="alert error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <p>Cargando tipos de habitación...</p>
+  </div>
+
+  <!-- Información de fechas -->
+  <div class="date-info" *ngIf="fechaInicio && fechaFin">
+    <p><strong>Fechas:</strong> {{ fechaInicio }} - {{ fechaFin }}</p>
+    <p><strong>Noches:</strong> {{ getNoches() }}</p>
+  </div>
+
+  <!-- Lista de tipos de habitación -->
+  <div class="room-types-grid" *ngIf="roomTypes.length > 0 && !isLoading">
+    <div 
+      class="room-type-card" 
+      *ngFor="let tipo of roomTypes"
+      [class.selected]="tipoSeleccionadoActual?.id === tipo.id"
+      (click)="seleccionarTipo(tipo)">
+      
+      <div class="room-type-header">
+        <h4>{{ tipo.name }}</h4>
+        <span class="price">${{ tipo.price | number:'1.0-0' }}/noche</span>
+      </div>
+      
+      <div class="room-type-details">
+        <p><strong>Descripción:</strong> {{ tipo.description }}</p>
+        <p><strong>Capacidad:</strong> {{ tipo.capacity }}</p>
+        <p><strong>Camas:</strong> {{ tipo.numberOfBeds }}</p>
+        <p><strong>Categoría:</strong> {{ tipo.type }}</p>
+      </div>
+      
+      <div class="room-type-footer">
+        <span class="total-price">
+          Total: ${{ (tipo.price * getNoches()) | number:'1.0-0' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sin tipos disponibles -->
+  <div class="no-types" *ngIf="roomTypes.length === 0 && !isLoading && !errorMessage">
+    <p>No hay tipos de habitación disponibles.</p>
+  </div>
+
+  <!-- Habitaciones del tipo seleccionado -->
+  <div class="selected-type-rooms" *ngIf="tipoSeleccionadoActual && habitacionesDelTipo.length > 0">
+    <h4>Habitaciones Disponibles - {{ tipoSeleccionadoActual.name }}</h4>
+    <div class="rooms-list">
+      <div class="room-item" *ngFor="let habitacion of habitacionesDelTipo">
+        <span class="room-number">{{ habitacion.habitacionNumber }}</span>
+        <span class="room-status" [class.available]="habitacion.available">
+          {{ habitacion.available ? 'Disponible' : 'Ocupada' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sin habitaciones del tipo seleccionado -->
+  <div class="no-rooms" *ngIf="tipoSeleccionadoActual && habitacionesDelTipo.length === 0 && !isLoading">
+    <p>No hay habitaciones disponibles de este tipo para las fechas seleccionadas.</p>
+  </div>
+</div>

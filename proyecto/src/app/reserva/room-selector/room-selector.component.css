@@ -1,0 +1,134 @@
+.room-selector {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.alert {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+.alert.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.date-info {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.date-info p {
+  margin: 5px 0;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.room-card {
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.room-card:hover {
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.1);
+}
+
+.room-card.selected {
+  border-color: #28a745;
+  background-color: #f8fff9;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.room-header h4 {
+  margin: 0;
+  color: #333;
+}
+
+.price {
+  font-weight: bold;
+  color: #28a745;
+  font-size: 1.1em;
+}
+
+.room-details p {
+  margin: 8px 0;
+  color: #666;
+}
+
+.room-footer {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e9ecef;
+}
+
+.total-price {
+  font-weight: bold;
+  color: #007bff;
+  font-size: 1.1em;
+}
+
+.no-rooms {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.selection-summary {
+  background-color: #e7f3ff;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.selection-summary h4 {
+  margin-top: 0;
+  color: #007bff;
+}
+
+.selection-summary ul {
+  list-style: none;
+  padding: 0;
+}
+
+.selection-summary li {
+  padding: 5px 0;
+  border-bottom: 1px solid #cce7ff;
+}
+
+.total-summary {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid #007bff;
+  font-size: 1.2em;
+  color: #007bff;
+}

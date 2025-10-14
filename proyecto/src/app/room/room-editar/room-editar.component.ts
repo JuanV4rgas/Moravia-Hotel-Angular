@@ -16,7 +16,7 @@ export class RoomEditarComponent implements OnInit {
   roomTypes: RoomType[] = [];
 
   form: Room = {
-    id: '',
+    id: 0,
     habitacionNumber: '',
     available: false,
     type: {} as RoomType
@@ -50,7 +50,7 @@ export class RoomEditarComponent implements OnInit {
 
   private cargarRoom(): void {
     this.loading = true;
-    this.roomService.getRoom(this.id).subscribe({
+    this.roomService.getRoom(Number(this.id)).subscribe({
       next: (room) => {
         this.form = room;
         this.loading = false;
@@ -73,7 +73,7 @@ export class RoomEditarComponent implements OnInit {
     }
 
     this.loading = true;
-    this.roomService.updateRoom(this.id, this.form).subscribe({
+    this.roomService.updateRoom(Number(this.id), this.form).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/room/table']);

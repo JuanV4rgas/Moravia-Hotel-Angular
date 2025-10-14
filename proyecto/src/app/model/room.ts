@@ -1,7 +1,7 @@
 import { RoomType } from './roomtype';
 
 export interface Room {
-  id: string;
+  id: number;
   habitacionNumber: string;
   type: RoomType;
   available: boolean;

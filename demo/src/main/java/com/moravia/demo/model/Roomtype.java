@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Data
 @Entity
@@ -23,6 +23,6 @@ public class Roomtype {
     private String type;           // Ej: Premium, Estándar, Familiar
 
     @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Room> rooms;
 }

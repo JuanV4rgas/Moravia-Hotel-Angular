@@ -17,7 +17,7 @@ export class RoomFormComponent implements OnInit {
 
   // Importante: id:string, numeroHabitacion:string, disponible:boolean, type:RoomType
   formRoom: Room = {
-    id: '',
+    id: 0,
     habitacionNumber: '',
     available: false,
     type: {} as RoomType
@@ -43,7 +43,7 @@ export class RoomFormComponent implements OnInit {
     if (id) {
       this.isEdit = true;
       this.loading = true;
-      this.roomService.getRoom(id).subscribe({
+      this.roomService.getRoom(Number(id)).subscribe({
         next: (room) => {
           this.formRoom = room;
           this.loading = false;
@@ -74,7 +74,7 @@ export class RoomFormComponent implements OnInit {
   }
 
   addRoomForm(): void {
-    if (!this.formRoom.id?.trim()) {
+    if (!this.formRoom.id) {
       this.error = 'El id es obligatorio.';
       return;
     }
@@ -93,7 +93,7 @@ export class RoomFormComponent implements OnInit {
     const payload: Room = this.formRoom;
 
     const req$ = this.isEdit
-      ? this.roomService.updateRoom(this.formRoom.id, payload)
+      ? this.roomService.updateRoom(Number(this.formRoom.id), payload)
       : this.roomService.addRoom(payload);
 
     req$.subscribe({
@@ -106,7 +106,7 @@ export class RoomFormComponent implements OnInit {
         if (!this.isEdit) {
           // reset si fue creación
           this.formRoom = {
-            id: '',
+            id: 0,
             habitacionNumber: '',
             available: false,
             type: this.roomTypes[0] ?? ({} as RoomType)
@@ -123,11 +123,11 @@ export class RoomFormComponent implements OnInit {
 
   onClear(): void {
   this.formRoom = {
-    id: '',
+    id: 0,
     habitacionNumber: '',
     available: false,
     // Usa el primer RoomType cargado; si no hay, usa un placeholder tipado
-    type: this.roomTypes[0] ?? ({ id: '' } as RoomType)
+    type: this.roomTypes[0] ?? ({ id: '', name: '', price: 0, description: '', capacity: '', numberOfBeds: 0, image: '' } as RoomType)
   };
 }
 }
