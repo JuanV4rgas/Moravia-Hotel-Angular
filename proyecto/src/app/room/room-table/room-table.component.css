@@ -1,86 +1,371 @@
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px auto;
-  font-family: Arial, sans-serif;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  border-radius: 8px;
+/* ====== MISMO LOOK QUE ROOMTYPE (colores del header incluidos) ====== */
+:host{
+  /* Toma los colores globales del header; si no existen, usa fallback */
+  --plum: var(--plum, #2f5876);
+  --nav-accent: var(--nav-accent, #3b90c5);
+
+  /* Derivados usados en la tabla */
+  --blue-hero: var(--plum);
+  --blue-hero-dark: var(--plum);
+  --blue-chip: var(--plum);
+  --thead-text: #f2f5f8;
+
+  --panel-bg: #ffffff;
+  --panel-radius: 18px;
+  --shadow: 0 16px 30px rgba(0,0,0,.12);
+  display:block;
+}
+
+/* ====== BANDA SUPERIOR AZUL (igual a RoomType) ====== */
+.services-main{
+  background: linear-gradient(180deg, var(--blue-hero), color-mix(in oklab, var(--blue-hero) 85%, white 15%) 65%);
+  padding: 28px 16px 40px;
+}
+
+/* ====== TARJETA BLANCA ====== */
+.container-servicios{
+  width: min(1100px, 95vw);
+  margin: 0 auto;
+  background: var(--panel-bg);
+  border-radius: var(--panel-radius);
+  box-shadow: var(--shadow);
   overflow: hidden;
 }
 
-.table thead {
-  background: #007bff;
-  color: #fff;
+/* ====== HEADER DE LA TARJETA ====== */
+.header-section{
+  background: var(--blue-hero);
+  color: #f3f6f9;
+  text-align: center;
+  padding: 34px 16px 26px;
+}
+.services-title{
+  margin: 0 0 6px;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: .3px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+.services-title em{ color: #f3c44f; font-style: normal; }
+.services-subtitle{ margin:0; opacity:.95; font-size: clamp(14px, 2vw, 18px); }
+
+.table-wrapper{ padding:0; }
+
+/* ====== TABLA ====== */
+.services-table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.table th,
-.table td {
-  padding: 12px 16px;
+/* CABECERA AZUL CON ESQUINAS REDONDAS */
+.table-header th{
+  background: var(--blue-hero);
+  color: var(--thead-text);
   text-align: left;
+  padding: 16px 18px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
   font-size: 0.95rem;
-  border-bottom: 1px solid #eee;
+}
+.table-header th:first-child{ border-top-left-radius: 14px; }
+.table-header th:last-child{ border-top-right-radius: 14px; }
+
+/* ANCHOS DE COLUMNAS */
+.th-id{ width: 80px; }
+.th-numero{ width: 200px; }
+.th-tipo{ width: 240px; }
+.th-disponible{ width: 140px; text-align: center; }
+.th-acciones{ width: 180px; text-align: center; }
+
+/* FILAS (BLANCO / AZUL MUY CLARO) */
+.service-row td{
+  padding: 22px 18px;
+  border-bottom: 1px solid #eef2f6;
+  vertical-align: middle;
+  background: #ffffff;
+}
+.service-row:nth-child(even) td{ background: #fbfdff; }
+
+/* CHIP DE ID */
+.id-chip{
+  display: inline-grid;
+  place-items: center;
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--blue-chip);
+  color: #e8f2fa;
+  font-weight: 800;
+  box-shadow: 0 6px 12px rgba(47,88,118,.35);
 }
 
-.table tbody tr:hover {
-  background: #f9f9f9;
+/* NÚMERO Y TIPO EN TONO DEL HEADER */
+.service-name,
+.service-type{
+  color: var(--plum);
+  font-weight: 800;
 }
 
-.table img {
-  max-width: 80px;
+/* BADGE “DISPONIBLE” (SÍ / NO) */
+.service-status{
+  display: inline-block;
+  min-width: 70px;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  color: #0b412b;
+  background: #d1fae5;              /* verde suave */
+  border: 1px solid #34d399;
+}
+.service-status.no{
+  color: #5b1a1a;
+  background: #fee2e2;              /* rojo suave */
+  border-color: #f87171;
+}
+.service-status.ok{
+  color: #0b412b;
+  background: #d1fae5;
+  border-color: #34d399;
+}
+
+/* ACCIONES APILADAS A LA DERECHA */
+.service-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* BOTÓN OUTLINE GRANDE (VER/EDITAR/ELIMINAR) */
+.btn-outline-lg{
+  appearance: none;
+  background: #f8fbff;
+  color: var(--plum);
+  border: 2px solid var(--nav-accent);
   border-radius: 6px;
+  padding: 12px 22px;
+  min-width: 150px;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: .22em;
+  box-shadow: 0 6px 12px rgba(0,0,0,.12);
+  text-decoration: none;
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+.btn-outline-lg:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(0,0,0,.18);
+  filter: brightness(1.02);
+}
+.btn-outline-lg:active{ transform: translateY(0); }
+
+/* ====== “ROMPE” estilos de Bootstrap si están presentes (para que se vea IGUAL) ====== */
+:host ::ng-deep table,
+:host ::ng-deep .table{
+  background: transparent !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+:host ::ng-deep .table > :not(caption) > * > *{
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+:host ::ng-deep .table thead th{ border-bottom: none !important; }
+:host ::ng-deep th, 
+:host ::ng-deep td{
+  border: 0 !important;
 }
 
-/* Botón estilo */
-.btn {
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  border: none;
-  transition: background 0.3s ease;
+/* ====== RESPONSIVO ====== */
+@media (max-width: 700px){
+  .service-actions{ align-items: stretch; }
+  .btn-outline-lg{ width:100%; }
 }
 
-.btn-primary {
-  background: #007bff;
-  color: #fff;
+/* =============================== */
+/* FIX PACK — Room = RoomType look */
+/* Pégalo al final del .css        */
+/* =============================== */
+
+/* 1) Banda azul detrás del título (mismo color del header) */
+:host .services-main{
+  background: linear-gradient(180deg, var(--plum, #2f5876), #2f5876 65%) !important;
+  padding: 28px 16px 40px !important;
+  margin-top: calc(var(--header-h, 64px) + 16px) !important; /* despega del header fijo */
 }
 
-.btn-primary:hover {
-  background: #0056b3;
+/* 2) Tarjeta blanca con sombra suave */
+:host .container-servicios{
+  width: min(1100px, 95vw) !important;
+  margin: 0 auto !important;
+  background: #ffffff !important;
+  border-radius: 18px !important;
+  box-shadow: 0 16px 30px rgba(0,0,0,.12) !important;
+  overflow: hidden !important;
 }
 
-/* Responsive: tabla como tarjetas en móviles */
-@media (max-width: 768px) {
-  .table thead {
-    display: none;
-  }
+/* 3) Encabezado interno (título/subtítulo) */
+:host .header-section{
+  background: var(--plum, #2f5876) !important;
+  color: #f3f6f9 !important;
+  text-align: center !important;
+  padding: 34px 16px 26px !important;
+}
+:host .services-title{
+  margin: 0 0 6px !important;
+  font-size: clamp(28px, 4vw, 44px) !important;
+  font-weight: 800 !important;
+  letter-spacing: .3px !important;
+  text-shadow: 0 2px 6px rgba(0,0,0,.25) !important;
+}
+:host .services-title em{ color: #f3c44f !important; font-style: normal !important; }
+:host .services-subtitle{ margin:0 !important; opacity: .95 !important; }
 
-  .table, .table tbody, .table tr, .table td {
-    display: block;
-    width: 100%;
-  }
+/* 4) Neutraliza Bootstrap: que no blanquee ni quite bordes */
+:host ::ng-deep table,
+:host ::ng-deep .table{
+  background: transparent !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+:host ::ng-deep .table > :not(caption) > * > *{
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+:host ::ng-deep th, 
+:host ::ng-deep td{
+  border: 0 !important;
+}
 
-  .table tr {
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
+/* 5) Cabecera de la tabla: azul + texto visible (sin opacidad rara) */
+:host .table-header th{
+  background: var(--plum, #2f5876) !important;
+  color: #f2f5f8 !important;
+  opacity: 1 !important;
+  text-align: left !important;
+  padding: 16px 18px !important;
+  font-weight: 800 !important;
+  letter-spacing: .5px !important;
+  border-bottom: 1px solid rgba(255,255,255,.15) !important;
+  font-size: 0.95rem !important;
+}
+:host .table-header th:first-child{ border-top-left-radius: 14px !important; }
+:host .table-header th:last-child{ border-top-right-radius: 14px !important; }
 
-  .table td {
-    padding: 8px 10px;
-    text-align: right;
-    position: relative;
-  }
+/* 6) Filas: blanco y zebra suave como el ejemplo */
+:host .service-row td{
+  padding: 22px 18px !important;
+  border-bottom: 1px solid #eef2f6 !important;
+  vertical-align: middle !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+:host .service-row:nth-child(even) td{
+  background: #fbfdff !important;
+}
 
-  .table td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 10px;
-    font-weight: bold;
-    text-transform: capitalize;
-    color: #555;
-  }
+/* 7) Chip de ID y acentos en color del header */
+:host .id-chip{
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 34px !important; height: 34px !important;
+  border-radius: 10px !important;
+  background: var(--plum, #2f5876) !important;
+  color: #e8f2fa !important;
+  font-weight: 800 !important;
+  box-shadow: 0 6px 12px rgba(47,88,118,.35) !important;
+}
+:host .service-name,
+:host .service-type{
+  color: var(--plum, #2f5876) !important;
+  font-weight: 800 !important;
+}
+
+/* 8) Disponible: badges Sí/No */
+:host .service-status{
+  display: inline-block !important;
+  min-width: 70px !important;
+  text-align: center !important;
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+  letter-spacing: .02em !important;
+}
+:host .service-status.ok{ color:#0b412b !important; background:#d1fae5 !important; border:1px solid #34d399 !important; }
+:host .service-status.no{ color:#5b1a1a !important; background:#fee2e2 !important; border:1px solid #f87171 !important; }
+
+/* 9) Acciones apiladas y botón outline con acento del header */
+:host .service-actions{
+  display:flex !important; flex-direction:column !important;
+  align-items:flex-end !important; gap:12px !important;
+}
+:host .btn-outline-lg{
+  appearance:none !important;
+  background:#f8fbff !important;
+  color: var(--plum, #2f5876) !important;
+  border: 2px solid var(--nav-accent, #3b90c5) !important;
+  border-radius: 6px !important;
+  padding: 12px 22px !important;
+  min-width: 150px !important;
+  text-align:center !important;
+  font-weight: 800 !important;
+  letter-spacing: .22em !important;
+  box-shadow: 0 6px 12px rgba(0,0,0,.12) !important;
+  text-decoration:none !important;
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease !important;
+}
+:host .btn-outline-lg:hover{
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 18px rgba(0,0,0,.18) !important;
+  filter: brightness(1.02) !important;
+}
+
+/* 10) Anchos de columnas como el ejemplo */
+:host .th-id{ width: 80px !important; }
+:host .th-numero{ width: 200px !important; }
+:host .th-tipo{ width: 240px !important; }
+:host .th-disponible{ width: 140px !important; text-align:center !important; }
+:host .th-acciones{ width: 180px !important; text-align:center !important; }
+
+/* 11) Responsive: botones ancho completo en móvil */
+@media (max-width: 700px){
+  :host .service-actions{ align-items: stretch !important; }
+  :host .btn-outline-lg{ width: 100% !important; }
+}
+
+/* === DISPO: columna ultra-compacta con chip circular Sí/No === */
+:host .th-disponible{
+  width: 72px !important;          /* ancho de la columna, ajustado al chip */
+  text-align: center !important;
+}
+
+/* Chip circular (≈36px) */
+:host .service-status{
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  border-radius: 50% !important;
+  font-weight: 800 !important;
+  letter-spacing: .02em !important;
+  line-height: 1 !important;
+  font-size: 0.95rem !important;    /* “Sí” cabe sin romper */
+  border: 2px solid transparent !important;
+}
+
+/* Colores Sí / No (mismo esquema que tenías) */
+:host .service-status.ok{
+  color:#0b412b !important;
+  background:#d1fae5 !important;
+  border-color:#34d399 !important;
+}
+:host .service-status.no{
+  color:#5b1a1a !important;
+  background:#fee2e2 !important;
+  border-color:#f87171 !important;
 }

@@ -1,54 +1,51 @@
-<h2>Habitaciones</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Núumero de Habitación</th>
-        <th>Tipo</th>
-        <th>Disponible</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let h of rooms">
-      <td>{{ h.habitacionNumber }}</td>
-        <td>{{ h.type.name }}</td>
-        <td>{{ h.available }}</td>
- 
-      <td>
-        
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-primary"
-          [routerLink]="['/room/detail', h.id]"
-        >
-          Ver
-        </button>
+<main class="services-main">
+  <div class="container-servicios">
+    <!-- Encabezado igual al de RoomType -->
+    <div class="header-section">
+      <h1 class="services-title">Nuestras <em>Habitaciones</em></h1>
+      <p class="services-subtitle">Consulta disponibilidad y gestiona cada habitación</p>
+    </div>
 
+    <!-- Solo estética (sin loading/error) -->
+    <div class="table-wrapper">
+      <table class="services-table">
+        <thead>
+          <tr class="table-header">
+            <th class="th-id">ID</th>
+            <th class="th-numero">NÚMERO</th>
+            <th class="th-tipo">TIPO</th>
+            <th class="th-disponible">DISPONIBLE</th>
+            <th class="th-acciones">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="service-row" *ngFor="let h of rooms">
+            <!-- ID chip -->
+            <td class="service-id">
+              <span class="id-chip">{{ h.id }}</span>
+            </td>
 
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-primary"
-          [routerLink]="['/room/editar', h.id]"
-        >
-          Editar
-        </button>
+            <!-- Número -->
+            <td class="service-name">{{ h.habitacionNumber }}</td>
 
-        <button
-        type="button"
-        class="btn btn-sm btn-outline-danger"
-        (click)="eliminarRoom(h.id.toString())"
-      >
-        Eliminar
-      </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+            <!-- Tipo -->
+            <td class="service-type">{{ h.type?.name }}</td>
 
+            <!-- Disponible -->
+            <td class="service-status" [class.ok]="h.available" [class.no]="!h.available">
+              {{ h.available ? 'Sí' : 'No' }}
+            </td>
 
-<button
-          type="button"
-          class="btn btn-sm btn-outline-primary"
-          [routerLink]="['/room/nueva']"
-        >
-          Crear
-        </button>
+            <!-- Acciones apiladas (VER / EDITAR / ELIMINAR) -->
+            <td class="service-actions">
+              <a class="btn-outline-lg" [routerLink]="['/room/detail', h.id]">VER</a>
+              <a class="btn-outline-lg" [routerLink]="['/room/editar', h.id]">EDITAR</a>
+              <button class="btn-outline-lg" (click)="eliminarRoom(h.id.toString())">ELIMINAR</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>

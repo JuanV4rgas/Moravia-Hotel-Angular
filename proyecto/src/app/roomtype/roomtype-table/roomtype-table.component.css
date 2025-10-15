@@ -1,15 +1,212 @@
-table {
+:host{
+  /* Colores basados en la captura */
+  --blue-hero: #2f5876;      /* fondo cabecera */
+  --blue-hero-dark: #284e6a; /* borde/sombra botones */
+  --blue-chip: #2c5d7b;      /* chip id */
+  --text-dark: #1f2a37;
+  --text-muted: #6b7b8c;
+  --panel-bg: #ffffff;
+  --panel-radius: 18px;
+  --thead-text: #f2f5f8;
+  --shadow: 0 16px 30px rgba(0,0,0,.12);
+  display:block;
+}
+
+/* Fondo del bloque principal (azulado como el banner) */
+.services-main{
+  background: linear-gradient(180deg, #2f5876, #365f7e 65%, #365f7e 65%);
+  padding: 28px 16px 40px;
+}
+
+/* Tarjeta blanca con sombra */
+.container-servicios{
+  width: min(1100px, 95vw);
+  margin: 0 auto;
+  background: var(--panel-bg);
+  border-radius: var(--panel-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* Header grande “Nuestros Servicios” */
+.header-section{
+  background: var(--blue-hero);
+  color: #f3f6f9;
+  text-align: center;
+  padding: 34px 16px 26px;
+  position: relative;
+}
+.services-title{
+  margin: 0 0 6px;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: .3px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+.services-title em{ color: #f3c44f; font-style: normal; }
+.services-subtitle{
+  margin: 0;
+  opacity: .95;
+  font-size: clamp(14px, 2vw, 18px);
+}
+
+/* Wrapper de la tabla */
+.table-wrapper{
+  padding: 0;
+}
+
+/* Tabla */
+.services-table{
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 0.5rem;
+/* Thead azul, esquinas redondas como en la captura */
+.table-header th{
+  background: var(--blue-hero);
+  color: var(--thead-text);
   text-align: left;
+  padding: 16px 18px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+  font-size: 0.95rem;
+}
+.table-header th:first-child{
+  border-top-left-radius: 14px;
+}
+.table-header th:last-child{
+  border-top-right-radius: 14px;
 }
 
-th {
-  background-color: #f4f4f4;
+/* Columnas */
+.th-id{ width: 80px; }
+.th-nombre{ width: 260px; }
+.th-descripcion{ width: auto; }
+.th-precio{ width: 150px; text-align: right; }
+.th-acciones{ width: 180px; text-align: center; }
+
+/* Filas cuerpo */
+.service-row td{
+  padding: 22px 18px;
+  border-bottom: 1px solid #eef2f6;
+  vertical-align: middle;
+  background: #ffffff;
+}
+.service-row:nth-child(even) td{
+  background: #fbfdff;
+}
+
+/* ID chip redondeado con sombra */
+.id-chip{
+  display: inline-grid;
+  place-items: center;
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--blue-chip);
+  color: #e8f2fa;
+  font-weight: 800;
+  box-shadow: 0 6px 12px rgba(47,88,118,.35);
+}
+
+/* Nombre servicio: negrita, color azul */
+.service-name{
+  color: #2e5976;
+  font-weight: 800;
+}
+
+/* Descripción gris */
+.service-description{
+  color: #5c6e7e;
+  line-height: 1.55;
+}
+
+/* Precio alineado a la derecha y con peso */
+.service-price{
+  text-align: right;
+  color: #2e5976;
+  font-weight: 800;
+}
+
+/* Columna de acciones: botones apilados */
+.service-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* Botón outline grande (VER/EDITAR/ELIMINAR) */
+.btn-outline-lg{
+  appearance: none;
+  background: #f8fbff;
+  color: #2e5976;
+  border: 2px solid var(--blue-hero-dark);
+  border-radius: 6px;
+  padding: 12px 22px;
+  min-width: 150px;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: .22em;
+  box-shadow: 0 6px 12px rgba(47,88,118,.25);
+  text-decoration: none;
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+.btn-outline-lg:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(47,88,118,.28);
+  filter: brightness(1.02);
+}
+.btn-outline-lg:active{
+  transform: translateY(0);
+}
+
+/* Responsivo: botones a ancho completo en móviles */
+@media (max-width: 700px){
+  .service-actions{ align-items: stretch; }
+  .btn-outline-lg{ width: 100%; }
+}
+
+/* === Sincronizar tabla con los colores del header === */
+/* Usa los mismos tokens que el header: --plum (fondo) y --nav-accent (borde/acento) */
+:host{
+  /* Cabecera de la tabla y banda superior */
+  --blue-hero: var(--plum, #2f5876);
+
+  /* Variante oscura para bordes/sombras de botones (si no hay color-mix, usa el mismo plum) */
+  --blue-hero-dark: color-mix(in oklab, var(--plum, #2f5876) 80%, black 20%);
+  /* Fallback si el navegador no soporta color-mix: */
+  --blue-hero-dark: var(--blue-hero);
+
+  /* Chip de ID */
+  --blue-chip: color-mix(in oklab, var(--plum, #2f5876) 85%, black 15%);
+  /* Fallback */
+  --blue-chip: var(--blue-hero);
+
+  /* Texto del thead (claro sobre plum) */
+  --thead-text: #f2f5f8;
+}
+
+/* Botones outline grandes (VER/EDITAR/ELIMINAR) alineados al header */
+:host .btn-outline-lg{
+  background: #f8fbff;
+  color: var(--plum, #2f5876);
+  border-color: var(--nav-accent, #3b90c5);
+  box-shadow: 0 6px 12px rgba(0,0,0,.12);
+}
+:host .btn-outline-lg:hover{
+  filter: brightness(1.02);
+}
+
+/* Precio y nombre en el mismo tono que el header */
+:host .service-price,
+:host .service-name{
+  color: var(--plum, #2f5876);
+}
+
+/* Línea del thead ya toma --blue-hero; aseguramos el gradiente si lo usas */
+:host .table-header th{
+  background: var(--blue-hero);
+  color: var(--thead-text);
 }

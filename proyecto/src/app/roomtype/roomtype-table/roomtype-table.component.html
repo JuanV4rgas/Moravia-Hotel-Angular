@@ -1,33 +1,56 @@
-<h2>Tipos de habitación</h2>
+<main class="services-main">
+  <div class="container-servicios">
+    <div class="header-section">
+      <h1 class="services-title">Nuestros <em>Tipos de Habitaciones</em></h1>
+      <p class="services-subtitle">Descubre todo lo que tenemos para ofrecerte</p>
+    </div>
 
-<div *ngIf="loading">Cargando…</div>
-<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div *ngIf="loading" class="table-wrapper"><div>Cargando…</div></div>
+    <div *ngIf="error" class="table-wrapper"><div class="alert alert-danger">{{ error }}</div></div>
 
-<table class="table table-striped" *ngIf="!loading && !error">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Precio</th>
-      <th>Capacidad</th>
-      <th>Camas</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let h of roomtypes">
-      <td>{{ h.name }}</td>
-      <td>{{ h.description }}</td>
-      <td>{{ h.price | currency:'COP':'symbol':'1.0-0' }}</td>
-      <td>{{ h.capacity }}</td>
-      <td>{{ h.numberOfBeds }}</td>
-      <td class="d-flex gap-2">
-        <a class="btn btn-outline-primary btn-sm" [routerLink]="['/roomtype', h.id]">Ver</a>
-        <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/roomtype/editar', h.id]">Editar</a>
-        <button class="btn btn-outline-danger btn-sm" (click)="eliminarRoomType(h.id)">Eliminar</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <div class="table-wrapper" *ngIf="!loading && !error">
+      <table class="services-table">
+        <thead>
+          <tr class="table-header">
+            <th class="th-id">ID</th>
+            <th class="th-nombre">SERVICIO</th>
+            <th class="th-descripcion">DESCRIPCIÓN</th>
+            <th class="th-precio">PRECIO</th>
+            <th class="th-acciones">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="service-row" *ngFor="let h of roomtypes">
+            <!-- ID chip -->
+            <td class="service-id">
+              <span class="id-chip">{{ h.id }}</span>
+            </td>
 
-<a class="btn btn-primary mt-2" [routerLink]="['/roomtype/nueva']">Crear nuevo</a>
+            <!-- Nombre -->
+            <td class="service-name">
+              {{ h.name }}
+            </td>
+
+            <!-- Descripción -->
+            <td class="service-description">
+              {{ h.description }}
+            </td>
+
+            <!-- Precio a la derecha -->
+            <td class="service-price">
+              € {{ h.price | number:'1.0-1' }}
+            </td>
+
+            <!-- Acciones en columna: VER / EDITAR / ELIMINAR -->
+            <td class="service-actions">
+              <a class="btn-outline-lg" [routerLink]="['/roomtype/detail', h.id]">VER</a>
+              <a class="btn-outline-lg" [routerLink]="['/roomtype/editar', h.id]">EDITAR</a>
+              <button class="btn-outline-lg" (click)="eliminarRoomType(h.id)">ELIMINAR</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
