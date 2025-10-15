@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ServicioService } from '../../services/servicio.service';
 import { ReservaService } from '../../services/reserva.service';
+import { CuentaService } from '../../services/cuenta.service';
 import { Servicio } from '../../model/servicio';
 import { Reserva } from '../../model/reserva';
+import { Cuenta } from '../../model/cuenta';
 
 @Component({
   selector: 'app-agregar-servicios',
@@ -21,7 +23,8 @@ export class AgregarServiciosComponent implements OnInit {
 
   constructor(
     private servicioService: ServicioService,
-    private reservaService: ReservaService
+    private reservaService: ReservaService,
+    private cuentaService: CuentaService
   ) { }
 
   ngOnInit() {
@@ -75,50 +78,71 @@ export class AgregarServiciosComponent implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
-    // Crear una copia de la reserva con los servicios agregados
-    const reservaActualizada = { ...this.reserva };
+    // Verificar si la reserva tiene cuenta, si no, crear una
+    let cuentaActual: any = this.reserva.cuenta;
     
-    // Agregar servicios a la cuenta si existe, o crear una nueva cuenta
-    if (!reservaActualizada.cuenta) {
-      reservaActualizada.cuenta = {
-        id: 0,
-        total: 0,
+    if (!cuentaActual) {
+      // Crear nueva cuenta si no existe
+      cuentaActual = {
+        total: this.calcularTotalHabitaciones(),
         servicios: []
       };
-    }
-
-    // Agregar los servicios seleccionados
-    if (!reservaActualizada.cuenta.servicios) {
-      reservaActualizada.cuenta.servicios = [];
+    } else {
+      // Obtener la cuenta actual
+      cuentaActual = { ...this.reserva.cuenta };
     }
 
     // Agregar servicios que no estén ya en la cuenta
     for (const servicio of this.serviciosSeleccionados) {
-      const yaExiste = reservaActualizada.cuenta.servicios.some(s => s.idServicio === servicio.idServicio);
+      const yaExiste = cuentaActual?.servicios?.some((s: any) => s.idServicio === servicio.idServicio);
       if (!yaExiste) {
-        reservaActualizada.cuenta.servicios.push(servicio);
+        if (!cuentaActual?.servicios) {
+          cuentaActual.servicios = [];
+        }
+        cuentaActual.servicios.push(servicio);
       }
     }
 
     // Recalcular el total
     const totalHabitaciones = this.calcularTotalHabitaciones();
-    const totalServicios = reservaActualizada.cuenta.servicios.reduce((total, servicio) => total + servicio.precio, 0);
-    reservaActualizada.cuenta.total = totalHabitaciones + totalServicios;
+    const totalServicios = cuentaActual?.servicios?.reduce((total: number, servicio: any) => total + servicio.precio, 0) || 0;
+    cuentaActual.total = totalHabitaciones + totalServicios;
 
-    // Actualizar la reserva en el backend
-    this.reservaService.updateReserva(reservaActualizada).subscribe({
-      next: () => {
-        this.successMessage = 'Servicios agregados exitosamente';
-        this.serviciosSeleccionados = [];
-        this.serviciosAgregados.emit();
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error al agregar servicios:', error);
-        this.errorMessage = 'Error al agregar los servicios a la reserva';
-        this.isLoading = false;
-      }
-    });
+    // Actualizar o crear la cuenta en el backend
+    if (cuentaActual && cuentaActual.id) {
+      // Si la cuenta ya existe, actualizarla
+      this.cuentaService.updateCuenta(cuentaActual).subscribe({
+        next: () => {
+          this.successMessage = 'Servicios agregados exitosamente';
+          this.serviciosSeleccionados = [];
+          this.serviciosAgregados.emit();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error al agregar servicios:', error);
+          this.errorMessage = 'Error al agregar los servicios a la reserva';
+          this.isLoading = false;
+        }
+      });
+    } else if (cuentaActual) {
+      // Si la cuenta no existe, crearla
+      this.cuentaService.addCuenta(cuentaActual).subscribe({
+        next: () => {
+          this.successMessage = 'Servicios agregados exitosamente';
+          this.serviciosSeleccionados = [];
+          this.serviciosAgregados.emit();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error al crear cuenta:', error);
+          this.errorMessage = 'Error al crear la cuenta para la reserva';
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.errorMessage = 'No se pudo crear la cuenta para la reserva';
+      this.isLoading = false;
+    }
   }
 
   private calcularTotalHabitaciones(): number {

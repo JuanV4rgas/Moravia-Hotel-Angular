@@ -1,0 +1,80 @@
+<div class="consultar-container">
+  <div class="header-section">
+    <h1>Panel de Administración</h1>
+    <p>Gestiona todas las entidades del sistema</p>
+  </div>
+
+  <div class="entities-grid">
+    <!-- Reservas -->
+    <div class="entity-card" (click)="navegarA('reservas')">
+      <div class="entity-icon">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+      <h3>Reservas</h3>
+      <p>Gestiona las reservas de los clientes</p>
+      <div class="entity-actions">
+        <span class="action-text">Ver, Crear, Editar, Eliminar</span>
+      </div>
+    </div>
+
+    <!-- Habitaciones -->
+    <div class="entity-card" (click)="navegarA('habitaciones')">
+      <div class="entity-icon">
+        <i class="fas fa-bed"></i>
+      </div>
+      <h3>Habitaciones</h3>
+      <p>Administra las habitaciones del hotel</p>
+      <div class="entity-actions">
+        <span class="action-text">Ver, Crear, Editar, Eliminar</span>
+      </div>
+    </div>
+
+    <!-- Tipos de Habitación -->
+    <div class="entity-card" (click)="navegarA('tipos-habitacion')">
+      <div class="entity-icon">
+        <i class="fas fa-home"></i>
+      </div>
+      <h3>Tipos de Habitación</h3>
+      <p>Gestiona los tipos de habitación disponibles</p>
+      <div class="entity-actions">
+        <span class="action-text">Ver, Crear, Editar, Eliminar</span>
+      </div>
+    </div>
+
+    <!-- Servicios -->
+    <div class="entity-card" (click)="navegarA('servicios')">
+      <div class="entity-icon">
+        <i class="fas fa-concierge-bell"></i>
+      </div>
+      <h3>Servicios</h3>
+      <p>Administra los servicios del hotel</p>
+      <div class="entity-actions">
+        <span class="action-text">Ver, Crear, Editar, Eliminar</span>
+      </div>
+    </div>
+
+    <!-- Usuarios -->
+    <div class="entity-card" (click)="navegarA('usuarios')">
+      <div class="entity-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <h3>Usuarios</h3>
+      <p>Gestiona los usuarios del sistema</p>
+      <div class="entity-actions">
+        <span class="action-text">Ver, Crear, Editar, Eliminar</span>
+      </div>
+    </div>
+
+    <!-- Cuentas -->
+    <div class="entity-card" (click)="navegarA('cuentas')">
+      <div class="entity-icon">
+        <i class="fas fa-receipt"></i>
+      </div>
+      <h3>Cuentas</h3>
+      <p>Administra las cuentas de las reservas</p>
+      <div class="entity-actions">
+        <span class="action-text">Ver, Crear, Editar, Eliminar</span>
+      </div>
+    </div>
+  </div>
+</div>

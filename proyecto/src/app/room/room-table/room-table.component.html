@@ -51,7 +51,7 @@
             <td class="service-actions">
               <a class="btn-outline-lg" [routerLink]="['/room/detail', h.id]">VER</a>
               <a class="btn-outline-lg" [routerLink]="['/room/editar', h.id]">EDITAR</a>
-              <button class="btn-outline-lg" (click)="eliminarRoom(h.id.toString())">ELIMINAR</button>
+              <button class="btn-outline-lg" (click)="eliminarRoom(h.id!.toString())">ELIMINAR</button>
             </td>
           </tr>
         </tbody>

@@ -1,0 +1,123 @@
+.consultar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 40px 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.header-section h1 {
+  color: #2c3e50;
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.header-section p {
+  color: #6c757d;
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.entities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.entity-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.entity-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  border-color: #007bff;
+}
+
+.entity-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2em;
+}
+
+.entity-card h3 {
+  color: #2c3e50;
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.entity-card p {
+  color: #6c757d;
+  font-size: 1em;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.entity-actions {
+  background: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.action-text {
+  color: #495057;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .consultar-container {
+    padding: 20px 15px;
+  }
+  
+  .header-section {
+    padding: 30px 20px;
+  }
+  
+  .header-section h1 {
+    font-size: 2em;
+  }
+  
+  .entities-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .entity-card {
+    padding: 25px;
+  }
+  
+  .entity-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5em;
+  }
+}

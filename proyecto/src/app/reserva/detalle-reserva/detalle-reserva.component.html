@@ -155,7 +155,7 @@
     </div>
 
     <!-- Botones de acción -->
-    <div class="actions-section" *ngIf="puedePagar() || puedeCancelar()">
+    <div class="actions-section" *ngIf="puedePagar() || puedeCancelar() || puedeFinalizar()">
       <!-- Botón de pago -->
       <div class="payment-section" *ngIf="puedePagar()">
         <div class="payment-info">
@@ -183,6 +183,21 @@
           [disabled]="isLoading">
           <i class="icon-cancel"></i>
           {{ isLoading ? 'Cancelando...' : 'Cancelar Reserva' }}
+        </button>
+      </div>
+
+      <!-- Botón de finalizar -->
+      <div class="finalize-section" *ngIf="puedeFinalizar()">
+        <div class="finalize-info">
+          <h3>Finalizar Reserva</h3>
+          <p>Finaliza tu estadía y libera las habitaciones para nuevas reservas.</p>
+        </div>
+        <button 
+          class="btn btn-warning btn-large" 
+          (click)="finalizarReserva()"
+          [disabled]="isLoading">
+          <i class="icon-check"></i>
+          {{ isLoading ? 'Finalizando...' : 'Finalizar Reserva' }}
         </button>
       </div>
     </div>

@@ -123,7 +123,8 @@ export class RoomEditarComponent implements OnInit {
     };
 
     this.loading = true;
-    this.roomService.updateRoom(this.editId, payload).subscribe({
+    payload.id = this.editId;
+    this.roomService.updateRoom(payload).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/room/table']);

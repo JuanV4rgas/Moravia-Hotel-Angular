@@ -20,7 +20,7 @@ export class DetalleReservaComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private reservaService: ReservaService,
-    private reservaEstadoService: ReservaEstadoService
+    private reservaEstadoService: ReservaEstadoService,
   ) {}
 
   ngOnInit() {
@@ -123,6 +123,12 @@ export class DetalleReservaComponent implements OnInit {
     return this.reserva?.estado === 'ACTIVA';
   }
 
+  puedeFinalizar(): boolean {
+    console.log('Estado de la reserva:', this.reserva?.estado);
+    console.log('¿Puede finalizar?', this.reserva?.estado === 'ACTIVA');
+    return this.reserva?.estado === 'ACTIVA';
+  }
+
   cancelarReserva() {
     if (!this.reserva) return;
 
@@ -140,6 +146,37 @@ export class DetalleReservaComponent implements OnInit {
         error: (error) => {
           console.error('Error al cancelar reserva:', error);
           this.errorMessage = 'Error al cancelar la reserva';
+          this.isLoading = false;
+        }
+      });
+    }
+  }
+
+  finalizarReserva() {
+    console.log('finalizarReserva() llamado');
+    if (!this.reserva) {
+      console.log('No hay reserva');
+      return;
+    }
+
+    if (confirm('¿Estás seguro de que quieres finalizar esta reserva? Las habitaciones quedarán disponibles para nuevas reservas.')) {
+      console.log('Usuario confirmó finalizar reserva');
+      this.isLoading = true;
+      
+      // Actualizar el estado de la reserva a finalizada
+      const reservaActualizada = { 
+        ...this.reserva, 
+        estado: 'FINALIZADA'
+      };
+      
+      this.reservaService.updateReserva(reservaActualizada).subscribe({
+        next: () => {
+          // Recargar la página para mostrar el cambio
+          window.location.reload();
+        },
+        error: (error) => {
+          console.error('Error al finalizar reserva:', error);
+          this.errorMessage = 'Error al finalizar la reserva';
           this.isLoading = false;
         }
       });

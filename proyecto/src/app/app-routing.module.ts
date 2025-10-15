@@ -30,6 +30,7 @@ import { ReservaFormComponent } from './reserva/reserva-form/reserva-form.compon
 import { MisReservasComponent } from './reserva/mis-reservas/mis-reservas.component';
 import { DetalleReservaComponent } from './reserva/detalle-reserva/detalle-reserva.component';
 import { RoomEditarComponent } from './room/room-editar/room-editar.component';
+import { ConsultarComponent } from './consultar/consultar.component';
 
 
 
@@ -71,6 +72,8 @@ const routes: Routes = [
       { path: 'usuario/table', component: UsuarioTableComponent },
       { path: 'usuario/detalle/:id', component: UsuarioDetailComponent },
       { path: 'usuario/nuevo', component: UsuarioFormComponent },
+      
+      { path: 'consultar', component: ConsultarComponent },
     ],
   },
   {

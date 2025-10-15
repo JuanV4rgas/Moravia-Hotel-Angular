@@ -51,6 +51,7 @@ import { RoomTypeSelectorComponent } from './reserva/room-type-selector/room-typ
 import { MisReservasComponent } from './reserva/mis-reservas/mis-reservas.component';
 import { DetalleReservaComponent } from './reserva/detalle-reserva/detalle-reserva.component';
 import { AgregarServiciosComponent } from './reserva/agregar-servicios/agregar-servicios.component';
+import { ConsultarComponent } from './consultar/consultar.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { AgregarServiciosComponent } from './reserva/agregar-servicios/agregar-s
     MisReservasComponent,
     DetalleReservaComponent,
     AgregarServiciosComponent,
+    ConsultarComponent,
    // ServiceEditarComponent
     //RoomtypeListComponent,
   ],

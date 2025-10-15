@@ -122,6 +122,34 @@ body {
 }
 
 
+/* === ANIMACIONES DE NOTIFICACIONES === */
+.notification-message {
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification-message.fade-out {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* Animación de entrada suave */
+.notification-message {
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* === RESPONSIVE === */
 @media (min-width: 992px) {
   .site-header {

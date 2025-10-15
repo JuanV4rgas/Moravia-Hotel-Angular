@@ -539,3 +539,53 @@
 .btn-info:hover {
   background-color: #138496;
 }
+
+/* Finalizar sección */
+.finalize-section {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border: 2px solid #ffc107;
+  border-radius: 12px;
+  padding: 25px;
+  margin: 20px 10px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.2);
+}
+
+.finalize-info h3 {
+  color: #856404;
+  margin-bottom: 10px;
+  font-size: 1.4em;
+  font-weight: 600;
+}
+
+.finalize-info p {
+  color: #6c5b00;
+  margin-bottom: 20px;
+  font-size: 1em;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ffc107, #e0a800);
+  color: #212529;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+}
+
+.btn-warning:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e0a800, #d39e00);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+}
+
+.btn-warning:disabled {
+  background: #adb5bd;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

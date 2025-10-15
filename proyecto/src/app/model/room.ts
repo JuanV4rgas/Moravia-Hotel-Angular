@@ -1,8 +1,8 @@
-import { RoomType } from './roomtype';
+import { RoomType } from './reserva';
 
 export interface Room {
-  id: number;
+  id?: number;
   habitacionNumber: string;
-  type: RoomType;
   available: boolean;
+  type: RoomType;
 }

@@ -14,4 +14,8 @@ export class SuitesComponent {
     this.router.navigate(['/reserva/nueva']);
   }
 
+  irAMasInformacion() {
+    this.router.navigate(['/roomtype/lista']);
+  }
+
 }

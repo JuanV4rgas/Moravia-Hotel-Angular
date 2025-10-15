@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Room } from '../model/room';
-import { RoomType } from '../model/reserva';
 
 @Injectable({
   providedIn: 'root'
@@ -12,59 +11,34 @@ export class RoomService {
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Obtener todas las habitaciones
-   */
   getAllRooms(): Observable<Room[]> {
     return this.http.get<Room[]>(`${this.apiUrl}/all`);
   }
 
-  /**
-   * Obtener habitación por ID
-   */
   getRoomById(id: number): Observable<Room> {
-    return this.http.get<Room>(`${this.apiUrl}/find?id=${id}`);
+    return this.http.get<Room>(`${this.apiUrl}/find/${id}`);
   }
 
-  /**
-   * Obtener todos los tipos de habitación
-   */
-  getAllRoomTypes(): Observable<RoomType[]> {
-    return this.http.get<RoomType[]>(`http://localhost:8081/roomtype/all`);
+  addRoom(room: Room): Observable<Room> {
+    return this.http.post<Room>(`${this.apiUrl}/add`, room);
   }
 
-  /**
-   * Buscar habitaciones disponibles por fechas
-   */
-  buscarHabitacionesDisponibles(fechaInicio: string, fechaFin: string): Observable<Room[]> {
-    return this.http.get<Room[]>(`http://localhost:8081/reserva/checkDisponibilidad?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+  updateRoom(room: Room): Observable<Room> {
+    return this.http.put<Room>(`${this.apiUrl}/update/${room.id}`, room);
   }
 
-  /**
-   * Obtener habitación por ID (método individual)
-   */
-  getRoom(id: number): Observable<Room> {
-    return this.http.get<Room>(`${this.apiUrl}/find?id=${id}`);
+  deleteRoom(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 
-  /**
-   * Agregar nueva habitación
-   */
-  addRoom(room: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/add`, room);
+  // Métodos adicionales para compatibilidad con componentes existentes
+  getAllRoomTypes(): Observable<any[]> {
+    // Este método debería llamar al servicio de roomtypes, pero por compatibilidad
+    // retornamos un observable vacío
+    return this.http.get<any[]>(`http://localhost:8081/roomtype/all`);
   }
 
-  /**
-   * Actualizar habitación
-   */
-  updateRoom(id: number, room: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/update/${id}`, room);
-  }
-
-  /**
-   * Eliminar habitación
-   */
-  deleteRoom(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/delete/${id}`);
+  buscarHabitacionesDisponibles(fechaInicio: string, fechaFin: string): Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:8081/reserva/checkDisponibilidad?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
   }
 }
