@@ -73,17 +73,20 @@ export class ReservaFormComponent implements OnInit {
       this.errorMessage = '';
       this.successMessage = '';
 
+      console.log('Habitaciones seleccionadas:', this.habitacionesSeleccionadas);
       const reserva: Reserva = {
         fechaInicio: this.reservaForm.value.fechaInicio,
         fechaFin: this.reservaForm.value.fechaFin,
         estado: 'PENDIENTE',
         cliente: {
-          idUsuario: this.usuarioActual!.idUsuario,
+          idUsuario: this.usuarioActual!.idUsuario, 
           nombre: this.usuarioActual!.nombre,
           apellido: this.usuarioActual!.apellido,
-          email: this.usuarioActual!.email
+          email: this.usuarioActual!.email,
         },
-        rooms: this.habitacionesSeleccionadas
+        rooms: this.habitacionesSeleccionadas.map(
+          (h) => ({ id: h.id } as Room)
+        ),
       };
 
       this.reservaService.createReserva(reserva).subscribe({

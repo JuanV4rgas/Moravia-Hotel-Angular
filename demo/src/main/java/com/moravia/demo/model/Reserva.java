@@ -27,7 +27,6 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @JsonIgnore
     private Usuario cliente;
 
     @OneToOne(mappedBy = "reserva")
@@ -36,6 +35,5 @@ public class Reserva {
 
     @ManyToMany
     @JoinTable(name = "reserva_rooms", joinColumns = @JoinColumn(name = "reserva_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
-    @JsonIgnore
     private List<Room> rooms;
 }

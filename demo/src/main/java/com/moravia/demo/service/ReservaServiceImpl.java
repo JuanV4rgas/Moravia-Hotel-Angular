@@ -35,60 +35,61 @@ public class ReservaServiceImpl implements ReservaService {
         return reservaRepository.findAll();
     }
 
-    @Override
-    public void add(Reserva reserva) {
-        // 1️⃣ Validar cliente
-        Usuario cliente = usuarioRepository.findById(reserva.getCliente().getIdUsuario())
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+@Override
+public void add(Reserva reserva) {
+    // 1️⃣ Validar cliente
+    Usuario cliente = usuarioRepository.findById(reserva.getCliente().getIdUsuario())
+            .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-        if (!"cliente".equalsIgnoreCase(cliente.getTipo())) {
-            throw new RuntimeException("Solo los usuarios de tipo 'cliente' pueden realizar reservas");
-        }
-
-        // 2️⃣ Validar habitaciones
-        List<Room> habitacionesSeleccionadas = reserva.getRooms();
-        if (habitacionesSeleccionadas == null || habitacionesSeleccionadas.isEmpty()) {
-            throw new RuntimeException("Debe seleccionar al menos una habitación");
-        }
-
-        // 3️⃣ Validar fechas
-        long noches = ChronoUnit.DAYS.between(reserva.getFechaInicio(), reserva.getFechaFin());
-        if (noches <= 0) {
-            throw new RuntimeException("Las fechas de la reserva no son válidas");
-        }
-
-        // 4️⃣ Calcular total
-        double total = 0.0;
-
-        for (Room room : habitacionesSeleccionadas) {
-            Room habitacion = roomRepository.findById(room.getId())
-                    .orElseThrow(() -> new RuntimeException("Habitación no encontrada con ID: " + room.getId()));
-
-            if (Boolean.FALSE.equals(habitacion.getAvailable())) {
-                throw new RuntimeException("La habitación " + habitacion.getHabitacionNumber() + " no está disponible");
-            }
-
-            double subtotal = habitacion.getType().getPrice() * noches;
-            total += subtotal;
-
-            // Marcar habitación como ocupada
-            habitacion.setAvailable(false);
-            roomRepository.save(habitacion);
-        }
-
-        // 5️⃣ Crear cuenta
-        Cuenta cuenta = new Cuenta();
-        cuenta.setTotal(total);
-        cuenta.setReserva(reserva);
-        cuentaRepository.save(cuenta);
-
-        // 6️⃣ Configurar reserva
-        reserva.setCliente(cliente);
-        reserva.setEstado("CONFIRMADA");
-        reserva.setCuenta(cuenta);
-
-        reservaRepository.save(reserva);
+    if (!"cliente".equalsIgnoreCase(cliente.getTipo())) {
+        throw new RuntimeException("Solo los usuarios de tipo 'cliente' pueden realizar reservas");
     }
+
+    // 2️⃣ Validar habitaciones
+    List<Room> habitacionesSeleccionadas = reserva.getRooms();
+    if (habitacionesSeleccionadas == null || habitacionesSeleccionadas.isEmpty()) {
+        throw new RuntimeException("Debe seleccionar al menos una habitación");
+    }
+
+    // 3️⃣ Validar fechas
+    long noches = ChronoUnit.DAYS.between(reserva.getFechaInicio(), reserva.getFechaFin());
+    if (noches <= 0) {
+        throw new RuntimeException("Las fechas de la reserva no son válidas");
+    }
+
+    // 4️⃣ Calcular total y marcar habitaciones ocupadas
+    double total = 0.0;
+    for (Room room : habitacionesSeleccionadas) {
+        Room habitacion = roomRepository.findById(room.getId())
+                .orElseThrow(() -> new RuntimeException("Habitación no encontrada con ID: " + room.getId()));
+
+        if (Boolean.FALSE.equals(habitacion.getAvailable())) {
+            throw new RuntimeException("La habitación " + habitacion.getHabitacionNumber() + " no está disponible");
+        }
+
+        double subtotal = habitacion.getType().getPrice() * noches;
+        total += subtotal;
+
+        habitacion.setAvailable(false);
+        roomRepository.save(habitacion);
+    }
+
+    // 5️⃣ Guardar reserva primero (sin cuenta aún)
+    reserva.setCliente(cliente);
+    reserva.setEstado("CONFIRMADA");
+    reserva.setCuenta(null);  // se asociará luego
+    Reserva reservaGuardada = reservaRepository.save(reserva);
+
+    // 6️⃣ Crear cuenta vinculada a la reserva ya persistida
+    Cuenta cuenta = new Cuenta();
+    cuenta.setTotal(total);
+    cuenta.setReserva(reservaGuardada);
+    cuentaRepository.save(cuenta);
+
+    // 7️⃣ Asociar la cuenta y actualizar la reserva
+    reservaGuardada.setCuenta(cuenta);
+    reservaRepository.save(reservaGuardada);
+}
 
 
     @Override

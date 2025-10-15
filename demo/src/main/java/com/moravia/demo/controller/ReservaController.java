@@ -37,7 +37,7 @@ public class ReservaController {
     // http://localhost:8081/reserva/add
     @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
     public void agregarReserva(@RequestBody Reserva reserva) {
-        reservaService.add(reserva);
+        reservaService.add(reserva);    
     }
 
     // ✅ 4️⃣ Eliminar una reserva
