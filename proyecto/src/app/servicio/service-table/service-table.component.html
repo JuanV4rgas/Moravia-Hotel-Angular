@@ -33,7 +33,7 @@
         <a class="btn btn-outline-primary btn-sm" [routerLink]="['/servicio/editar', s.idServicio]">Editar</a>
 
         <!-- Eliminar -->
-        <button class="btn btn-outline-danger btn-sm" (click)="eliminar(s.idServicio, $event)">Eliminar</button>
+        <button class="btn btn-outline-danger btn-sm" (click)="eliminar(s.idServicio!, $event)">Eliminar</button>
       </td>
     </tr>
   </tbody>

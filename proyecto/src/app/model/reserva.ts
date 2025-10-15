@@ -1,11 +1,12 @@
 // Importar Room desde el modelo unificado
 import { Room } from './room';
+import { Servicio } from './servicio';
 
 export interface Reserva {
   id?: number;
   fechaInicio: string; // ISO date string
   fechaFin: string;    // ISO date string
-  estado: string;      // 'CONFIRMADA', 'PENDIENTE', 'CANCELADA'
+  estado: string;      // 'CONFIRMADA', 'PENDIENTE', 'CANCELADA', 'PROXIMA', 'FINALIZADA'
   cliente: {
     idUsuario: number;
     nombre: string;
@@ -16,6 +17,7 @@ export interface Reserva {
   cuenta?: {
     id: number;
     total: number;
+    servicios?: Servicio[];
   };
 }
 

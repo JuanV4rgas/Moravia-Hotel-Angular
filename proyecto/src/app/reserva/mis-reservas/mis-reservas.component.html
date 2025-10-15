@@ -1,0 +1,80 @@
+<div class="mis-reservas-container">
+  <div class="header">
+    <h1>Mis Reservas</h1>
+    <p>Gestiona y revisa todas tus reservas</p>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Cargando tus reservas...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-message" *ngIf="errorMessage">
+    <div class="alert alert-error">
+      <i class="icon-error"></i>
+      {{ errorMessage }}
+    </div>
+    <button class="btn btn-primary" (click)="cargarMisReservas()">
+      Intentar de nuevo
+    </button>
+  </div>
+
+  <!-- Sin reservas -->
+  <div class="no-reservas" *ngIf="!isLoading && !errorMessage && reservas.length === 0">
+    <div class="empty-state">
+      <i class="icon-calendar"></i>
+      <h3>No tienes reservas</h3>
+      <p>Aún no has realizado ninguna reserva en nuestro hotel.</p>
+      <button class="btn btn-primary" routerLink="/reserva/nueva">
+        Hacer una reserva
+      </button>
+    </div>
+  </div>
+
+  <!-- Lista de reservas -->
+  <div class="reservas-grid" *ngIf="!isLoading && !errorMessage && reservas.length > 0">
+    <div class="reserva-card" *ngFor="let reserva of reservas" (click)="verDetalleReserva(reserva.id!)">
+      <div class="reserva-header">
+        <div class="reserva-info">
+          <h3>Reserva #{{ reserva.id }}</h3>
+          <span class="fecha">{{ reserva.fechaInicio }} - {{ reserva.fechaFin }}</span>
+        </div>
+        <div class="estado-badge" [ngClass]="getEstadoClass(reserva.estado)">
+          {{ getEstadoTexto(reserva.estado) }}
+        </div>
+      </div>
+
+      <div class="reserva-details">
+        <div class="detail-item">
+          <i class="icon-bed"></i>
+          <span>{{ reserva.rooms.length }} habitación(es)</span>
+        </div>
+        <div class="detail-item" *ngIf="reserva.cuenta">
+          <i class="icon-money"></i>
+          <span>Total: ${{ reserva.cuenta.total | number:'1.0-0' }}</span>
+        </div>
+        <div class="detail-item estado-info">
+          <i class="icon-calendar"></i>
+          <span>{{ obtenerInfoEstado(reserva).mensaje }}</span>
+        </div>
+      </div>
+
+      <div class="reserva-rooms">
+        <h4>Habitaciones:</h4>
+        <div class="rooms-list">
+          <span class="room-item" *ngFor="let room of reserva.rooms">
+            Habitación {{ room.habitacionNumber }}
+          </span>
+        </div>
+      </div>
+
+      <div class="reserva-actions">
+        <button class="btn btn-outline" (click)="verDetalleReserva(reserva.id!); $event.stopPropagation()">
+          Ver detalles
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,6 +27,8 @@ import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.com
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
 import { HistoriaComponent } from './historia/historia.component';
 import { ReservaFormComponent } from './reserva/reserva-form/reserva-form.component';
+import { MisReservasComponent } from './reserva/mis-reservas/mis-reservas.component';
+import { DetalleReservaComponent } from './reserva/detalle-reserva/detalle-reserva.component';
 
 
 
@@ -62,6 +64,8 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'historia', component: HistoriaComponent },
       { path: 'reserva/nueva', component: ReservaFormComponent },
+      { path: 'mis-reservas', component: MisReservasComponent },
+      { path: 'reserva/detalle/:id', component: DetalleReservaComponent },
 
       { path: 'usuario/table', component: UsuarioTableComponent },
       { path: 'usuario/detalle/:id', component: UsuarioDetailComponent },

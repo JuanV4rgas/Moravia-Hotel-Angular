@@ -59,7 +59,8 @@ export class ServiceEditarComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.service.updateServicio(this.id, this.form).subscribe({
+    this.form.idServicio = this.id;
+    this.service.updateServicio(this.form).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/servicio/table']);

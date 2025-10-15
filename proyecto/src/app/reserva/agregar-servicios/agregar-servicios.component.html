@@ -1,0 +1,90 @@
+<div class="agregar-servicios-container" *ngIf="reserva">
+  <div class="header">
+    <h3>Agregar Servicios a la Reserva</h3>
+    <p class="reserva-info">Reserva #{{ reserva.id }} - {{ reserva.estado }}</p>
+  </div>
+
+  <!-- Mensajes de estado -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+  
+  <div class="alert alert-success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Cargando servicios...</p>
+  </div>
+
+  <!-- Servicios disponibles -->
+  <div class="servicios-section" *ngIf="!isLoading">
+    <h4>Servicios Disponibles</h4>
+    <div class="servicios-grid">
+      <div class="servicio-card" 
+           *ngFor="let servicio of servicios" 
+           [class.selected]="isServicioSeleccionado(servicio)"
+           (click)="toggleServicio(servicio)">
+        
+        <div class="servicio-image">
+          <img [src]="servicio.imagenUrl" 
+               [alt]="servicio.nombre"
+               (error)="onImageError($event)">
+        </div>
+        
+        <div class="servicio-content">
+          <h5>{{ servicio.nombre }}</h5>
+          <p class="descripcion">{{ servicio.descripcion }}</p>
+          <div class="precio">${{ servicio.precio | number:'1.2-2' }}</div>
+        </div>
+        
+        <div class="servicio-actions">
+          <button class="btn btn-sm" 
+                  [class.btn-primary]="isServicioSeleccionado(servicio)"
+                  [class.btn-outline-primary]="!isServicioSeleccionado(servicio)">
+            {{ isServicioSeleccionado(servicio) ? 'Seleccionado' : 'Seleccionar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resumen de selección -->
+  <div class="resumen-section" *ngIf="serviciosSeleccionados.length > 0">
+    <h4>Servicios Seleccionados</h4>
+    <div class="servicios-seleccionados">
+      <div class="servicio-seleccionado" *ngFor="let servicio of serviciosSeleccionados">
+        <span class="nombre">{{ servicio.nombre }}</span>
+        <span class="precio">${{ servicio.precio | number:'1.2-2' }}</span>
+      </div>
+    </div>
+    
+    <div class="total-section">
+      <div class="total-servicios">
+        <strong>Total Servicios: ${{ calcularTotalServicios() | number:'1.2-2' }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones -->
+  <div class="actions-section">
+    <button class="btn btn-secondary" 
+            (click)="limpiarSeleccion()"
+            [disabled]="serviciosSeleccionados.length === 0">
+      Limpiar Selección
+    </button>
+    
+    <button class="btn btn-primary" 
+            (click)="agregarServiciosAReserva()"
+            [disabled]="serviciosSeleccionados.length === 0 || isLoading">
+      <span *ngIf="isLoading">Agregando...</span>
+      <span *ngIf="!isLoading">Agregar Servicios</span>
+    </button>
+  </div>
+</div>
+
+<div class="no-reserva" *ngIf="!reserva">
+  <p>No hay reserva seleccionada</p>
+</div>
