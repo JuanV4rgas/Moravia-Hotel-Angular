@@ -15,6 +15,32 @@
     <p><strong>Noches:</strong> {{ getNoches() }}</p>
   </div>
 
+  <!-- Filtros -->
+  <div class="filters-section" *ngIf="roomTypes.length > 0">
+    <h4>Filtrar por:</h4>
+    <div class="filters">
+      <div class="filter-group">
+        <label for="priceFilter">Precio:</label>
+        <select id="priceFilter" [(ngModel)]="filtroPrecio" (change)="aplicarFiltros()">
+          <option value="">Sin filtro</option>
+          <option value="menor-mayor">Menor a mayor</option>
+          <option value="mayor-menor">Mayor a menor</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="bedsFilter">Número de camas:</label>
+        <select id="bedsFilter" [(ngModel)]="filtroCamas" (change)="aplicarFiltros()">
+          <option value="">Sin filtro</option>
+          <option value="menor-mayor">Menor a mayor</option>
+          <option value="mayor-menor">Mayor a menor</option>
+        </select>
+      </div>
+      
+      <button class="btn btn-secondary" (click)="limpiarFiltros()">Limpiar filtros</button>
+    </div>
+  </div>
+
   <!-- Lista de tipos de habitación -->
   <div class="room-types-grid" *ngIf="roomTypes.length > 0 && !isLoading">
     <div 
@@ -22,6 +48,15 @@
       *ngFor="let tipo of roomTypes"
       [class.selected]="tipoSeleccionadoActual?.id === tipo.id"
       (click)="seleccionarTipo(tipo)">
+      
+      <!-- Imagen del tipo de habitación -->
+      <div class="room-type-image">
+        <img 
+          [src]="getRoomTypeImage(tipo)" 
+          [alt]="tipo.name"
+          class="room-image"
+          (error)="onImageError($event)">
+      </div>
       
       <div class="room-type-header">
         <h4>{{ tipo.name }}</h4>

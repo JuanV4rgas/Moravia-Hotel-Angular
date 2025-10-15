@@ -23,7 +23,7 @@ export class ReservaService {
    * Obtener reserva por ID
    */
   getReservaById(id: number): Observable<Reserva> {
-    return this.http.get<Reserva>(`${this.apiUrl}/find?id=${id}`);
+    return this.http.get<Reserva>(`${this.apiUrl}/find/${id}`);
   }
 
   /**
