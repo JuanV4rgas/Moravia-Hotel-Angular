@@ -1,14 +1,23 @@
 <main class="services-main">
   <div class="container-servicios">
-    <!-- Encabezado igual al de RoomType -->
+    <!-- Cabecera -->
     <div class="header-section">
       <h1 class="services-title">Nuestras <em>Habitaciones</em></h1>
       <p class="services-subtitle">Consulta disponibilidad y gestiona cada habitación</p>
     </div>
 
-    <!-- Solo estética (sin loading/error) -->
+    <!-- Tabla -->
     <div class="table-wrapper">
       <table class="services-table">
+        <!-- fija anchos como en roomtype -->
+        <colgroup>
+          <col style="width:80px">   <!-- ID -->
+          <col style="width:200px">  <!-- NÚMERO -->
+          <col style="width:240px">  <!-- TIPO -->
+          <col style="width:150px">  <!-- DISPONIBLE (alineado a la derecha) -->
+          <col style="width:180px">  <!-- ACCIONES -->
+        </colgroup>
+
         <thead>
           <tr class="table-header">
             <th class="th-id">ID</th>
@@ -18,25 +27,27 @@
             <th class="th-acciones">ACCIONES</th>
           </tr>
         </thead>
+
         <tbody>
           <tr class="service-row" *ngFor="let h of rooms">
-            <!-- ID chip -->
             <td class="service-id">
               <span class="id-chip">{{ h.id }}</span>
             </td>
 
-            <!-- Número -->
-            <td class="service-name">{{ h.habitacionNumber }}</td>
+            <td class="service-name">
+              {{ h.habitacionNumber }}
+            </td>
 
-            <!-- Tipo -->
-            <td class="service-type">{{ h.type?.name }}</td>
+            <td class="service-type">
+              {{ h.type?.name }}
+            </td>
 
-            <!-- Disponible -->
-            <td class="service-status" [class.ok]="h.available" [class.no]="!h.available">
+            <!-- SOLO texto Sí/No alineado a la derecha (como precio) -->
+            <td class="service-available">
               {{ h.available ? 'Sí' : 'No' }}
             </td>
 
-            <!-- Acciones apiladas (VER / EDITAR / ELIMINAR) -->
+            <!-- Acciones iguales a roomtype (a la derecha) -->
             <td class="service-actions">
               <a class="btn-outline-lg" [routerLink]="['/room/detail', h.id]">VER</a>
               <a class="btn-outline-lg" [routerLink]="['/room/editar', h.id]">EDITAR</a>
@@ -47,5 +58,9 @@
       </table>
     </div>
 
+    <!-- Botón CREAR -->
+    <div class="actions-footer">
+      <a class="btn-outline-lg" [routerLink]="['/room/nueva']">CREAR</a>
+    </div>
   </div>
 </main>
