@@ -1,27 +1,89 @@
-<div>
-  <h4>Servicio - Detalle</h4>
+<main class="detail-main">
+  <div class="detail-container">
 
-  <div *ngIf="loading" class="alert alert-info">Cargando…</div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <!-- Estados (idéntico flujo que ya tienes) -->
+    <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-  <ng-container *ngIf="!loading && !error && servicio; else noSel">
-    <ul>
-      <li><strong>ID:</strong> {{ servicio.idServicio }}</li>
-      <li><strong>Nombre:</strong> {{ servicio.nombre }}</li>
-      <li><strong>Descripción:</strong> {{ servicio.descripcion }}</li>
-      <li><strong>Precio:</strong> {{ servicio.precio | currency:'COP':'symbol' }}</li>
-      <li *ngIf="servicio.imagenUrl">
-        <strong>Imagen:</strong> <a [href]="servicio.imagenUrl" target="_blank">ver</a>
-      </li>
-    </ul>
+    <ng-container *ngIf="!loading && !error && servicio; else noSel">
 
-    <div class="d-flex gap-2">
-      <a class="btn btn-outline-primary" [routerLink]="['/servicio/editar', servicio.idServicio]">Editar</a>
-      <button class="btn btn-secondary" (click)="volver()">Volver</button>
-    </div>
-  </ng-container>
+      <!-- HERO del servicio (título grande e ID) -->
+      <section class="service-hero">
+        <div class="service-hero-content">
+          <h1 class="service-title">{{ servicio.nombre }}</h1>
+          <div class="service-id">
+            <span class="service-label">ID:</span>
+            <span>{{ servicio.idServicio }}</span>
+          </div>
+        </div>
+      </section>
 
-  <ng-template #noSel>
-    <p>No hay servicio seleccionado.</p>
-  </ng-template>
-</div>
+      <!-- Tarjeta principal: info + visual -->
+      <div class="service-card">
+        <div class="service-content">
+          <div class="service-header">
+            <h2 class="service-name">{{ servicio.nombre }}</h2>
+
+            <!-- Precio a la derecha (píldora) -->
+            <div class="service-price">
+              <span class="price-label">Precio</span>
+              <span class="price-value">{{ servicio.precio | currency:'COP':'symbol' }}</span>
+            </div>
+          </div>
+
+          <!-- Descripción -->
+          <div class="service-description">
+            <h3>Descripción</h3>
+            <p>{{ servicio.descripcion }}</p>
+          </div>
+
+          <!-- OJO: aquí en Spring había “Reservar ahora” y “Más información”.
+               Se ELIMINAN como pediste, así que no renderizamos botones. -->
+        </div>
+
+        <!-- Visual (imagen si hay URL) -->
+        <div class="service-visual">
+          <div class="service-image-placeholder">
+            <img *ngIf="servicio.imagenUrl" [src]="servicio.imagenUrl" alt="Imagen del servicio">
+          </div>
+        </div>
+      </div>
+
+      <!-- Detalles tipo “cards” -->
+      <div class="service-details">
+        <div class="detail-item">
+          <dt class="detail-label">ID del Servicio</dt>
+          <dd class="detail-value">{{ servicio.idServicio }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Servicio</dt>
+          <dd class="detail-value">{{ servicio.nombre }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Descripción Completa</dt>
+          <dd class="detail-value">{{ servicio.descripcion }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Precio Final</dt>
+          <dd class="detail-value price-highlight">
+            {{ servicio.precio | currency:'COP':'symbol' }}
+          </dd>
+        </div>
+      </div>
+
+      <!-- Acciones propias del panel (mantengo Editar/Volver si los usas) -->
+      <div class="detail-footer">
+        <a class="btn-outline-lg" [routerLink]="['/servicio/editar', servicio.idServicio]">EDITAR</a>
+        <button class="btn-outline-lg" (click)="volver()">VOLVER</button>
+      </div>
+
+    </ng-container>
+
+    <ng-template #noSel>
+      <p class="alert alert-warning">No hay servicio seleccionado.</p>
+    </ng-template>
+  </div>
+</main>

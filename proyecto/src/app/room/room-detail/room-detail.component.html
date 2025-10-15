@@ -1,26 +1,46 @@
-<h2>Detalle de habitación</h2>
+<h2 class="visually-hidden">Detalle de habitación</h2>
 
 <div *ngIf="loading" class="alert alert-info">Cargando…</div>
 <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
 
 <ng-container *ngIf="!loading && !error && room as r">
-  <div class="card p-3">
-    <div class="row mb-2"><div class="col-4 fw-bold">ID</div><div class="col-8">{{ r.id }}</div></div>
-    <div class="row mb-2"><div class="col-4 fw-bold">Número</div><div class="col-8">{{ r.habitacionNumber }}</div></div>
-    <div class="row mb-2"><div class="col-4 fw-bold">Tipo</div><div class="col-8">{{ r.type?.name || '—' }}</div></div>
-    <div class="row mb-2"><div class="col-4 fw-bold">Capacidad</div><div class="col-8">{{ r.type?.capacity || '—' }}</div></div>
-    <div class="row mb-2"><div class="col-4 fw-bold">Camas</div><div class="col-8">{{ r.type?.numberOfBeds ?? '—' }}</div></div>
-    <div class="row mb-2"><div class="col-4 fw-bold">Precio</div><div class="col-8">{{ r.type?.price | currency:'COP':'symbol' }}</div></div>
-    <div class="row mb-2">
-      <div class="col-4 fw-bold">Disponible</div>
-      <div class="col-8">
-        <span class="badge" [class.bg-success]="r.available" [class.bg-danger]="!r.available">
-          {{ r.available ? 'Sí' : 'No' }}
-        </span>
+  <main class="detail-main">
+    <div class="detail-container">
+
+      <!-- HERO (título e ID) -->
+      <section class="service-hero">
+        <div class="service-hero-content">
+          <h1 class="service-title">Habitación {{ r.habitacionNumber }}</h1>
+          <div class="service-id">
+            <span class="service-label">ID:</span>
+            <span>{{ r.id }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- DETALLES (solo los 4 campos pedidos) -->
+      <div class="service-details">
+        <div class="detail-item">
+          <dt class="detail-label">ID</dt>
+          <dd class="detail-value">{{ r.id }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Número de habitación</dt>
+          <dd class="detail-value">{{ r.habitacionNumber }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Tipo</dt>
+          <dd class="detail-value">{{ r.type?.name || '—' }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Disponible</dt>
+          <dd class="detail-value">{{ r.available ? 'Sí' : 'No' }}</dd>
+        </div>
       </div>
+
     </div>
-    <div class="mt-3">
-      <button class="btn btn-outline-secondary" (click)="volver()">Volver</button>
-    </div>
-  </div>
+  </main>
 </ng-container>
