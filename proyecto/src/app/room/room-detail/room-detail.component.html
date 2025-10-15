@@ -1,29 +1,26 @@
-<div class="p-3">
-  <h2>Detalle de Habitación</h2>
+<h2>Detalle de habitación</h2>
 
-  <div *ngIf="loading">Cargando...</div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+<div *ngIf="loading" class="alert alert-info">Cargando…</div>
+<div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
 
-  <ng-container *ngIf="!loading && !error && room; else noRoom">
-    <ul class="list-group mb-3">
-      <li class="list-group-item"><strong>ID:</strong> {{ room.id }}</li>
-      <li class="list-group-item">
-        <strong>Número de Habitación:</strong> {{ room.habitacionNumber }}
-      </li>
-      <li class="list-group-item">
-        <strong>Tipo:</strong> {{ room.type?.name }}
-      </li>
-      <li class="list-group-item">
-        <strong>Disponible:</strong> {{ room.available ? 'Sí' : 'No' }}
-      </li>
-    </ul>
-
-    <button type="button" class="btn btn-secondary" (click)="volver()">
-      Volver
-    </button>
-  </ng-container>
-
-  <ng-template #noRoom>
-    <p class="text-muted">Room no seleccionada.</p>
-  </ng-template>
-</div>
+<ng-container *ngIf="!loading && !error && room as r">
+  <div class="card p-3">
+    <div class="row mb-2"><div class="col-4 fw-bold">ID</div><div class="col-8">{{ r.id }}</div></div>
+    <div class="row mb-2"><div class="col-4 fw-bold">Número</div><div class="col-8">{{ r.habitacionNumber }}</div></div>
+    <div class="row mb-2"><div class="col-4 fw-bold">Tipo</div><div class="col-8">{{ r.type?.name || '—' }}</div></div>
+    <div class="row mb-2"><div class="col-4 fw-bold">Capacidad</div><div class="col-8">{{ r.type?.capacity || '—' }}</div></div>
+    <div class="row mb-2"><div class="col-4 fw-bold">Camas</div><div class="col-8">{{ r.type?.numberOfBeds ?? '—' }}</div></div>
+    <div class="row mb-2"><div class="col-4 fw-bold">Precio</div><div class="col-8">{{ r.type?.price | currency:'COP':'symbol' }}</div></div>
+    <div class="row mb-2">
+      <div class="col-4 fw-bold">Disponible</div>
+      <div class="col-8">
+        <span class="badge" [class.bg-success]="r.available" [class.bg-danger]="!r.available">
+          {{ r.available ? 'Sí' : 'No' }}
+        </span>
+      </div>
+    </div>
+    <div class="mt-3">
+      <button class="btn btn-outline-secondary" (click)="volver()">Volver</button>
+    </div>
+  </div>
+</ng-container>

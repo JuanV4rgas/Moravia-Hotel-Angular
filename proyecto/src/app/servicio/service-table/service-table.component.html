@@ -1,42 +1,56 @@
-<h2>Servicios</h2>
+<main class="services-main">
+  <div class="container-servicios">
+    <!-- Header igual a RoomType -->
+    <div class="header-section">
+      <h1 class="services-title">Nuestros <em>Servicios</em></h1>
+      <p class="services-subtitle">Descubre todo lo que tenemos para ofrecerte</p>
+    </div>
 
-<div *ngIf="loading" class="alert alert-info">Cargando…</div>
-<div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
-<div *ngIf="!error && !loading && servicios?.length === 0" class="alert alert-warning mt-2">
-  No hay servicios.
-</div>
+    <!-- Estados (se mantienen) -->
+    <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+    <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
+    <div *ngIf="!error && !loading && servicios?.length === 0" class="alert alert-warning mt-2">
+      No hay servicios.
+    </div>
 
-<table class="table table-hover" *ngIf="!loading && servicios?.length">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th class="text-end">Precio</th>
-      <th>Imagen</th>
-      <th style="width: 260px;">Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let s of servicios; trackBy: trackById">
-      <td>{{ s.nombre }}</td>
-      <td>{{ s.descripcion }}</td>
-      <td class="text-end">{{ s.precio | currency:'COP':'symbol' }}</td>
-      <td>
-        <!-- SOLO abre la imagen si existe (esto NO es el detalle) -->
-        <a *ngIf="s.imagenUrl" [href]="s.imagenUrl" target="_blank">imagen</a>
-      </td>
-      <td class="d-flex gap-2">
-        <!-- 👇 ESTE ES EL “VER” que pediste: navega al detalle -->
-        <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/servicio/detail', s.idServicio]">Ver</a>
+    <!-- Tabla -->
+    <div class="table-wrapper" *ngIf="!loading && servicios?.length">
+      <table class="services-table">
+        <!-- Anchos idénticos al estilo RoomType -->
+        <colgroup>
+          <col style="width:260px">  <!-- NOMBRE -->
+          <col>                      <!-- DESCRIPCIÓN -->
+          <col style="width:150px">  <!-- PRECIO -->
+          <col style="width:180px">  <!-- ACCIONES -->
+        </colgroup>
 
-        <!-- Editar -->
-        <a class="btn btn-outline-primary btn-sm" [routerLink]="['/servicio/editar', s.idServicio]">Editar</a>
+        <thead>
+          <tr class="table-header">
+            <th class="th-nombre">NOMBRE</th>
+            <th class="th-descripcion">DESCRIPCIÓN</th>
+            <th class="th-precio">PRECIO</th>
+            <th class="th-acciones">ACCIONES</th>
+          </tr>
+        </thead>
 
-        <!-- Eliminar -->
-        <button class="btn btn-outline-danger btn-sm" (click)="eliminar(s.idServicio!, $event)">Eliminar</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <tbody>
+          <tr class="service-row" *ngFor="let s of servicios; trackBy: trackById">
+            <td class="service-name">{{ s.nombre }}</td>
+            <td class="service-description">{{ s.descripcion }}</td>
+            <td class="service-price">{{ s.precio | currency:'COP':'symbol' }}</td>
+            <td class="service-actions">
+              <a class="btn-outline-lg" [routerLink]="['/servicio/detail', s.idServicio]">VER</a>
+              <a class="btn-outline-lg" [routerLink]="['/servicio/editar', s.idServicio]">EDITAR</a>
+              <button class="btn-outline-lg" (click)="eliminar(s.idServicio!, $event)">ELIMINAR</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-<a class="btn btn-primary mt-2" [routerLink]="['/servicio/nueva']">Crear nuevo</a>
+    <!-- Crear nuevo -->
+    <div class="actions-footer">
+      <a class="btn-outline-lg" [routerLink]="['/servicio/nueva']">CREAR</a>
+    </div>
+  </div>
+</main>

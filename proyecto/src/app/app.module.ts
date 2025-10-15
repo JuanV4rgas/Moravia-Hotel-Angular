@@ -92,7 +92,7 @@ import { AgregarServiciosComponent } from './reserva/agregar-servicios/agregar-s
     UsuarioDetailComponent,
     UsuarioFormComponent,
     RoomtypeEditarComponent,
-    RoomEditarComponent,
+    //RoomEditarComponent,
     ReservaFormComponent,
     RoomSelectorComponent,
     RoomTypeSelectorComponent,

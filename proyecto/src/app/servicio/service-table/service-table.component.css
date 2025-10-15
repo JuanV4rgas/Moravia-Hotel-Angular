@@ -1,86 +1,160 @@
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px auto;
-  font-family: Arial, sans-serif;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  border-radius: 8px;
+:host{
+  /* mismos tokens que RoomType */
+  --blue-hero: #2f5876;
+  --blue-hero-dark: #284e6a;
+  --blue-chip: #2c5d7b;
+  --thead-text: #f2f5f8;
+  --panel-bg: #ffffff;
+  --panel-radius: 18px;
+  --shadow: 0 16px 30px rgba(0,0,0,.12);
+  display:block;
+}
+
+/* Banda azul superior */
+.services-main{
+  background: linear-gradient(180deg, #2f5876, #365f7e 65%, #365f7e 65%);
+  padding: 28px 16px 40px;
+}
+
+/* Tarjeta contenedora */
+.container-servicios{
+  width: min(1100px, 95vw);
+  margin: 0 auto;
+  background: var(--panel-bg);
+  border-radius: var(--panel-radius);
+  box-shadow: var(--shadow);
   overflow: hidden;
 }
 
-.table thead {
-  background: #007bff;
-  color: #fff;
+/* Header interno */
+.header-section{
+  background: var(--blue-hero);
+  color: #f3f6f9;
+  text-align: center;
+  padding: 34px 16px 26px;
+}
+.services-title{
+  margin: 0 0 6px;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: .3px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+.services-title em{ color: #f3c44f; font-style: normal; }
+.services-subtitle{ margin: 0; opacity: .95; font-size: clamp(14px, 2vw, 18px); }
+
+/* Tabla */
+.table-wrapper{ padding: 0; }
+
+.services-table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.table th,
-.table td {
-  padding: 12px 16px;
+/* Cabecera azul */
+.table-header th{
+  background: var(--blue-hero);
+  color: var(--thead-text);
   text-align: left;
+  padding: 16px 18px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
   font-size: 0.95rem;
-  border-bottom: 1px solid #eee;
+}
+.table-header th:first-child{ border-top-left-radius: 14px; }
+.table-header th:last-child{ border-top-right-radius: 14px; }
+
+/* Columnas (idéntico a RoomType) */
+.th-nombre{ width: 260px; }
+.th-descripcion{ width: auto; }
+.th-precio{ width: 150px; text-align: right; }
+.th-acciones{ width: 180px; text-align: center; }
+
+/* Filas */
+.service-row td{
+  padding: 22px 18px;
+  border-bottom: 1px solid #eef2f6;
+  vertical-align: middle;
+  background: #ffffff;
+}
+.service-row:nth-child(even) td{ background: #fbfdff; }
+
+/* Nombre y descripción */
+.service-name{
+  color: #2e5976;
+  font-weight: 800;
+}
+.service-description{
+  color: #5c6e7e;
+  line-height: 1.55;
 }
 
-.table tbody tr:hover {
-  background: #f9f9f9;
+/* Precio a la derecha (como RoomType) */
+.service-price{
+  text-align: right;
+  color: #2e5976;
+  font-weight: 800;
 }
 
-.table img {
-  max-width: 80px;
+/* Acciones apiladas a la derecha (igual RoomType) */
+.service-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* Botón outline grande (mismo look) */
+.btn-outline-lg{
+  appearance: none;
+  background: #f8fbff;
+  color: #2e5976;
+  border: 2px solid var(--blue-hero-dark);
   border-radius: 6px;
+  padding: 12px 22px;
+  min-width: 150px;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: .22em;
+  box-shadow: 0 6px 12px rgba(47,88,118,.25);
+  text-decoration: none;
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+.btn-outline-lg:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(47,88,118,.28);
+  filter: brightness(1.02);
+}
+.btn-outline-lg:active{ transform: translateY(0); }
+
+/* Footer con “Crear nuevo” */
+.actions-footer{
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 18px 24px;
+  background: #ffffff;
 }
 
-/* Botón estilo */
-.btn {
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  border: none;
-  transition: background 0.3s ease;
+/* Responsivo */
+@media (max-width: 700px){
+  .service-actions{ align-items: stretch; }
+  .btn-outline-lg{ width: 100%; }
 }
 
-.btn-primary {
-  background: #007bff;
-  color: #fff;
+/* Sincronizar con variables globales del header si existen */
+:host{
+  --blue-hero: var(--plum, #2f5876);
+  --blue-hero-dark: color-mix(in oklab, var(--plum, #2f5876) 80%, black 20%);
+  --blue-hero-dark: var(--blue-hero); /* fallback */
 }
-
-.btn-primary:hover {
-  background: #0056b3;
+:host .btn-outline-lg{
+  color: var(--plum, #2f5876);
+  border-color: var(--nav-accent, #3b90c5);
+  box-shadow: 0 6px 12px rgba(0,0,0,.12);
 }
-
-/* Responsive: tabla como tarjetas en móviles */
-@media (max-width: 768px) {
-  .table thead {
-    display: none;
-  }
-
-  .table, .table tbody, .table tr, .table td {
-    display: block;
-    width: 100%;
-  }
-
-  .table tr {
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
-
-  .table td {
-    padding: 8px 10px;
-    text-align: right;
-    position: relative;
-  }
-
-  .table td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 10px;
-    font-weight: bold;
-    text-transform: capitalize;
-    color: #555;
-  }
-}
+:host .service-name,
+:host .service-price{ color: var(--plum, #2f5876); }
+:host .table-header th{ background: var(--blue-hero); color: var(--thead-text); }

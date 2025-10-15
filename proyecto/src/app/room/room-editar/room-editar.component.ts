@@ -1,87 +1,138 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Room } from '../../model/room';
-import { RoomType } from '../../model/roomtype';
-import { RoomService } from '../../services/room.service';
-import { RoomTypeService } from '../../services/roomtype.service';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { Room } from 'src/app/model/room';
+import { RoomType } from 'src/app/model/reserva';
+import { RoomService } from 'src/app/services/room.service';
 
 @Component({
   selector: 'app-room-editar',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './room-editar.component.html',
+  styleUrls: ['./room-editar.component.css'],
 })
 export class RoomEditarComponent implements OnInit {
   loading = false;
-  error?: string;
+  error = '';
 
   roomTypes: RoomType[] = [];
-
   form: Room = {
     id: 0,
     habitacionNumber: '',
     available: false,
-    type: {} as RoomType
+    type: {} as RoomType,
   };
 
-  private id!: string;
+  private editId = 0;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private roomService: RoomService,
-    private roomTypeService: RoomTypeService
+    private roomService: RoomService
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id') ?? '';
-    if (!this.id) {
-      this.error = 'ID inválido';
+    const raw = this.route.snapshot.paramMap.get('id');
+    const id = raw ? Number(raw) : NaN;
+    if (!id || Number.isNaN(id)) {
+      this.error = `ID inválido: "${raw}"`;
       return;
     }
-    this.cargarTipos();
-    this.cargarRoom();
+    this.editId = id;
+    this.cargarDatos();
   }
 
-  private cargarTipos(): void {
-    this.roomTypeService.getAllRoomTypes().subscribe({
-      next: (types) => (this.roomTypes = types),
-      error: (err) => console.error('Error cargando roomtypes', err),
-    });
-  }
-
-  private cargarRoom(): void {
+  private cargarDatos(): void {
     this.loading = true;
-    this.roomService.getRoom(Number(this.id)).subscribe({
-      next: (room) => {
-        this.form = room;
+    this.error = '';
+
+    this.roomService.getAllRoomTypes().subscribe({
+      next: (types) => {
+        this.roomTypes = types ?? [];
+        this.roomService.getRoomById(this.editId).subscribe({
+          next: (room) => {
+            this.hidratarFormulario(room);
+            this.loading = false;
+          },
+          error: (err1) => {
+            // Fallback: por si /find?id= falla, listar y filtrar
+            this.roomService.getAllRooms().subscribe({
+              next: (lista) => {
+                const hallada = (lista ?? []).find(h => Number(h.id) === this.editId) || null;
+                if (hallada) {
+                  this.hidratarFormulario(hallada);
+                  this.loading = false;
+                } else {
+                  const status = err1?.status ?? '—';
+                  this.error = `No se encontró la habitación con id ${this.editId}. (HTTP ${status})`;
+                  this.loading = false;
+                }
+              },
+              error: (err2) => {
+                const status = err2?.status ?? err1?.status ?? '—';
+                this.error = `No se pudo cargar la habitación. (HTTP ${status})`;
+                this.loading = false;
+              },
+            });
+          },
+        });
+      },
+      error: () => {
+        this.error = 'No se pudieron cargar los tipos de habitación.';
         this.loading = false;
       },
-      error: (err) => {
-        this.error = `No se pudo cargar la habitación (HTTP ${err?.status ?? '—'})`;
-        this.loading = false;
-      }
     });
+  }
+
+  private hidratarFormulario(room: Room): void {
+    this.form = room;
+    if (this.form?.type?.id && this.roomTypes.length) {
+      const match = this.roomTypes.find(t => t.id === this.form.type.id);
+      if (match) this.form.type = match;
+    } else if (this.roomTypes.length && !this.form.type) {
+      this.form.type = this.roomTypes[0];
+    }
+  }
+
+  // Para [compareWith] del <select>
+  compareRoomType(a: RoomType | null, b: RoomType | null): boolean {
+    if (a === b) return true;
+    if (!a || !b) return false;
+    return a.id === b.id;
   }
 
   guardar(): void {
-    if (!this.form.habitacionNumber?.trim()) {
-      this.error = 'El número de habitación es obligatorio.';
+    if (!this.editId) {
+      this.error = 'ID inválido.';
       return;
     }
-    if (!this.form.type || !this.form.type.id) {
-      this.error = 'Selecciona un tipo de habitación.';
+    if (!this.form.type?.id) {
+      this.error = 'Debes seleccionar un tipo de habitación.';
       return;
     }
 
+    // Solo se actualizan type y available; habitacionNumber se envía en solo-lectura
+    const payload: any = {
+      id: this.editId,
+      habitacionNumber: this.form.habitacionNumber,
+      available: this.form.available,
+      type: { id: Number(this.form.type.id) }, // usa String(...) si tu API lo espera texto
+    };
+
     this.loading = true;
-    this.roomService.updateRoom(Number(this.id), this.form).subscribe({
+    this.roomService.updateRoom(this.editId, payload).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/room/table']);
       },
       error: (err) => {
-        this.error = `No se pudo actualizar la habitación (HTTP ${err?.status ?? '—'})`;
+        const status = err?.status ?? '—';
+        this.error = `No se pudo actualizar la habitación (HTTP ${status})`;
         this.loading = false;
-      }
+      },
     });
   }
 

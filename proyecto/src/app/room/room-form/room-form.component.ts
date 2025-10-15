@@ -1,133 +1,90 @@
-// src/app/room/room-form/room-form.component.ts
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { Room } from '../../model/room';
-import { RoomType } from '../../model/roomtype';
-
-import { RoomService } from '../../services/room.service';
-import { RoomTypeService } from '../../services/roomtype.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Room } from 'src/app/model/room';
+import { RoomService } from 'src/app/services/room.service';
+import { RoomType } from 'src/app/model/reserva';
 
 @Component({
   selector: 'app-room-form',
-  templateUrl: './room-form.component.html'
+  templateUrl: './room-form.component.html',
+  styleUrls: ['./room-form.component.css'],
 })
 export class RoomFormComponent implements OnInit {
-  @Output() saved = new EventEmitter<void>();
+  loading = false;
+  error = '';
+  roomTypes: RoomType[] = [];
 
-  // Importante: id:string, numeroHabitacion:string, disponible:boolean, type:RoomType
   formRoom: Room = {
     id: 0,
     habitacionNumber: '',
     available: false,
-    type: {} as RoomType
+    type: {} as RoomType,
   };
 
-  roomTypes: RoomType[] = [];
-  loading = false;
-  isEdit = false;
-  error?: string;
-
-  constructor(
-    private roomService: RoomService,
-    private roomTypeService: RoomTypeService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(private roomService: RoomService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadRoomTypes();
-
-    // Si hay :id en la URL, es edición
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.isEdit = true;
-      this.loading = true;
-      this.roomService.getRoom(Number(id)).subscribe({
-        next: (room) => {
-          this.formRoom = room;
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = 'No se pudo cargar la habitación.';
-          console.error(err);
-          this.loading = false;
-        }
-      });
-    }
+    this.cargarRoomTypes();
   }
 
-  private loadRoomTypes(): void {
-    this.roomTypeService.getAllRoomTypes().subscribe({
-      next: (types) => {
-        this.roomTypes = types;
-        // Si es creación, setea un tipo por defecto para evitar nulls
-        if (!this.isEdit && types.length && !this.formRoom.type?.id) {
-          this.formRoom.type = types[0];
-        }
-      },
-      error: (err) => {
-        this.error = 'No se pudieron cargar los tipos de habitación.';
-        console.error(err);
-      }
-    });
-  }
-
-  addRoomForm(): void {
-    if (!this.formRoom.id) {
-      this.error = 'El id es obligatorio.';
-      return;
-    }
-    if (!this.formRoom.habitacionNumber?.trim()) {
-      this.error = 'El número de habitación es obligatorio.';
-      return;
-    }
-    if (!this.formRoom.type || !this.formRoom.type.id) {
-      this.error = 'Selecciona un tipo de habitación.';
-      return;
-    }
-
+  private cargarRoomTypes(): void {
     this.loading = true;
-
-  
-    const payload: Room = this.formRoom;
-
-    const req$ = this.isEdit
-      ? this.roomService.updateRoom(Number(this.formRoom.id), payload)
-      : this.roomService.addRoom(payload);
-
-    req$.subscribe({
-      next: () => {
+    this.roomService.getAllRoomTypes().subscribe({
+      next: (types) => {
+        this.roomTypes = types ?? [];
+        if (this.roomTypes.length) this.formRoom.type = this.roomTypes[0];
         this.loading = false;
-        this.saved.emit();          // notifica al padre (si lo usas)
-        // Opcional: volver a la tabla
-        // this.router.navigate(['/room/table']);
-
-        if (!this.isEdit) {
-          // reset si fue creación
-          this.formRoom = {
-            id: 0,
-            habitacionNumber: '',
-            available: false,
-            type: this.roomTypes[0] ?? ({} as RoomType)
-          };
-        }
       },
       error: (err) => {
-        this.error = 'No se pudo guardar la habitación.';
         console.error(err);
+        this.error = 'No se pudieron cargar los tipos de habitación.';
         this.loading = false;
-      }
+      },
     });
   }
 
-  onClear(): void {
-  this.formRoom = {
-    id: 0,
-    habitacionNumber: '',
-    available: false,
-    // Usa el primer RoomType cargado; si no hay, usa un placeholder tipado
-    type: this.roomTypes[0] ?? ({ id: '', name: '', price: 0, description: '', capacity: '', numberOfBeds: 0, image: '' } as RoomType)
-  };
+  /** ¡IMPORTANTE! Usar función de clase, no arrow inline en la plantilla */
+  compareRoomType(a: RoomType | null, b: RoomType | null): boolean {
+    if (a === b) return true;
+    if (!a || !b) return false;
+    return a.id === b.id; // en reserva.ts id es string
+  }
+
+  guardar(): void {
+  if (!this.formRoom.habitacionNumber || !this.formRoom.type?.id) {
+    this.error = 'Complete los campos obligatorios.';
+    return;
+  }
+
+  // 🔧 Adaptar payload a lo que espera el backend: type={id:<number>}
+  const payload = {
+    habitacionNumber: this.formRoom.habitacionNumber,
+    available: this.formRoom.available,
+    type: { id: Number(this.formRoom.type.id) }  // ← id numérico
+  } as any;
+
+  this.loading = true;
+  this.roomService.addRoom(payload).subscribe({
+    next: () => {
+      this.loading = false;
+      this.router.navigate(['/room/table']);
+    },
+    error: (err) => {
+      console.error('Error creando habitación. Payload enviado:', payload, err);
+      this.error = `No se pudo crear la habitación (HTTP ${err?.status ?? '—'})`;
+      this.loading = false;
+    },
+  });
 }
+
+
+  limpiar(): void {
+    this.formRoom = {
+      id: 0,
+      habitacionNumber: '',
+      available: false,
+      type: this.roomTypes[0] ?? ({} as RoomType),
+    };
+    this.error = '';
+  }
 }

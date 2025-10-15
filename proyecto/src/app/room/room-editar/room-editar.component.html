@@ -1,38 +1,50 @@
 <h2>Editar habitación</h2>
 
-<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+<div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
 
-<form (ngSubmit)="guardar()" class="p-3" *ngIf="!loading">
+<form *ngIf="!loading && !error" (ngSubmit)="guardar()">
+  <!-- SOLO LECTURA (sin ngModel, usar [value]) -->
+  <div class="mb-3">
+    <label class="form-label">ID</label>
+    <input class="form-control" [value]="form.id" readonly />
+  </div>
+
   <div class="mb-3">
     <label class="form-label">Número de habitación</label>
-    <input class="form-control"
-           [(ngModel)]="form.habitacionNumber"
-           name="habitacionNumber"
-           required />
+    <input class="form-control" [value]="form.habitacionNumber" readonly />
   </div>
 
-  <div class="form-check form-switch mb-3">
-    <input id="available" class="form-check-input"
-           type="checkbox"
-           [(ngModel)]="form.available"
-           name="available" />
-    <label class="form-check-label" for="available">Disponible</label>
-  </div>
-
+  <!-- EDITABLES -->
   <div class="mb-3">
-    <label class="form-label">Tipo</label>
-    <select class="form-select"
-            [(ngModel)]="form.type"
-            name="type"
-            required>
-      <option [ngValue]="null" disabled>Seleccione un tipo</option>
-      <option *ngFor="let rt of roomTypes" [ngValue]="rt">{{ rt.name }}</option>
+    <label for="type" class="form-label">Tipo</label>
+    <select
+      id="type"
+      name="type"
+      class="form-select"
+      [(ngModel)]="form.type"
+      [compareWith]="compareRoomType"
+      required
+    >
+      <option *ngFor="let t of roomTypes" [ngValue]="t">
+        {{ t.name }}
+      </option>
     </select>
   </div>
 
+  <div class="form-check mb-3">
+    <input
+      id="available"
+      name="available"
+      type="checkbox"
+      class="form-check-input"
+      [(ngModel)]="form.available"
+    />
+    <label for="available" class="form-check-label">Disponible</label>
+  </div>
+
   <div class="d-flex gap-2">
-    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-outline-secondary" type="button" (click)="cancelar()">Cancelar</button>
   </div>
 </form>

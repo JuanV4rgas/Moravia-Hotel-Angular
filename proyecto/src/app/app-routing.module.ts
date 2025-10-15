@@ -29,6 +29,7 @@ import { HistoriaComponent } from './historia/historia.component';
 import { ReservaFormComponent } from './reserva/reserva-form/reserva-form.component';
 import { MisReservasComponent } from './reserva/mis-reservas/mis-reservas.component';
 import { DetalleReservaComponent } from './reserva/detalle-reserva/detalle-reserva.component';
+import { RoomEditarComponent } from './room/room-editar/room-editar.component';
 
 
 
@@ -49,7 +50,7 @@ const routes: Routes = [
       { path: 'room/table', component: RoomTableComponent },
       { path: 'room/nueva', component: RoomFormComponent },
       { path: 'room/detail/:id', component: RoomDetailComponent },
-      { path: 'room/editar/:id', component: RoomFormComponent },
+      { path: 'room/editar/:id', component: RoomEditarComponent },
 
       { path: 'cliente/table', component: ClienteTableComponent },
       { path: 'cliente/nueva', component: ClienteFormComponent },
