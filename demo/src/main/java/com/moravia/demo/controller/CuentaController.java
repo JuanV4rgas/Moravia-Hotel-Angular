@@ -28,6 +28,11 @@ public class CuentaController {
     @Autowired
     private CuentaRequestMapper cuentaRequestMapper;
 
+    /**
+     * Muestra todas las cuentas existentes.
+     * 
+     * @return Una lista de objetos con los datos de las cuentas.
+     */
     @GetMapping("/all")
     public List<CuentaResponseDTO> mostrarCuentas() {
         List<Cuenta> cuentas = cuentaService.searchAll();
@@ -36,12 +41,24 @@ public class CuentaController {
             .collect(Collectors.toList());
     }
 
+    /**
+     * Busca una cuenta por su ID.
+     * 
+     * @param id El ID de la cuenta a buscar.
+     * @return El objeto con los datos de la cuenta buscada.
+     */
     @GetMapping("/find/{id}")
     public CuentaResponseDTO mostrarCuenta(@PathVariable("id") Long id) {
         Cuenta cuenta = cuentaService.searchById(id);
         return cuentaMapper.toResponseDTO(cuenta);
     }
 
+    /**
+     * Agrega una nueva cuenta.
+     * 
+     * @param requestDTO El objeto con los datos de la cuenta a agregar.
+     * @return El objeto con los datos de la cuenta agregada.
+     */
     @PostMapping("/add")
     public CuentaResponseDTO agregarCuenta(@RequestBody CrearCuentaRequestDTO requestDTO) {
         // Lógica de creación con mapper
@@ -50,7 +67,6 @@ public class CuentaController {
         return cuentaMapper.toResponseDTO(cuenta);
     }
 
-/*************  ✨ Windsurf Command ⭐  *************/
     /**
      * Actualiza una cuenta existente.
      * 
@@ -58,7 +74,6 @@ public class CuentaController {
      * @param id El ID de la cuenta a actualizar.
      * @return El objeto con los datos de la cuenta actualizada.
      */
-/*******  b82d5ee2-0ff0-453f-ae68-cd3c2ea23b9f  *******/
     @PostMapping("/update/{id}")
     public CuentaResponseDTO actualizarCuenta(
             @RequestBody ActualizarCuentaRequestDTO requestDTO,
