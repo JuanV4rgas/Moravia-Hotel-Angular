@@ -2,6 +2,8 @@ package com.moravia.demo.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,5 +28,5 @@ public class Usuario {
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Reserva> reservas;
+    private List<Reserva> reservas = new ArrayList<>();
 }
