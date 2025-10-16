@@ -16,22 +16,22 @@ export class ConsultarComponent implements OnInit {
   navegarA(entidad: string) {
     switch(entidad) {
       case 'reservas':
-        this.router.navigate(['/reserva/all']);
+        this.router.navigate(['/reserva/table']); 
         break;
       case 'habitaciones':
-        this.router.navigate(['/room/all']);
+        this.router.navigate(['/room/table']);
         break;
       case 'tipos-habitacion':
-        this.router.navigate(['/roomtype/all']);
+        this.router.navigate(['/roomtype/table']);
         break;
       case 'servicios':
-        this.router.navigate(['/servicio/all']);
+        this.router.navigate(['/servicio/table']);
         break;
       case 'usuarios':
-        this.router.navigate(['/usuario/all']);
+        this.router.navigate(['/usuario/table']);
         break;
       case 'cuentas':
-        this.router.navigate(['/cuenta/all']);
+        this.router.navigate(['/cuenta/table']);
         break;
     }
   }
