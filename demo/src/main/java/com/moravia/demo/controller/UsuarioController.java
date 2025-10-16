@@ -1,14 +1,20 @@
 package com.moravia.demo.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.moravia.demo.dto.request.ActualizarUsuarioRequestDTO;
+import com.moravia.demo.dto.request.CrearUsuarioRequestDTO;
+import com.moravia.demo.dto.response.UsuarioConReservasDTO;
+import com.moravia.demo.dto.response.UsuarioResponseDTO;
+import com.moravia.demo.mapper.ReservaMapper;
+import com.moravia.demo.mapper.UsuarioMapper;
+import com.moravia.demo.mapper.UsuarioRequestMapper;
 import com.moravia.demo.model.Usuario;
 import com.moravia.demo.service.UsuarioService;
-
-import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/usuario")
@@ -16,51 +22,64 @@ import io.swagger.v3.oas.annotations.Operation;
 public class UsuarioController {
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioService usuarioService;
+    
+    @Autowired
+    private UsuarioMapper usuarioMapper;
+    
+    @Autowired
+    private ReservaMapper reservaMapper;
 
-    // http://localhost:8081/usuario/all
+    @Autowired
+    private UsuarioRequestMapper usuarioRequestMapper;
+
+    // Lista todos los usuarios (sin reservas)
     @GetMapping("/all")
-    @Operation(summary = "Encuentra todos los usuarios")
-    public List<Usuario> mostrarUsuarios() {
-        return usuarioService.searchAll();
+    public List<UsuarioResponseDTO> mostrarUsuarios() {
+        List<Usuario> usuarios = usuarioService.searchAll();
+        return usuarios.stream()
+            .map(usuarioMapper::toResponseDTO)
+            .collect(Collectors.toList());
     }
 
-    // http://localhost:8081/usuario/find?id=1
+    // Buscar usuario por ID (sin reservas)
     @GetMapping("/find")
-    public Usuario mostrarUsuario(@RequestParam("id") Long id) {
-        return usuarioService.searchById(id);
+    public UsuarioResponseDTO mostrarUsuario(@RequestParam("id") Long id) {
+        Usuario usuario = usuarioService.searchById(id);
+        return usuarioMapper.toResponseDTO(usuario);
     }
 
-    // http://localhost:8081/usuario/find/1
+    // Buscar usuario CON reservas
     @GetMapping("/find/id")
-    public Usuario mostrarUsuarioPorId(@RequestParam("id") Long id) {
-    return usuarioService.searchById(id);
-}
+    public UsuarioConReservasDTO mostrarUsuarioPorId(@RequestParam("id") Long id) {
+        Usuario usuario = usuarioService.searchById(id);
+        return usuarioMapper.toUsuarioConReservasDTO(usuario, reservaMapper);
+    }
 
-
-    // http://localhost:8081/usuario/add
+    // Crear usuario
     @PostMapping("/add")
-    public void agregarUsuario(@RequestBody Usuario usuario) {
+    public UsuarioResponseDTO agregarUsuario(@RequestBody CrearUsuarioRequestDTO requestDTO) {
+        Usuario usuario = usuarioRequestMapper.toEntity(requestDTO);
         usuarioService.add(usuario);
+        return usuarioMapper.toResponseDTO(usuario);
     }
 
-    // http://localhost:8081/usuario/delete/1
-    @DeleteMapping("/delete/{id}")
-    public void eliminarUsuario(@PathVariable("id") Long id) {
-        usuarioService.deleteById(id);
-    }
-
-    // http://localhost:8081/usuario/update/1
+    // Actualizar usuario
     @PostMapping("/update/{id}")
-    public void actualizarUsuario(@RequestBody Usuario usuario, @PathVariable("id") Long id) {
-        usuario.setIdUsuario(id);
+    public UsuarioResponseDTO actualizarUsuario(
+            @RequestBody ActualizarUsuarioRequestDTO requestDTO,
+            @PathVariable("id") Long id) {
+        
+        Usuario usuario = usuarioService.searchById(id);
+        usuarioRequestMapper.updateEntity(usuario, requestDTO);
         usuarioService.update(usuario);
+        return usuarioMapper.toResponseDTO(usuario);
     }
 
-
-    //http://localhost:8081/usuario/find/email?email=juan@mail.com
+    // Buscar por email
     @GetMapping("/find/email")
-    public Usuario mostrarUsuarioPorEmail(@RequestParam("email") String email) {
-        return usuarioService.searchByEmail(email);
+    public UsuarioResponseDTO mostrarUsuarioPorEmail(@RequestParam("email") String email) {
+        Usuario usuario = usuarioService.searchByEmail(email);
+        return usuarioMapper.toResponseDTO(usuario);
     }
 }

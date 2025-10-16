@@ -12,45 +12,47 @@ export class ReservaService {
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Obtener todas las reservas
-   */
+  // Todos los métodos ya retornan DTOs desde el backend
   getAllReservas(): Observable<Reserva[]> {
     return this.http.get<Reserva[]>(`${this.apiUrl}/all`);
   }
 
-  /**
-   * Obtener reserva por ID
-   */
   getReservaById(id: number): Observable<Reserva> {
     return this.http.get<Reserva>(`${this.apiUrl}/find/${id}`);
   }
 
-  /**
-   * Crear nueva reserva
-   */
-  createReserva(reserva: Reserva): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/add`, reserva);
+  // El backend espera CrearReservaRequestDTO
+  createReserva(reserva: any): Observable<Reserva> {
+    const requestDTO = {
+      fechaInicio: reserva.fechaInicio,
+      fechaFin: reserva.fechaFin,
+      estado: reserva.estado,
+      clienteId: reserva.cliente.idUsuario,
+      roomIds: reserva.rooms.map((r: any) => r.id)
+    };
+    
+    return this.http.post<Reserva>(`${this.apiUrl}/add`, requestDTO);
   }
 
-  /**
-   * Actualizar reserva
-   */
-  updateReserva(reserva: Reserva): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/update/${reserva.id}`, reserva);
+  // El backend espera ActualizarReservaRequestDTO
+  updateReserva(reserva: Reserva): Observable<Reserva> {
+    const requestDTO = {
+      fechaInicio: reserva.fechaInicio,
+      fechaFin: reserva.fechaFin,
+      estado: reserva.estado,
+      roomIds: reserva.rooms?.map(r => r.id)
+    };
+    
+    return this.http.put<Reserva>(`${this.apiUrl}/update/${reserva.id}`, requestDTO);
   }
 
-  /**
-   * Eliminar reserva
-   */
   deleteReserva(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 
-  /**
-   * Buscar habitaciones disponibles
-   */
   buscarHabitacionesDisponibles(fechaInicio: string, fechaFin: string): Observable<Room[]> {
-    return this.http.get<Room[]>(`${this.apiUrl}/habitaciones-disponibles?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+    return this.http.get<Room[]>(
+      `${this.apiUrl}/checkDisponibilidad?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+    );
   }
 }
