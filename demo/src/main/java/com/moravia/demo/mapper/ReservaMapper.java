@@ -3,6 +3,7 @@ package com.moravia.demo.mapper;
 import com.moravia.demo.dto.response.*;
 import com.moravia.demo.model.Reserva;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ public class ReservaMapper {
     private RoomMapper roomMapper;
 
     @Autowired
+    @Lazy
     private CuentaMapper cuentaMapper;
 
     // Reserva → ReservaResponseDTO (completo)
