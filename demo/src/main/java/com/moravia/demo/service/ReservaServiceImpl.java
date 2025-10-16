@@ -70,7 +70,6 @@ public void add(Reserva reserva) {
         double subtotal = habitacion.getType().getPrice() * noches;
         total += subtotal;
 
-        habitacion.setAvailable(false);
         roomRepository.save(habitacion);
     }
 
@@ -101,11 +100,6 @@ public List<Room> buscarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate
 
     return todasLasHabitaciones.stream()
             .filter(room -> {
-                // Si la habitación no tiene reservas o está disponible, la mostramos
-                if (Boolean.TRUE.equals(room.getAvailable())) {
-                    return true;
-                }
-
                 // Verificamos si la habitación está libre en las fechas dadas
                 boolean ocupada = reservas.stream().anyMatch(reserva ->
                         reserva.getRooms().contains(room) &&
