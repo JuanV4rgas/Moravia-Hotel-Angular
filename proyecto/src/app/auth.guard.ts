@@ -24,7 +24,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 /**
  * Guard para verificar roles específicos
  * Ejemplo de uso: canActivate: [roleGuard('admin')]
- *
+ */
 export const roleGuard = (requiredRole: string): CanActivateFn => {
   return (route, state) => {
     const authService = inject(AuthService);
@@ -47,4 +47,3 @@ export const roleGuard = (requiredRole: string): CanActivateFn => {
     return false;
   };
 };
-  */

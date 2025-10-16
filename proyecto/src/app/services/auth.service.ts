@@ -116,12 +116,12 @@ export class AuthService {
 
   /**
    * Verificar si el usuario tiene un rol específico
-   *
+   */
   hasRole(role: string): boolean {
     const usuario = this.usuarioActual;
-    return usuario ? usuario.rol === role : false;
+    return usuario ? usuario.tipo === role : false;
   }
-  */
+  
 
   /**
    * Actualizar información del usuario actual
