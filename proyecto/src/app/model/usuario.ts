@@ -1,3 +1,5 @@
+import { Reserva } from './reserva';
+
 export interface Usuario {
   idUsuario: number;      // identificador del usuario
   email: string;          // correo electrónico
@@ -6,6 +8,7 @@ export interface Usuario {
   apellido: string;       // apellido
   cedula: string;         // documento de identidad (string para no perder ceros iniciales)
   telefono: string;       // teléfono
-  tipo: string;           // 'cliente' o 'trabajador'
+  tipo: 'cliente' | 'trabajador';   // 'cliente' o 'trabajador'
   fotoPerfil?: string;    // opcional (url o base64)
+  reservas?: Reserva[];
 }
