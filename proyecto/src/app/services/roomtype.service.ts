@@ -14,7 +14,7 @@ export class RoomTypeService {
     return this.http.get<RoomType[]>(`${this.apiUrl}/all`);
   }
 
-  getRoomType(id: string): Observable<RoomType> {
+  getRoomType(id: number): Observable<RoomType> {
     return this.http.get<RoomType>(`${this.apiUrl}/find/${id}`);
   }
 
@@ -22,11 +22,11 @@ export class RoomTypeService {
     return this.http.post<RoomType>(`${this.apiUrl}/add`, payload);
   }
 
-  updateRoomType(id: string, payload: RoomType): Observable<RoomType> {
+  updateRoomType(id: number, payload: RoomType): Observable<RoomType> {
     return this.http.post<RoomType>(`${this.apiUrl}/update/${id}`, payload);
   }
 
-  deleteRoomType(id: string): Observable<void> {
+  deleteRoomType(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 }

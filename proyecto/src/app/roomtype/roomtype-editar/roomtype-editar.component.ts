@@ -10,16 +10,17 @@ import { RoomTypeService } from '../../services/roomtype.service';
 export class RoomtypeEditarComponent implements OnInit { // <-- usa este mismo nombre
   loading = false;
   error?: string;
-  private id!: string;
+  private id!: number;
 
   form: RoomType = {
-    id: '',
+    id: 0,
     name: '',
     description: '',
     price: 0,
     capacity: '',          // capacity es string
     numberOfBeds: 1,
-    image: ''
+    image: '',
+    type: '' 
   };
 
   constructor(
@@ -29,7 +30,7 @@ export class RoomtypeEditarComponent implements OnInit { // <-- usa este mismo n
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id') ?? '';
+    this.id = Number(this.route.snapshot.paramMap.get('id')) ?? 0;
     if (!this.id) { this.error = 'ID inválido'; return; }
     this.cargarRoomType();
   }

@@ -25,7 +25,7 @@ export class RoomTypeDetailComponent implements OnInit {
     // Si ya viene por @Input, no busques por id
     if (this.roomtype) return;
 
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     if (!id) return;
 
     this.loading = true;

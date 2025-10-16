@@ -10,13 +10,14 @@ import { RoomType } from 'src/app/model/roomtype';
 })
 export class RoomTypeFormComponent implements OnInit {
   form: RoomType = {
-    id: '',
+    id: 0,
     name: '',
     description: '',
     price: 0,          
     capacity: '',      
     numberOfBeds: 1,
-    image: ''
+    image: '',
+    type: ''
   };
 
   isEdit = false;
@@ -30,7 +31,7 @@ export class RoomTypeFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this.isEdit = true;
       this.loading = true;
@@ -92,13 +93,14 @@ export class RoomTypeFormComponent implements OnInit {
 
   onClear(): void {
     this.form = {
-      id: '',
+      id: 0,
       name: '',
       description: '',
       price: 0,
       capacity: '',     // 👈 string
       numberOfBeds: 1,
-      image: ''
+      image: '',
+      type: '' 
     };
   }
 }

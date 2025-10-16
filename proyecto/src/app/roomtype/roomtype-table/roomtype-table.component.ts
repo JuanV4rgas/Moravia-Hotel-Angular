@@ -26,7 +26,7 @@ export class RoomTypeTableComponent implements OnInit {
     });
   }
 
-  eliminarRoomType(id: string): void {
+  eliminarRoomType(id: number): void {
     this.service.deleteRoomType(id).subscribe({
       next: () => this.roomtypes = this.roomtypes.filter(rt => rt.id !== id),
       error: (err) => console.error('Error al eliminar roomtype', err),

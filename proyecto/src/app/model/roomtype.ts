@@ -1,9 +1,10 @@
 export interface RoomType {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
   capacity: string;
   numberOfBeds: number;
   image: string;
+  type: string; 
 }
