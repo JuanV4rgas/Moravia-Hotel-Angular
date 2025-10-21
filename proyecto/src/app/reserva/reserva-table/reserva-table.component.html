@@ -1,0 +1,81 @@
+<main class="services-main">
+  <div class="container-servicios">
+    <!-- Encabezado -->
+    <div class="header-section">
+      <h1 class="services-title">Listado de <em>Reservas</em></h1>
+      <p class="services-subtitle">Todas las reservas registradas en el sistema</p>
+    </div>
+
+    <!-- Estados de carga / error -->
+    <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+    <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
+    <div *ngIf="!error && !loading && reservas?.length === 0" class="alert alert-warning mt-2">
+      No hay reservas.
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrapper" *ngIf="!loading && reservas?.length">
+      <table class="services-table">
+        <colgroup>
+          <col style="width:120px"><!-- ID -->
+          <col style="width:200px"><!-- FECHA INICIO -->
+          <col style="width:200px"><!-- FECHA FIN -->
+          <col style="width:140px"><!-- ESTADO -->
+          <col style="width:260px"><!-- CLIENTE.EMAIL -->
+          <col style="width:200px"><!-- HABITACIONES -->
+          <col style="width:160px"><!-- ACCIONES -->
+        </colgroup>
+
+        <thead>
+          <tr class="table-header">
+            <th class="th-id">ID</th>
+            <th class="th-fecha">FECHA INICIO</th>
+            <th class="th-fecha-fin">FECHA FIN</th>
+            <th class="th-estado">ESTADO</th>
+            <th class="th-cliente">CLIENTE (EMAIL)</th>
+            <th class="th-room">HABITACIÓN (NÚMERO)</th>
+            <th class="th-acciones">ACCIONES</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="service-row" *ngFor="let r of reservas; trackBy: trackById">
+            <td class="cell-id">
+              {{ r?.id != null ? r.id : '-' }}
+            </td>
+
+            <td class="cell-fecha">
+              {{ r?.fechaInicio ? (r.fechaInicio | date:'yyyy-MM-dd') : '-' }}
+            </td>
+
+            <td class="cell-fecha-fin">
+              {{ r?.fechaFin ? (r.fechaFin | date:'yyyy-MM-dd') : '-' }}
+            </td>
+
+            <td class="cell-estado">
+              {{ r?.estado || '-' }}
+            </td>
+
+            <td class="cell-cliente">
+              {{ r?.cliente?.email || '-' }}
+            </td>
+
+            <td class="cell-room">
+              {{ roomNumOf(r) }}
+            </td>
+
+            <td class="cell-acciones">
+              <button class="btn-cancelar"
+                      (click)="cancelarReserva(r)"
+                      [disabled]="cancellingId === r?.id || !puedeCancelarReserva(r)">
+                {{ cancellingId === r?.id ? 'Cancelando...' : 'Cancelar' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions-footer" aria-hidden="true"></div>
+  </div>
+</main>
