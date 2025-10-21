@@ -31,7 +31,9 @@ import { MisReservasComponent } from './reserva/mis-reservas/mis-reservas.compon
 import { DetalleReservaComponent } from './reserva/detalle-reserva/detalle-reserva.component';
 import { RoomEditarComponent } from './room/room-editar/room-editar.component';
 import { ConsultarComponent } from './consultar/consultar.component';
-import { ReservaTableComponent } from './reserva/reserva-table/reserva-table.component';    
+import { ReservaTableComponent } from './reserva/reserva-table/reserva-table.component';
+import { GestionarServiciosComponent } from './reserva/gestionar-servicios/gestionar-servicios.component';
+import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.component';    
 
 
 
@@ -69,7 +71,9 @@ const routes: Routes = [
       { path: 'reserva/nueva', component: ReservaFormComponent },
       { path: 'mis-reservas', component: MisReservasComponent },
       { path: 'reserva/detalle/:id', component: DetalleReservaComponent },
+      { path: 'reserva/editar/:id', component: EditarReservaComponent },
       { path: 'reserva/table', component: ReservaTableComponent },
+      { path: 'reserva/servicios/:id', component: GestionarServiciosComponent },
 
       { path: 'usuario/table', component: UsuarioTableComponent },
       { path: 'usuario/detalle/:id', component: UsuarioDetailComponent },

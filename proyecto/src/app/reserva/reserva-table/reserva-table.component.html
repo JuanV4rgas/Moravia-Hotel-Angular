@@ -23,7 +23,7 @@
           <col style="width:140px"><!-- ESTADO -->
           <col style="width:260px"><!-- CLIENTE.EMAIL -->
           <col style="width:200px"><!-- HABITACIONES -->
-          <col style="width:160px"><!-- ACCIONES -->
+          <col style="width:400px"><!-- ACCIONES -->
         </colgroup>
 
         <thead>
@@ -65,11 +65,56 @@
             </td>
 
             <td class="cell-acciones">
-              <button class="btn-cancelar"
-                      (click)="cancelarReserva(r)"
-                      [disabled]="cancellingId === r?.id || !puedeCancelarReserva(r)">
-                {{ cancellingId === r?.id ? 'Cancelando...' : 'Cancelar' }}
-              </button>
+              <div class="action-buttons">
+                <button class="btn-ver" 
+                        (click)="verDetalleReserva(r)"
+                        title="Ver detalles">
+                  <i class="fas fa-eye"></i>
+                  <span>Ver</span>
+                </button>
+                <button class="btn-servicios" 
+                        (click)="gestionarServicios(r)"
+                        title="Gestionar servicios"
+                        [disabled]="!puedeGestionarServicios(r)">
+                  <i class="fas fa-concierge-bell"></i>
+                  <span>Servicios</span>
+                </button>
+                <button class="btn-activar" 
+                        (click)="activarReserva(r)"
+                        title="Activar reserva"
+                        [disabled]="!puedeActivarReserva(r)">
+                  <i class="fas fa-play"></i>
+                  <span>Activar</span>
+                </button>
+                <button class="btn-finalizar" 
+                        (click)="finalizarReserva(r)"
+                        title="Finalizar reserva"
+                        [disabled]="!puedeFinalizarReserva(r)">
+                  <i class="fas fa-stop"></i>
+                  <span>Finalizar</span>
+                </button>
+                <button class="btn-pagar" 
+                        (click)="pagarReserva(r)"
+                        title="Pagar cuenta"
+                        [disabled]="!puedePagarReserva(r)">
+                  <i class="fas fa-credit-card"></i>
+                  <span>Pagar</span>
+                </button>
+                <button class="btn-cancelar"
+                        (click)="cancelarReserva(r)"
+                        [disabled]="cancellingId === r?.id || !puedeCancelarReserva(r)"
+                        title="Cancelar reserva">
+                  <i class="fas fa-times"></i>
+                  <span>Cancelar</span>
+                </button>
+                <button class="btn-eliminar"
+                        (click)="eliminarReserva(r)"
+                        [disabled]="deletingId === r?.id || !puedeEliminarReserva(r)"
+                        title="Eliminar reserva">
+                  <i class="fas fa-trash"></i>
+                  <span>Eliminar</span>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>

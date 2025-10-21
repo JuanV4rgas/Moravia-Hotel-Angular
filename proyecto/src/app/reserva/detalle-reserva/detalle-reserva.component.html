@@ -106,10 +106,10 @@
         </div>
       </div>
 
-      <!-- Agregar Servicios (solo para reservas activas) -->
-      <div class="info-section agregar-servicios-section" *ngIf="esReservaActiva()">
+      <!-- Agregar Servicios (para reservas activas, confirmadas o próximas) -->
+      <div class="info-section agregar-servicios-section" *ngIf="puedeAgregarServicios()">
         <h3>Agregar Servicios</h3>
-        <p>Puedes agregar servicios adicionales a tu reserva activa:</p>
+        <p>Puedes agregar servicios adicionales a tu reserva:</p>
         <button class="btn btn-info" (click)="mostrarAgregarServicios = !mostrarAgregarServicios">
           {{ mostrarAgregarServicios ? 'Ocultar Servicios' : 'Ver Servicios Disponibles' }}
         </button>
@@ -117,7 +117,7 @@
         <app-agregar-servicios 
           *ngIf="mostrarAgregarServicios"
           [reserva]="reserva"
-          (serviciosAgregados)="onServiciosAgregados()">
+          (serviciosAgregados)="onServiciosAgregados($event)">
         </app-agregar-servicios>
       </div>
 
@@ -129,7 +129,7 @@
             <span>Habitaciones:</span>
             <span>${{ calcularTotalHabitaciones() | number:'1.0-0' }}</span>
           </div>
-          <div class="cost-item" *ngIf="reserva.cuenta.servicios && reserva.cuenta.servicios.length > 0">
+          <div class="cost-item" *ngIf="tieneServicios()">
             <span>Servicios:</span>
             <span>${{ calcularTotalServicios() | number:'1.0-0' }}</span>
           </div>
@@ -155,7 +155,7 @@
     </div>
 
     <!-- Botones de acción -->
-    <div class="actions-section" *ngIf="puedePagar() || puedeCancelar() || puedeFinalizar()">
+    <div class="actions-section" *ngIf="puedePagar() || puedeCancelar() || puedeFinalizar() || puedeEditar()">
       <!-- Botón de pago -->
       <div class="payment-section" *ngIf="puedePagar()">
         <div class="payment-info">
@@ -198,6 +198,21 @@
           [disabled]="isLoading">
           <i class="icon-check"></i>
           {{ isLoading ? 'Finalizando...' : 'Finalizar Reserva' }}
+        </button>
+      </div>
+
+      <!-- Botón de editar -->
+      <div class="edit-section" *ngIf="puedeEditar()">
+        <div class="edit-info">
+          <h3>Editar Reserva</h3>
+          <p>Modifica las fechas o habitaciones de tu reserva.</p>
+        </div>
+        <button 
+          class="btn btn-info btn-large" 
+          (click)="editarReserva()"
+          [disabled]="isLoading">
+          <i class="icon-edit"></i>
+          Editar Reserva
         </button>
       </div>
     </div>
