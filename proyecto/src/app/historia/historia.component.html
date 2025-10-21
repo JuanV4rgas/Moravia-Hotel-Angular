@@ -1,10 +1,9 @@
 <main>
-  <!-- Header (Angular component) -->
   <app-header></app-header>
 
-  <!-- Contenido principal -->
+  <!-- HERO estilo Ritz -->
   <section class="hero-historia">
-    <h1>HISTORIA</h1>
+    <h1>NUESTRA HISTORIA</h1>
     <blockquote>
       <p>
         "Nos lleva muchos <span class="resaltar">años</span> comprender lo
@@ -17,133 +16,160 @@
 
   <section class="timeline-wrap">
     <div class="timeline">
-      <!-- ITEM -->
-      <article class="tl-item left">
-        <div class="tl-col img">
-          <img src="assets/img/image1817.png" alt="image 1817" loading="lazy" />
-        </div>
-        <div class="tl-col spine">
-          <span class="tl-year">Alrededor de<br />1817</span>
-          <span class="tl-line"></span>
-        </div>
-        <div class="tl-col text">
-          <p>
-            Johannes Kehrli, el maestro de escuela de Brienz, hace accesible el
-            Giessbach a los primeros visitantes. Traza un sendero desde el lago
-            y entretiene a los visitantes con música junto a su familia.
-          </p>
-        </div>
-      </article>
 
-      <!-- ITEM -->
-      <article class="tl-item right">
-        <div class="tl-col img">
-          <img src="assets/img/image1822.png" alt="image 1822" loading="lazy" />
-        </div>
-        <div class="tl-col spine">
-          <span class="tl-year">1822</span>
-          <span class="tl-line"></span>
-        </div>
-        <div class="tl-col text">
-          <p>
-            Kehrli construyó una sencilla casa de madera y ofrecía a los
-            cansados leche, pan, queso y un vaso de su propia agua de cereza o
-            ciruela.
-          </p>
-        </div>
-      </article>
+      <!-- GRID con columna de año, línea dorada y eventos -->
+      <div class="timeline__grid">
+        <aside class="timeline__year-col">
+          <h2 class="timeline__year">Siglo XIX</h2>
+          <p class="timeline__sub">Los inicios y la primera hospitalidad.</p>
+        </aside>
+        <div class="timeline__spine" aria-hidden="true"></div>
+        <div>
 
-      <!-- ITEM -->
-      <article class="tl-item left">
-        <div class="tl-col img">
-          <img src="assets/img/image1854.png" alt="image 1854" loading="lazy" />
-        </div>
-        <div class="tl-col spine">
-          <span class="tl-year">1854</span>
-          <span class="tl-line"></span>
-        </div>
-        <div class="tl-col text">
-          <p>
-            Kehrli murió a los 81 años. Sus descendientes vendieron la tierra
-            por 70.000 francos a Conrad von Rappard, antiguo miembro del
-            Parlamento de Frankfurt refugiado en Suiza tras 1848.
-          </p>
-        </div>
-      </article>
+          <!-- 1817 -->
+          <article class="event">
+            <div class="event__card">
+              <div class="event__text">
+                <span class="badge-year">Alrededor de 1817</span>
+                <h3>Primeros visitantes y el sendero de Kehrli</h3>
+                <p>
+                  Johannes Kehrli, maestro de escuela de Brienz, hace accesible el Giessbach a los primeros visitantes.
+                  Traza un sendero desde el lago y entretiene a los visitantes con música junto a su familia.
+                </p>
+                <p class="event__meta">Archivo histórico — Brienz</p>
+              </div>
+              <div class="event__media">
+                <figure>
+                  <img src="assets/img/image1817.png" alt="Sendero al Giessbach alrededor de 1817" loading="lazy" />
+                  <figcaption>ca. 1817</figcaption>
+                </figure>
+              </div>
+            </div>
+          </article>
 
-      <!-- ITEM -->
-      <article class="tl-item right">
-        <div class="tl-col img">
-          <img src="assets/img/image1911.png" alt="image 1911" loading="lazy" />
-        </div>
-        <div class="tl-col spine">
-          <span class="tl-year">1911–12</span>
-          <span class="tl-line"></span>
-        </div>
-        <div class="tl-col text">
-          <p>
-            El 15 de julio de 1911, el establecimiento de Giessbach se vendió
-            al empresario lausano Ferdinand Grillet. Bajo la dirección de Lüzza
-            Bazzell, originaria de Sent, en la Baja Engadina, los hoteles fueron
-            completamente renovados y equipados con las últimas tecnologías, como
-            por ejemplo, calefacción por agua caliente. En el año 1912 el recién
-            fundado AG Hotel Giessbach se hace cargo de las instalaciones.
-          </p>
-        </div>
-      </article>
+          <!-- 1822 (alternado) -->
+          <article class="event event--alt">
+            <div class="event__card">
+              <div class="event__media">
+                <figure>
+                  <img src="assets/img/image1822.png" alt="Casa de madera y provisiones en 1822" loading="lazy" />
+                  <figcaption>1822</figcaption>
+                </figure>
+              </div>
+              <div class="event__text">
+                <span class="badge-year">1822</span>
+                <h3>Una casa de madera y provisiones</h3>
+                <p>
+                  Kehrli construyó una sencilla casa de madera y ofrecía a los cansados leche, pan, queso y un vaso de su
+                  propia agua de cereza o ciruela.
+                </p>
+                <p class="event__meta">Archivo histórico</p>
+              </div>
+            </div>
+          </article>
 
-      <!-- ITEM -->
-      <article class="tl-item left">
-        <div class="tl-col img">
-          <img src="assets/img/image1982.png" alt="image 1982" loading="lazy" />
-        </div>
-        <div class="tl-col spine">
-          <span class="tl-year">1982</span>
-          <span class="tl-line"></span>
-        </div>
-        <div class="tl-col text">
-          <p>
-            En 1982, el grupo de trabajo encontró en Franz y Judith Weber a los
-            salvadores del Giessbach. Con su carisma y capacidad de persuasión,
-            lograron mejorar el ánimo en la comunidad de Brienz y la región.
-            Mediante campañas nacionales, recaudaron fondos para la compra,
-            modernización y restauración de la casa y el parque. Lamentablemente,
-            la central eléctrica no pudo adquirirse.
-          </p>
-        </div>
-      </article>
+          <!-- 1854 -->
+          <article class="event">
+            <div class="event__card">
+              <div class="event__text">
+                <span class="badge-year">1854</span>
+                <h3>Cambio de manos y nuevos planes</h3>
+                <p>
+                  Kehrli murió a los 81 años. Sus descendientes vendieron la tierra por 70.000 francos a Conrad von
+                  Rappard, antiguo miembro del Parlamento de Frankfurt refugiado en Suiza tras 1848.
+                </p>
+                <p class="event__meta">Archivo histórico</p>
+              </div>
+              <div class="event__media">
+                <figure>
+                  <img src="assets/img/image1854.png" alt="Venta de la tierra en 1854" loading="lazy" />
+                  <figcaption>1854</figcaption>
+                </figure>
+              </div>
+            </div>
+          </article>
 
-      <!-- ITEM -->
-      <article class="tl-item right">
-        <div class="tl-col img">
-          <img src="assets/img/image1984.png" alt="image 1984" loading="lazy" />
         </div>
-        <div class="tl-col spine">
-          <span class="tl-year">1984</span>
-          <span class="tl-line"></span>
+      </div>
+
+      <!-- Segunda sección temporal -->
+      <div class="timeline__grid" style="margin-top:48px;">
+        <aside class="timeline__year-col">
+          <h2 class="timeline__year">Siglo XX</h2>
+          <p class="timeline__sub">Renovaciones, desafíos y renacimiento.</p>
+        </aside>
+        <div class="timeline__spine" aria-hidden="true"></div>
+        <div>
+
+          <!-- 1911–12 (alternado) -->
+          <article class="event event--alt">
+            <div class="event__card">
+              <div class="event__media">
+                <figure>
+                  <img src="assets/img/image1911.png" alt="Renovaciones y tecnologías 1911–12" loading="lazy" />
+                  <figcaption>1911–12</figcaption>
+                </figure>
+              </div>
+              <div class="event__text">
+                <span class="badge-year">1911–12</span>
+                <h3>Renovación y modernización</h3>
+                <p>
+                  El 15 de julio de 1911, el establecimiento de Giessbach se vendió al empresario lausano Ferdinand
+                  Grillet. Bajo la dirección de Lüzza Bazzell, los hoteles fueron completamente renovados y equipados con
+                  calefacción por agua caliente. En 1912 el recién fundado AG Hotel Giessbach se hace cargo de las
+                  instalaciones.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- 1982 -->
+          <article class="event">
+            <div class="event__card">
+              <div class="event__text">
+                <span class="badge-year">1982</span>
+                <h3>El rescate del Giessbach</h3>
+                <p>
+                  En 1982, el grupo de trabajo encontró en Franz y Judith Weber a los salvadores del Giessbach. Con su
+                  carisma y capacidad de persuasión, lograron mejorar el ánimo en la región y recaudar fondos para la
+                  compra, modernización y restauración del hotel y su parque.
+                </p>
+              </div>
+              <div class="event__media">
+                <figure>
+                  <img src="assets/img/image1982.png" alt="Rescate del Giessbach en 1982" loading="lazy" />
+                  <figcaption>1982</figcaption>
+                </figure>
+              </div>
+            </div>
+          </article>
+
+          <!-- 1984 (alternado) -->
+          <article class="event event--alt">
+            <div class="event__card">
+              <div class="event__media">
+                <figure>
+                  <img src="assets/img/image1984.png" alt="Reapertura provisional 1984–1989" loading="lazy" />
+                  <figcaption>1984–1989</figcaption>
+                </figure>
+              </div>
+              <div class="event__text">
+                <span class="badge-year">1984–1989</span>
+                <h3>Reapertura y referencia histórica</h3>
+                <p>
+                  En junio de 1984, tras cuatro años de zozobra, el hotel pudo reabrirse provisionalmente; desde
+                  entonces abrió en verano, mientras se restauraba y amueblaba en invierno. En el verano de 1989, el
+                  hotel fue inaugurado definitivamente, convirtiéndose en un referente para la rehabilitación de hoteles
+                  históricos.
+                </p>
+              </div>
+            </div>
+          </article>
+
         </div>
-        <div class="tl-col text">
-          <p>
-            En junio de 1984, tras cuatro años de zozobra, el hotel pudo
-            reabrirse provisionalmente; desde entonces, la casa abrió sus
-            puertas en verano, y durante los cinco inviernos siguientes se
-            construyó, restauró y amuebló. En el verano de 1989, el hotel pudo
-            inaugurarse definitivamente. El agradecimiento de la región y del
-            público fue, en primer lugar, para Franz y Judith Weber. Sin ellos,
-            el Jumbochalet proyectado, para el que nunca se habrían recaudado
-            fondos, no estaría hoy en el Giessbach, sino que sería un puesto de
-            salchichas bratwurst. El hotel vacío habría sido vandalizado y
-            demolido hace mucho tiempo, convirtiéndose en una monstruosidad, como
-            el teleférico. Inimaginable, pero no es fantasía, sino una
-            observación realista; hay suficientes ejemplos. El rescate convirtió
-            al Hotel Giessbach en un buque insignia, tras cuyo paso se han
-            revalorizado, valorizado y restaurado numerosos hoteles históricos.
-          </p>
-        </div>
-      </article>
+      </div>
+
     </div>
   </section>
 
-  <!-- Footer (Angular component) -->
-  <app-footer></app-footer>
 </main>
