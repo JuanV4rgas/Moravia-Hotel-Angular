@@ -72,6 +72,21 @@ export class AgregarServiciosComponent implements OnInit {
       return;
     }
 
+    // Validar si se pueden agregar servicios según el estado de la cuenta
+    if (this.reserva.cuenta) {
+      const estadoCuenta = this.reserva.cuenta.estado?.toUpperCase();
+      
+      if (estadoCuenta === 'CERRADA') {
+        this.errorMessage = 'No se pueden agregar servicios: la cuenta está cerrada';
+        return;
+      }
+      
+      if (estadoCuenta === 'PAGADA') {
+        this.errorMessage = 'No se pueden agregar servicios: la cuenta ya está pagada';
+        return;
+      }
+    }
+
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
@@ -93,14 +108,28 @@ export class AgregarServiciosComponent implements OnInit {
     const totalHabitaciones = this.calcularTotalHabitaciones();
     const totalServicios = this.calcularTotalServicios();
 
+    // Determinar el estado de la cuenta según el estado de la reserva
+    let estadoCuenta = 'ABIERTA'; // Por defecto, la cuenta está abierta (se pueden agregar cargos)
+    
+    // Si la reserva ya finalizó, la cuenta debe estar PENDIENTE de pago
+    if (this.reserva.estado === 'FINALIZADA') {
+      estadoCuenta = 'PENDIENTE';
+    }
+    // Si la reserva está cancelada, la cuenta debe estar CERRADA
+    else if (this.reserva.estado === 'CANCELADA') {
+      estadoCuenta = 'CERRADA';
+    }
+
     const crearCuentaDTO = {
-      estado: 'ABIERTA',
+      estado: estadoCuenta, // ABIERTA, CERRADA, PAGADA, PENDIENTE
       total: totalHabitaciones + totalServicios,
       reservaId: this.reserva.id,
       servicioIds: this.serviciosSeleccionados.map(s => s.idServicio)
     };
 
     console.log('Creando cuenta con servicios:', crearCuentaDTO);
+    console.log('Estado de la reserva:', this.reserva.estado);
+    console.log('Estado de la cuenta:', estadoCuenta);
 
     this.cuentaService.addCuenta(crearCuentaDTO as any).subscribe({
       next: (cuentaCreada) => {
@@ -130,6 +159,14 @@ export class AgregarServiciosComponent implements OnInit {
   private actualizarCuentaConServicios(): void {
     if (!this.reserva || !this.reserva.cuenta) return;
 
+    // Verificar nuevamente el estado de la cuenta
+    const estadoCuenta = this.reserva.cuenta.estado?.toUpperCase();
+    if (estadoCuenta === 'CERRADA' || estadoCuenta === 'PAGADA') {
+      this.errorMessage = `No se pueden agregar servicios: la cuenta está ${estadoCuenta.toLowerCase()}`;
+      this.isLoading = false;
+      return;
+    }
+
     // Obtener IDs de servicios actuales
     const servicioIdsActuales = this.reserva.cuenta.servicios?.map(s => s.idServicio) || [];
     
@@ -150,7 +187,7 @@ export class AgregarServiciosComponent implements OnInit {
     const nuevoTotal = totalHabitaciones + totalServiciosActuales + totalServiciosNuevos;
 
     const actualizarCuentaDTO = {
-      estado: this.reserva.cuenta.estado || 'ABIERTA',
+      estado: this.reserva.cuenta.estado || 'ABIERTA', // Mantener el estado actual de la cuenta
       total: nuevoTotal,
       servicioIds: todosLosServicioIds
     };
@@ -208,5 +245,36 @@ export class AgregarServiciosComponent implements OnInit {
 
   onImageError(event: any) {
     event.target.src = 'assets/img/image1817.png';
+  }
+
+  /**
+   * Obtiene el estado legible de la cuenta
+   */
+  getEstadoCuentaLabel(): string {
+    if (!this.reserva?.cuenta) return 'Sin cuenta';
+    
+    const estado = this.reserva.cuenta.estado;
+    switch (estado?.toUpperCase()) {
+      case 'ABIERTA':
+        return 'Abierta (puede agregar cargos)';
+      case 'CERRADA':
+        return 'Cerrada (no se pueden agregar cargos)';
+      case 'PAGADA':
+        return 'Pagada';
+      case 'PENDIENTE':
+        return 'Pendiente de pago';
+      default:
+        return estado || 'Sin estado';
+    }
+  }
+
+  /**
+   * Verifica si se pueden agregar servicios a la cuenta
+   */
+  puedeAgregarServicios(): boolean {
+    if (!this.reserva?.cuenta) return true; // Si no hay cuenta, se puede crear una
+    
+    const estado = this.reserva.cuenta.estado?.toUpperCase();
+    return (estado === 'ABIERTA' || estado === 'PENDIENTE') && (this.reserva.estado === 'ACTIVA'  || this.reserva.estado === 'CONFIRMADA' || this.reserva.estado === 'PROXIMA');
   }
 }
