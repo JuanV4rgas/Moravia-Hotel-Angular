@@ -13,7 +13,7 @@ import { Cuenta } from '../../model/cuenta';
 })
 export class AgregarServiciosComponent implements OnInit {
   @Input() reserva: Reserva | null = null;
-  @Output() serviciosAgregados = new EventEmitter<void>();
+  @Output() serviciosAgregados = new EventEmitter<any[]>();
 
   servicios: Servicio[] = [];
   serviciosSeleccionados: Servicio[] = [];
@@ -114,8 +114,10 @@ export class AgregarServiciosComponent implements OnInit {
       this.cuentaService.updateCuenta(cuentaActual).subscribe({
         next: () => {
           this.successMessage = 'Servicios agregados exitosamente';
+          const serviciosParaEmitir = [...this.serviciosSeleccionados];
+          console.log('Emitiendo servicios:', serviciosParaEmitir);
           this.serviciosSeleccionados = [];
-          this.serviciosAgregados.emit();
+          this.serviciosAgregados.emit(serviciosParaEmitir);
           this.isLoading = false;
         },
         error: (error) => {
@@ -129,8 +131,10 @@ export class AgregarServiciosComponent implements OnInit {
       this.cuentaService.addCuenta(cuentaActual).subscribe({
         next: () => {
           this.successMessage = 'Servicios agregados exitosamente';
+          const serviciosParaEmitir = [...this.serviciosSeleccionados];
+          console.log('Emitiendo servicios:', serviciosParaEmitir);
           this.serviciosSeleccionados = [];
-          this.serviciosAgregados.emit();
+          this.serviciosAgregados.emit(serviciosParaEmitir);
           this.isLoading = false;
         },
         error: (error) => {

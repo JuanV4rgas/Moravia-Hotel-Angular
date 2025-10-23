@@ -123,6 +123,11 @@ export class DetalleReservaComponent implements OnInit {
     return this.reserva?.estado === 'ACTIVA';
   }
 
+  puedeAgregarServicios(): boolean {
+    const estado = this.reserva?.estado;
+    return estado === 'ACTIVA' || estado === 'CONFIRMADA' || estado === 'PROXIMA';
+  }
+
   puedeFinalizar(): boolean {
     console.log('Estado de la reserva:', this.reserva?.estado);
     console.log('¿Puede finalizar?', this.reserva?.estado === 'ACTIVA');
@@ -204,6 +209,16 @@ export class DetalleReservaComponent implements OnInit {
     return this.reserva.cuenta.servicios.reduce((total: number, servicio: any) => total + servicio.precio, 0);
   }
 
+  tieneServicios(): boolean {
+    if (!this.reserva?.cuenta?.servicios) {
+      console.log('No hay cuenta o servicios en la reserva');
+      return false;
+    }
+    console.log('Servicios en la cuenta:', this.reserva.cuenta.servicios);
+    console.log('Cantidad de servicios:', this.reserva.cuenta.servicios.length);
+    return this.reserva.cuenta.servicios.length > 0;
+  }
+
   obtenerInfoEstado() {
     if (!this.reserva) return { estado: '', diasRestantes: 0, mensaje: '' };
     return this.reservaEstadoService.obtenerInfoEstado(this.reserva);
@@ -232,9 +247,63 @@ export class DetalleReservaComponent implements OnInit {
     event.target.src = 'assets/img/image1817.png';
   }
 
-  onServiciosAgregados() {
-    // Recargar los detalles de la reserva para mostrar los servicios agregados
-    this.cargarDetalleReserva();
+  onServiciosAgregados(serviciosAgregados: any[]) {
+    // Actualizar la reserva localmente con los servicios agregados
+    this.actualizarReservaLocal(serviciosAgregados);
     this.mostrarAgregarServicios = false;
+  }
+
+  // Método para actualizar la reserva localmente cuando se agregan servicios
+  actualizarReservaLocal(serviciosAgregados: any[]) {
+    console.log('Actualizando reserva local con servicios:', serviciosAgregados);
+    if (!this.reserva) {
+      console.log('No hay reserva para actualizar');
+      return;
+    }
+    
+    // Actualizar la cuenta localmente
+    if (!this.reserva.cuenta) {
+      console.log('Creando nueva cuenta');
+      this.reserva.cuenta = {
+        id: 0,
+        total: this.calcularTotalHabitaciones(),
+        servicios: []
+      };
+    }
+    
+    // Agregar los servicios a la cuenta local
+    for (const servicio of serviciosAgregados) {
+      const yaExiste = this.reserva.cuenta.servicios?.some(s => s.idServicio === servicio.idServicio);
+      if (!yaExiste) {
+        if (!this.reserva.cuenta.servicios) {
+          this.reserva.cuenta.servicios = [];
+        }
+        console.log('Agregando servicio:', servicio);
+        this.reserva.cuenta.servicios.push(servicio);
+      }
+    }
+    
+    // Recalcular el total
+    const totalHabitaciones = this.calcularTotalHabitaciones();
+    const totalServicios = this.calcularTotalServicios();
+    this.reserva.cuenta.total = totalHabitaciones + totalServicios;
+    
+    console.log('Reserva actualizada:', this.reserva);
+    console.log('Servicios en cuenta:', this.reserva.cuenta.servicios);
+  }
+
+  // ===== NUEVOS MÉTODOS PARA EDITAR RESERVA =====
+
+  puedeEditar(): boolean {
+    if (!this.reserva) return false;
+    
+    // Solo se pueden editar reservas en estado PENDIENTE, CONFIRMADA o PROXIMA
+    return ['PENDIENTE', 'CONFIRMADA', 'PROXIMA'].includes(this.reserva.estado);
+  }
+
+  editarReserva(): void {
+    if (!this.reserva?.id) return;
+    
+    this.router.navigate(['/reserva/editar', this.reserva.id]);
   }
 }

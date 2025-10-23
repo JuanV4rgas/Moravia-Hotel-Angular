@@ -70,7 +70,7 @@
 .th-estado{ width: 140px; }
 .th-cliente{ width: 260px; }
 .th-room{ width: 200px; }
-.th-acciones{ width: 160px; text-align: left; }
+.th-acciones{ width: 400px; text-align: left; }
 
 .cell-id,
 .cell-fecha,
@@ -84,25 +84,97 @@
 
 .cell-acciones{
   display: flex;
-  gap: 8px;
+  gap: 4px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-/* Botón cancelar */
-.btn-cancelar{
-  padding: 10px 14px;
-  border-radius: 10px;
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+/* Botones de acción */
+.btn-ver, .btn-servicios, .btn-activar, .btn-finalizar, .btn-pagar, .btn-cancelar, .btn-eliminar {
+  padding: 8px 12px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
-  background: #d9534f;
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 8px 18px rgba(0,0,0,.12);
-  transition: transform .06s ease, box-shadow .2s ease, opacity .2s ease;
+  font-weight: 600;
+  font-size: 11px;
+  box-shadow: 0 4px 8px rgba(0,0,0,.1);
+  transition: all .2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 80px;
+  height: 36px;
+  white-space: nowrap;
 }
-.btn-cancelar:hover{ opacity: .95; }
-.btn-cancelar:active{ transform: translateY(1px); }
-.btn-cancelar:disabled{ opacity: .6; cursor: not-allowed; }
+
+.btn-ver {
+  background: #17a2b8;
+  color: #fff;
+}
+
+.btn-servicios {
+  background: #ffc107;
+  color: #212529;
+}
+
+.btn-activar {
+  background: #28a745;
+  color: #fff;
+}
+
+.btn-finalizar {
+  background: #fd7e14;
+  color: #fff;
+}
+
+.btn-pagar {
+  background: #6f42c1;
+  color: #fff;
+}
+
+.btn-cancelar {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-eliminar {
+  background: #6f42c1;
+  color: #fff;
+}
+
+/* Hover effects */
+.btn-ver:hover, .btn-servicios:hover, .btn-activar:hover, 
+.btn-finalizar:hover, .btn-pagar:hover, .btn-cancelar:hover, .btn-eliminar:hover {
+  opacity: .9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0,0,0,.15);
+}
+
+.btn-ver:active, .btn-servicios:active, .btn-activar:active, 
+.btn-finalizar:active, .btn-pagar:active, .btn-cancelar:active, .btn-eliminar:active {
+  transform: translateY(0);
+}
+
+/* Disabled state */
+.btn-ver:disabled, .btn-servicios:disabled, .btn-activar:disabled, 
+.btn-finalizar:disabled, .btn-pagar:disabled, .btn-cancelar:disabled, .btn-eliminar:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-ver:disabled:hover, .btn-servicios:disabled:hover, .btn-activar:disabled:hover, 
+.btn-finalizar:disabled:hover, .btn-pagar:disabled:hover, .btn-cancelar:disabled:hover, .btn-eliminar:disabled:hover {
+  transform: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,.1);
+}
 
 .actions-footer{
   padding: 10px 18px 18px;
@@ -112,6 +184,36 @@
 @media (max-width: 900px){
   .container-servicios{ width: min(100%, 98vw); }
   .cell-cliente{ word-break: break-all; }
+}
+
+/* Responsive para botones */
+@media (max-width: 1200px) {
+  .action-buttons {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .btn-ver, .btn-servicios, .btn-activar, .btn-finalizar, .btn-pagar, .btn-cancelar {
+    min-width: 70px;
+    height: 32px;
+    font-size: 10px;
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .th-acciones { width: 200px; }
+  .action-buttons {
+    flex-direction: column;
+    gap: 1px;
+  }
+  
+  .btn-ver, .btn-servicios, .btn-activar, .btn-finalizar, .btn-pagar, .btn-cancelar, .btn-eliminar {
+    min-width: 60px;
+    height: 28px;
+    font-size: 9px;
+    padding: 4px 6px;
+  }
 }
 
 /* fallback con tokens globales si existen */

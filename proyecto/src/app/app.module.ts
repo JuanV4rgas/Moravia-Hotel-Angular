@@ -53,6 +53,8 @@ import { DetalleReservaComponent } from './reserva/detalle-reserva/detalle-reser
 import { AgregarServiciosComponent } from './reserva/agregar-servicios/agregar-servicios.component';
 import { ConsultarComponent } from './consultar/consultar.component';
 import { ReservaTableComponent } from './reserva/reserva-table/reserva-table.component';
+import { GestionarServiciosComponent } from './reserva/gestionar-servicios/gestionar-servicios.component';
+import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +92,7 @@ import { ReservaTableComponent } from './reserva/reserva-table/reserva-table.com
     ProfileHeaderComponent,
     ProfileComponent,
     ProfileFormComponent,
-   // UsuarioTableComponent,
+    //UsuarioTableComponent,
     UsuarioDetailComponent,
     UsuarioFormComponent,
     RoomtypeEditarComponent,
@@ -103,8 +105,10 @@ import { ReservaTableComponent } from './reserva/reserva-table/reserva-table.com
     AgregarServiciosComponent,
     ConsultarComponent,
     ReservaTableComponent,
-   // ServiceEditarComponent
-    //RoomtypeListComponent,
+    GestionarServiciosComponent,
+    //ServiceEditarComponent,
+    RoomtypeListComponent,
+    EditarReservaComponent,
   ],
   imports: [
     BrowserModule,
