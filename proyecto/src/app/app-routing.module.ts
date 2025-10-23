@@ -150,7 +150,7 @@ const routes: Routes = [
       {
         path: 'reserva/editar/:id',
         component: EditarReservaComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard],
       },
       // Tabla de reservas - Solo trabajadores
       {
