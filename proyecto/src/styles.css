@@ -44,3 +44,17 @@ app-auth-card {
   width: 100%;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto; 
+  bottom : 0; 
+}

@@ -16,38 +16,30 @@ export class HeaderComponent implements OnInit {
   loginFadeOut: boolean = false;
   logoutFadeOut: boolean = false;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     // Suscribirse al estado de autenticación
-    this.authService.authenticated$.subscribe(
-      authenticated => {
-        this.authenticated = authenticated;
-        if (authenticated) {
-          this.showLoginSuccess();
-        }
+    this.authService.authenticated$.subscribe((authenticated) => {
+      this.authenticated = authenticated;
+      if (authenticated) {
+        this.showLoginSuccess();
       }
-    );
+    });
 
     // Suscribirse al usuario actual
-    this.authService.usuario$.subscribe(
-      usuario => this.usuario = usuario
-    );
+    this.authService.usuario$.subscribe((usuario) => (this.usuario = usuario));
   }
 
   showLoginSuccess(): void {
     this.loginSuccess = true;
     this.loginFadeOut = false;
-    
+
     // Iniciar fade out después de 2.5 segundos
     setTimeout(() => {
       this.loginFadeOut = true;
     }, 2500);
-    
+
     // Ocultar completamente después de 3 segundos
     setTimeout(() => {
       this.loginSuccess = false;
@@ -64,12 +56,12 @@ export class HeaderComponent implements OnInit {
   showLogoutSuccess(): void {
     this.logoutSuccess = true;
     this.logoutFadeOut = false;
-    
+
     // Iniciar fade out después de 2.5 segundos
     setTimeout(() => {
       this.logoutFadeOut = true;
     }, 2500);
-    
+
     // Ocultar completamente después de 3 segundos
     setTimeout(() => {
       this.logoutSuccess = false;

@@ -1,88 +1,110 @@
-:host{
-  --blue-hero: #2f5876;
-  --blue-hero-dark: #284e6a;
-  --blue-chip: #2c5d7b;
+:host {
+  --blue-hero: var(--plum);
+  --blue-hero-dark: var(--plum);
+  --blue-chip: var(--plum);
   --thead-text: #f2f5f8;
   --panel-bg: #ffffff;
   --panel-radius: 18px;
-  --shadow: 0 16px 30px rgba(0,0,0,.12);
-  display:block;
+  display: flexbox;
 }
 
-.services-main{
-  background: linear-gradient(180deg, #2f5876, #365f7e 65%, #365f7e 65%);
+.services-main {
   padding: 28px 16px 40px;
 }
-.container-servicios{
-  width: min(1200px, 95vw);
+.container-servicios {
   margin: 0 auto;
   background: var(--panel-bg);
   border-radius: var(--panel-radius);
   box-shadow: var(--shadow);
   overflow: hidden;
 }
-.header-section{
+.header-section {
   background: var(--blue-hero);
   color: #f3f6f9;
   text-align: center;
   padding: 34px 16px 26px;
 }
-.services-title{
+.services-title {
   margin: 0 0 6px;
   font-size: clamp(28px, 4vw, 44px);
-  font-weight: 800;
-  letter-spacing: .3px;
-  text-shadow: 0 2px 6px rgba(0,0,0,.25);
+  font-weight: 750;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
-.services-title em{ color: #f3c44f; font-style: normal; }
-.services-subtitle{ margin: 0; opacity: .95; font-size: clamp(14px, 2vw, 18px); }
+.services-title em {
+  color: #f3c44f;
+  font-style: normal;
+}
+.services-subtitle {
+  margin: 0;
+  opacity: 0.95;
+  font-size: clamp(14px, 2vw, 18px);
+}
 
-.table-wrapper{ padding: 0; }
-.services-table{
+.table-wrapper {
+  padding: 0;
+}
+.services-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
 }
-.table-header th{
+.table-header th {
   background: var(--blue-hero);
   color: var(--thead-text);
   text-align: left;
   padding: 16px 18px;
-  font-weight: 800;
-  letter-spacing: .5px;
-  border-bottom: 1px solid rgba(255,255,255,.15);
+  font-weight: 750;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   font-size: 0.95rem;
 }
-.table-header th:first-child{ border-top-left-radius: 14px; }
-.table-header th:last-child{ border-top-right-radius: 14px; }
-.service-row td{
+
+.service-row td {
   padding: 22px 18px;
   border-bottom: 1px solid #eef2f6;
   vertical-align: middle;
   background: #ffffff;
 }
-.service-row:nth-child(even) td{ background: #fbfdff; }
+.service-row:nth-child(even) td {
+  background: #fbfdff;
+}
 
 /* Anchos/semántica por columna */
-.th-id{ width: 120px; }
-.th-fecha{ width: 200px; }
-.th-fecha-fin{ width: 200px; }
-.th-estado{ width: 140px; }
-.th-cliente{ width: 260px; }
-.th-room{ width: 200px; }
-.th-acciones{ width: 400px; text-align: left; }
+.th-id {
+  width: 120px;
+}
+.th-fecha {
+  width: 200px;
+}
+.th-fecha-fin {
+  width: 200px;
+}
+.th-estado {
+  width: 140px;
+}
+.th-cliente {
+  width: 260px;
+}
+.th-room {
+  width: 200px;
+}
+.th-acciones {
+  width: 400px;
+  text-align: left;
+}
 
 .cell-id,
 .cell-fecha,
 .cell-fecha-fin,
 .cell-estado,
 .cell-cliente,
-.cell-room{
-  color: #2e5976;
+.cell-room {
+  color: var (--plum);
   font-weight: 600;
 }
 
-.cell-acciones{
+.cell-acciones {
   display: flex;
   gap: 4px;
   align-items: center;
@@ -96,15 +118,20 @@
 }
 
 /* Botones de acción */
-.btn-ver, .btn-servicios, .btn-activar, .btn-finalizar, .btn-pagar, .btn-cancelar, .btn-eliminar {
+.btn-ver,
+.btn-servicios,
+.btn-activar,
+.btn-finalizar,
+.btn-pagar,
+.btn-cancelar,
+.btn-eliminar {
   padding: 8px 12px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   font-weight: 600;
   font-size: 11px;
-  box-shadow: 0 4px 8px rgba(0,0,0,.1);
-  transition: all .2s ease;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,40 +177,64 @@
 }
 
 /* Hover effects */
-.btn-ver:hover, .btn-servicios:hover, .btn-activar:hover, 
-.btn-finalizar:hover, .btn-pagar:hover, .btn-cancelar:hover, .btn-eliminar:hover {
-  opacity: .9;
+.btn-ver:hover,
+.btn-servicios:hover,
+.btn-activar:hover,
+.btn-finalizar:hover,
+.btn-pagar:hover,
+.btn-cancelar:hover,
+.btn-eliminar:hover {
+  opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 6px 12px rgba(0,0,0,.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.btn-ver:active, .btn-servicios:active, .btn-activar:active, 
-.btn-finalizar:active, .btn-pagar:active, .btn-cancelar:active, .btn-eliminar:active {
+.btn-ver:active,
+.btn-servicios:active,
+.btn-activar:active,
+.btn-finalizar:active,
+.btn-pagar:active,
+.btn-cancelar:active,
+.btn-eliminar:active {
   transform: translateY(0);
 }
 
 /* Disabled state */
-.btn-ver:disabled, .btn-servicios:disabled, .btn-activar:disabled, 
-.btn-finalizar:disabled, .btn-pagar:disabled, .btn-cancelar:disabled, .btn-eliminar:disabled {
-  opacity: .4;
+.btn-ver:disabled,
+.btn-servicios:disabled,
+.btn-activar:disabled,
+.btn-finalizar:disabled,
+.btn-pagar:disabled,
+.btn-cancelar:disabled,
+.btn-eliminar:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
   transform: none;
 }
 
-.btn-ver:disabled:hover, .btn-servicios:disabled:hover, .btn-activar:disabled:hover, 
-.btn-finalizar:disabled:hover, .btn-pagar:disabled:hover, .btn-cancelar:disabled:hover, .btn-eliminar:disabled:hover {
+.btn-ver:disabled:hover,
+.btn-servicios:disabled:hover,
+.btn-activar:disabled:hover,
+.btn-finalizar:disabled:hover,
+.btn-pagar:disabled:hover,
+.btn-cancelar:disabled:hover,
+.btn-eliminar:disabled:hover {
   transform: none;
-  box-shadow: 0 4px 8px rgba(0,0,0,.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.actions-footer{
+.actions-footer {
   padding: 10px 18px 18px;
   background: #ffffff;
 }
 
-@media (max-width: 900px){
-  .container-servicios{ width: min(100%, 98vw); }
-  .cell-cliente{ word-break: break-all; }
+@media (max-width: 900px) {
+  .container-servicios {
+    width: min(100%, 98vw);
+  }
+  .cell-cliente {
+    word-break: break-all;
+  }
 }
 
 /* Responsive para botones */
@@ -192,8 +243,13 @@
     flex-direction: column;
     gap: 2px;
   }
-  
-  .btn-ver, .btn-servicios, .btn-activar, .btn-finalizar, .btn-pagar, .btn-cancelar {
+
+  .btn-ver,
+  .btn-servicios,
+  .btn-activar,
+  .btn-finalizar,
+  .btn-pagar,
+  .btn-cancelar {
     min-width: 70px;
     height: 32px;
     font-size: 10px;
@@ -202,21 +258,24 @@
 }
 
 @media (max-width: 768px) {
-  .th-acciones { width: 200px; }
+  .th-acciones {
+    width: 200px;
+  }
   .action-buttons {
     flex-direction: column;
     gap: 1px;
   }
-  
-  .btn-ver, .btn-servicios, .btn-activar, .btn-finalizar, .btn-pagar, .btn-cancelar, .btn-eliminar {
+
+  .btn-ver,
+  .btn-servicios,
+  .btn-activar,
+  .btn-finalizar,
+  .btn-pagar,
+  .btn-cancelar,
+  .btn-eliminar {
     min-width: 60px;
     height: 28px;
     font-size: 9px;
     padding: 4px 6px;
   }
-}
-
-/* fallback con tokens globales si existen */
-:host{
-  --blue-hero: var(--plum, #2f5876);
 }

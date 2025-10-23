@@ -32,7 +32,7 @@
       </button>
       </li>
       <li>
-        <button class="dropdown-item" routerLink="/mis-reservas">Mis Reservas</button>
+        <button class="dropdown-item" *ngIf="usuario?.tipo === 'cliente'" routerLink="/mis-reservas">Mis Reservas</button>
       </li>
       <li>
         <button class="dropdown-item" routerLink="/configuracion">Configuración</button>

@@ -21,15 +21,50 @@
   <!-- Botones del lado derecho -->
   <div class="header-buttons">
     <!-- Botón según tipo de usuario -->
-    <button class="button2" 
-            *ngIf="authenticated && usuario?.tipo === 'cliente'" 
-            routerLink="/reserva/nueva">
+    <button
+      class="button2"
+      *ngIf="authenticated && usuario?.tipo === 'cliente'"
+      routerLink="/reserva/nueva"
+    >
       Reservar
     </button>
-    
-    <button class="button2" 
-            *ngIf="authenticated && usuario?.tipo === 'trabajador'" 
-            routerLink="/consultar">
+
+    <div
+      class="dropdown"
+      *ngIf="authenticated && usuario?.tipo === 'trabajador'"
+    >
+      <button
+        class="button2 dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Crear
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <button class="dropdown-item" routerLink="/room/nueva">
+            Habitacion
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" routerLink="/roomtype/nueva">
+            Tipo de Habitacion
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" routerLink="/servicio/nueva">
+            Servicio
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <button
+      class="button2"
+      *ngIf="authenticated && usuario?.tipo === 'trabajador'"
+      routerLink="/consultar"
+    >
       Consultar
     </button>
 
@@ -39,7 +74,11 @@
     </div>
 
     <!-- Si está autenticado -->
-    <app-user-dropdown *ngIf="authenticated" [usuario]="usuario" [logoutFn]="logout.bind(this)"></app-user-dropdown>
+    <app-user-dropdown
+      *ngIf="authenticated"
+      [usuario]="usuario"
+      [logoutFn]="logout.bind(this)"
+    ></app-user-dropdown>
   </div>
 
   <!-- Offcanvas DESDE LA IZQUIERDA Y ALTURA COMPLETA -->
@@ -49,7 +88,7 @@
   <div
     *ngIf="loginSuccess"
     class="alert alert-success alert-dismissible fade show position-fixed notification-message"
-    [ngClass]="{'fade-out': loginFadeOut}"
+    [ngClass]="{ 'fade-out': loginFadeOut }"
     style="top: 80px; right: 20px; z-index: 9999"
     role="alert"
   >
@@ -60,7 +99,7 @@
   <div
     *ngIf="logoutSuccess"
     class="alert alert-info alert-dismissible fade show position-fixed notification-message"
-    [ngClass]="{'fade-out': logoutFadeOut}"
+    [ngClass]="{ 'fade-out': logoutFadeOut }"
     style="top: 80px; right: 20px; z-index: 9999"
     role="alert"
   >
