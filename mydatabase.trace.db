@@ -330,3 +330,11 @@ The connection was not closed by the application and is garbage collected [90018
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 16 more
+2025-10-22 20:16:42.239489-05:00 jdbc[24]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "FOTO_PERFIL CHARACTER VARYING(255)": "'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFRUXGBcX... (1024)"
+Value too long for column "FOTO_PERFIL CHARACTER VARYING(255)": "'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFRUXGBcX... (1024)"; SQL statement:
+insert into usuario (apellido,cedula,clave,email,foto_perfil,nombre,telefono,tipo,id_usuario) values (?,?,?,?,?,?,?,?,default) [22001-232]
+2025-10-22 20:16:44.840743-05:00 jdbc[24]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "FOTO_PERFIL CHARACTER VARYING(255)": "'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFRUXGBcX... (1024)"
+Value too long for column "FOTO_PERFIL CHARACTER VARYING(255)": "'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFRUXGBcX... (1024)"; SQL statement:
+insert into usuario (apellido,cedula,clave,email,foto_perfil,nombre,telefono,tipo,id_usuario) values (?,?,?,?,?,?,?,?,default) [22001-232]
