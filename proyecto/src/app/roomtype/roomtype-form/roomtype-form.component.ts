@@ -53,43 +53,50 @@ export class RoomTypeFormComponent implements OnInit {
     }
   }
 
-  save(): void {
-    if (!this.form.name?.trim()) {
-      this.error = 'El nombre es obligatorio.';
-      return;
-    }
-
-    this.loading = true;
-
-    // 👇 capacity se envía tal cual string
-    const payload: RoomType = {
-      ...this.form,
-      capacity: this.form.capacity ?? ''
-    };
-
-    console.log('[RoomType payload]', payload); // útil para ver lo que se manda
-
-    const req$ = this.isEdit
-      ? this.roomTypeService.updateRoomType(this.form.id, payload)
-      : this.roomTypeService.addRoomType(payload);
-
-    req$.subscribe({
-      next: () => {
-        this.loading = false;
-        this.router.navigate(['/roomtype/lista']);
-      },
-      error: (err) => {
-        console.error('Error al guardar RoomType', err);
-        const backendMsg =
-          err?.error?.message ||
-          err?.error?.error ||
-          (typeof err?.error === 'string' ? err.error : '') ||
-          `HTTP ${err?.status ?? '—'}`;
-        this.error = `No se pudo guardar el tipo: ${backendMsg}`;
-        this.loading = false;
-      }
-    });
+ 
+save(): void {
+  if (!this.form.name?.trim()) {
+    this.error = 'El nombre es obligatorio.';
+    return;
   }
+
+  this.loading = true;
+
+  // 👇 capacity se envía como string, y NO mandamos `id` al backend
+  const { id: _omit, ...body } = ({
+    ...this.form,
+    capacity: this.form.capacity ?? ''
+  } as any);
+
+  console.log('[RoomType payload]', body); // útil para ver lo que se manda
+
+  const req$ = this.isEdit
+    ? this.roomTypeService.updateRoomType(this.form.id, body) // id solo en la URL
+    : this.roomTypeService.addRoomType(body);                 // sin id en el body
+
+  req$.subscribe({
+    next: () => {
+      this.loading = false;
+      this.router.navigate(['/roomtype/lista']);
+    },
+    error: (err) => {
+      console.error('Error al guardar RoomType', err);
+      const backendMsg =
+        err?.error?.message ||
+        err?.error?.error ||
+        (typeof err?.error === 'string' ? err.error : '') ||
+        `HTTP ${err?.status ?? '—'}`;
+      this.error = `No se pudo guardar el tipo: ${backendMsg}`;
+      this.loading = false;
+    }
+  });
+}
+
+
+
+
+
+
 
   onClear(): void {
     this.form = {
