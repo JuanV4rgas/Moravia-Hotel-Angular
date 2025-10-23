@@ -1,42 +1,64 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h2 class="m-0">Usuarios</h2>
-  <a class="btn btn-primary" [routerLink]="['/usuario/nuevo']">Nuevo usuario</a>
-</div>
+<main class="users-main">
+  <div class="container-usuarios">
+    <!-- Header visual igual al de servicios -->
+    <div class="header-section">
+      <h1 class="users-title">Listado de <em>Usuarios</em></h1>
+      <p class="users-subtitle">Gestiona y revisa toda la información de usuarios</p>
+    </div>
 
-<div *ngIf="loading">Cargando usuarios...</div>
-<div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
-<div *ngIf="!loading && !error && usuarios?.length === 0" class="alert alert-warning mt-2">
-  No hay usuarios cargados.
-</div>
+    <!-- Estados: EXACTAMENTE el mismo comportamiento que tenías -->
+    <div *ngIf="loading" class="alert alert-info">Cargando usuarios...</div>
+    <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
+    <div *ngIf="!loading && !error && usuarios?.length === 0" class="alert alert-warning mt-2">
+      No hay usuarios cargados.
+    </div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Apellido</th>
-      <th>Email</th>
-      <th>Cédula</th>
-      <th>Teléfono</th>
-      <th class="text-end">Acciones</th>
-    </tr>
+    <!-- Tabla SIN *ngIf* (como en tu versión que sí funcionaba) -->
+    <div class="table-wrapper">
+      <table class="users-table">
+        <colgroup>
+          <col style="width:90px">   <!-- ID -->
+          <col style="width:180px">  <!-- Nombre -->
+          <col style="width:180px">  <!-- Apellido -->
+          <col style="width:260px">  <!-- Email -->
+          <col style="width:150px">  <!-- Cédula -->
+          <col style="width:160px">  <!-- Teléfono -->
+          <col style="width:200px">  <!-- Acciones -->
+        </colgroup>
 
+        <thead>
+          <tr class="table-header">
+            <th class="th-id">ID</th>
+            <th class="th-nombre">NOMBRE</th>
+            <th class="th-apellido">APELLIDO</th>
+            <th class="th-email">EMAIL</th>
+            <th class="th-cedula">CÉDULA</th>
+            <th class="th-telefono">TELÉFONO</th>
+            <th class="th-acciones">ACCIONES</th>
+          </tr>
+        </thead>
 
-  </thead>
-  <tbody>
-    <tr *ngFor="let u of usuarios">
-      <td>{{ u.idUsuario }}</td>
-      <td>{{ u.nombre }}</td>
-      <td>{{ u.apellido }}</td>
-      <td>{{ u.email }}</td>
-      <td>{{ u.cedula }}</td>
-      <td>{{ u.telefono }}</td>
-      <td class="text-end">
-        <a class="btn btn-sm btn-outline-secondary me-2" [routerLink]="['/usuario/detalle', u.idUsuario]">Ver</a>
-        <a class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/usuario/editar', u.idUsuario]">Editar</a>
-        <button class="btn btn-sm btn-outline-danger" (click)="eliminarUsuario(u.idUsuario)">Eliminar</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <tbody>
+          <tr class="user-row" *ngFor="let u of usuarios">
+            <td class="user-id">{{ u.idUsuario }}</td>
+            <td class="user-name">{{ u.nombre }}</td>
+            <td class="user-lastname">{{ u.apellido }}</td>
+            <td class="user-email">{{ u.email }}</td>
+            <td class="user-cedula">{{ u.cedula }}</td>
+            <td class="user-telefono">{{ u.telefono }}</td>
+            <td class="user-actions">
+              <a class="btn-outline-lg" [routerLink]="['/usuario/detalle', u.idUsuario]">VER</a>
+              <a class="btn-outline-lg" [routerLink]="['/usuario/editar', u.idUsuario]">EDITAR</a>
+              <button class="btn-outline-lg" (click)="eliminarUsuario(u.idUsuario)">ELIMINAR</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
+    <!-- Footer de acciones (misma navegación) -->
+    <div class="actions-footer">
+      <a class="btn-outline-lg" [routerLink]="['/usuario/nuevo']">CREAR</a>
+    </div>
+  </div>
+</main>

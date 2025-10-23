@@ -1,0 +1,164 @@
+:host{
+  /* mismos tokens que service-table */
+  --blue-hero: #2f5876;
+  --blue-hero-dark: #284e6a;
+  --blue-chip: #2c5d7b;
+  --thead-text: #f2f5f8;
+  --panel-bg: #ffffff;
+  --panel-radius: 18px;
+  --shadow: 0 16px 30px rgba(0,0,0,.12);
+  display:block;
+}
+
+/* Banda azul superior */
+.users-main{
+  background: linear-gradient(180deg, #2f5876, #365f7e 65%, #365f7e 65%);
+  padding: 28px 16px 40px;
+}
+
+/* Tarjeta contenedora */
+.container-usuarios{
+  width: min(1100px, 95vw);
+  margin: 0 auto;
+  background: var(--panel-bg);
+  border-radius: var(--panel-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* Header interno */
+.header-section{
+  background: var(--blue-hero);
+  color: #f3f6f9;
+  text-align: center;
+  padding: 34px 16px 26px;
+}
+.users-title{
+  margin: 0 0 6px;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: .3px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+.users-title em{ color: #f3c44f; font-style: normal; }
+.users-subtitle{ margin: 0; opacity: .95; font-size: clamp(14px, 2vw, 18px); }
+
+/* Barra de acción superior */
+.actions-header{
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 18px 10px;
+  background: #ffffff;
+}
+
+/* Tabla */
+.table-wrapper{ padding: 0; }
+
+.users-table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Cabecera azul igual a services */
+.table-header th{
+  background: var(--blue-hero);
+  color: var(--thead-text);
+  text-align: left;
+  padding: 16px 18px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+  font-size: 0.95rem;
+}
+.table-header th:first-child{ border-top-left-radius: 14px; }
+.table-header th:last-child{ border-top-right-radius: 14px; }
+
+/* Columnas */
+.th-id{ width: 90px; }
+.th-nombre{ width: 180px; }
+.th-apellido{ width: 180px; }
+.th-email{ width: 260px; }
+.th-cedula{ width: 150px; }
+.th-telefono{ width: 160px; }
+.th-acciones{ width: 200px; text-align: center; }
+
+/* Filas */
+.user-row td{
+  padding: 22px 18px;
+  border-bottom: 1px solid #eef2f6;
+  vertical-align: middle;
+  background: #ffffff;
+}
+.user-row:nth-child(even) td{ background: #fbfdff; }
+
+/* Tipografía */
+.user-id{ color: #5c6e7e; font-weight: 700; }
+.user-name,
+.user-lastname{ color: #2e5976; font-weight: 800; }
+.user-email,
+.user-cedula,
+.user-telefono{ color: #5c6e7e; }
+
+/* Acciones apiladas a la derecha */
+.user-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* Botón outline grande (mismo look de servicios) */
+.btn-outline-lg{
+  appearance: none;
+  background: #f8fbff;
+  color: #2e5976;
+  border: 2px solid var(--blue-hero-dark);
+  border-radius: 6px;
+  padding: 12px 22px;
+  min-width: 150px;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: .22em;
+  box-shadow: 0 6px 12px rgba(47,88,118,.25);
+  text-decoration: none;
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  cursor: pointer;
+}
+.btn-outline-lg:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(47,88,118,.28);
+  filter: brightness(1.02);
+}
+.btn-outline-lg:active{ transform: translateY(0); }
+
+/* Footer acciones */
+.actions-footer{
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 18px 24px;
+  background: #ffffff;
+}
+
+/* Responsivo */
+@media (max-width: 700px){
+  .user-actions{ align-items: stretch; }
+  .btn-outline-lg{ width: 100%; }
+}
+
+/* Sincronizar con variables globales como en service-table */
+:host{
+  --blue-hero: var(--plum, #2f5876);
+  --blue-hero-dark: color-mix(in oklab, var(--plum, #2f5876) 80%, black 20%);
+  --blue-hero-dark: var(--blue-hero); /* fallback */
+}
+:host .btn-outline-lg{
+  color: var(--plum, #2f5876);
+  border-color: var(--nav-accent, #3b90c5);
+  box-shadow: 0 6px 12px rgba(0,0,0,.12);
+}
+:host .table-header th{ background: var(--blue-hero); color: var(--thead-text); }
+:host .user-name,
+:host .user-lastname{ color: var(--plum, #2f5876); }
