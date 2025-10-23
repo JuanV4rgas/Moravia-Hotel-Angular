@@ -29,11 +29,11 @@ public class Reserva {
     @JoinColumn(name = "cliente_id")
     private Usuario cliente;
 
-    @OneToOne(mappedBy = "reserva")
+    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Cuenta cuenta;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "reserva_rooms", joinColumns = @JoinColumn(name = "reserva_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
     private List<Room> rooms;
 }

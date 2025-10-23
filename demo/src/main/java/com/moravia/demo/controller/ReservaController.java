@@ -84,4 +84,10 @@ public class ReservaController {
             .map(roomMapper::toSimpleDTO)
             .collect(Collectors.toList());
     }
+
+    // Eliminar reserva
+    @DeleteMapping("/delete/{id}")
+    public void eliminarReserva(@PathVariable("id") Integer id) {
+        reservaService.deleteById(id);
+    }
 }

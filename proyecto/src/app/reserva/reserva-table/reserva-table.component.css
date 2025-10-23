@@ -21,8 +21,57 @@
 .header-section {
   background: var(--blue-hero);
   color: #f3f6f9;
-  text-align: center;
   padding: 34px 16px 26px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-text {
+  text-align: center;
+  flex: 1;
+}
+
+.btn-reload {
+  background: rgba(255, 255, 255, 0.2);
+  color: #f3f6f9;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.btn-reload:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-reload:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.fa-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 .services-title {
   margin: 0 0 6px;

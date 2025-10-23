@@ -2,8 +2,16 @@
   <div class="container-servicios">
     <!-- Encabezado -->
     <div class="header-section">
-      <h1 class="services-title">Listado de <em>Reservas</em></h1>
-      <p class="services-subtitle">Todas las reservas registradas en el sistema</p>
+      <div class="header-content">
+        <div class="header-text">
+          <h1 class="services-title">Listado de <em>Reservas</em></h1>
+          <p class="services-subtitle">Todas las reservas registradas en el sistema</p>
+        </div>
+        <button class="btn-reload" (click)="cargarReservas()" [disabled]="loading" title="Recargar lista">
+          <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
+          Recargar
+        </button>
+      </div>
     </div>
 
     <!-- Estados de carga / error -->

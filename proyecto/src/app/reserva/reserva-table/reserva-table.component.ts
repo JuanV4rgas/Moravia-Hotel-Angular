@@ -33,16 +33,26 @@ export class ReservaTableComponent implements OnInit {
     this.cargarReservas();
   }
 
-  private cargarReservas(): void {
+  cargarReservas(): void {
     this.loading = true;
     this.error = null;
 
+    console.log('🔄 Cargando reservas...');
     const req: Observable<Reserva[]> = this.reservaService.getAllReservas();
     req.pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: (data) => this.reservas = data ?? [],
+        next: (data) => {
+          console.log('📋 Reservas cargadas:', data);
+          this.reservas = data ?? [];
+          console.log('📋 Total de reservas:', this.reservas.length);
+          
+          // Debug: mostrar estados de las reservas
+          this.reservas.forEach((reserva, index) => {
+            console.log(`📋 Reserva ${index + 1}: ID=${reserva.id}, Estado=${(reserva as any)?.estado}`);
+          });
+        },
         error: (err) => {
-          console.error(err);
+          console.error('❌ Error al cargar reservas:', err);
           this.error = 'No se pudieron cargar las reservas.';
         }
       });
@@ -146,6 +156,8 @@ export class ReservaTableComponent implements OnInit {
     if (id == null) return;
     if (!this.puedeFinalizarReserva(r)) return;
 
+    console.log('🔄 Iniciando finalización de reserva:', r);
+
     // Verificar que la cuenta esté pagada
     const cuenta = (r as any)?.cuenta;
     if (cuenta && cuenta.total > 0) {
@@ -158,16 +170,21 @@ export class ReservaTableComponent implements OnInit {
 
     this.processingId = Number(id);
     const reservaActualizada = { ...(r as any), estado: 'FINALIZADA' };
+    
+    console.log('📤 Enviando reserva actualizada:', reservaActualizada);
+    console.log('📤 Estado a enviar:', reservaActualizada.estado);
 
     this.reservaService.updateReserva(reservaActualizada)
       .pipe(finalize(() => { this.processingId = null; }))
       .subscribe({
-        next: () => {
+        next: (reservaRespuesta) => {
+          console.log('✅ Reserva finalizada exitosamente');
+          console.log('📥 Respuesta del servidor:', reservaRespuesta);
           alert('Reserva finalizada exitosamente');
           this.cargarReservas();
         },
         error: (error) => {
-          console.error('Error al finalizar reserva:', error);
+          console.error('❌ Error al finalizar reserva:', error);
           this.error = 'Error al finalizar la reserva';
         }
       });
@@ -257,11 +274,17 @@ export class ReservaTableComponent implements OnInit {
       .pipe(finalize(() => { this.deletingId = null; }))
       .subscribe({
         next: () => {
+          console.log('✅ Reserva eliminada exitosamente, recargando lista...');
           alert('Reserva eliminada exitosamente');
-          this.cargarReservas();
+          
+          // Pequeño delay para asegurar que el backend procese la eliminación
+          setTimeout(() => {
+            console.log('🔄 Recargando reservas después de eliminar...');
+            this.cargarReservas();
+          }, 500);
         },
         error: (error) => {
-          console.error('Error al eliminar reserva:', error);
+          console.error('❌ Error al eliminar reserva:', error);
           this.error = 'Error al eliminar la reserva';
         }
       });

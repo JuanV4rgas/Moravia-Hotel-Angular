@@ -23,7 +23,7 @@ public class Room {
     @JoinColumn(name = "roomtype_id")
     private Roomtype type;
 
-    @ManyToMany(mappedBy = "rooms")
+    @ManyToMany(mappedBy = "rooms", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonBackReference("reserva-rooms")
     private List<Reserva> reservas;
 
