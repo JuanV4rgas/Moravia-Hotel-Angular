@@ -197,4 +197,9 @@ public class ReservaServiceImpl implements ReservaService {
 
         reservaRepository.deleteById(id);
     }
+
+    @Override
+    public List<Reserva> buscarReservasActivas() {
+        return reservaRepository.findReservaActiva();
+    }
 }

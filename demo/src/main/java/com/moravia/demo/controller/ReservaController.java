@@ -84,4 +84,11 @@ public class ReservaController {
             .map(roomMapper::toSimpleDTO)
             .collect(Collectors.toList());
     }
+    @GetMapping("/activeReservations")
+    public List<ReservaResponseDTO> obtenerReservasActivas() {
+        List<Reserva> reservasActivas = reservaService.buscarReservasActivas();
+        return reservasActivas.stream()
+                .map(reservaMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 }
