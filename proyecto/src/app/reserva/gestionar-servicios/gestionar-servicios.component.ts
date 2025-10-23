@@ -5,7 +5,6 @@ import { ServicioService } from '../../services/servicio.service';
 import { CuentaService } from '../../services/cuenta.service';
 import { Reserva } from '../../model/reserva';
 import { Servicio } from '../../model/servicio';
-import { Cuenta } from '../../model/cuenta';
 
 @Component({
   selector: 'app-gestionar-servicios',
@@ -40,10 +39,17 @@ export class GestionarServiciosComponent implements OnInit {
     this.isLoading = true;
     this.reservaService.getReservaById(id).subscribe({
       next: (reserva) => {
+        console.log('Reserva cargada:', reserva);
         this.reserva = reserva;
+        
+        // Extraer servicios de la cuenta
         if (reserva.cuenta && reserva.cuenta.servicios) {
-          this.serviciosEnCuenta = reserva.cuenta.servicios;
+          this.serviciosEnCuenta = [...reserva.cuenta.servicios];
+          console.log('Servicios en cuenta:', this.serviciosEnCuenta);
+        } else {
+          this.serviciosEnCuenta = [];
         }
+        
         this.isLoading = false;
       },
       error: (error) => {
@@ -58,6 +64,7 @@ export class GestionarServiciosComponent implements OnInit {
     this.servicioService.getAllServicios().subscribe({
       next: (servicios) => {
         this.servicios = servicios;
+        console.log('Servicios disponibles:', servicios);
       },
       error: (error) => {
         console.error('Error al cargar servicios:', error);
@@ -67,101 +74,182 @@ export class GestionarServiciosComponent implements OnInit {
   }
 
   agregarServicioACuenta(servicio: Servicio): void {
-    if (!this.reserva) return;
+    if (!this.reserva) {
+      this.errorMessage = 'No hay reserva seleccionada';
+      return;
+    }
 
     // Verificar si el servicio ya está en la cuenta
     const yaExiste = this.serviciosEnCuenta.some(s => s.idServicio === servicio.idServicio);
     if (yaExiste) {
-      alert('Este servicio ya está en la cuenta del cliente');
+      this.errorMessage = 'Este servicio ya está en la cuenta del cliente';
+      setTimeout(() => this.errorMessage = '', 3000);
       return;
     }
 
     this.isLoading = true;
     this.errorMessage = '';
+    this.successMessage = '';
 
-    // Obtener o crear cuenta
-    let cuenta = this.reserva.cuenta;
-    if (!cuenta) {
-      // Crear nueva cuenta
-      cuenta = {
-        id: 0, // ID temporal, será asignado por el backend
-        total: this.calcularTotalHabitaciones(),
-        servicios: []
-      };
-    }
-
-    // Agregar servicio
-    if (!cuenta.servicios) {
-      cuenta.servicios = [];
-    }
-    cuenta.servicios.push(servicio);
-
-    // Recalcular total
-    const totalHabitaciones = this.calcularTotalHabitaciones();
-    const totalServicios = cuenta.servicios.reduce((total, s) => total + s.precio, 0);
-    cuenta.total = totalHabitaciones + totalServicios;
-
-    // Actualizar cuenta
-    if (cuenta.id) {
-      this.cuentaService.updateCuenta(cuenta).subscribe({
-        next: () => {
-          this.successMessage = 'Servicio agregado exitosamente';
-          this.serviciosEnCuenta = [...(cuenta?.servicios || [])];
-          this.isLoading = false;
-          setTimeout(() => this.successMessage = '', 3000);
-        },
-        error: (error) => {
-          console.error('Error al agregar servicio:', error);
-          this.errorMessage = 'Error al agregar el servicio';
-          this.isLoading = false;
-        }
-      });
+    // Verificar si la reserva tiene cuenta
+    if (!this.reserva.cuenta || !this.reserva.cuenta.id) {
+      // Si no hay cuenta, crearla primero
+      this.crearCuentaConServicio(servicio);
     } else {
-      this.cuentaService.addCuenta(cuenta).subscribe({
-        next: (cuentaCreada) => {
-          this.successMessage = 'Servicio agregado exitosamente';
-          this.serviciosEnCuenta = [...(cuenta?.servicios || [])];
-          this.reserva!.cuenta = cuentaCreada as any;
-          this.isLoading = false;
-          setTimeout(() => this.successMessage = '', 3000);
-        },
-        error: (error) => {
-          console.error('Error al crear cuenta:', error);
-          this.errorMessage = 'Error al crear la cuenta';
-          this.isLoading = false;
-        }
-      });
+      // Si ya existe cuenta, actualizar
+      this.actualizarCuentaConServicio(servicio);
     }
   }
 
-  eliminarServicioDeCuenta(servicio: Servicio): void {
+  private crearCuentaConServicio(servicio: Servicio): void {
+    if (!this.reserva) return;
+
+    const totalHabitaciones = this.calcularTotalHabitaciones();
+    const totalServicios = servicio.precio;
+
+    // Determinar el estado de la cuenta según el estado de la reserva
+    let estadoCuenta = 'ABIERTA';
+    if (this.reserva.estado === 'FINALIZADA') {
+      estadoCuenta = 'PENDIENTE'; // Si la reserva terminó, la cuenta queda pendiente de pago
+    }
+
+    const crearCuentaDTO = {
+      estado: estadoCuenta, // ABIERTA, CERRADA, PAGADA, PENDIENTE
+      total: totalHabitaciones + totalServicios,
+      reservaId: this.reserva.id,
+      servicioIds: [servicio.idServicio]
+    };
+
+    console.log('Creando cuenta:', crearCuentaDTO);
+
+    this.cuentaService.addCuenta(crearCuentaDTO as any).subscribe({
+      next: (cuentaCreada) => {
+        console.log('Cuenta creada:', cuentaCreada);
+        this.successMessage = 'Servicio agregado exitosamente';
+        
+        // Recargar la reserva completa para obtener la cuenta actualizada
+        this.recargarReserva();
+      },
+      error: (error) => {
+        console.error('Error al crear cuenta:', error);
+        this.errorMessage = 'Error al crear la cuenta: ' + (error.error?.message || error.message);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private actualizarCuentaConServicio(servicio: Servicio): void {
     if (!this.reserva || !this.reserva.cuenta) return;
+
+    // Crear lista de IDs de servicios actuales + el nuevo
+    const servicioIdsActuales = this.serviciosEnCuenta.map(s => s.idServicio);
+    const nuevosServicioIds = [...servicioIdsActuales, servicio.idServicio];
+
+    // Calcular nuevo total
+    const totalHabitaciones = this.calcularTotalHabitaciones();
+    const totalServicios = this.calcularTotalServicios() + servicio.precio;
+
+    const actualizarCuentaDTO = {
+      estado: this.reserva.cuenta.estado || 'ABIERTA', // Mantener el estado actual de la cuenta
+      total: totalHabitaciones + totalServicios,
+      servicioIds: nuevosServicioIds
+    };
+
+    console.log('Actualizando cuenta:', actualizarCuentaDTO);
+
+    this.cuentaService.updateCuenta({
+      id: this.reserva.cuenta.id,
+      ...actualizarCuentaDTO
+    } as any).subscribe({
+      next: (cuentaActualizada) => {
+        console.log('Cuenta actualizada:', cuentaActualizada);
+        this.successMessage = 'Servicio agregado exitosamente';
+        
+        // Recargar la reserva completa
+        this.recargarReserva();
+      },
+      error: (error) => {
+        console.error('Error al actualizar cuenta:', error);
+        this.errorMessage = 'Error al agregar el servicio: ' + (error.error?.message || error.message);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  eliminarServicioDeCuenta(servicio: Servicio): void {
+    if (!this.reserva || !this.reserva.cuenta) {
+      this.errorMessage = 'No hay cuenta asociada';
+      return;
+    }
 
     const ok = confirm(`¿Eliminar el servicio "${servicio.nombre}" de la cuenta?`);
     if (!ok) return;
 
     this.isLoading = true;
     this.errorMessage = '';
+    this.successMessage = '';
 
-    const cuenta = { ...this.reserva.cuenta };
-    cuenta.servicios = (cuenta.servicios || []).filter(s => s.idServicio !== servicio.idServicio);
+    // Filtrar el servicio a eliminar
+    const servicioIdsRestantes = this.serviciosEnCuenta
+      .filter(s => s.idServicio !== servicio.idServicio)
+      .map(s => s.idServicio);
 
-    // Recalcular total
+    // Recalcular total sin este servicio
     const totalHabitaciones = this.calcularTotalHabitaciones();
-    const totalServicios = cuenta.servicios.reduce((total, s) => total + s.precio, 0);
-    cuenta.total = totalHabitaciones + totalServicios;
+    const totalServicios = this.calcularTotalServicios() - servicio.precio;
 
-    this.cuentaService.updateCuenta(cuenta).subscribe({
-      next: () => {
+    const actualizarCuentaDTO = {
+      estado: this.reserva.cuenta.estado || 'ABIERTA', // Mantener el estado actual
+      total: totalHabitaciones + totalServicios,
+      servicioIds: servicioIdsRestantes
+    };
+
+    console.log('Eliminando servicio, nueva cuenta:', actualizarCuentaDTO);
+
+    this.cuentaService.updateCuenta({
+      id: this.reserva.cuenta.id,
+      ...actualizarCuentaDTO
+    } as any).subscribe({
+      next: (cuentaActualizada) => {
+        console.log('Cuenta actualizada después de eliminar:', cuentaActualizada);
         this.successMessage = 'Servicio eliminado exitosamente';
-        this.serviciosEnCuenta = [...(cuenta.servicios || [])];
-        this.reserva!.cuenta = cuenta;
-        this.isLoading = false;
-        setTimeout(() => this.successMessage = '', 3000);
+        
+        // Recargar la reserva completa
+        this.recargarReserva();
       },
       error: (error) => {
         console.error('Error al eliminar servicio:', error);
-        this.errorMessage = 'Error al eliminar el servicio';
+        this.errorMessage = 'Error al eliminar el servicio: ' + (error.error?.message || error.message);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private recargarReserva(): void {
+    if (!this.reserva || !this.reserva.id) return;
+    
+    const reservaId = this.reserva.id;
+    
+    this.reservaService.getReservaById(reservaId).subscribe({
+      next: (reservaActualizada) => {
+        console.log('Reserva recargada:', reservaActualizada);
+        this.reserva = reservaActualizada;
+        
+        // Actualizar servicios en cuenta
+        if (reservaActualizada.cuenta && reservaActualizada.cuenta.servicios) {
+          this.serviciosEnCuenta = [...reservaActualizada.cuenta.servicios];
+        } else {
+          this.serviciosEnCuenta = [];
+        }
+        
+        this.isLoading = false;
+        
+        // Limpiar mensaje de éxito después de 3 segundos
+        setTimeout(() => this.successMessage = '', 3000);
+      },
+      error: (error) => {
+        console.error('Error al recargar reserva:', error);
+        this.errorMessage = 'Error al recargar la reserva';
         this.isLoading = false;
       }
     });
@@ -192,6 +280,25 @@ export class GestionarServiciosComponent implements OnInit {
     return totalHabitaciones + totalServicios;
   }
 
+  // Método para obtener el estado de pago legible
+  getEstadoCuentaLabel(): string {
+    if (!this.reserva?.cuenta) return 'Sin cuenta';
+    
+    const estado = this.reserva.cuenta.estado;
+    switch (estado?.toUpperCase()) {
+      case 'ABIERTA':
+        return 'Cuenta Abierta (puede agregar cargos)';
+      case 'CERRADA':
+        return 'Cuenta Cerrada';
+      case 'PAGADA':
+        return 'Cuenta Pagada';
+      case 'PENDIENTE':
+        return 'Pago Pendiente';
+      default:
+        return estado || 'Sin estado';
+    }
+  }
+
   volverATabla(): void {
     this.router.navigate(['/reserva/table']);
   }
@@ -200,6 +307,7 @@ export class GestionarServiciosComponent implements OnInit {
     event.target.src = 'assets/img/image1817.png';
   }
 
+  // Este es para el estado de la RESERVA, no de la cuenta
   getEstadoClass(estado: string): string {
     switch (estado?.toUpperCase()) {
       case 'INACTIVA':

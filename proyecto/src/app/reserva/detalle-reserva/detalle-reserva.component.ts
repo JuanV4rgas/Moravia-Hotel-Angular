@@ -279,6 +279,7 @@ export class DetalleReservaComponent implements OnInit {
       console.log('Creando nueva cuenta');
       this.reserva.cuenta = {
         id: 0,
+        estado: 'ABIERTA',
         total: this.calcularTotalHabitaciones(),
         servicios: []
       };
