@@ -35,86 +35,126 @@ public class ReservaServiceImpl implements ReservaService {
         return reservaRepository.findAll();
     }
 
-@Override
-public void add(Reserva reserva) {
-    // 1️⃣ Validar cliente
-    Usuario cliente = usuarioRepository.findById(reserva.getCliente().getIdUsuario())
-            .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+    @Override
+    public void add(Reserva reserva) {
+        // 1️⃣ Validar cliente
+        Usuario cliente = usuarioRepository.findById(reserva.getCliente().getIdUsuario())
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-    if (!"cliente".equalsIgnoreCase(cliente.getTipo())) {
-        throw new RuntimeException("Solo los usuarios de tipo 'cliente' pueden realizar reservas");
-    }
-
-    // 2️⃣ Validar habitaciones
-    List<Room> habitacionesSeleccionadas = reserva.getRooms();
-    if (habitacionesSeleccionadas == null || habitacionesSeleccionadas.isEmpty()) {
-        throw new RuntimeException("Debe seleccionar al menos una habitación");
-    }
-
-    // 3️⃣ Validar fechas
-    long noches = ChronoUnit.DAYS.between(reserva.getFechaInicio(), reserva.getFechaFin());
-    if (noches <= 0) {
-        throw new RuntimeException("Las fechas de la reserva no son válidas");
-    }
-
-    // 4️⃣ Calcular total y marcar habitaciones ocupadas
-    double total = 0.0;
-    for (Room room : habitacionesSeleccionadas) {
-        Room habitacion = roomRepository.findById(room.getId())
-                .orElseThrow(() -> new RuntimeException("Habitación no encontrada con ID: " + room.getId()));
-
-        if (Boolean.FALSE.equals(habitacion.getAvailable())) {
-            throw new RuntimeException("La habitación " + habitacion.getHabitacionNumber() + " no está disponible");
+        if (!"cliente".equalsIgnoreCase(cliente.getTipo())) {
+            throw new RuntimeException("Solo los usuarios de tipo 'cliente' pueden realizar reservas");
         }
 
-        double subtotal = habitacion.getType().getPrice() * noches;
-        total += subtotal;
+        // 2️⃣ Validar habitaciones
+        List<Room> habitacionesSeleccionadas = reserva.getRooms();
+        if (habitacionesSeleccionadas == null || habitacionesSeleccionadas.isEmpty()) {
+            throw new RuntimeException("Debe seleccionar al menos una habitación");
+        }
 
-        roomRepository.save(habitacion);
+        // 3️⃣ Validar fechas
+        long noches = ChronoUnit.DAYS.between(reserva.getFechaInicio(), reserva.getFechaFin());
+        if (noches <= 0) {
+            throw new RuntimeException("Las fechas de la reserva no son válidas");
+        }
+
+        // 4️⃣ Calcular total y marcar habitaciones ocupadas
+        double total = 0.0;
+        for (Room room : habitacionesSeleccionadas) {
+            Room habitacion = roomRepository.findById(room.getId())
+                    .orElseThrow(() -> new RuntimeException("Habitación no encontrada con ID: " + room.getId()));
+
+            if (Boolean.FALSE.equals(habitacion.getAvailable())) {
+                throw new RuntimeException("La habitación " + habitacion.getHabitacionNumber() + " no está disponible");
+            }
+
+            double subtotal = habitacion.getType().getPrice() * noches;
+            total += subtotal;
+
+            roomRepository.save(habitacion);
+        }
+
+        // 5️⃣ Guardar reserva primero (sin cuenta aún)
+        reserva.setCliente(cliente);
+        
+        // Si no tiene estado o es PENDIENTE, establecer CONFIRMADA
+        if (reserva.getEstado() == null || "PENDIENTE".equals(reserva.getEstado())) {
+            reserva.setEstado("CONFIRMADA");
+        }
+        
+        reserva.setCuenta(null);  // se asociará luego
+        Reserva reservaGuardada = reservaRepository.save(reserva);
+
+        // 6️⃣ Crear cuenta vinculada a la reserva ya persistida
+        Cuenta cuenta = new Cuenta();
+        cuenta.setTotal(total);
+        cuenta.setReserva(reservaGuardada);
+        
+        // ✅ ESTABLECER ESTADO DE LA CUENTA SEGÚN EL ESTADO DE LA RESERVA
+        String estadoCuenta = determinarEstadoCuenta(reservaGuardada.getEstado());
+        cuenta.setEstado(estadoCuenta);
+        
+        cuentaRepository.save(cuenta);
+
+        // 7️⃣ Asociar la cuenta y actualizar la reserva
+        reservaGuardada.setCuenta(cuenta);
+        reservaRepository.save(reservaGuardada);
     }
 
-    // 5️⃣ Guardar reserva primero (sin cuenta aún)
-    reserva.setCliente(cliente);
-    reserva.setEstado("CONFIRMADA");
-    reserva.setCuenta(null);  // se asociará luego
-    Reserva reservaGuardada = reservaRepository.save(reserva);
-
-    // 6️⃣ Crear cuenta vinculada a la reserva ya persistida
-    Cuenta cuenta = new Cuenta();
-    cuenta.setTotal(total);
-    cuenta.setReserva(reservaGuardada);
-    cuentaRepository.save(cuenta);
-
-    // 7️⃣ Asociar la cuenta y actualizar la reserva
-    reservaGuardada.setCuenta(cuenta);
-    reservaRepository.save(reservaGuardada);
-}
-
+    /**
+     * Determina el estado inicial de la cuenta según el estado de la reserva
+     * 
+     * Estados de cuenta:
+     * - ABIERTA: Se pueden agregar cargos
+     * - CERRADA: No se pueden agregar cargos
+     * - PAGADA: Cuenta completamente pagada
+     * - PENDIENTE: Tiene saldo pendiente de pago
+     */
+    private String determinarEstadoCuenta(String estadoReserva) {
+        if (estadoReserva == null) {
+            return "ABIERTA"; // Default
+        }
+        
+        switch (estadoReserva.toUpperCase()) {
+            case "CONFIRMADA":
+            case "ACTIVA":
+            case "PROXIMA":
+                return "ABIERTA"; // Se pueden agregar servicios
+                
+            case "FINALIZADA":
+                return "PENDIENTE"; // Esperando pago
+                
+            case "CANCELADA":
+                return "CERRADA"; // No se puede modificar
+                
+            default:
+                return "ABIERTA";
+        }
+    }
 
     @Override
-public List<Room> buscarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin) {
-    List<Room> todasLasHabitaciones = roomRepository.findAll();
+    public List<Room> buscarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Room> todasLasHabitaciones = roomRepository.findAll();
 
-    // Traemos todas las reservas activas
-    List<Reserva> reservas = reservaRepository.findAll();
+        // Traemos todas las reservas activas
+        List<Reserva> reservas = reservaRepository.findAll();
 
-    return todasLasHabitaciones.stream()
-            .filter(room -> {
-                // Verificamos si la habitación está libre en las fechas dadas
-                boolean ocupada = reservas.stream().anyMatch(reserva ->
-                        reserva.getRooms().contains(room) &&
-                        (
-                            // Se cruzan las fechas
-                            ( !reserva.getFechaFin().isBefore(fechaInicio) &&
-                              !reserva.getFechaInicio().isAfter(fechaFin) )
-                        )
-                );
+        return todasLasHabitaciones.stream()
+                .filter(room -> {
+                    // Verificamos si la habitación está libre en las fechas dadas
+                    boolean ocupada = reservas.stream().anyMatch(reserva ->
+                            reserva.getRooms().contains(room) &&
+                            (
+                                // Se cruzan las fechas
+                                ( !reserva.getFechaFin().isBefore(fechaInicio) &&
+                                  !reserva.getFechaInicio().isAfter(fechaFin) )
+                            )
+                    );
 
-                // Si no está ocupada en el rango, se considera disponible
-                return !ocupada;
-            })
-            .toList();
-}
+                    // Si no está ocupada en el rango, se considera disponible
+                    return !ocupada;
+                })
+                .toList();
+    }
 
     @Override
     public void update(Reserva reserva) {
@@ -126,6 +166,18 @@ public List<Room> buscarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate
         existing.setEstado(reserva.getEstado());
         existing.setRooms(reserva.getRooms());
         existing.setCliente(reserva.getCliente());
+
+        // ✅ ACTUALIZAR ESTADO DE LA CUENTA SI CAMBIA EL ESTADO DE LA RESERVA
+        if (existing.getCuenta() != null) {
+            String nuevoEstadoCuenta = determinarEstadoCuenta(reserva.getEstado());
+            Cuenta cuenta = existing.getCuenta();
+            
+            // Solo actualizar si la cuenta no está PAGADA (es irreversible)
+            if (!"PAGADA".equals(cuenta.getEstado())) {
+                cuenta.setEstado(nuevoEstadoCuenta);
+                cuentaRepository.save(cuenta);
+            }
+        }
 
         reservaRepository.save(existing);
     }

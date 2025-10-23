@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReservaService } from '../../services/reserva.service';
 import { ReservaEstadoService } from '../../services/reserva-estado.service';
 import { Reserva } from '../../model/reserva';
+import { AuthService } from '../../services/auth.service';
+import { Usuario } from 'src/app/model/usuario';
 
 @Component({
   selector: 'app-detalle-reserva',
@@ -10,6 +12,8 @@ import { Reserva } from '../../model/reserva';
   styleUrls: ['./detalle-reserva.component.css']
 })
 export class DetalleReservaComponent implements OnInit {
+  authenticated: boolean = false;
+  usuario: Usuario | null = null;
   reserva: Reserva | null = null;
   isLoading: boolean = false;
   errorMessage: string = '';
@@ -17,6 +21,7 @@ export class DetalleReservaComponent implements OnInit {
   mostrarAgregarServicios: boolean = false;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private reservaService: ReservaService,
@@ -30,6 +35,14 @@ export class DetalleReservaComponent implements OnInit {
         this.cargarDetalleReserva();
       }
     });
+
+     // Suscribirse al estado de autenticación
+    this.authService.authenticated$.subscribe((authenticated) => {
+      this.authenticated = authenticated;
+    });
+
+    // Suscribirse al usuario actual
+    this.authService.usuario$.subscribe((usuario) => (this.usuario = usuario));
   }
 
   cargarDetalleReserva() {
@@ -266,6 +279,7 @@ export class DetalleReservaComponent implements OnInit {
       console.log('Creando nueva cuenta');
       this.reserva.cuenta = {
         id: 0,
+        estado: 'ABIERTA',
         total: this.calcularTotalHabitaciones(),
         servicios: []
       };

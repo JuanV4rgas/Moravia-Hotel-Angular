@@ -308,4 +308,84 @@
   .btn {
     width: 100%;
   }
+
+  /* Agregar estos estilos al archivo agregar-servicios.component.css existente */
+
+/* Estado de la cuenta */
+.cuenta-estado-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.cuenta-estado-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.cuenta-estado-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.cuenta-estado-badge.estado-abierta {
+  background: #28a745;
+  color: white;
+}
+
+.cuenta-estado-badge.estado-cerrada {
+  background: #6c757d;
+  color: white;
+}
+
+.cuenta-estado-badge.estado-pagada {
+  background: #17a2b8;
+  color: white;
+}
+
+.cuenta-estado-badge.estado-pendiente {
+  background: #ffc107;
+  color: #212529;
+}
+
+.cuenta-estado-badge.estado-sin-estado {
+  background: #e9ecef;
+  color: #6c757d;
+}
+
+/* Advertencia */
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+/* Servicios deshabilitados */
+.servicio-card.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.servicio-card.disabled:hover {
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Botones deshabilitados mejorados */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  transform: none;
+}
 }

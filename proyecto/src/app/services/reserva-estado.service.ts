@@ -22,7 +22,7 @@ export class ReservaEstadoService {
     }
     
     // Si estamos entre la fecha de inicio y fin, está activa
-    if (fechaInicio <= hoy && hoy <= fechaFin) {
+    if (fechaInicio <= hoy && hoy <= fechaFin || reserva.estado === 'ACTIVA') {
       return 'ACTIVA';
     }
     
