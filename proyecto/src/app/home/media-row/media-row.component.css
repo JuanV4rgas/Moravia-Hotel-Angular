@@ -19,6 +19,10 @@
   overflow: hidden;
   min-height: clamp(320px, 48vw, 520px);
   border-radius: 16px;
+  background-color: #1f5f87; /* Color de fondo mientras carga */
+  background-image: url('/assets/img/video-poster.webp');
+  background-size: cover;
+  background-position: center;
 }
 
 .media-frame .video-bg {
@@ -27,6 +31,44 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+/* Mostrar video cuando esté cargado */
+.media-frame .video-bg[data-loaded="true"],
+.media-frame .video-bg:not([data-loaded]) {
+  opacity: 1;
+}
+
+/* Animación de carga */
+.media-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Ocultar animación cuando el video está cargado */
+.media-frame.loaded::before {
+  display: none;
 }
 
 /*==========================
