@@ -216,4 +216,9 @@ public class ReservaServiceImpl implements ReservaService {
             throw new RuntimeException("Error al eliminar la reserva: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<Reserva> buscarReservasActivas() {
+        return reservaRepository.findReservaActiva();
+    }
 }

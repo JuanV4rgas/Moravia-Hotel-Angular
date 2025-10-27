@@ -15,13 +15,29 @@ import { CuentaService } from '../../services/cuenta.service';
 export class ReservaTableComponent implements OnInit {
 
   reservas: Reserva[] = [];
+  reservasFiltradas: Reserva[] = [];
   loading = false;
   error: string | null = null;
 
-  /** id de la fila que se está cancelando (para deshabilitar solo ese botón) */
+  // Filtros
+  filtroEstado: string = 'TODAS';
+  filtroBusqueda: string = '';
+
+  /** id de la fila que se está procesando */
   cancellingId: number | null = null;
   processingId: number | null = null;
   deletingId: number | null = null;
+
+  // Estados disponibles para el filtro
+  estadosDisponibles: string[] = [
+    'TODAS',
+    'CONFIRMADA',
+    'ACTIVA',
+    'FINALIZADA',
+    'CANCELADA',
+    'PENDIENTE',
+    'PROXIMA'
+  ];
 
   constructor(
     private reservaService: ReservaService,
@@ -42,14 +58,8 @@ export class ReservaTableComponent implements OnInit {
     req.pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (data) => {
-          console.log('📋 Reservas cargadas:', data);
           this.reservas = data ?? [];
-          console.log('📋 Total de reservas:', this.reservas.length);
-          
-          // Debug: mostrar estados de las reservas
-          this.reservas.forEach((reserva, index) => {
-            console.log(`📋 Reserva ${index + 1}: ID=${reserva.id}, Estado=${(reserva as any)?.estado}`);
-          });
+          this.aplicarFiltros();
         },
         error: (err) => {
           console.error('❌ Error al cargar reservas:', err);
@@ -58,12 +68,58 @@ export class ReservaTableComponent implements OnInit {
       });
   }
 
+  /** Aplica todos los filtros activos */
+  aplicarFiltros(): void {
+    let resultado = [...this.reservas];
+
+    // Filtro por estado
+    if (this.filtroEstado && this.filtroEstado !== 'TODAS') {
+      resultado = resultado.filter(r => {
+        const estado = (r as any)?.estado;
+        return estado && estado.toUpperCase() === this.filtroEstado.toUpperCase();
+      });
+    }
+
+    // Filtro por búsqueda (busca en email del cliente, ID, habitaciones)
+    if (this.filtroBusqueda && this.filtroBusqueda.trim().length > 0) {
+      const busqueda = this.filtroBusqueda.toLowerCase().trim();
+      resultado = resultado.filter(r => {
+        const id = String((r as any)?.id || '').toLowerCase();
+        const email = ((r as any)?.cliente?.email || '').toLowerCase();
+        const habitaciones = this.roomNumOf(r).toLowerCase();
+        
+        return id.includes(busqueda) || 
+               email.includes(busqueda) || 
+               habitaciones.includes(busqueda);
+      });
+    }
+
+    this.reservasFiltradas = resultado;
+  }
+
+  /** Limpia todos los filtros */
+  limpiarFiltros(): void {
+    this.filtroEstado = 'TODAS';
+    this.filtroBusqueda = '';
+    this.aplicarFiltros();
+  }
+
+  /** Cuenta cuántas reservas hay por estado */
+  contarPorEstado(estado: string): number {
+    if (estado === 'TODAS') return this.reservas.length;
+    
+    return this.reservas.filter(r => {
+      const estadoReserva = (r as any)?.estado;
+      return estadoReserva && estadoReserva.toUpperCase() === estado.toUpperCase();
+    }).length;
+  }
+
   trackById(index: number, r: Reserva): number {
     const anyR: any = r;
     return (anyR && anyR.id != null) ? Number(anyR.id) : index;
   }
 
-  /** Se puede cancelar si el estado es PROXIMA o CONFIRMADA (como en detalle-reserva) */
+  /** Se puede cancelar si el estado es PROXIMA o CONFIRMADA */
   puedeCancelarReserva(r: Reserva): boolean {
     const estado = (r as any)?.estado;
     if (!estado) return false;
@@ -81,7 +137,7 @@ export class ReservaTableComponent implements OnInit {
     return nums.length ? nums.join(', ') : '-';
   }
 
-  /** Igual que en DetalleReservaComponent.cancelarReserva() */
+  /** Cancelar reserva */
   cancelarReserva(r: Reserva): void {
     const id = (r as any)?.id;
     if (id == null) return;
@@ -98,8 +154,7 @@ export class ReservaTableComponent implements OnInit {
       .pipe(finalize(() => { this.cancellingId = null; }))
       .subscribe({
         next: () => {
-          // Mismo comportamiento que tu detalle: recargar la página
-          window.location.reload();
+          this.cargarReservas();
         },
         error: (error) => {
           console.error('Error al cancelar reserva:', error);
@@ -108,7 +163,7 @@ export class ReservaTableComponent implements OnInit {
       });
   }
 
-  // ===== NUEVAS FUNCIONALIDADES PARA OPERADOR =====
+  // ===== FUNCIONALIDADES PARA OPERADOR =====
 
   /** Ver detalles de la reserva */
   verDetalleReserva(r: Reserva): void {
@@ -156,9 +211,6 @@ export class ReservaTableComponent implements OnInit {
     if (id == null) return;
     if (!this.puedeFinalizarReserva(r)) return;
 
-    console.log('🔄 Iniciando finalización de reserva:', r);
-
-    // Verificar que la cuenta esté pagada
     const cuenta = (r as any)?.cuenta;
     if (cuenta && cuenta.total > 0) {
       alert('No se puede finalizar la reserva. La cuenta debe estar pagada primero.');
@@ -207,7 +259,6 @@ export class ReservaTableComponent implements OnInit {
 
     this.processingId = Number(id);
     
-    // Limpiar la cuenta (establecer total a 0 y limpiar servicios)
     const cuentaLimpia = {
       ...cuenta,
       total: 0,
@@ -229,37 +280,7 @@ export class ReservaTableComponent implements OnInit {
       });
   }
 
-  // ===== VALIDACIONES DE ESTADO =====
-
-  /** Puede gestionar servicios si la reserva está ACTIVA */
-  puedeGestionarServicios(r: Reserva): boolean {
-    const estado = (r as any)?.estado;
-    return estado === 'ACTIVA';
-  }
-
-  /** Puede activar si está INACTIVA o CONFIRMADA */
-  puedeActivarReserva(r: Reserva): boolean {
-    const estado = (r as any)?.estado;
-    return estado === 'INACTIVA' || estado === 'CONFIRMADA';
-  }
-
-  /** Puede finalizar si está ACTIVA */
-  puedeFinalizarReserva(r: Reserva): boolean {
-    const estado = (r as any)?.estado;
-    return estado === 'ACTIVA';
-  }
-
-  /** Puede pagar si tiene cuenta pendiente y está ACTIVA o CONFIRMADA */
-  puedePagarReserva(r: Reserva): boolean {
-    const estado = (r as any)?.estado;
-    const cuenta = (r as any)?.cuenta;
-    return (estado === 'ACTIVA' || estado === 'CONFIRMADA') && 
-           cuenta && cuenta.total > 0;
-  }
-
-  // ===== NUEVAS FUNCIONALIDADES DE ELIMINACIÓN =====
-
-  /** Eliminar reserva (eliminación permanente) */
+  /** Eliminar reserva */
   eliminarReserva(r: Reserva): void {
     const id = (r as any)?.id;
     if (id == null) return;
@@ -290,10 +311,32 @@ export class ReservaTableComponent implements OnInit {
       });
   }
 
-  /** Puede eliminar si la reserva está en estados específicos */
+  // ===== VALIDACIONES DE ESTADO =====
+
+  puedeGestionarServicios(r: Reserva): boolean {
+    const estado = (r as any)?.estado;
+    return estado === 'ACTIVA';
+  }
+
+  puedeActivarReserva(r: Reserva): boolean {
+    const estado = (r as any)?.estado;
+    return estado === 'INACTIVA' || estado === 'CONFIRMADA';
+  }
+
+  puedeFinalizarReserva(r: Reserva): boolean {
+    const estado = (r as any)?.estado;
+    return estado === 'ACTIVA';
+  }
+
+  puedePagarReserva(r: Reserva): boolean {
+    const estado = (r as any)?.estado;
+    const cuenta = (r as any)?.cuenta;
+    return (estado === 'ACTIVA' || estado === 'CONFIRMADA') && 
+           cuenta && cuenta.total > 0;
+  }
+
   puedeEliminarReserva(r: Reserva): boolean {
     const estado = (r as any)?.estado;
-    // Solo se pueden eliminar reservas canceladas, finalizadas o en ciertos estados
     return ['CANCELADA', 'FINALIZADA', 'PENDIENTE'].includes(estado);
   }
 }

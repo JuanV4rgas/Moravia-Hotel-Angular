@@ -2,36 +2,103 @@
   <div class="container-servicios">
     <!-- Encabezado -->
     <div class="header-section">
-      <div class="header-content">
-        <div class="header-text">
-          <h1 class="services-title">Listado de <em>Reservas</em></h1>
-          <p class="services-subtitle">Todas las reservas registradas en el sistema</p>
+      <h1 class="services-title">Listado de <em>Reservas</em></h1>
+      <p class="services-subtitle">
+        Todas las reservas registradas en el sistema
+      </p>
+    </div>
+
+    <!-- Sección de filtros -->
+    <div class="filters-section">
+      <div class="filters-container">
+        <!-- Filtro por estado -->
+        <div class="filter-group">
+          <label for="filtroEstado" class="filter-label">
+            <i class="fas fa-filter"></i> Filtrar por Estado:
+          </label>
+          <select
+            id="filtroEstado"
+            class="filter-select"
+            [(ngModel)]="filtroEstado"
+            (change)="aplicarFiltros()"
+          >
+            <option *ngFor="let estado of estadosDisponibles" [value]="estado">
+              {{ estado }} ({{ contarPorEstado(estado) }})
+            </option>
+          </select>
         </div>
-        <button class="btn-reload" (click)="cargarReservas()" [disabled]="loading" title="Recargar lista">
-          <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
-          Recargar
-        </button>
+
+        <!-- Búsqueda general -->
+        <div class="filter-group">
+          <label for="filtroBusqueda" class="filter-label">
+            <i class="fas fa-search"></i> Buscar:
+          </label>
+          <input
+            type="text"
+            id="filtroBusqueda"
+            class="filter-input"
+            placeholder="ID, email o habitación..."
+            [(ngModel)]="filtroBusqueda"
+            (input)="aplicarFiltros()"
+          />
+        </div>
+
+        <!-- Botón limpiar filtros -->
+        <div class="filter-group">
+          <button class="btn-limpiar-filtros" (click)="limpiarFiltros()">
+            <i class="fas fa-eraser"></i> Limpiar Filtros
+          </button>
+        </div>
+      </div>
+
+      <!-- Contador de resultados -->
+      <div class="results-counter">
+        <span class="counter-text">
+          Mostrando <strong>{{ reservasFiltradas.length }}</strong> de
+          <strong>{{ reservas.length }}</strong> reservas
+        </span>
       </div>
     </div>
 
     <!-- Estados de carga / error -->
     <div *ngIf="loading" class="alert alert-info">Cargando…</div>
     <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
-    <div *ngIf="!error && !loading && reservas?.length === 0" class="alert alert-warning mt-2">
-      No hay reservas.
+    <div
+      *ngIf="
+        !error &&
+        !loading &&
+        reservasFiltradas?.length === 0 &&
+        reservas.length > 0
+      "
+      class="alert alert-warning mt-2"
+    >
+      No se encontraron reservas con los filtros aplicados.
+    </div>
+    <div
+      *ngIf="!error && !loading && reservas?.length === 0"
+      class="alert alert-warning mt-2"
+    >
+      No hay reservas registradas.
     </div>
 
     <!-- Tabla -->
-    <div class="table-wrapper" *ngIf="!loading && reservas?.length">
+    <div class="table-wrapper" *ngIf="!loading && reservasFiltradas?.length">
       <table class="services-table">
         <colgroup>
-          <col style="width:120px"><!-- ID -->
-          <col style="width:200px"><!-- FECHA INICIO -->
-          <col style="width:200px"><!-- FECHA FIN -->
-          <col style="width:140px"><!-- ESTADO -->
-          <col style="width:260px"><!-- CLIENTE.EMAIL -->
-          <col style="width:200px"><!-- HABITACIONES -->
-          <col style="width:400px"><!-- ACCIONES -->
+          <col style="width: 120px" />
+          <!-- ID -->
+          <col style="width: 200px" />
+          <!-- FECHA INICIO -->
+          <col style="width: 200px" />
+          <!-- FECHA FIN -->
+          <col style="width: 140px" />
+          <!-- ESTADO -->
+          <col style="width: 260px" />
+          <!-- CLIENTE.EMAIL -->
+          <col style="width: 200px" />
+          <!-- HABITACIONES -->
+          <col style="width: 400px" />
+          <!-- ACCIONES -->
         </colgroup>
 
         <thead>
@@ -47,25 +114,35 @@
         </thead>
 
         <tbody>
-          <tr class="service-row" *ngFor="let r of reservas; trackBy: trackById">
+          <tr
+            class="service-row"
+            *ngFor="let r of reservasFiltradas; trackBy: trackById"
+          >
             <td class="cell-id">
-              {{ r?.id != null ? r.id : '-' }}
+              {{ r?.id != null ? r.id : "-" }}
             </td>
 
             <td class="cell-fecha">
-              {{ r?.fechaInicio ? (r.fechaInicio | date:'yyyy-MM-dd') : '-' }}
+              {{ r?.fechaInicio ? (r.fechaInicio | date : "yyyy-MM-dd") : "-" }}
             </td>
 
             <td class="cell-fecha-fin">
-              {{ r?.fechaFin ? (r.fechaFin | date:'yyyy-MM-dd') : '-' }}
+              {{ r?.fechaFin ? (r.fechaFin | date : "yyyy-MM-dd") : "-" }}
             </td>
 
             <td class="cell-estado">
-              {{ r?.estado || '-' }}
+              <span
+                class="estado-badge"
+                [ngClass]="
+                  'estado-' + (r?.estado || 'sin-estado').toLowerCase()
+                "
+              >
+                {{ r?.estado || "-" }}
+              </span>
             </td>
 
             <td class="cell-cliente">
-              {{ r?.cliente?.email || '-' }}
+              {{ r?.cliente?.email || "-" }}
             </td>
 
             <td class="cell-room">
@@ -74,51 +151,67 @@
 
             <td class="cell-acciones">
               <div class="action-buttons">
-                <button class="btn-ver" 
-                        (click)="verDetalleReserva(r)"
-                        title="Ver detalles">
+                <button
+                  class="btn-ver"
+                  (click)="verDetalleReserva(r)"
+                  title="Ver detalles"
+                >
                   <i class="fas fa-eye"></i>
                   <span>Ver</span>
                 </button>
-                <button class="btn-servicios" 
-                        (click)="gestionarServicios(r)"
-                        title="Gestionar servicios"
-                        [disabled]="!puedeGestionarServicios(r)">
+                <button
+                  class="btn-servicios"
+                  (click)="gestionarServicios(r)"
+                  title="Gestionar servicios"
+                  [disabled]="!puedeGestionarServicios(r)"
+                >
                   <i class="fas fa-concierge-bell"></i>
                   <span>Servicios</span>
                 </button>
-                <button class="btn-activar" 
-                        (click)="activarReserva(r)"
-                        title="Activar reserva"
-                        [disabled]="!puedeActivarReserva(r)">
+                <button
+                  class="btn-activar"
+                  (click)="activarReserva(r)"
+                  title="Activar reserva"
+                  [disabled]="!puedeActivarReserva(r)"
+                >
                   <i class="fas fa-play"></i>
                   <span>Activar</span>
                 </button>
-                <button class="btn-finalizar" 
-                        (click)="finalizarReserva(r)"
-                        title="Finalizar reserva"
-                        [disabled]="!puedeFinalizarReserva(r)">
+                <button
+                  class="btn-finalizar"
+                  (click)="finalizarReserva(r)"
+                  title="Finalizar reserva"
+                  [disabled]="!puedeFinalizarReserva(r)"
+                >
                   <i class="fas fa-stop"></i>
                   <span>Finalizar</span>
                 </button>
-                <button class="btn-pagar" 
-                        (click)="pagarReserva(r)"
-                        title="Pagar cuenta"
-                        [disabled]="!puedePagarReserva(r)">
+                <button
+                  class="btn-pagar"
+                  (click)="pagarReserva(r)"
+                  title="Pagar cuenta"
+                  [disabled]="!puedePagarReserva(r)"
+                >
                   <i class="fas fa-credit-card"></i>
                   <span>Pagar</span>
                 </button>
-                <button class="btn-cancelar"
-                        (click)="cancelarReserva(r)"
-                        [disabled]="cancellingId === r?.id || !puedeCancelarReserva(r)"
-                        title="Cancelar reserva">
+                <button
+                  class="btn-cancelar"
+                  (click)="cancelarReserva(r)"
+                  [disabled]="
+                    cancellingId === r?.id || !puedeCancelarReserva(r)
+                  "
+                  title="Cancelar reserva"
+                >
                   <i class="fas fa-times"></i>
                   <span>Cancelar</span>
                 </button>
-                <button class="btn-eliminar"
-                        (click)="eliminarReserva(r)"
-                        [disabled]="deletingId === r?.id || !puedeEliminarReserva(r)"
-                        title="Eliminar reserva">
+                <button
+                  class="btn-eliminar"
+                  (click)="eliminarReserva(r)"
+                  [disabled]="deletingId === r?.id || !puedeEliminarReserva(r)"
+                  title="Eliminar reserva"
+                >
                   <i class="fas fa-trash"></i>
                   <span>Eliminar</span>
                 </button>

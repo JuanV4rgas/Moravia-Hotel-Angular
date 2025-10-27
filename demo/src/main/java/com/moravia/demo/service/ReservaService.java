@@ -13,4 +13,5 @@ public interface ReservaService {
     void deleteById(Integer id);
 
     List<Room> buscarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin);
+    List<Reserva> buscarReservasActivas();
 }

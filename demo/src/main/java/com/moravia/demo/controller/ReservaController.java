@@ -90,4 +90,11 @@ public class ReservaController {
     public void eliminarReserva(@PathVariable("id") Integer id) {
         reservaService.deleteById(id);
     }
+    @GetMapping("/activeReservations")
+    public List<ReservaResponseDTO> obtenerReservasActivas() {
+        List<Reserva> reservasActivas = reservaService.buscarReservasActivas();
+        return reservasActivas.stream()
+                .map(reservaMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 }
