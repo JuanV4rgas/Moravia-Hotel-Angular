@@ -136,6 +136,7 @@ public class DatabaseInit implements ApplicationRunner {
         // ========================
         // Crear Reservas y Cuentas Dummy
         // ========================
+        /* 
         for (int i = 0; i < 5; i++) {
             Usuario cliente = clientes.get(rand.nextInt(clientes.size()));
 
@@ -163,5 +164,6 @@ public class DatabaseInit implements ApplicationRunner {
             reservaRepository.save(reserva);
             cuentaRepository.save(cuenta);
         }
+        */
     }
 }

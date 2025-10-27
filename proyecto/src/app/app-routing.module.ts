@@ -31,6 +31,7 @@ import { MisReservasComponent } from './reserva/mis-reservas/mis-reservas.compon
 import { DetalleReservaComponent } from './reserva/detalle-reserva/detalle-reserva.component';
 import { RoomEditarComponent } from './room/room-editar/room-editar.component';
 import { ConsultarComponent } from './consultar/consultar.component';
+import { CuentaTableComponent } from './cuenta/cuenta-table/cuenta-table.component';
 import { ReservaTableComponent } from './reserva/reserva-table/reserva-table.component';
 import { GestionarServiciosComponent } from './reserva/gestionar-servicios/gestionar-servicios.component';
 import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.component';
@@ -188,6 +189,13 @@ const routes: Routes = [
         path: 'usuario/nuevo',
         component: UsuarioFormComponent,
         canActivate: [authGuard, roleGuard(['administrador'])],
+      },
+
+      //Cuentas
+      {
+        path: 'cuenta/table',
+        component: CuentaTableComponent,
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
 
       // Ruta CONSULTAR - Solo trabajadores
