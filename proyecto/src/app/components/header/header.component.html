@@ -31,7 +31,7 @@
 
     <div
       class="dropdown"
-      *ngIf="authenticated && usuario?.tipo === 'trabajador'"
+      *ngIf="authenticated && usuario?.tipo !== 'cliente'"
     >
       <button
         class="button2 dropdown-toggle"
@@ -62,7 +62,7 @@
 
     <button
       class="button2"
-      *ngIf="authenticated && usuario?.tipo === 'trabajador'"
+      *ngIf="authenticated && usuario?.tipo !== 'cliente'"
       routerLink="/consultar"
     >
       Consultar

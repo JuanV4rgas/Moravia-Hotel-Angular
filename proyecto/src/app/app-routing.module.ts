@@ -48,49 +48,49 @@ const routes: Routes = [
       {
         path: 'servicio/table',
         component: ServiceTableComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       { path: 'servicio/detail/:id', component: ServiceDetailComponent },
       {
         path: 'servicio/nueva',
         component: ServiceFormComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       { path: 'servicio/lista', component: ServiceListComponent },
       {
         path: 'servicio/editar/:id',
         component: ServiceEditarComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
 
       // Rutas de ROOM - Solo trabajadores
       {
         path: 'room/table',
         component: RoomTableComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       {
         path: 'room/nueva',
         component: RoomFormComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       { path: 'room/detail/:id', component: RoomDetailComponent },
       {
         path: 'room/editar/:id',
         component: RoomEditarComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
 
       // Rutas de CLIENTE - Solo trabajadores
       {
         path: 'cliente/table',
         component: ClienteTableComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       {
         path: 'cliente/nueva',
         component: ClienteFormComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       {
         path: 'cliente/detail/:id',
@@ -102,19 +102,19 @@ const routes: Routes = [
       {
         path: 'roomtype/table',
         component: RoomTypeTableComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       { path: 'roomtype/lista', component: RoomtypeListComponent },
       {
         path: 'roomtype/nueva',
         component: RoomTypeFormComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       { path: 'roomtype/detail/:id', component: RoomTypeDetailComponent },
       {
         path: 'roomtype/editar/:id',
         component: RoomTypeFormComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
 
       // Rutas de PERFIL - Requiere autenticación
@@ -132,13 +132,13 @@ const routes: Routes = [
       {
         path: 'reserva/nueva',
         component: ReservaFormComponent,
-        canActivate: [authGuard, roleGuard('cliente')],
+        canActivate: [authGuard, roleGuard(['cliente'])],
       },
       // mis-reservas - Solo CLIENTES
       {
         path: 'mis-reservas',
         component: MisReservasComponent,
-        canActivate: [authGuard, roleGuard('cliente')],
+        canActivate: [authGuard, roleGuard(['cliente'])],
       },
       // Detalle de reserva - Requiere autenticación
       {
@@ -156,37 +156,37 @@ const routes: Routes = [
       {
         path: 'reserva/table',
         component: ReservaTableComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       // Gestionar servicios - Solo trabajadores
       {
         path: 'reserva/servicios/:id',
         component: GestionarServiciosComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
 
       // Rutas de USUARIO - Solo trabajadores
       {
         path: 'usuario/table',
         component: UsuarioTableComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador'])],
       },
       {
         path: 'usuario/detalle/:id',
         component: UsuarioDetailComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador'])],
       },
       {
         path: 'usuario/nuevo',
         component: UsuarioFormComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador'])],
       },
 
       // Ruta CONSULTAR - Solo trabajadores
       {
         path: 'consultar',
         component: ConsultarComponent,
-        canActivate: [authGuard, roleGuard('trabajador')],
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
     ],
   },

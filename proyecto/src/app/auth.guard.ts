@@ -16,7 +16,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   // Si no está autenticado, redirigir al login
   console.log('No autenticado, redirigiendo a /auth');
   router.navigate(['/auth'], {
-    queryParams: { returnUrl: state.url }
+    queryParams: { returnUrl: state.url },
   });
   return false;
 };
@@ -25,7 +25,7 @@ export const authGuard: CanActivateFn = (route, state) => {
  * Guard para verificar roles específicos
  * Ejemplo de uso: canActivate: [roleGuard('admin')]
  */
-export const roleGuard = (requiredRole: string): CanActivateFn => {
+export const roleGuard = (requiredRoles: string[]): CanActivateFn => {
   return (route, state) => {
     const authService = inject(AuthService);
     const router = inject(Router);
@@ -35,14 +35,16 @@ export const roleGuard = (requiredRole: string): CanActivateFn => {
       return false;
     }
 
-
-    if (authService.hasRole(requiredRole)) {
-      return true;
+    if (Array.isArray(requiredRoles) && requiredRoles.length > 0) {
+      for (let i = 0; i < requiredRoles.length; i++) {
+        if (authService.hasRole(requiredRoles[i])) return true;
+      }
     }
 
     // Si no tiene el rol, redirigir a home o página de acceso denegado
+    console.warn('Acceso denegado: roles requeridos', requiredRoles);
     router.navigate(['/home'], {
-      queryParams: { error: 'access_denied' }
+      queryParams: { error: 'access_denied' },
     });
     return false;
   };
