@@ -35,6 +35,7 @@ import { ReservaTableComponent } from './reserva/reserva-table/reserva-table.com
 import { GestionarServiciosComponent } from './reserva/gestionar-servicios/gestionar-servicios.component';
 import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.component';
 import { authGuard, roleGuard } from './auth.guard';
+import { PortalLayoutComponent } from './layouts/portal-layout/portal-layout.component';
 
 const routes: Routes = [
   {
@@ -43,14 +44,33 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomePageComponent },
-
+      { path: 'servicio/detail/:id', component: ServiceDetailComponent },
+      { path: 'room/detail/:id', component: RoomDetailComponent },
+      {
+        path: 'cliente/detail/:id',
+        component: ClienteDetailComponent,
+        canActivate: [authGuard],
+      },
+      { path: 'roomtype/detail/:id', component: RoomTypeDetailComponent },
+      // Historia - Pública
+      { path: 'historia', component: HistoriaComponent },
+    ],
+  },
+  {
+    path: 'auth',
+    component: AuthLayoutComponent,
+    children: [{ path: '', component: AuthWrapComponent }],
+  },
+  {
+    path: '',
+    component: PortalLayoutComponent,
+    children: [
       // Rutas de SERVICIO - Solo trabajadores (excepto lista que es pública)
       {
         path: 'servicio/table',
         component: ServiceTableComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
-      { path: 'servicio/detail/:id', component: ServiceDetailComponent },
       {
         path: 'servicio/nueva',
         component: ServiceFormComponent,
@@ -74,7 +94,6 @@ const routes: Routes = [
         component: RoomFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
-      { path: 'room/detail/:id', component: RoomDetailComponent },
       {
         path: 'room/editar/:id',
         component: RoomEditarComponent,
@@ -92,12 +111,6 @@ const routes: Routes = [
         component: ClienteFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
-      {
-        path: 'cliente/detail/:id',
-        component: ClienteDetailComponent,
-        canActivate: [authGuard],
-      },
-
       // Rutas de ROOMTYPE - Solo trabajadores (excepto lista que es pública)
       {
         path: 'roomtype/table',
@@ -110,7 +123,6 @@ const routes: Routes = [
         component: RoomTypeFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
-      { path: 'roomtype/detail/:id', component: RoomTypeDetailComponent },
       {
         path: 'roomtype/editar/:id',
         component: RoomTypeFormComponent,
@@ -123,10 +135,6 @@ const routes: Routes = [
         component: ProfileComponent,
         canActivate: [authGuard],
       },
-
-      // Historia - Pública
-      { path: 'historia', component: HistoriaComponent },
-
       // Rutas de RESERVA
       // reserva/nueva - Solo CLIENTES (excepción a las rutas de trabajador)
       {
@@ -139,12 +147,6 @@ const routes: Routes = [
         path: 'mis-reservas',
         component: MisReservasComponent,
         canActivate: [authGuard, roleGuard(['cliente'])],
-      },
-      // Detalle de reserva - Requiere autenticación
-      {
-        path: 'reserva/detalle/:id',
-        component: DetalleReservaComponent,
-        canActivate: [authGuard],
       },
       // Editar reserva - Solo trabajadores
       {
@@ -163,6 +165,12 @@ const routes: Routes = [
         path: 'reserva/servicios/:id',
         component: GestionarServiciosComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
+      },
+      // Detalle de reserva - Requiere autenticación
+      {
+        path: 'reserva/detalle/:id',
+        component: DetalleReservaComponent,
+        canActivate: [authGuard],
       },
 
       // Rutas de USUARIO - Solo trabajadores
@@ -189,11 +197,6 @@ const routes: Routes = [
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
     ],
-  },
-  {
-    path: 'auth',
-    component: AuthLayoutComponent,
-    children: [{ path: '', component: AuthWrapComponent }],
   },
   { path: '**', redirectTo: 'home' },
 ];

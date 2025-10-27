@@ -55,6 +55,7 @@ import { ConsultarComponent } from './consultar/consultar.component';
 import { ReservaTableComponent } from './reserva/reserva-table/reserva-table.component';
 import { GestionarServiciosComponent } from './reserva/gestionar-servicios/gestionar-servicios.component';
 import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.component';
+import { PortalLayoutComponent } from './layouts/portal-layout/portal-layout.component';
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.
     //ServiceEditarComponent,
     RoomtypeListComponent,
     EditarReservaComponent,
+    PortalLayoutComponent,
   ],
   imports: [
     BrowserModule,
