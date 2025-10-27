@@ -116,6 +116,13 @@ label {
   text-decoration: underline;
 }
 
+/* ---- Mensajes de error de campo ---- */
+.error-message {
+  color: #9b1c13;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 640px) {
   .form-grid {

@@ -27,7 +27,7 @@ export class RegisterFormComponent {
       cedula: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
       fotoPerfil: [''],
-      clave: ['', Validators.required],
+      clave: ['', [Validators.required, Validators.minLength(8)]],
       tipo: ['cliente', Validators.required] // 👈 nuevo campo agregado
     });
   }

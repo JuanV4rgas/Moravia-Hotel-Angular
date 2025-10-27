@@ -13,6 +13,10 @@
       required
       placeholder="tu@correo.com"
     />
+    <div class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+      <span *ngIf="loginForm.get('email')?.errors?.['required']">El correo es requerido.</span>
+      <span *ngIf="loginForm.get('email')?.errors?.['email']">Ingresa un correo válido.</span>
+    </div>
   </div>
 
   <div class="field">
@@ -24,6 +28,9 @@
       required
       placeholder="••••••••"
     />
+    <div class="error-message" *ngIf="loginForm.get('clave')?.invalid && loginForm.get('clave')?.touched">
+      <span *ngIf="loginForm.get('clave')?.errors?.['required']">La contraseña es requerida.</span>
+    </div>
   </div>
 
   <div class="actions">

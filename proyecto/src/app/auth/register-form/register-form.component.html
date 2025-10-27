@@ -8,28 +8,50 @@
     <div class="field">
       <label for="nombre">Nombre*</label>
       <input id="nombre" formControlName="nombre" type="text" placeholder="John" required />
+      <div class="error-message" *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched">
+        <span *ngIf="registerForm.get('nombre')?.errors?.['required']">El nombre es requerido.</span>
+        <span *ngIf="registerForm.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 2 caracteres.</span>
+        <span *ngIf="registerForm.get('nombre')?.errors?.['maxlength']">El nombre no puede exceder 50 caracteres.</span>
+      </div>
     </div>
 
     <div class="field">
       <label for="apellido">Apellido*</label>
       <input id="apellido" formControlName="apellido" type="text" placeholder="Doe" required />
+      <div class="error-message" *ngIf="registerForm.get('apellido')?.invalid && registerForm.get('apellido')?.touched">
+        <span *ngIf="registerForm.get('apellido')?.errors?.['required']">El apellido es requerido.</span>
+        <span *ngIf="registerForm.get('apellido')?.errors?.['minlength']">El apellido debe tener al menos 2 caracteres.</span>
+        <span *ngIf="registerForm.get('apellido')?.errors?.['maxlength']">El apellido no puede exceder 50 caracteres.</span>
+      </div>
     </div>
 
     <!-- Fila 2 -->
     <div class="field">
       <label for="email">Correo*</label>
       <input id="email" formControlName="email" type="email" placeholder="tu@correo.com" required />
+      <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+        <span *ngIf="registerForm.get('email')?.errors?.['required']">El correo es requerido.</span>
+        <span *ngIf="registerForm.get('email')?.errors?.['email']">Ingresa un correo válido.</span>
+      </div>
     </div>
 
     <div class="field">
       <label for="cedula">Cédula*</label>
       <input id="cedula" formControlName="cedula" type="text" placeholder="1123456789" required />
+      <div class="error-message" *ngIf="registerForm.get('cedula')?.invalid && registerForm.get('cedula')?.touched">
+        <span *ngIf="registerForm.get('cedula')?.errors?.['required']">La cédula es requerida.</span>
+        <span *ngIf="registerForm.get('cedula')?.errors?.['pattern']">La cédula debe tener exactamente 10 dígitos.</span>
+      </div>
     </div>
 
     <!-- Fila 3 -->
     <div class="field">
       <label for="telefono">Teléfono*</label>
       <input id="telefono" formControlName="telefono" type="text" placeholder="3001234567" required />
+      <div class="error-message" *ngIf="registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched">
+        <span *ngIf="registerForm.get('telefono')?.errors?.['required']">El teléfono es requerido.</span>
+        <span *ngIf="registerForm.get('telefono')?.errors?.['pattern']">El teléfono debe tener entre 7 y 15 dígitos.</span>
+      </div>
     </div>
 
     <div class="field">
@@ -41,6 +63,10 @@
     <div class="field field-full">
       <label for="clave">Contraseña*</label>
       <input id="clave" formControlName="clave" type="password" placeholder="••••••••" required />
+      <div class="error-message" *ngIf="registerForm.get('clave')?.invalid && registerForm.get('clave')?.touched">
+        <span *ngIf="registerForm.get('clave')?.errors?.['required']">La contraseña es requerida.</span>
+        <span *ngIf="registerForm.get('clave')?.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</span>
+      </div>
     </div>
 
     <!-- 🆕 Campo de tipo -->
