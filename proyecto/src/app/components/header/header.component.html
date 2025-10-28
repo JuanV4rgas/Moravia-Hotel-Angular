@@ -57,6 +57,16 @@
             Servicio
           </button>
         </li>
+        <li>
+          <button class="dropdown-item" *ngIf="usuario?.tipo === 'administrador'" routerLink="/usuario/nuevo">
+            Usuario
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" routerLink="/cliente/nuevo">
+            Cliente
+          </button>
+        </li>
       </ul>
     </div>
 
