@@ -19,9 +19,7 @@ import { RoomTypeTableComponent } from './roomtype/roomtype-table/roomtype-table
 import { RoomTypeFormComponent } from './roomtype/roomtype-form/roomtype-form.component';
 import { RoomTypeDetailComponent } from './roomtype/room_type-detail/roomtype-detail.component';
 import { RoomtypeListComponent } from './roomtype/roomtype-list/roomtype-list.component';
-import { ProfileHeaderComponent } from './user/profile-header/profile-header.component';
 import { ProfileComponent } from './user/profile/profile.component';
-import { ProfileFormComponent } from './user/profile-form/profile-form.component';
 import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
 import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.component';
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
@@ -47,13 +45,7 @@ const routes: Routes = [
       { path: 'home', component: HomePageComponent },
       { path: 'servicio/detail/:id', component: ServiceDetailComponent },
       { path: 'room/detail/:id', component: RoomDetailComponent },
-      {
-        path: 'cliente/detail/:id',
-        component: ClienteDetailComponent,
-        canActivate: [authGuard],
-      },
       { path: 'roomtype/detail/:id', component: RoomTypeDetailComponent },
-      // Historia - Pública
       { path: 'historia', component: HistoriaComponent },
     ],
   },
@@ -112,6 +104,17 @@ const routes: Routes = [
         component: ClienteFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
+      {
+        path: 'cliente/editar/:id',
+        component: ClienteFormComponent,
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
+      },
+      {
+        path: 'cliente/detalle/:id',
+        component: ClienteDetailComponent,
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
+      },
+
       // Rutas de ROOMTYPE - Solo trabajadores (excepto lista que es pública)
       {
         path: 'roomtype/table',
@@ -136,45 +139,40 @@ const routes: Routes = [
         component: ProfileComponent,
         canActivate: [authGuard],
       },
+
       // Rutas de RESERVA
-      // reserva/nuevo - Solo CLIENTES (excepción a las rutas de trabajador)
       {
         path: 'reserva/nuevo',
         component: ReservaFormComponent,
         canActivate: [authGuard, roleGuard(['cliente'])],
       },
-      // mis-reservas - Solo CLIENTES
       {
         path: 'mis-reservas',
         component: MisReservasComponent,
         canActivate: [authGuard, roleGuard(['cliente'])],
       },
-      // Editar reserva - Solo trabajadores
       {
         path: 'reserva/editar/:id',
         component: EditarReservaComponent,
         canActivate: [authGuard],
       },
-      // Tabla de reservas - Solo trabajadores
       {
         path: 'reserva/table',
         component: ReservaTableComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
-      // Gestionar servicios - Solo trabajadores
       {
         path: 'reserva/servicios/:id',
         component: GestionarServiciosComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
-      // Detalle de reserva - Requiere autenticación
       {
         path: 'reserva/detalle/:id',
         component: DetalleReservaComponent,
         canActivate: [authGuard],
       },
 
-      // Rutas de USUARIO - Solo trabajadores
+      // Rutas de USUARIO - Solo administradores
       {
         path: 'usuario/table',
         component: UsuarioTableComponent,
@@ -190,8 +188,13 @@ const routes: Routes = [
         component: UsuarioFormComponent,
         canActivate: [authGuard, roleGuard(['administrador'])],
       },
+      {
+        path: 'usuario/editar/:id',
+        component: UsuarioFormComponent,
+        canActivate: [authGuard, roleGuard(['administrador'])],
+      },
 
-      //Cuentas
+      // Cuentas
       {
         path: 'cuenta/table',
         component: CuentaTableComponent,
