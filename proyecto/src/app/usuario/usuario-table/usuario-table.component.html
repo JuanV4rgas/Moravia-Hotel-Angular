@@ -5,10 +5,68 @@
       <p class="services-subtitle">Gestiona y revisa toda la información de usuarios</p>
     </div>
 
+    <!-- Sección de filtros -->
+    <div class="filters-section">
+      <div class="filters-container">
+        <!-- Filtro por tipo de usuario -->
+        <div class="filter-group">
+          <label for="filtroTipo" class="filter-label">
+            <i class="fas fa-filter"></i> Filtrar por Tipo:
+          </label>
+          <select
+            id="filtroTipo"
+            class="filter-select"
+            [(ngModel)]="filtroTipo"
+            (change)="aplicarFiltros()"
+          >
+            <option *ngFor="let tipo of tiposDisponibles" [value]="tipo">
+              {{ tipo }} ({{ contarPorTipo(tipo) }})
+            </option>
+          </select>
+        </div>
+
+        <!-- Búsqueda por email -->
+        <div class="filter-group">
+          <label for="filtroBusqueda" class="filter-label">
+            <i class="fas fa-search"></i> Buscar por Email:
+          </label>
+          <input
+            type="text"
+            id="filtroBusqueda"
+            class="filter-input"
+            placeholder="Ingrese email del usuario..."
+            [(ngModel)]="filtroBusqueda"
+            (input)="aplicarFiltros()"
+          />
+        </div>
+
+        <!-- Botón limpiar filtros -->
+        <div class="filter-group">
+          <button class="btn-limpiar-filtros" (click)="limpiarFiltros()">
+            <i class="fas fa-eraser"></i> Limpiar Filtros
+          </button>
+        </div>
+      </div>
+
+      <!-- Contador de resultados -->
+      <div class="results-counter">
+        <span class="counter-text">
+          Mostrando <strong>{{ usuariosFiltrados.length }}</strong> de
+          <strong>{{ usuarios.length }}</strong> usuarios
+        </span>
+      </div>
+    </div>
+
     <div *ngIf="loading" class="alert alert-info">Cargando usuarios...</div>
     <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div
+      *ngIf="!error && !loading && usuariosFiltrados?.length === 0 && usuarios.length > 0"
+      class="alert alert-warning"
+    >
+      No se encontraron usuarios con los filtros aplicados.
+    </div>
 
-    <div class="table-wrapper" *ngIf="!loading && !error">
+    <div class="table-wrapper" *ngIf="!loading && !error && usuariosFiltrados?.length">
       <table class="services-table">
         <thead>
           <tr class="table-header">
@@ -23,7 +81,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="service-row" *ngFor="let user of usuarios; trackBy: trackById">
+          <tr class="service-row" *ngFor="let user of usuariosFiltrados; trackBy: trackById">
             <td class="service-id">{{ user.idUsuario }}</td>
             <td class="service-name">{{ user.nombre }}</td>
             <td>{{ user.apellido }}</td>
@@ -41,7 +99,7 @@
       </table>
 
       <div class="table-actions">
-        <a class="btn-action btn-primary-custom" [routerLink]="['/usuario/nuevo']">Nuevo Cliente</a>
+        <a class="btn-action btn-primary-custom" [routerLink]="['/usuario/nuevo']">Nuevo Usuario</a>
       </div>
     </div>
   </div>
