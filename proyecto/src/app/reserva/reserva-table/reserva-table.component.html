@@ -62,7 +62,7 @@
 
     <!-- Estados de carga / error -->
     <div *ngIf="loading" class="alert alert-info">Cargando…</div>
-    <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
     <div
       *ngIf="
         !error &&
@@ -70,13 +70,13 @@
         reservasFiltradas?.length === 0 &&
         reservas.length > 0
       "
-      class="alert alert-warning mt-2"
+      class="alert alert-warning"
     >
       No se encontraron reservas con los filtros aplicados.
     </div>
     <div
       *ngIf="!error && !loading && reservas?.length === 0"
-      class="alert alert-warning mt-2"
+      class="alert alert-warning"
     >
       No hay reservas registradas.
     </div>
@@ -84,32 +84,15 @@
     <!-- Tabla -->
     <div class="table-wrapper" *ngIf="!loading && reservasFiltradas?.length">
       <table class="services-table">
-        <colgroup>
-          <col style="width: 120px" />
-          <!-- ID -->
-          <col style="width: 200px" />
-          <!-- FECHA INICIO -->
-          <col style="width: 200px" />
-          <!-- FECHA FIN -->
-          <col style="width: 140px" />
-          <!-- ESTADO -->
-          <col style="width: 260px" />
-          <!-- CLIENTE.EMAIL -->
-          <col style="width: 200px" />
-          <!-- HABITACIONES -->
-          <col style="width: 400px" />
-          <!-- ACCIONES -->
-        </colgroup>
-
         <thead>
           <tr class="table-header">
-            <th class="th-id">ID</th>
-            <th class="th-fecha">FECHA INICIO</th>
-            <th class="th-fecha-fin">FECHA FIN</th>
-            <th class="th-estado">ESTADO</th>
-            <th class="th-cliente">CLIENTE (EMAIL)</th>
-            <th class="th-room">HABITACIÓN (NÚMERO)</th>
-            <th class="th-acciones">ACCIONES</th>
+            <th>ID</th>
+            <th>FECHA INICIO</th>
+            <th>FECHA FIN</th>
+            <th>ESTADO</th>
+            <th>CLIENTE (EMAIL)</th>
+            <th>HABITACIÓN</th>
+            <th>ACCIONES</th>
           </tr>
         </thead>
 
