@@ -10,4 +10,5 @@ public interface UsuarioService {
     public void update(Usuario usuario);
     public void deleteById(Long id);
     public Usuario searchByEmail(String email);
+    public List<Usuario> searchClientes();
 }

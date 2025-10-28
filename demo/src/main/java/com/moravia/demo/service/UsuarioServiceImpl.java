@@ -59,4 +59,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario searchByEmail(String email) {
         return repo.findByEmail(email);
     }
+
+    @Override
+    public List<Usuario> searchClientes() {
+        return repo.findClientes();
+    }
 }

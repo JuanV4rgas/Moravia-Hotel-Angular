@@ -73,4 +73,9 @@ export class UsuarioService {
   getUsuario(id: number) {
     return this.getUsuarioById(id);
   }
+
+  // Buscar todos los clientes
+  getClientes(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.apiUrl}/clientes`);
+  }
 }

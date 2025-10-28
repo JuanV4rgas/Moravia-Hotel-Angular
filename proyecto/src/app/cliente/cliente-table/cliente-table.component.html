@@ -1,36 +1,48 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h2 class="m-0">Clientes</h2>
-  <a class="btn btn-primary" [routerLink]="['/cliente/nuevo']">Nuevo cliente</a>
-</div>
+<main class="services-main">
+  <div class="container-servicios">
+    <div class="header-section">
+      <h1 class="services-title">Listado de <em>Clientes</em></h1>
+      <p class="services-subtitle">Gestiona y revisa toda la información de clientes</p>
+    </div>
 
-<div *ngIf="loading">Cargando clientes...</div>
-<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div *ngIf="loading" class="alert alert-info">Cargando clientes...</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-<table *ngIf="!loading && !error" class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Apellido</th>
-      <th>Email</th>
-      <th>Cédula</th>
-      <th>Teléfono</th>
-      <th class="text-end">Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let c of clientes; trackBy: trackById">
-      <td>{{ c.idUsuario }}</td>
-      <td>{{ c.nombre }}</td>
-      <td>{{ c.apellido }}</td>
-      <td>{{ c.email }}</td>
-      <td>{{ c.cedula }}</td>
-      <td>{{ c.telefono }}</td>
-      <td class="text-end">
-        <a class="btn btn-sm btn-outline-secondary me-2" [routerLink]="['/cliente/detalle', c.idUsuario]">Ver</a>
-        <a class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/cliente/editar', c.idUsuario]">Editar</a>
-        <button class="btn btn-sm btn-outline-danger" (click)="eliminar(c.idUsuario)">Eliminar</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <div class="table-wrapper" *ngIf="!loading && !error">
+      <table class="services-table">
+        <thead>
+          <tr class="table-header">
+            <th class="th-id">ID</th>
+            <th class="th-nombre">NOMBRE</th>
+            <th class="th-apellido">APELLIDO</th>
+            <th class="th-email">EMAIL</th>
+            <th class="th-tipo">TIPO</th>
+            <th class="th-cedula">CÉDULA</th>
+            <th class="th-telefono">TELÉFONO</th>
+            <th class="th-acciones">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="service-row" *ngFor="let c of clientes; trackBy: trackById">
+            <td class="service-id">{{ c.idUsuario }}</td>
+            <td class="service-name">{{ c.nombre }}</td>
+            <td>{{ c.apellido }}</td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.tipo | uppercase }}</td>
+            <td>{{ c.cedula }}</td>
+            <td>{{ c.telefono }}</td>
+            <td>
+              <a class="btn-action-inline" [routerLink]="['/cliente/detalle', c.idUsuario]">Ver</a>
+              <a class="btn-action-inline" [routerLink]="['/cliente/editar', c.idUsuario]">Editar</a>
+              <button class="btn-action-inline btn-delete" (click)="eliminar(c.idUsuario)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-actions">
+        <a class="btn-action btn-primary-custom" [routerLink]="['/cliente/nuevo']">Nuevo Cliente</a>
+      </div>
+    </div>
+  </div>
+</main>
