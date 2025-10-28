@@ -2,28 +2,49 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
-  background: #f8f9fa;
+  background: transparent;
   min-height: 100vh;
+}
+
+.services-title {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px 0;
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+.services-title em {
+  font-style: normal;
+  color: var(--nav-accent);
+  text-shadow: 0 2px 8px rgba(255, 203, 14, 0.3);
 }
 
 .header-section {
   text-align: center;
   margin-bottom: 50px;
   padding: 40px 0;
-  background: white;
+  background: linear-gradient(
+    135deg,
+    var(--plum),
+    color-mix(in srgb, var(--plum) 90%, var(--pink) 10%)
+  );
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .header-section h1 {
-  color: #2c3e50;
+  color: #fff; 
   font-size: 2.5em;
   margin-bottom: 15px;
   font-weight: 700;
 }
 
 .header-section p {
-  color: #6c757d;
+  color: #fff;
   font-size: 1.2em;
   margin: 0;
 }
@@ -40,7 +61,7 @@
   border-radius: 16px;
   padding: 30px;
   text-align: center;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
   border: 2px solid transparent;
@@ -48,7 +69,7 @@
 
 .entity-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   border-color: #007bff;
 }
 
@@ -97,24 +118,24 @@
   .consultar-container {
     padding: 20px 15px;
   }
-  
+
   .header-section {
     padding: 30px 20px;
   }
-  
+
   .header-section h1 {
     font-size: 2em;
   }
-  
+
   .entities-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .entity-card {
     padding: 25px;
   }
-  
+
   .entity-icon {
     width: 60px;
     height: 60px;
