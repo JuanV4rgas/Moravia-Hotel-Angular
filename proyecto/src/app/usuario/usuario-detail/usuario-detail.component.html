@@ -1,18 +1,111 @@
-<div>
-  <h4>Usuario - detalle</h4>
-
-  <ng-container *ngIf="usuario; else noSel">
-    <ul>
-      <li>ID: {{ usuario.idUsuario }}</li>
-      <li>Nombre: {{ usuario.nombre }}</li>
-      <li>Apellido: {{ usuario.apellido }}</li>
-      <li>Email: {{ usuario.email }}</li>
-      <li>Cédula: {{ usuario.cedula }}</li>
-      <li>Teléfono: {{ usuario.telefono }}</li>
-    </ul>
-  </ng-container>
-
-  <ng-template #noSel>
-    <p>No hay usuario seleccionado</p>
-  </ng-template>
+<!-- Header -->
+<div class="profile-header text-center" *ngIf="!loading && !error">
+  <img
+    [src]="
+      usuario.fotoPerfil ||
+      'https://via.placeholder.com/280x280.png?text=' +
+        usuario.nombre[0] +
+        '+' +
+        usuario.apellido[0]
+    "
+    [alt]="'Foto de perfil de ' + usuario.nombre"
+    class="profile-avatar"
+  />
+  <h1 class="profile-name">{{ usuario.nombre }} {{ usuario.apellido }}</h1>
+  <p class="profile-username">@{{ usuario.email.split("@")[0] }}</p>
+  <div class="mt-3">
+    <span class="badge text-white" [ngClass]="getTipoBadgeClass()">
+      <i class="bi bi-person-badge"></i>
+      {{ usuario.tipo | titlecase }}
+    </span>
+  </div>
 </div>
+
+<!-- Loading -->
+<div *ngIf="loading" class="container text-center py-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <p class="mt-3">Cargando información del usuario...</p>
+</div>
+
+<!-- Error -->
+<div *ngIf="error" class="container py-5">
+  <div class="alert alert-danger">{{ error }}</div>
+  <button class="btn btn-secondary" (click)="volver()">Volver</button>
+</div>
+
+<!-- Contenido -->
+<main class="container pb-5" *ngIf="!loading && !error">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <div class="card profile-card p-4 mt-4">
+        
+        <!-- Información Personal -->
+        <section class="mb-4">
+          <h4 class="section-title">
+            <i class="bi bi-person me-2"></i> Información Personal
+          </h4>
+          <div class="info-row">
+            <span class="info-label">ID:</span>
+            <span class="info-value">{{ usuario.idUsuario }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Nombres:</span>
+            <span class="info-value">{{ usuario.nombre }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Apellidos:</span>
+            <span class="info-value">{{ usuario.apellido }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Cédula:</span>
+            <span class="info-value">{{ usuario.cedula }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Tipo:</span>
+            <span class="info-value">
+              <span class="badge" [ngClass]="getTipoBadgeClass()">
+                {{ usuario.tipo | titlecase }}
+              </span>
+            </span>
+          </div>
+        </section>
+
+        <!-- Información de Contacto -->
+        <section class="mb-4">
+          <h4 class="section-title">
+            <i class="bi bi-telephone me-2"></i> Información de Contacto
+          </h4>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value">{{ usuario.email }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Teléfono:</span>
+            <span class="info-value">{{ usuario.telefono || 'No registrado' }}</span>
+          </div>
+        </section>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-between flex-wrap gap-2 mt-4">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="volver()"
+          >
+            <i class="bi bi-arrow-left me-1"></i> Volver
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [routerLink]="['/usuario/editar', usuario.idUsuario]"
+          >
+            <i class="bi bi-pencil me-1"></i> Editar Usuario
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>

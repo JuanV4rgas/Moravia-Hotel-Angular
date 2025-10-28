@@ -2,7 +2,9 @@
   <div class="container-servicios">
     <div class="header-section">
       <h1 class="services-title">Listado de <em>Usuarios</em></h1>
-      <p class="services-subtitle">Gestiona y revisa toda la información de usuarios</p>
+      <p class="services-subtitle">
+        Gestiona y revisa toda la información de usuarios
+      </p>
     </div>
 
     <!-- Sección de filtros -->
@@ -60,13 +62,21 @@
     <div *ngIf="loading" class="alert alert-info">Cargando usuarios...</div>
     <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
     <div
-      *ngIf="!error && !loading && usuariosFiltrados?.length === 0 && usuarios.length > 0"
+      *ngIf="
+        !error &&
+        !loading &&
+        usuariosFiltrados?.length === 0 &&
+        usuarios.length > 0
+      "
       class="alert alert-warning"
     >
       No se encontraron usuarios con los filtros aplicados.
     </div>
 
-    <div class="table-wrapper" *ngIf="!loading && !error && usuariosFiltrados?.length">
+    <div
+      class="table-wrapper"
+      *ngIf="!loading && !error && usuariosFiltrados?.length"
+    >
       <table class="services-table">
         <thead>
           <tr class="table-header">
@@ -81,7 +91,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="service-row" *ngFor="let user of usuariosFiltrados; trackBy: trackById">
+          <tr
+            class="service-row"
+            *ngFor="let user of usuariosFiltrados; trackBy: trackById"
+          >
             <td class="service-id">{{ user.idUsuario }}</td>
             <td class="service-name">{{ user.nombre }}</td>
             <td>{{ user.apellido }}</td>
@@ -90,16 +103,33 @@
             <td>{{ user.cedula }}</td>
             <td>{{ user.telefono }}</td>
             <td>
-              <a class="btn-action-inline" [routerLink]="['/usuario/detalle', user.idUsuario]">Ver</a>
-              <a class="btn-action-inline" [routerLink]="['/usuario/editar', user.idUsuario]">Editar</a>
-              <button class="btn-action-inline btn-delete" (click)="eliminar(user.idUsuario)">Eliminar</button>
+              <a
+                class="btn-action-inline"
+                [routerLink]="['/usuario/detalle', user.idUsuario]"
+                >Ver</a
+              >
+              <a
+                class="btn-action-inline"
+                [routerLink]="['/usuario/editar', user.idUsuario]"
+                >Editar</a
+              >
+              <button
+                class="btn-action-inline btn-delete"
+                (click)="eliminar(user.idUsuario)"
+              >
+                Eliminar
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
 
       <div class="table-actions">
-        <a class="btn-action btn-primary-custom" [routerLink]="['/usuario/nuevo']">Nuevo Usuario</a>
+        <a
+          class="btn-action btn-primary-custom"
+          [routerLink]="['/usuario/nuevo']"
+          >Nuevo Usuario</a
+        >
       </div>
     </div>
   </div>
