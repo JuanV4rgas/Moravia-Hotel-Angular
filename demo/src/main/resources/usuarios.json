@@ -6,7 +6,7 @@
             "nombre": "Juan",
             "apellido": "Pérez",
             "cedula": "1234567890",
-            "telefono": "+57 3001234567",
+            "telefono": "3001234567",
             "fotoPerfil": "https://randomuser.me/api/portraits/men/1.jpg",
             "tipo": "administrador"
         },
@@ -16,7 +16,7 @@
             "nombre": "María",
             "apellido": "Gómez",
             "cedula": "9876543210",
-            "telefono": "+57 3012345678",
+            "telefono": "3012345678",
             "fotoPerfil": "https://randomuser.me/api/portraits/women/2.jpg",
             "tipo": "cliente"
         },
@@ -26,7 +26,7 @@
             "nombre": "Carlos",
             "apellido": "Rojas",
             "cedula": "1112233445",
-            "telefono": "+57 3024567890",
+            "telefono": "3024567890",
             "fotoPerfil": "https://randomuser.me/api/portraits/men/3.jpg",
             "tipo": "operador"
         },
@@ -36,7 +36,7 @@
             "nombre": "Laura",
             "apellido": "Martínez",
             "cedula": "5544332211",
-            "telefono": "+57 3041234567",
+            "telefono": "3041234567",
             "fotoPerfil": "https://randomuser.me/api/portraits/women/4.jpg",
             "tipo": "cliente"
         },
@@ -46,7 +46,7 @@
             "nombre": "Andrés",
             "apellido": "Mendoza",
             "cedula": "1029384756",
-            "telefono": "+57 3056789123",
+            "telefono": "3056789123",
             "fotoPerfil": "https://randomuser.me/api/portraits/men/5.jpg",
             "tipo": "administrador"
         },
@@ -56,7 +56,7 @@
             "nombre": "Paola",
             "apellido": "Rivera",
             "cedula": "0192837465",
-            "telefono": "+57 3065432189",
+            "telefono": "3065432189",
             "fotoPerfil": "https://randomuser.me/api/portraits/women/6.jpg",
             "tipo": "operador"
         },
@@ -66,7 +66,7 @@
             "nombre": "Felipe",
             "apellido": "Sánchez",
             "cedula": "1230984567",
-            "telefono": "+57 3071112233",
+            "telefono": "3071112233",
             "fotoPerfil": "https://randomuser.me/api/portraits/men/7.jpg",
             "tipo": "cliente"
         },
@@ -76,7 +76,7 @@
             "nombre": "Camila",
             "apellido": "Ortiz",
             "cedula": "7654321098",
-            "telefono": "+57 3089988776",
+            "telefono": "3089988776",
             "fotoPerfil": "https://randomuser.me/api/portraits/women/8.jpg",
             "tipo": "cliente"
         }
