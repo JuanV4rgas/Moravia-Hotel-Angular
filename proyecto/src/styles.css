@@ -22,6 +22,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html,
@@ -32,6 +34,7 @@ body {
 body {
   font-family: "Inter", "Futura PT", "Avenir Next", "Helvetica Neue", Helvetica,
     Arial, sans-serif, "DM Serif Display";
+    background: var(--sand);
 }
 
 body:has(app-main-layout) {
