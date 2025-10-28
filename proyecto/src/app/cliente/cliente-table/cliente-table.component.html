@@ -2,7 +2,9 @@
   <div class="container-servicios">
     <div class="header-section">
       <h1 class="services-title">Listado de <em>Clientes</em></h1>
-      <p class="services-subtitle">Gestiona y revisa toda la información de clientes</p>
+      <p class="services-subtitle">
+        Gestiona y revisa toda la información de clientes
+      </p>
     </div>
 
     <div *ngIf="loading" class="alert alert-info">Cargando clientes...</div>
@@ -23,7 +25,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="service-row" *ngFor="let client of clientes; trackBy: trackById">
+          <tr
+            class="service-row"
+            *ngFor="let client of clientes; trackBy: trackById"
+          >
             <td class="service-id">{{ client.idUsuario }}</td>
             <td class="service-name">{{ client.nombre }}</td>
             <td>{{ client.apellido }}</td>
@@ -32,16 +37,33 @@
             <td>{{ client.cedula }}</td>
             <td>{{ client.telefono }}</td>
             <td>
-              <a class="btn-action-inline" [routerLink]="['/cliente/detalle', client.idUsuario]">Ver</a>
-              <a class="btn-action-inline" [routerLink]="['/cliente/editar', client.idUsuario]">Editar</a>
-              <button class="btn-action-inline btn-delete" (click)="eliminar(client.idUsuario)">Eliminar</button>
+              <a
+                class="btn-action-inline"
+                [routerLink]="['/cliente/detalle', client.idUsuario]"
+                >Ver</a
+              >
+              <a
+                class="btn-action-inline"
+                [routerLink]="['/cliente/editar', client.idUsuario]"
+                >Editar</a
+              >
+              <button
+                class="btn-action-inline btn-delete"
+                (click)="eliminar(client.idUsuario)"
+              >
+                Eliminar
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
 
       <div class="table-actions">
-        <a class="btn-action btn-primary-custom" [routerLink]="['/cliente/nuevo']">Nuevo Cliente</a>
+        <a
+          class="btn-action btn-primary-custom"
+          [routerLink]="['/cliente/nuevo']"
+          >Nuevo Cliente</a
+        >
       </div>
     </div>
   </div>

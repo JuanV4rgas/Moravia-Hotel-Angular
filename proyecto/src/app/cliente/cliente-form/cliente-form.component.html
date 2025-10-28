@@ -1,50 +1,245 @@
-<h2 class="mb-3">{{ isEdit ? 'Editar cliente' : 'Nuevo cliente' }}</h2>
+<!-- Header -->
+<div class="page-header">
+  <h2>
+    <i class="bi" [ngClass]="isEdit ? 'bi-pencil-square' : 'bi-person-plus'"></i>
+    {{ isEdit ? 'Editar Cliente' : 'Nuevo Cliente' }}
+  </h2>
+</div>
 
-<div *ngIf="loading">Cargando...</div>
-<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+<!-- Loading -->
+<div *ngIf="loading && isEdit" class="container text-center py-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <p class="mt-3">Cargando información del cliente...</p>
+</div>
 
-<form (ngSubmit)="guardar()" class="p-3" *ngIf="!loading">
-  <div class="row g-3">
-    <div class="col-md-6">
-      <label class="form-label" for="nombre">Nombre</label>
-      <input id="nombre" name="nombre" class="form-control" type="text"
-             [(ngModel)]="cliente.nombre" [ngModelOptions]="{standalone:true}" required />
-    </div>
-    <div class="col-md-6">
-      <label class="form-label" for="apellido">Apellido</label>
-      <input id="apellido" name="apellido" class="form-control" type="text"
-             [(ngModel)]="cliente.apellido" [ngModelOptions]="{standalone:true}" required />
-    </div>
-    <div class="col-md-6">
-      <label class="form-label" for="email">Email</label>
-      <input id="email" name="email" class="form-control" type="email"
-             [(ngModel)]="cliente.email" [ngModelOptions]="{standalone:true}" required />
-    </div>
-    <div class="col-md-6" *ngIf="!isEdit">
-      <label class="form-label" for="clave">Clave</label>
-      <input id="clave" name="clave" class="form-control" type="password"
-             [(ngModel)]="cliente.clave" [ngModelOptions]="{standalone:true}" required />
-    </div>
-    <div class="col-md-6">
-      <label class="form-label" for="cedula">Cédula</label>
-      <input id="cedula" name="cedula" class="form-control" type="text"
-             [(ngModel)]="cliente.cedula" [ngModelOptions]="{standalone:true}" required />
-    </div>
-    <div class="col-md-6">
-      <label class="form-label" for="telefono">Teléfono</label>
-      <input id="telefono" name="telefono" class="form-control" type="text"
-             [(ngModel)]="cliente.telefono" [ngModelOptions]="{standalone:true}" />
-    </div>
-    <div class="col-12">
-      <label class="form-label" for="fotoPerfil">Foto (URL/Base64) — opcional</label>
-      <input id="fotoPerfil" name="fotoPerfil" class="form-control" type="text"
-             [(ngModel)]="cliente.fotoPerfil" [ngModelOptions]="{standalone:true}" />
+<!-- Formulario -->
+<main class="container pb-5" *ngIf="!loading || !isEdit">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <div class="card form-card">
+        
+        <!-- Mensajes -->
+        <div *ngIf="mensaje" class="alert alert-success alert-dismissible fade show">
+          {{ mensaje }}
+          <button type="button" class="btn-close" (click)="mensaje = ''"></button>
+        </div>
+        <div *ngIf="error" class="alert alert-danger alert-dismissible fade show">
+          {{ error }}
+          <button type="button" class="btn-close" (click)="error = ''"></button>
+        </div>
+
+        <!-- Formulario -->
+        <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()" novalidate>
+          
+          <!-- Información Personal -->
+          <section class="mb-4">
+            <h4 class="section-title">
+              <i class="bi bi-person me-2"></i> Información Personal
+            </h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="nombre" class="form-label">Nombres*</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombre"
+                  formControlName="nombre"
+                  placeholder="Juan"
+                  required
+                />
+                <div *ngIf="clienteForm.get('nombre')?.invalid && clienteForm.get('nombre')?.touched" class="text-danger mt-1">
+                  <span *ngIf="clienteForm.get('nombre')?.errors?.['required']">El nombre es requerido.</span>
+                  <span *ngIf="clienteForm.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 2 caracteres.</span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="apellido" class="form-label">Apellidos*</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="apellido"
+                  formControlName="apellido"
+                  placeholder="Pérez"
+                  required
+                />
+                <div *ngIf="clienteForm.get('apellido')?.invalid && clienteForm.get('apellido')?.touched" class="text-danger mt-1">
+                  <span *ngIf="clienteForm.get('apellido')?.errors?.['required']">El apellido es requerido.</span>
+                  <span *ngIf="clienteForm.get('apellido')?.errors?.['minlength']">El apellido debe tener al menos 2 caracteres.</span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="email" class="form-label">Correo*</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  formControlName="email"
+                  placeholder="juan.perez@ejemplo.com"
+                  required
+                />
+                <div *ngIf="clienteForm.get('email')?.invalid && clienteForm.get('email')?.touched" class="text-danger mt-1">
+                  <span *ngIf="clienteForm.get('email')?.errors?.['required']">El email es requerido.</span>
+                  <span *ngIf="clienteForm.get('email')?.errors?.['email']">Ingresa un email válido.</span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="cedula" class="form-label">Cédula*</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cedula"
+                  formControlName="cedula"
+                  placeholder="1234567890"
+                  required
+                />
+                <div *ngIf="clienteForm.get('cedula')?.invalid && clienteForm.get('cedula')?.touched" class="text-danger mt-1">
+                  <span *ngIf="clienteForm.get('cedula')?.errors?.['required']">La cédula es requerida.</span>
+                  <span *ngIf="clienteForm.get('cedula')?.errors?.['pattern']">La cédula debe tener exactamente 10 dígitos.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Información de Contacto -->
+          <section class="mb-4">
+            <h4 class="section-title">
+              <i class="bi bi-telephone me-2"></i> Información de Contacto
+            </h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="telefono" class="form-label">Teléfono*</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="telefono"
+                  formControlName="telefono"
+                  placeholder="3001234567"
+                />
+                <div *ngIf="clienteForm.get('telefono')?.invalid && clienteForm.get('telefono')?.touched" class="text-danger mt-1">
+                  <span *ngIf="clienteForm.get('telefono')?.errors?.['pattern']">El teléfono debe tener entre 7 y 15 dígitos.</span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="fotoPerfil" class="form-label">URL Foto de Perfil</label>
+                <input
+                  type="url"
+                  class="form-control"
+                  id="fotoPerfil"
+                  formControlName="fotoPerfil"
+                  placeholder="https://ejemplo.com/foto.jpg"
+                />
+                <small class="form-text">Deja en blanco para usar avatar por defecto</small>
+              </div>
+            </div>
+          </section>
+
+          <!-- Seguridad -->
+          <section class="mb-4">
+            <h4 class="section-title">
+              <i class="bi bi-shield-lock me-2"></i> {{ isEdit ? 'Cambiar Contraseña (opcional)' : 'Contraseña *' }}
+            </h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="clave" class="form-label">{{ isEdit ? 'Nueva Contraseña' : 'Contraseña *' }}</label>
+                <div class="input-group">
+                  <input
+                    [type]="mostrarClave ? 'text' : 'password'"
+                    class="form-control"
+                    id="clave"
+                    formControlName="clave"
+                    placeholder="••••••••"
+                    [attr.required]="!isEdit ? true : null"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="togglePassword('clave')"
+                  >
+                    <i
+                      class="bi"
+                      [ngClass]="mostrarClave ? 'bi-eye' : 'bi-eye-slash'"
+                    ></i>
+                  </button>
+                </div>
+                <div *ngIf="clienteForm.get('clave')?.invalid && clienteForm.get('clave')?.touched" class="text-danger mt-1">
+                  <span *ngIf="clienteForm.get('clave')?.errors?.['required']">La contraseña es requerida.</span>
+                  <span *ngIf="clienteForm.get('clave')?.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="confirmarClave" class="form-label">{{ isEdit ? 'Confirmar Nueva Contraseña' : 'Confirmar Contraseña *' }}</label>
+                <div class="input-group">
+                  <input
+                    [type]="mostrarConfirmarClave ? 'text' : 'password'"
+                    class="form-control"
+                    id="confirmarClave"
+                    formControlName="confirmarClave"
+                    placeholder="••••••••"
+                    [attr.required]="!isEdit ? true : null"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="togglePassword('confirmar')"
+                  >
+                    <i
+                      class="bi"
+                      [ngClass]="mostrarConfirmarClave ? 'bi-eye' : 'bi-eye-slash'"
+                    ></i>
+                  </button>
+                </div>
+                <div *ngIf="clienteForm.get('confirmarClave')?.hasError('mismatch')" class="text-danger mt-1">
+                  Las contraseñas no coinciden.
+                </div>
+                <div *ngIf="clienteForm.get('confirmarClave')?.hasError('minlength') && clienteForm.get('confirmarClave')?.touched" class="text-danger mt-1">
+                  La contraseña debe tener al menos 8 caracteres.
+                </div>
+                <div *ngIf="clienteForm.get('confirmarClave')?.hasError('required') && clienteForm.get('confirmarClave')?.touched" class="text-danger mt-1">
+                  Debes confirmar la contraseña.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Botones -->
+          <div class="d-flex justify-content-between flex-wrap gap-2 mt-4">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="resetForm()"
+              [disabled]="!formChanged"
+            >
+              <i class="bi bi-arrow-clockwise me-1"></i> Restaurar
+            </button>
+
+            <div class="d-flex gap-2">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="cancelar()"
+              >
+                <i class="bi bi-x-lg me-1"></i> Cancelar
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="!formChanged || clienteForm.invalid || loading"
+              >
+                <i class="bi" [ngClass]="isEdit ? 'bi-check-lg' : 'bi-plus-lg'"></i>
+                {{ loading ? 'Guardando...' : (isEdit ? 'Actualizar' : 'Crear Cliente') }}
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
     </div>
   </div>
-
-  <div class="d-flex gap-2 mt-3">
-    <button type="submit" class="btn btn-primary">{{ isEdit ? 'Actualizar' : 'Guardar' }}</button>
-    <button type="button" class="btn btn-secondary" (click)="onClear()">Limpiar</button>
-    <button type="button" class="btn btn-outline-secondary" (click)="cancelar()">Cancelar</button>
-  </div>
-</form>
+</main>
