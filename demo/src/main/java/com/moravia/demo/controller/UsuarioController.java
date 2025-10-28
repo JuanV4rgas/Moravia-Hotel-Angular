@@ -91,4 +91,10 @@ public class UsuarioController {
             .map(cliente -> usuarioMapper.toUsuarioConReservasDTO(cliente, reservaMapper))
             .collect(Collectors.toList());
     }
+
+    // Eliminar usuario por ID
+    @GetMapping("/delete/{id}")
+    public void eliminarUsuario(@PathVariable("id") Long id) {
+        usuarioService.deleteById(id);
+    }
 }

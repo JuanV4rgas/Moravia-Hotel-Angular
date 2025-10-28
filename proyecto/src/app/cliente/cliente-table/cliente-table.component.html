@@ -23,18 +23,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="service-row" *ngFor="let c of clientes; trackBy: trackById">
-            <td class="service-id">{{ c.idUsuario }}</td>
-            <td class="service-name">{{ c.nombre }}</td>
-            <td>{{ c.apellido }}</td>
-            <td>{{ c.email }}</td>
-            <td>{{ c.tipo | uppercase }}</td>
-            <td>{{ c.cedula }}</td>
-            <td>{{ c.telefono }}</td>
+          <tr class="service-row" *ngFor="let client of clientes; trackBy: trackById">
+            <td class="service-id">{{ client.idUsuario }}</td>
+            <td class="service-name">{{ client.nombre }}</td>
+            <td>{{ client.apellido }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.tipo | uppercase }}</td>
+            <td>{{ client.cedula }}</td>
+            <td>{{ client.telefono }}</td>
             <td>
-              <a class="btn-action-inline" [routerLink]="['/cliente/detalle', c.idUsuario]">Ver</a>
-              <a class="btn-action-inline" [routerLink]="['/cliente/editar', c.idUsuario]">Editar</a>
-              <button class="btn-action-inline btn-delete" (click)="eliminar(c.idUsuario)">Eliminar</button>
+              <a class="btn-action-inline" [routerLink]="['/cliente/detalle', client.idUsuario]">Ver</a>
+              <a class="btn-action-inline" [routerLink]="['/cliente/editar', client.idUsuario]">Editar</a>
+              <button class="btn-action-inline btn-delete" (click)="eliminar(client.idUsuario)">Eliminar</button>
             </td>
           </tr>
         </tbody>

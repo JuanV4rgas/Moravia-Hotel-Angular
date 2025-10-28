@@ -17,10 +17,9 @@ export class UsuarioService {
   }
 
   // Ya retorna UsuarioResponseDTO
-  getUsuarioById(id: number): Observable<Usuario> {
-    const params = new HttpParams().set('id', id.toString());
-    return this.http.get<Usuario>(`${this.apiUrl}/find`, { params });
-  }
+  getUsuarioById(id: number): Observable<Usuario> { 
+  return this.http.get<Usuario>(`${this.apiUrl}/find?id=${id.toString()}`);
+}
 
   // Nuevo: obtener usuario CON reservas
   getUsuarioConReservas(id: number): Observable<any> {
@@ -60,8 +59,8 @@ export class UsuarioService {
     return this.http.post<Usuario>(`${this.apiUrl}/update/${id}`, requestDTO);
   }
 
-  deleteUsuario(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+  deleteUsuario(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/delete/${id}`);
   }
 
   getUsuarioByEmail(email: string): Observable<Usuario> {
