@@ -1,29 +1,18 @@
 <main class="services-main">
   <div class="container-servicios">
-    <!-- Header igual a RoomType -->
     <div class="header-section">
       <h1 class="services-title">Nuestros <em>Servicios</em></h1>
       <p class="services-subtitle">Descubre todo lo que tenemos para ofrecerte</p>
     </div>
 
-    <!-- Estados (se mantienen) -->
     <div *ngIf="loading" class="alert alert-info">Cargando…</div>
-    <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
-    <div *ngIf="!error && !loading && servicios?.length === 0" class="alert alert-warning mt-2">
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div *ngIf="!error && !loading && servicios?.length === 0" class="alert alert-warning">
       No hay servicios.
     </div>
 
-    <!-- Tabla -->
     <div class="table-wrapper" *ngIf="!loading && servicios?.length">
       <table class="services-table">
-        <!-- Anchos idénticos al estilo RoomType -->
-        <colgroup>
-          <col style="width:260px">  <!-- NOMBRE -->
-          <col>                      <!-- DESCRIPCIÓN -->
-          <col style="width:150px">  <!-- PRECIO -->
-          <col style="width:180px">  <!-- ACCIONES -->
-        </colgroup>
-
         <thead>
           <tr class="table-header">
             <th class="th-nombre">NOMBRE</th>
@@ -32,25 +21,26 @@
             <th class="th-acciones">ACCIONES</th>
           </tr>
         </thead>
-
         <tbody>
-          <tr class="service-row" *ngFor="let s of servicios; trackBy: trackById">
-            <td class="service-name">{{ s.nombre }}</td>
-            <td class="service-description">{{ s.descripcion }}</td>
-            <td class="service-price">{{ s.precio | currency:'COP':'symbol' }}</td>
-            <td class="service-actions">
-              <a class="btn-outline-lg" [routerLink]="['/servicio/detail', s.idServicio]">VER</a>
-              <a class="btn-outline-lg" [routerLink]="['/servicio/editar', s.idServicio]">EDITAR</a>
-              <button class="btn-outline-lg" (click)="eliminar(s.idServicio!, $event)">ELIMINAR</button>
+          <tr class="service-row" *ngFor="let service of servicios; trackBy: trackById">
+            <td class="service-name">{{ service.nombre }}</td>
+            <td class="service-description">{{ service.descripcion }}</td>
+            <td class="service-price">
+              <span class="price-symbol">&euro;</span>
+              <span class="price-value">{{ service.precio || 0 }}</span>
+            </td>
+            <td>
+              <a class="btn-action-inline" [routerLink]="['/servicio/detail', service.idServicio]">Ver</a>
+              <a class="btn-action-inline" [routerLink]="['/servicio/editar', service.idServicio]">Editar</a>
+              <button class="btn-action-inline btn-delete" (click)="eliminar(service.idServicio!, $event)">Eliminar</button>
             </td>
           </tr>
         </tbody>
       </table>
-    </div>
 
-    <!-- Crear nuevo -->
-    <div class="actions-footer">
-      <a class="btn-outline-lg" [routerLink]="['/servicio/nueva']">CREAR</a>
+      <div class="table-actions">
+        <a class="btn-action btn-primary-custom" [routerLink]="['/servicio/nueva']">Crear Servicio</a>
+      </div>
     </div>
   </div>
 </main>
