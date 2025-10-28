@@ -73,7 +73,7 @@ const routes: Routes = [
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       {
-        path: 'servicio/nueva',
+        path: 'servicio/nuevo',
         component: ServiceFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
@@ -91,7 +91,7 @@ const routes: Routes = [
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       {
-        path: 'room/nueva',
+        path: 'room/nuevo',
         component: RoomFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
@@ -108,7 +108,7 @@ const routes: Routes = [
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       {
-        path: 'cliente/nueva',
+        path: 'cliente/nuevo',
         component: ClienteFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
@@ -120,7 +120,7 @@ const routes: Routes = [
       },
       { path: 'roomtype/lista', component: RoomtypeListComponent },
       {
-        path: 'roomtype/nueva',
+        path: 'roomtype/nuevo',
         component: RoomTypeFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
@@ -137,9 +137,9 @@ const routes: Routes = [
         canActivate: [authGuard],
       },
       // Rutas de RESERVA
-      // reserva/nueva - Solo CLIENTES (excepción a las rutas de trabajador)
+      // reserva/nuevo - Solo CLIENTES (excepción a las rutas de trabajador)
       {
-        path: 'reserva/nueva',
+        path: 'reserva/nuevo',
         component: ReservaFormComponent,
         canActivate: [authGuard, roleGuard(['cliente'])],
       },
