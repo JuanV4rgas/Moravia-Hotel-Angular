@@ -158,43 +158,67 @@ public class ReservaServiceImpl implements ReservaService {
 
     @Override
     public void update(Reserva reserva) {
+        System.out.println("🔄 Actualizando reserva ID: " + reserva.getId());
+        System.out.println("🔄 Estado a actualizar: " + reserva.getEstado());
+        
         Reserva existing = reservaRepository.findById(reserva.getId())
                 .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
 
+        System.out.println("🔄 Estado anterior: " + existing.getEstado());
+        
         existing.setFechaInicio(reserva.getFechaInicio());
         existing.setFechaFin(reserva.getFechaFin());
         existing.setEstado(reserva.getEstado());
         existing.setRooms(reserva.getRooms());
         existing.setCliente(reserva.getCliente());
 
+        System.out.println("🔄 Estado después de actualizar: " + existing.getEstado());
+
         // ✅ ACTUALIZAR ESTADO DE LA CUENTA SI CAMBIA EL ESTADO DE LA RESERVA
         if (existing.getCuenta() != null) {
             String nuevoEstadoCuenta = determinarEstadoCuenta(reserva.getEstado());
             Cuenta cuenta = existing.getCuenta();
             
+            System.out.println("🔄 Estado de cuenta anterior: " + cuenta.getEstado());
+            System.out.println("🔄 Nuevo estado de cuenta: " + nuevoEstadoCuenta);
+            
             // Solo actualizar si la cuenta no está PAGADA (es irreversible)
             if (!"PAGADA".equals(cuenta.getEstado())) {
                 cuenta.setEstado(nuevoEstadoCuenta);
                 cuentaRepository.save(cuenta);
+                System.out.println("🔄 Estado de cuenta actualizado: " + cuenta.getEstado());
             }
         }
 
         reservaRepository.save(existing);
+        System.out.println("✅ Reserva actualizada exitosamente");
     }
 
     @Override
     public void deleteById(Integer id) {
-        Reserva reserva = reservaRepository.findById(id)
+        try {
+            // Buscar la reserva con todas sus relaciones cargadas
+            Reserva reserva = reservaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
 
-        // Liberar habitaciones
-        if (reserva.getRooms() != null) {
-            for (Room r : reserva.getRooms()) {
-                r.setAvailable(true);
-                roomRepository.save(r);
+            // Liberar las habitaciones antes de eliminar
+            if (reserva.getRooms() != null) {
+                for (Room room : reserva.getRooms()) {
+                    room.setAvailable(true);
+                    roomRepository.save(room);
+                }
             }
-        }
 
-        reservaRepository.deleteById(id);
+            // Eliminar la reserva - las cascadas manejarán el resto
+            reservaRepository.delete(reserva);
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar la reserva: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Reserva> buscarReservasActivas() {
+        return reservaRepository.findReservaActiva();
     }
 }

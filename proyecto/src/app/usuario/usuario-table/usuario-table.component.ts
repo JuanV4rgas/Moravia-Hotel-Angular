@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
+import { Router, RouterModule } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario } from 'src/app/model/usuario';
 
@@ -10,36 +9,44 @@ import { Usuario } from 'src/app/model/usuario';
   standalone: true,
   templateUrl: './usuario-table.component.html',
   imports: [CommonModule, RouterModule],
-  styleUrls: ['./usuario-table.component.css']
+  styleUrls: ['./usuario-table.component.css'],
 })
 export class UsuarioTableComponent implements OnInit {
   usuarios: Usuario[] = [];
+  loading = true;
+  error?: string;
 
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(private usuarioService: UsuarioService, private router: Router) {}
 
- loading = true;            // ← agregado
-  error?: string;            // ← agregado
+  ngOnInit(): void {
+    this.cargar();
+  }
 
- ngOnInit(): void {
-  this.usuarioService.getAllUsuarios().subscribe({
-    next: (data) => {
-      console.log('[Usuarios] GET /usuario/all →', data);
-      this.usuarios = data || [];
-    },
-    error: (err) => {
-  console.error('[Usuarios] ERROR /usuario/all', err);
-  this.error = err?.status
-    ? `No se pudieron cargar los usuarios (HTTP ${err.status})`
-    : `No se pudieron cargar los usuarios: ${err?.message ?? 'Error parseando JSON'}`;
-  this.loading = false;
-}
-  });
-}
-
-  eliminarUsuario(idUsuario: number): void {
-    this.usuarioService.deleteUsuario(idUsuario).subscribe({
-      next: () => (this.usuarios = this.usuarios.filter(u => u.idUsuario !== idUsuario)),
-      error: (err) => console.error('Error al eliminar usuario', err),
+  cargar(): void {
+    this.loading = true;
+    this.usuarioService.getAllUsuarios().subscribe({
+      next: (data) => {
+        this.usuarios = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'No se pudieron cargar los clientes.';
+        console.error(err);
+        this.loading = false;
+      },
     });
   }
+
+  eliminar(idUsuario: number): void {
+    if (!confirm('¿Eliminar este cliente?')) return;
+    this.usuarioService.deleteUsuario(idUsuario).subscribe({
+      next: () =>
+        (this.usuarios = this.usuarios.filter(
+          (user) => user.idUsuario !== idUsuario
+        )),
+      error: (err) => console.error('Error al eliminar cliente', err),
+    });
+  }
+
+  trackById = (_: number, item: Usuario) => item.idUsuario;
 }

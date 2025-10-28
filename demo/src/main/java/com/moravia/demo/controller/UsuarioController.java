@@ -82,4 +82,19 @@ public class UsuarioController {
         Usuario usuario = usuarioService.searchByEmail(email);
         return usuarioMapper.toResponseDTO(usuario);
     }
+
+    // Listar todos los clientes
+    @GetMapping("/clientes")
+    public List<UsuarioConReservasDTO> mostrarClientes() {
+        List<Usuario> clientes = usuarioService.searchClientes();
+        return clientes.stream()
+            .map(cliente -> usuarioMapper.toUsuarioConReservasDTO(cliente, reservaMapper))
+            .collect(Collectors.toList());
+    }
+
+    // Eliminar usuario por ID
+    @GetMapping("/delete/{id}")
+    public void eliminarUsuario(@PathVariable("id") Long id) {
+        usuarioService.deleteById(id);
+    }
 }

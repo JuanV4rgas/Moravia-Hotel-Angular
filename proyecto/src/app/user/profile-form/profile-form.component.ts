@@ -57,7 +57,7 @@ export class ProfileFormComponent implements OnInit {
       const nuevaClave = this.perfilForm.get('nuevaClave')?.value;
       const confirmarClave = this.perfilForm.get('confirmarClave')?.value;
 
-      // Only consider form changed if password fields are both filled and match, or other fields are dirty
+      // Verificar si otros campos del formulario han sido modificados
       const otherFieldsDirty = [
         'nombre',
         'apellido',

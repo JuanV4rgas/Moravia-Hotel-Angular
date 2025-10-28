@@ -1,0 +1,76 @@
+<main class="services-main">
+  <div class="container-servicios">
+    <div class="header-section">
+      <h1 class="services-title">Nuestras <em>Cuentas</em></h1>
+      <p class="services-subtitle">Gestiona todas las cuentas del sistema</p>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="services-table">
+        <thead>
+          <tr class="table-header">
+            <th class="th-id">ID</th>
+            <th class="th-nombre">Estado</th>
+            <th class="th-descripcion">Servicios</th>
+            <th class="th-precio">Total</th>
+            <th class="th-acciones">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="service-row" *ngFor="let cuenta of cuentas">
+            <td class="service-id">
+              <a
+                class="service-link"
+                (click)="cuenta.id && verDetalle(cuenta.id)"
+                style="cursor: pointer"
+              >
+                {{ cuenta.id }}
+              </a>
+            </td>
+            <td class="service-name">{{ cuenta.estado }}</td>
+            <td class="service-description">
+              <span *ngIf="cuenta.servicios && cuenta.servicios.length > 0">
+                {{ cuenta.servicios.length }} servicio(s)
+              </span>
+              <span *ngIf="!cuenta.servicios || cuenta.servicios.length === 0">
+                Sin servicios
+              </span>
+            </td>
+            <td class="service-price">
+              <span class="price-symbol">&euro;</span>
+              <span class="price-value">{{ cuenta.total || 0 }}</span>
+            </td>
+            <td>
+              <button class="btn-action-inline" (click)="cuenta.id && editar(cuenta.id)">
+                Editar
+              </button>
+              <button
+                class="btn-action-inline btn-delete"
+                (click)="cuenta.id && eliminar(cuenta.id)"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="cuentas.length === 0">
+            <td
+              colspan="5"
+              style="text-align: center; padding: 40px; color: var(--muted)"
+            >
+              No hay cuentas registradas
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-actions">
+        <button class="btn-action btn-primary-custom" (click)="agregar()">
+          Agregar Cuenta
+        </button>
+        <button class="btn-action btn-secondary-custom" (click)="volver()">
+          Volver
+        </button>
+      </div>
+    </div>
+  </div>
+</main>

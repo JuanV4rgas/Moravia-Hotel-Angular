@@ -163,6 +163,7 @@ public class DatabaseInit implements ApplicationRunner {
 
             reservaRepository.save(reserva);
             cuentaRepository.save(cuenta);
-        }*/
+        }
+        */
     }
 }

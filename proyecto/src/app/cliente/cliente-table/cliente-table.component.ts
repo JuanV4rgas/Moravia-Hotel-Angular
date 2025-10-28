@@ -5,7 +5,8 @@ import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-cliente-table',
-  templateUrl: './cliente-table.component.html'
+  templateUrl: './cliente-table.component.html',
+  styleUrls: ['./cliente-table.component.css']
 })
 export class ClienteTableComponent implements OnInit {
   clientes: Usuario[] = [];
@@ -18,7 +19,7 @@ export class ClienteTableComponent implements OnInit {
 
   cargar(): void {
     this.loading = true;
-    this.clienteService.getAllUsuarios().subscribe({
+    this.clienteService.getClientes().subscribe({
       next: (data) => { this.clientes = data; this.loading = false; },
       error: (err) => { this.error = 'No se pudieron cargar los clientes.'; console.error(err); this.loading = false; }
     });
