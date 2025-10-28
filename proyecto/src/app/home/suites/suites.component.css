@@ -3,7 +3,7 @@
    ========================================================= */
 .suites-grid {
   position: relative;
-  width: min(1400px, 92%);
+  width: min(1400px, 100%);
   margin: 18px auto 0;
   box-shadow: var(--shadow);
   overflow: hidden;

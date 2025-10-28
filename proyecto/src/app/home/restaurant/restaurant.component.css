@@ -1,6 +1,6 @@
 .feature-hero {
   position: relative;
-  width: min(1400px, 92%);
+  width: min(1400px, 100%);
   margin: 18px auto 0;
   box-shadow: var(--shadow);
   overflow: hidden;
@@ -20,7 +20,7 @@
   left: -1px;
   bottom: -1px;
   z-index: 2;
-  background-color: #1f5f87;
+  background-color: var(--plum);
   color: #fff;
   padding: 18px 22px;
   width: min(520px, 70%);
