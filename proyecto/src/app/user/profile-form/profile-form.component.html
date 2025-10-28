@@ -28,7 +28,7 @@
       </div>
 
       <div class="col-md-6">
-        <label for="email" class="form-label">Email *</label>
+        <label for="email" class="form-label">Correo *</label>
         <input
           type="email"
           class="form-control"
@@ -58,7 +58,7 @@
     </h4>
     <div class="row g-3">
       <div class="col-md-6">
-        <label for="telefono" class="form-label">Teléfono</label>
+        <label for="telefono" class="form-label">Teléfono* </label>
         <input
           type="tel"
           class="form-control"
@@ -82,12 +82,8 @@
     </div>
 
     <div class="col-md-6">
-      <label for="tipo" class="form-label">Tipo de usuario</label>
-      <select id="tipo" class="form-control" formControlName="tipo">
-        <option value="cliente">Cliente</option>
-        <option value="administrador">Administrador</option>
-        <option value="operador">Operador</option>
-      </select>
+      <label for="tipo" class="form-label">Tipo de usuario*</label>
+      <input id="tipo" class="form-control" formControlName="tipo" readonly="true"/>
     </div>
   </section>
 

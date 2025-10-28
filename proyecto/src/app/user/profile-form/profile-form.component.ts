@@ -40,13 +40,13 @@ export class ProfileFormComponent implements OnInit {
   inicializarFormulario(): void {
     this.perfilForm = this.fb.group(
       {
-        nombre: [this.usuario.nombre],
-        apellido: [this.usuario.apellido],
-        email: [this.usuario.email],
-        cedula: [this.usuario.cedula],
-        telefono: [this.usuario.telefono],
+        nombre: [this.usuario.nombre, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+        apellido: [this.usuario.apellido, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+        email: [this.usuario.email, [Validators.required, Validators.email]],
+        cedula: [this.usuario.cedula, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        telefono: [this.usuario.telefono, [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
         fotoPerfil: [this.usuario.fotoPerfil],
-        tipo: [this.usuario.tipo],
+        tipo: [this.usuario.tipo, Validators.required],
         nuevaClave: ['', [Validators.minLength(8)]],
         confirmarClave: ['', [Validators.minLength(8)]],
       },
