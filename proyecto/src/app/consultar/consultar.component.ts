@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { Usuario } from '../model/usuario';
 
 @Component({
   selector: 'app-consultar',
@@ -8,9 +10,12 @@ import { Router } from '@angular/router';
 })
 export class ConsultarComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  usuario!: Usuario | null;
+
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.authService.usuario$.subscribe((usuario) => (this.usuario = usuario));
   }
 
   navegarA(entidad: string) {
@@ -32,6 +37,9 @@ export class ConsultarComponent implements OnInit {
         break;
       case 'cuentas':
         this.router.navigate(['/cuenta/table']);
+        break;
+      case 'clientes':
+        this.router.navigate(['/cliente/table']);
         break;
     }
   }

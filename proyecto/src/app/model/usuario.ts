@@ -8,7 +8,7 @@ export interface Usuario {
   apellido: string;       // apellido
   cedula: string;         // documento de identidad (string para no perder ceros iniciales)
   telefono: string;       // teléfono
-  tipo: 'cliente' | 'trabajador';   // 'cliente' o 'trabajador'
+  tipo: 'cliente' | 'administrador' | 'operador';   // 'cliente' o 'trabajador'
   fotoPerfil?: string;    // opcional (url o base64)
   reservas?: Reserva[];
 }

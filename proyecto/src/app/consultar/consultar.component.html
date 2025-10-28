@@ -54,12 +54,24 @@
     </div>
 
     <!-- Usuarios -->
-    <div class="entity-card" (click)="navegarA('usuarios')">
+    <div class="entity-card" *ngIf="usuario?.tipo === 'administrador'" (click)="navegarA('usuarios')">
       <div class="entity-icon">
         <i class="fas fa-users"></i>
       </div>
       <h3>Usuarios</h3>
       <p>Gestiona los usuarios del sistema</p>
+      <div class="entity-actions">
+        <span class="action-text">Ver, Crear, Editar, Eliminar</span>
+      </div>
+    </div>
+
+    <!-- Clientes -->
+    <div class="entity-card" *ngIf="usuario?.tipo === 'operador'" (click)="navegarA('clientes')">
+      <div class="entity-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <h3>Clientes</h3>
+      <p>Administra los clientes del hotel</p>
       <div class="entity-actions">
         <span class="action-text">Ver, Crear, Editar, Eliminar</span>
       </div>

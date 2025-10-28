@@ -107,7 +107,7 @@
       </div>
 
       <!-- Agregar Servicios (para reservas activas, confirmadas o próximas) -->
-      <div class="info-section agregar-servicios-section" *ngIf="authenticated && usuario?.tipo === 'trabajador'">
+      <div class="info-section agregar-servicios-section" *ngIf="authenticated && usuario?.tipo !== 'cliente'">
         <h3>Agregar Servicios</h3>
         <p>Puedes agregar servicios adicionales a tu reserva:</p>
         <button class="btn btn-info" (click)="mostrarAgregarServicios = !mostrarAgregarServicios">
