@@ -5,8 +5,8 @@
       <p class="services-subtitle">Descubre todo lo que tenemos para ofrecerte</p>
     </div>
 
-    <div *ngIf="loading" class="table-wrapper"><div>Cargando…</div></div>
-    <div *ngIf="error" class="table-wrapper"><div class="alert alert-danger">{{ error }}</div></div>
+    <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
     <div class="table-wrapper" *ngIf="!loading && !error">
       <table class="services-table">
@@ -20,42 +20,28 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="service-row" *ngFor="let h of roomtypes">
-            <!-- ID chip -->
+          <tr class="service-row" *ngFor="let tipo of roomtypes">
             <td class="service-id">
-              <span class="id-chip">{{ h.id }}</span>
+              <span class="id-chip">{{ tipo.id }}</span>
             </td>
-
-            <!-- Nombre -->
-            <td class="service-name">
-              {{ h.name }}
-            </td>
-
-            <!-- Descripción -->
-            <td class="service-description">
-              {{ h.description }}
-            </td>
-
-            <!-- Precio a la derecha -->
+            <td class="service-name">{{ tipo.name }}</td>
+            <td class="service-description">{{ tipo.description }}</td>
             <td class="service-price">
-              € {{ h.price | number:'1.0-1' }}
+              <span class="price-symbol">&euro;</span>
+              <span class="price-value">{{ tipo.price || 0 }}</span>
             </td>
-
-            <!-- Acciones en columna: VER / EDITAR / ELIMINAR -->
-            <td class="service-actions">
-              <a class="btn-outline-lg" [routerLink]="['/roomtype/detail', h.id]">VER</a>
-              <a class="btn-outline-lg" [routerLink]="['/roomtype/editar', h.id]">EDITAR</a>
-              <button class="btn-outline-lg" (click)="eliminarRoomType(h.id)">ELIMINAR</button>
+            <td>
+              <a class="btn-action-inline" [routerLink]="['/roomtype/detail', tipo.id]">Ver</a>
+              <a class="btn-action-inline" [routerLink]="['/roomtype/editar', tipo.id]">Editar</a>
+              <button class="btn-action-inline btn-delete" (click)="eliminarRoomType(tipo.id)">Eliminar</button>
             </td>
           </tr>
         </tbody>
       </table>
-    </div>
 
+      <div class="table-actions">
+        <a class="btn-action btn-primary-custom" [routerLink]="['/roomtype/nueva']">Crear Tipo</a>
+      </div>
+    </div>
   </div>
-
-
-  <div class="actions-footer">
-      <a class="btn-outline-lg" [routerLink]="['/roomtype/nueva']">CREAR</a>
-    </div>
 </main>
