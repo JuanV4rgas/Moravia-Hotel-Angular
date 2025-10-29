@@ -1,55 +1,101 @@
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
 .reserva-form-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 2rem clamp(16px, 5vw, 32px);
+  background: transparent;
+  min-height: 100vh;
 }
 
+/* =========================================================
+   HEADER
+   ========================================================= */
 .header {
+  background: linear-gradient(135deg, var(--plum), color-mix(in srgb, var(--plum) 90%, var(--pink) 10%));
+  color: #fff;
+  padding: clamp(32px, 6vw, 48px) clamp(24px, 4vw, 40px);
   text-align: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #e9ecef;
+  position: relative;
+  border-radius: 20px 20px 0 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
-.header h2 {
-  color: #333;
-  margin-bottom: 10px;
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="20" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="20" cy="80" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="90" r="1.2" fill="rgba(255,255,255,0.06)"/></svg>');
+  opacity: 0.4;
+}
+
+.services-title {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px 0;
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+.services-title em {
+  font-style: normal;
+  color: var(--nav-accent);
+  text-shadow: 0 2px 8px rgba(255, 203, 14, 0.3);
 }
 
 .header p {
-  color: #666;
+  font-size: clamp(14px, 2vw, 18px);
+  color: color-mix(in srgb, #ffffff 88%, var(--rose) 12%);
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
+/* =========================================================
+   ALERTAS
+   ========================================================= */
 .alert {
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 8px;
-  font-weight: 500;
+  padding: 16px 20px;
+  margin: 18px 0;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid;
 }
 
 .alert.error {
-  background-color: #f8d7da;
+  background: #f8d7da;
   color: #721c24;
-  border: 1px solid #f5c6cb;
+  border-left-color: #dc3545;
 }
 
 .alert.success {
-  background-color: #d4edda;
+  background: #d4edda;
   color: #155724;
-  border: 1px solid #c3e6cb;
+  border-left-color: #28a745;
 }
 
+/* =========================================================
+   FORMULARIO
+   ========================================================= */
 .reserva-form {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: var(--surface);
+  border-radius: 0 0 20px 20px;
+  box-shadow: var(--shadow);
   overflow: hidden;
 }
 
 .form-section {
-  padding: 30px;
-  border-bottom: 1px solid #e9ecef;
+  padding: clamp(24px, 4vw, 40px);
+  border-bottom: 1px solid color-mix(in srgb, var(--plum) 12%, transparent 88%);
 }
 
 .form-section:last-child {
@@ -57,9 +103,14 @@
 }
 
 .form-section h3 {
-  color: #007bff;
-  margin-bottom: 20px;
-  font-size: 1.3em;
+  font-family: "DM Serif Display", serif;
+  color: var(--plum);
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid color-mix(in srgb, var(--plum) 20%, #e9ecef 80%);
+  letter-spacing: 0.5px;
 }
 
 .form-row {
@@ -75,86 +126,164 @@
 
 .field label {
   font-weight: 600;
+  color: var(--plum);
   margin-bottom: 8px;
-  color: #333;
+  font-size: 14px;
+  letter-spacing: 0.3px;
 }
 
 .field input {
-  padding: 12px;
+  padding: 12px 16px;
   border: 2px solid #e9ecef;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  background: #fdfdfd;
+  color: var(--ink);
+  font-family: var(--nav-font);
 }
 
 .field input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  border-color: var(--plum);
+  box-shadow: 0 0 0 3px rgba(31, 95, 135, 0.15);
+  background: white;
 }
 
+.field input:hover {
+  border-color: color-mix(in srgb, var(--plum) 50%, #e9ecef 50%);
+}
+
+/* =========================================================
+   RESUMEN
+   ========================================================= */
 .resumen-reserva {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #f8f9fa, color-mix(in srgb, var(--rose) 20%, #fff 80%));
+  padding: 24px;
+  border-radius: 12px;
   margin-bottom: 20px;
+  border: 2px solid color-mix(in srgb, var(--plum) 15%, transparent 85%);
+  box-shadow: 0 4px 12px rgba(31, 95, 135, 0.1);
 }
 
 .resumen-item {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   font-size: 1.1em;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--plum) 10%, transparent 90%);
 }
 
 .resumen-item:last-child {
   margin-bottom: 0;
-  font-size: 1.3em;
-  color: #007bff;
-  font-weight: bold;
+  font-size: 1.4em;
+  color: var(--plum);
+  font-weight: 800;
+  border-bottom: none;
+  padding-top: 16px;
+  border-top: 2px solid var(--plum);
+  font-family: "DM Serif Display", serif;
 }
 
+.resumen-item strong {
+  color: var(--plum);
+  font-weight: 700;
+}
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
 .form-actions {
   text-align: center;
+  padding-top: 20px;
 }
 
 .btn {
-  padding: 15px 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
+  font-family: var(--nav-font);
+  font-weight: 700;
   font-size: 16px;
-  font-weight: 600;
+  letter-spacing: 0.4px;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-transform: uppercase;
   min-width: 200px;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background: linear-gradient(135deg, var(--plum), #2c5aa0);
   color: white;
+  box-shadow: 0 8px 22px rgba(31, 95, 135, 0.25);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #0056b3;
+  background: linear-gradient(135deg, #184a6b, var(--plum));
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 12px 28px rgba(31, 95, 135, 0.35);
 }
 
-.btn:disabled {
-  background-color: #6c757d;
+.btn-primary:disabled {
+  background: #adb5bd;
+  color: #6c757d;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 @media (max-width: 768px) {
+  .reserva-form-container {
+    padding: 1rem 12px;
+  }
+
+  .header {
+    border-radius: 16px 16px 0 0;
+  }
+
+  .reserva-form {
+    border-radius: 0 0 16px 16px;
+  }
+
+  .form-section {
+    padding: 20px 16px;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
   }
-  
-  .reserva-form-container {
-    padding: 10px;
+
+  .btn {
+    width: 100%;
+    min-width: auto;
   }
-  
-  .form-section {
-    padding: 20px;
+}
+
+@media (max-width: 480px) {
+  .header h2 {
+    font-size: 28px;
+  }
+
+  .header p {
+    font-size: 14px;
+  }
+
+  .form-section h3 {
+    font-size: 20px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 12px 24px;
   }
 }

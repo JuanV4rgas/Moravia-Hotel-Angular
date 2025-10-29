@@ -87,7 +87,11 @@ export class DetalleReservaComponent implements OnInit {
   }
 
   volverAMisReservas() {
-    this.router.navigate(['/mis-reservas']);
+    if (this.usuario?.tipo === 'cliente') {
+      this.router.navigate(['/mis-reservas']);
+    } else {
+      this.router.navigate(['/reserva/table']);
+    }
   }
 
   getEstadoClass(estado: string): string {

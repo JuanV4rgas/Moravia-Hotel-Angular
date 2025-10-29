@@ -141,19 +141,6 @@
       </div>
     </div>
 
-    <!-- Información del estado -->
-    <div class="estado-info-section" *ngIf="reserva">
-      <div class="estado-info-card">
-        <h3>Estado de la Reserva</h3>
-        <p class="estado-mensaje">{{ obtenerInfoEstado().mensaje }}</p>
-        <div class="estado-details">
-          <span class="estado-badge" [ngClass]="getEstadoClass(reserva.estado)">
-            {{ getEstadoTexto(reserva.estado) }}
-          </span>
-        </div>
-      </div>
-    </div>
-
     <!-- Botones de acción -->
     <div class="actions-section" *ngIf="puedePagar() || puedeCancelar() || puedeFinalizar() || puedeEditar()">
       <!-- Botón de pago -->
