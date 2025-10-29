@@ -83,7 +83,7 @@ const routes: Routes = [
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
       {
-        path: 'room/nuevo',
+        path: 'room/nueva',
         component: RoomFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
@@ -123,7 +123,7 @@ const routes: Routes = [
       },
       { path: 'roomtype/lista', component: RoomtypeListComponent },
       {
-        path: 'roomtype/nuevo',
+        path: 'roomtype/nueva',
         component: RoomTypeFormComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
@@ -142,7 +142,7 @@ const routes: Routes = [
 
       // Rutas de RESERVA
       {
-        path: 'reserva/nuevo',
+        path: 'reserva/nueva',
         component: ReservaFormComponent,
         canActivate: [authGuard, roleGuard(['cliente'])],
       },
