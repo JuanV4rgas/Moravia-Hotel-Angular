@@ -1,0 +1,48 @@
+<h2>Crear tipo de habitación</h2>
+
+<form (ngSubmit)="save()" class="p-3" novalidate>
+  <div class="mb-3">
+    <label class="form-label" for="name">Nombre</label>
+    <input id="name" class="form-control" type="text"
+           [(ngModel)]="form.name" [ngModelOptions]="{standalone:true}" required />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="description">Descripción</label>
+    <textarea id="description" class="form-control" rows="3"
+              [(ngModel)]="form.description" [ngModelOptions]="{standalone:true}"></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="price">Precio</label>
+    <input id="price" class="form-control" type="number" min="0"
+           [(ngModel)]="form.price" [ngModelOptions]="{standalone:true}" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="capacity">Capacidad</label>
+    <input id="capacity" class="form-control" type="text"
+           [(ngModel)]="form.capacity" [ngModelOptions]="{standalone:true}" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="beds">Camas</label>
+    <input id="beds" class="form-control" type="number" min="1"
+           [(ngModel)]="form.numberOfBeds" [ngModelOptions]="{standalone:true}" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="image">Imagen (URL)</label>
+    <input id="image" class="form-control" type="url"
+           [(ngModel)]="form.image" [ngModelOptions]="{standalone:true}" />
+  </div>
+
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary" type="submit" [disabled]="loading">
+      {{ isEdit ? 'Actualizar' : 'Guardar' }}
+    </button>
+    <button class="btn btn-secondary" type="button" (click)="onClear()">Limpiar</button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+</form>

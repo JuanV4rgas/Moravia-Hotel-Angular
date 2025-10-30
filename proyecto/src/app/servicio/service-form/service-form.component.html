@@ -1,18 +1,34 @@
-<form #serviceForm="ngForm" (ngSubmit)="addService(serviceForm)">
-  <label for="id">Id</label><br>
-  <input type="text" id="id" name="id" [(ngModel)]="formService.id" required><br>
+<!-- src/app/servicio/service-form/service-form.component.html -->
+<h2 class="page-title">Crear servicio</h2>
 
-  <label for="name">Nombre</label><br>
-  <input type="text" id="name" name="name" [(ngModel)]="formService.name" required><br>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+<div *ngIf="saving" class="alert alert-info">Guardando…</div>
 
-  <label for="price">Precio</label><br>
-  <input type="number" id="price" name="price" [(ngModel)]="formService.price" required><br>
+<form (ngSubmit)="guardar()" class="p-3" *ngIf="!saving">
 
-  <label for="description">Descripción</label><br>
-  <textarea id="description" name="description" [(ngModel)]="formService.description"></textarea><br>
+  <div class="mb-3">
+    <label class="form-label">Nombre</label>
+    <input class="form-control" [(ngModel)]="form.nombre" name="nombre" required />
+  </div>
 
-  <label for="image">Imagen (URL)</label><br>   
-  <input type="text" id="image" name="image" required [(ngModel)]="formService.image"><br>
+  <div class="mb-3">
+    <label class="form-label">Descripción</label>
+    <textarea class="form-control" [(ngModel)]="form.descripcion" name="descripcion"></textarea>
+  </div>
 
-  <button type="submit" [disabled]="!serviceForm.form.valid">Agregar Servicio</button>
+  <div class="mb-3">
+    <label class="form-label">Precio</label>
+    <input type="number" class="form-control" [(ngModel)]="form.precio" name="precio" required />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">URL de imagen</label>
+    <input class="form-control" [(ngModel)]="form.imagenUrl" name="imagenUrl" />
+  </div>
+
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="button" class="btn btn-secondary" (click)="onClear()">Limpiar</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="cancelar()">Cancelar</button>
+  </div>
 </form>

@@ -1,0 +1,40 @@
+<main>
+  <section class="servicios-container">
+    <div *ngIf="loading" class="loading">Cargando servicios...</div>
+    <!-- Iteración de servicios -->
+    <div *ngFor="let servicio of servicios" class="servicio-card">
+      <!-- Imagen del servicio -->
+      <div class="servicio-img">
+        <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" />
+      </div>
+
+      <!-- Info del servicio -->
+      <div class="servicio-info">
+        <h2>{{ servicio.nombre }}</h2>
+        <p>{{ servicio.descripcion }}</p>
+        <p class="precio">
+          Precio: $<span>{{ servicio.precio | number: '1.0-0' }}</span>
+        </p>
+
+        <!-- Botón Ver más -->
+        <a [routerLink]="['/servicio/detail', servicio.idServicio]" class="cta">
+          <span class="hover-underline-animation">Ver más</span>
+          <svg
+            id="arrow-horizontal"
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="10"
+            viewBox="0 0 46 16"
+          >
+            <path
+              id="Path_10"
+              data-name="Path 10"
+              d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
+              transform="translate(30)"
+            ></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>

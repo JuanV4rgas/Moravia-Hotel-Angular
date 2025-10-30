@@ -1,17 +1,88 @@
-<div>
-    <h4>service-detail</h4>
-    <ng-container *ngIf="service">
-        <ul>
-            <li>Id:{{service.id}}</li>
-            <li>Nombre: {{service.name}}</li>
-            <li>Precio: ${{service.price}}</li>
-            <li>Descipcion: {{service.description}}</li>
-            <li>{{service.image}}</li>
-        </ul>
+<main class="detail-main">
+  <div class="detail-container">
+
+    <!-- Estados (idéntico flujo que ya tienes) -->
+    <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+    <ng-container *ngIf="!loading && !error && servicio; else noSel">
+
+      <!-- HERO del servicio (título grande e ID) -->
+      <section class="service-hero">
+        <div class="service-hero-content">
+          <h1 class="service-title">{{ servicio.nombre }}</h1>
+          <div class="service-id">
+            <span class="service-label">ID:</span>
+            <span>{{ servicio.idServicio }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tarjeta principal: info + visual -->
+      <div class="service-card">
+        <div class="service-content">
+          <div class="service-header">
+            <h2 class="service-name">{{ servicio.nombre }}</h2>
+
+            <!-- Precio a la derecha (píldora) -->
+            <div class="service-price">
+              <span class="price-label">Precio</span>
+              <span class="price-value">{{ servicio.precio | currency:'COP':'symbol' }}</span>
+            </div>
+          </div>
+
+          <!-- Descripción -->
+          <div class="service-description">
+            <h3>Descripción</h3>
+            <p>{{ servicio.descripcion }}</p>
+          </div>
+
+          <!-- OJO: aquí en Spring había “Reservar ahora” y “Más información”.
+               Se ELIMINAN como pediste, así que no renderizamos botones. -->
+        </div>
+
+        <!-- Visual (imagen si hay URL) -->
+        <div class="service-visual">
+          <div class="service-image-placeholder">
+            <img *ngIf="servicio.imagenUrl" [src]="servicio.imagenUrl" alt="Imagen del servicio">
+          </div>
+        </div>
+      </div>
+
+      <!-- Detalles tipo “cards” -->
+      <div class="service-details">
+        <div class="detail-item">
+          <dt class="detail-label">ID del Servicio</dt>
+          <dd class="detail-value">{{ servicio.idServicio }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Servicio</dt>
+          <dd class="detail-value">{{ servicio.nombre }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Descripción Completa</dt>
+          <dd class="detail-value">{{ servicio.descripcion }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Precio Final</dt>
+          <dd class="detail-value price-highlight">
+            {{ servicio.precio | currency:'COP':'symbol' }}
+          </dd>
+        </div>
+      </div>
+
+      <!-- Acciones propias del panel (mantengo Editar/Volver si los usas) -->
+      <div class="detail-footer">
+      
+      </div>
+
     </ng-container>
 
-    <ng-container *ngIf="!service">
-        <p>No hay servicio seleccionado</p>
-    </ng-container>
-
-</div>
+    <ng-template #noSel>
+      <p class="alert alert-warning">No hay servicio seleccionado.</p>
+    </ng-template>
+  </div>
+</main>

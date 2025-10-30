@@ -1,25 +1,26 @@
 package com.moravia.demo.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.moravia.demo.model.Usuario;
 import com.moravia.demo.repository.UsuarioRepository;
-import java.util.List;
+
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
-    private UsuarioRepository repo;
+    UsuarioRepository repo;
 
     @Override
-    public List<Usuario> findAll() {
-        return repo.findAll();
+    public Usuario searchById(Long id) {
+        return repo.findById(id).orElse(null);
     }
 
     @Override
-    public Usuario findById(Long idUsuario) {
-        return repo.findById(idUsuario).get();
+    public List<Usuario> searchAll() {
+        return repo.findAll();
     }
 
     @Override
@@ -27,24 +28,40 @@ public class UsuarioServiceImpl implements UsuarioService {
         repo.save(usuario);
     }
 
-    @Override
     public void update(Usuario usuario) {
-        repo.save(usuario);
+    Usuario existing = repo.findById(usuario.getIdUsuario())
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    // Solo actualizamos los campos modificables
+    existing.setNombre(usuario.getNombre());
+    existing.setApellido(usuario.getApellido());
+    existing.setEmail(usuario.getEmail());
+    existing.setTelefono(usuario.getTelefono());
+    existing.setCedula(usuario.getCedula());
+    existing.setFotoPerfil(usuario.getFotoPerfil());
+    existing.setTipo(usuario.getTipo());
+
+    // ⚠️ Solo actualiza la clave si el campo no está vacío
+    if (usuario.getClave() != null && !usuario.getClave().trim().isEmpty()) {
+        existing.setClave(usuario.getClave());
+    }
+
+    repo.save(existing);
+}
+
+
+    @Override
+    public void deleteById(Long id) {
+        repo.deleteById(id);
     }
 
     @Override
-    public void deleteById(Long idUsuario) {
-        repo.deleteById(idUsuario);
-    }
-
-    @Override
-    public Usuario findByEmail(String email) {
+    public Usuario searchByEmail(String email) {
         return repo.findByEmail(email);
     }
 
     @Override
-    public boolean validarCredenciales(String email, String clave) {
-        Usuario usuario = repo.findByEmail(email);
-        return usuario != null && usuario.getClave().equals(clave);
+    public List<Usuario> searchClientes() {
+        return repo.findClientes();
     }
 }

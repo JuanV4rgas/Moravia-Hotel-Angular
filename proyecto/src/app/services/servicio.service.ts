@@ -1,39 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Servicio {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-}
+import { Servicio } from '../model/servicio';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicioService {
-  private apiUrl = 'http://localhost:8081/api/servicios'; // Ajusta al endpoint de tu backend
+  private apiUrl = 'http://localhost:8081/servicio';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getServicios(): Observable<Servicio[]> {
-    return this.http.get<Servicio[]>(this.apiUrl);
+  getAllServicios(): Observable<Servicio[]> {
+    return this.http.get<Servicio[]>(`${this.apiUrl}/all`);
   }
 
-  getServicio(id: number): Observable<Servicio> {
-    return this.http.get<Servicio>(`${this.apiUrl}/${id}`);
+  getServicioById(id: number): Observable<Servicio> {
+    return this.http.get<Servicio>(`${this.apiUrl}/find/${id}`);
   }
 
   addServicio(servicio: Servicio): Observable<Servicio> {
-    return this.http.post<Servicio>(this.apiUrl, servicio);
+    return this.http.post<Servicio>(`${this.apiUrl}/add`, servicio);
   }
 
-  updateServicio(id: number, servicio: Servicio): Observable<Servicio> {
-    return this.http.put<Servicio>(`${this.apiUrl}/${id}`, servicio);
+  updateServicio(servicio: Servicio): Observable<Servicio> {
+    return this.http.post<Servicio>(`${this.apiUrl}/update/${servicio.idServicio}`, servicio);
   }
 
   deleteServicio(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 }

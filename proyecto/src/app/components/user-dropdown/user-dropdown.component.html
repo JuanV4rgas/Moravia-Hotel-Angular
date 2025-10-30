@@ -7,8 +7,8 @@
       aria-expanded="false"
     >
       <img
-        [src]="usuario.fotoPerfil || '/assets/img/default-avatar.png'"
-        [alt]="usuario.nombre || 'Usuario'"
+        [src]="usuario?.fotoPerfil || '/assets/img/default-avatar.png'"
+        [alt]="usuario!.nombre || 'Usuario'"
         class="profile-circle-img"
       />
     </button>
@@ -17,33 +17,33 @@
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
       <li class="dropdown-header">
         <div class="user-info">
-          <strong>{{ usuario.nombre }}</strong>
-          <small>{{ usuario.email }}</small>
+          <strong>{{ usuario!.nombre }}</strong>
+          <small>{{ usuario!.email }}</small>
         </div>
       </li>
       <li><hr class="dropdown-divider" /></li>
 
       <li>
-        <a
+        <button
           class="dropdown-item"
-          [routerLink]="['/usuarios', usuario.idUsuario]"
+          [routerLink]="['/profile']"
         >
           Mi Perfil
-        </a>
+      </button>
       </li>
       <li>
-        <a class="dropdown-item" routerLink="/mis-reservas">Mis Reservas</a>
+        <button class="dropdown-item" *ngIf="usuario?.tipo === 'cliente'" routerLink="/mis-reservas">Mis Reservas</button>
       </li>
       <li>
-        <a class="dropdown-item" routerLink="/configuracion">Configuración</a>
+        <button class="dropdown-item" routerLink="/configuracion">Configuración</button>
       </li>
 
       <li><hr class="dropdown-divider" /></li>
 
       <li>
-        <a class="dropdown-item text-danger" routerLink="/logout">
+        <button class="dropdown-item text-danger" (click)="logout()">
           Cerrar Sesión
-        </a>
+        </button>
       </li>
     </ul>
   </div>

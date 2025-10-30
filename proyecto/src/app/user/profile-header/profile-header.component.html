@@ -1,0 +1,31 @@
+<div class="profile-header text-center">
+  <img
+    [src]="
+      usuario.fotoPerfil ||
+      'https://via.placeholder.com/280x280.png?text=' +
+        usuario.nombre[0] +
+        '+' +
+        usuario.apellido[0]
+    "
+    [alt]="'Foto de perfil de ' + usuario.nombre"
+    class="profile-avatar"
+  />
+  <h1 class="profile-name">{{ usuario.nombre }} {{ usuario.apellido }}</h1>
+  <p class="profile-username">@{{ usuario.email.split("@")[0] }}</p>
+
+  <div class="mt-3">
+    <span
+      class="badge"
+      [ngClass]="{
+        'bg-success text-white': !formChanged,
+        'bg-warning text-dark': formChanged
+      }"
+    >
+      <i
+        class="bi"
+        [ngClass]="formChanged ? 'bi-pencil' : 'bi-person-check'"
+      ></i>
+      {{ formChanged ? "Modificando" : "Perfil de Usuario" }}
+    </span>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+{
+  "cuentas": [
+    { "id": 1, "estado": "ABIERTA", "room": "ROOM001", "total": 2000, "reserva": 1, "servicios": ["SRV001", "SRV003"] },
+    { "id": 2, "estado": "ABIERTA", "room": "ROOM005", "total": 3500, "reserva": 2, "servicios": ["SRV002"] },
+    { "id": 3, "estado": "CERRADA", "room": "ROOM010", "total": 5000, "reserva": 3, "servicios": ["SRV001", "SRV002", "SRV004"] }
+  ]
+}

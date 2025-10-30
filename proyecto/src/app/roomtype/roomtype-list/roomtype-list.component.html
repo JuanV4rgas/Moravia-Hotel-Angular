@@ -1,0 +1,40 @@
+<main>
+  <section class="servicios-container">
+    <div *ngIf="loading" class="loading">Cargando tipos de habitación...</div>
+    <!-- Iteración de roomtypes -->
+    <div *ngFor="let roomtype of roomtypes" class="servicio-card">
+      <!-- Imagen de la habitación -->
+      <div class="servicio-img">
+        <img [src]="roomtype.image" [alt]="roomtype.name" />
+      </div>
+
+      <!-- Info de la habitación -->
+      <div class="servicio-info">
+        <h2>{{ roomtype.name }}</h2>
+        <p>{{ roomtype.description }}</p>
+        <p class="precio">
+          Precio: $<span>{{ roomtype.price | number: '1.0-0' }}</span>
+        </p>
+
+        <!-- Botón Ver más -->
+        <a [routerLink]="['/roomtype/detail', roomtype.id]" class="cta">
+          <span class="hover-underline-animation">Ver más</span>
+          <svg
+            id="arrow-horizontal"
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="10"
+            viewBox="0 0 46 16"
+          >
+            <path
+              id="Path_10"
+              data-name="Path 10"
+              d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
+              transform="translate(30)"
+            ></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>

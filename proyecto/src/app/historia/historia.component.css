@@ -1,111 +1,141 @@
-/* ===== HISTORIA: TIMELINE ===== */
-.timeline-wrap{
-  background:#F6FAFD;             /* azul de tu captura */
-  padding: 24px 0 40px;
-}
-.timeline{
-  width: 720px;                    /* columna angosta */
-  max-width: calc(100% - 32px);
-  margin: 0 auto;
-  position: relative;
-  color: #1F5F87;
-  font-size: 15px;
-  line-height: 1.45;
-  font-family: Helvetica, Arial, sans-serif;
-}
-
-/* cada item alterna izquierda/derecha */
-.tl-item{
-  display: grid;
-  grid-template-columns: 1fr 120px 1fr;  /* img | spine | texto */
-  align-items: start;
-  gap: 22px;
-  margin: 26px 0 42px;
-}
-.tl-item.right{ grid-template-columns: 1fr 120px 1fr; }
-.tl-item.left  .tl-col.img{ grid-column: 1; }
-.tl-item.left  .tl-col.spine{ grid-column: 2; }
-.tl-item.left  .tl-col.text{ grid-column: 3; }
-.tl-item.right .tl-col.text{ grid-column: 1; }
-.tl-item.right .tl-col.spine{ grid-column: 2; }
-.tl-item.right .tl-col.img{ grid-column: 3; }
-
-/* columna media: año + línea */
-.tl-col.spine{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  position: relative;
-}
-.tl-year{
-  font-weight: 800;
-  text-transform: none;
-  letter-spacing: .5px;
-  text-align: center;
-  line-height: 1.1;
-}
-.tl-line{
-  width: 2px;
-  background: #cfd9e1;
-  display:block;
-  flex: 1 1 auto;
-  margin-top: 10px;
-  border-radius: 2px;
-  box-shadow: 0 0 0 1px rgba(255,255,255,.05) inset;
+/* ===== HISTORIA — ESTILO INSPIRADO EN THE RITZ (elegante clásico) ===== */
+:root{
+  /* Paleta clásica hotel boutique */
+  --ritz-navy: #0f1b2d;
+  --ritz-ink: #14223a;
+  --ritz-cream: #f7f3ea;
+  --ritz-ivory: #fbfaf6;
+  --ritz-gold: #c9a646;
+  --ritz-gold-soft: #e2c77b;
+  --card: #ffffff;
+  --muted: #6c7b8a;
+  --line: #d9dde5;
+  --shadow: 0 18px 36px rgba(0,0,0,.10);
+  --radius: 20px;
 }
 
-/* imagen y texto */
-.tl-col.img img{
-  display:block;
-  width: 210px;
-  max-width: 100%;
-  height:auto;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.25);
-}
-.tl-col.text p{
-  margin: 0;
-}
+/* Tipos sugeridos (cárgalos global si quieres)
+   h1/h2: Playfair Display; cuerpo: Inter/System */
 
-/* cabecera de la página */
+/* HERO */
 .hero-historia{
-  background:#1f5f87;
-  text-align:center;
-  padding: 32px 12px 8px;
-  color:#fff;
+  background: linear-gradient(180deg, var(--ritz-navy), #182742);
+  color: var(--ritz-cream);
+  text-align: center;
+  padding: 68px 16px 44px;
 }
 .hero-historia h1{
-  font-size: clamp(36px, 8vw, 96px);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(40px, 6.5vw, 84px);
+  letter-spacing: 1.2px;
   font-weight: 900;
-  letter-spacing: 2px;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
 }
 .hero-historia blockquote{
-  max-width: 720px;
-  margin: 0 auto 12px;
+  max-width: 860px;
+  margin: 0 auto;
   font-style: italic;
-  color: #e9f2f7;
+  opacity: .92;
 }
-.hero-historia .resaltar{ color:#f0a4a4; font-weight:800; }
+.hero-historia .resaltar{ color: var(--ritz-gold-soft); font-weight: 800; }
 
-/* responsive: apilar todo */
-@media (max-width: 840px){
-  .tl-item{
-    grid-template-columns: 1fr 80px 1fr;
-    gap: 16px;
-  }
-  .tl-col.img img{ width: 160px; }
+/* WRAP */
+.timeline-wrap{ background: var(--ritz-ivory); padding: 52px 0 80px; }
+.timeline{
+  width: 1100px; max-width: calc(100% - 48px);
+  margin: 0 auto; position: relative;
 }
-@media (max-width: 620px){
-  .tl-item{
-    grid-template-columns: 1fr;
-  }
-  .tl-item .tl-col.spine{
-    order: -1;
-    flex-direction: row;
-    justify-content: center;
-    gap:12px;
-  }
-  .tl-line{ width: 100%; height:2px; }
-  .tl-col.img img{ width: 100%; }
+
+/* Columna del año (izquierda fija) */
+.timeline__year-col{
+  position: sticky; top: 90px; align-self: start;
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--ritz-ink);
+}
+.timeline__year{
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 900; letter-spacing: .5px;
+  margin: 0 0 14px;
+}
+.timeline__sub{ color: var(--muted); margin: 0 0 24px; }
+
+/* GRID PRINCIPAL: 1) Año, 2) Línea, 3) Eventos */
+.timeline__grid{
+  display: grid; gap: 28px 32px;
+  grid-template-columns: 220px 2px 1fr;
+}
+
+/* Línea vertical dorada */
+.timeline__spine{
+  background: linear-gradient(180deg, var(--ritz-gold), var(--ritz-gold-soft));
+  border-radius: 2px;
+}
+
+/* EVENTO */
+.event{
+  display: grid; grid-template-columns: 1fr;
+  gap: 18px; position: relative; padding-left: 18px;
+}
+/* Punto en la línea */
+.event::before{
+  content: "";
+  position: absolute; left: -28px; top: 14px;
+  width: 14px; height: 14px; border-radius: 999px;
+  background: #fff; border: 3px solid var(--ritz-gold);
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+
+/* Contenido del evento */
+.event__card{
+  display: grid; gap: 18px; align-items: center;
+  grid-template-columns: 1.1fr 1fr; /* texto | imagen */
+  background: var(--card);
+  border: 1px solid rgba(20,34,58,.06);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+.event__text h3{
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--ritz-ink); margin: 0 0 6px; font-size: 22px;
+}
+.event__text p{ margin: 0; color: #253247; line-height: 1.65; }
+.event__meta{ color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+.event__media figure{ margin: 0; }
+.event__media img{
+  display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover;
+  border-radius: 16px; box-shadow: var(--shadow);
+  border: 1px solid #eef2f6;
+  transform: translateZ(0);
+}
+.event__media figcaption{
+  color: var(--muted); font-size: 12px; margin-top: 6px; text-align: right;
+}
+
+/* Alternancia (invierte columnas en pares) */
+.event--alt .event__card{ grid-template-columns: 1fr 1.1fr; }
+.event--alt .event__media figcaption{ text-align: left; }
+
+/* Badge pequeño de año dentro del card */
+.badge-year{
+  display: inline-block; background: #fff; color: var(--ritz-ink);
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px;
+  font-weight: 700; letter-spacing: .3px; margin-bottom: 8px;
+}
+
+/* Hover sutil */
+.event__card:hover{ transform: translateY(-2px); transition: transform .25s ease; }
+
+/* RESPONSIVE */
+@media (max-width: 1000px){
+  .timeline__grid{ grid-template-columns: 180px 2px 1fr; }
+}
+@media (max-width: 820px){
+  .timeline__grid{ grid-template-columns: 1fr; }
+  .timeline__year-col{ position: static; }
+  .timeline__spine{ display:none; }
+  .event{ padding-left: 0; }
+  .event::before{ display:none; }
+  .event__card{ grid-template-columns: 1fr; }
 }

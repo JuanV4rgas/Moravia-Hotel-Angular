@@ -1,8 +1,8 @@
 package com.moravia.demo.service;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 import com.moravia.demo.model.Servicio;
 import com.moravia.demo.repository.ServicioRepository;
@@ -14,13 +14,13 @@ public class ServicioServiceImpl implements ServicioService {
     ServicioRepository repo;
 
     @Override
-    public List<Servicio> findAll() {
-        return repo.findAll();
+    public Servicio searchById(Long id) {
+        return repo.findById(id).orElse(null);
     }
 
     @Override
-    public Servicio findById(Long idServicio) {
-        return repo.findById(idServicio).orElse(null);
+    public List<Servicio> searchAll() {
+        return repo.findAll();
     }
 
     @Override
@@ -34,8 +34,7 @@ public class ServicioServiceImpl implements ServicioService {
     }
 
     @Override
-    public void deleteById(Long idServicio) {
-        repo.deleteById(idServicio);
+    public void deleteById(Long id) {
+        repo.deleteById(id);
     }
-
 }

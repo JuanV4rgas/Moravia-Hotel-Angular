@@ -1,9 +1,8 @@
-import { Habitacion } from "../habitacion/habitacion"
+import { RoomType } from './reserva';
 
-//import { Habitacion } from './../habitacion/habitacion';
-export interface Room{
-    id:string
-    habitacionNumber:string
-    type: Habitacion
-    available:boolean
+export interface Room {
+  id?: number;
+  habitacionNumber: string;
+  available: boolean;
+  type: RoomType;
 }

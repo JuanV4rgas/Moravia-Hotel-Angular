@@ -1,23 +1,13 @@
 package com.moravia.demo.model;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
+import lombok.Data;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity
 @Data
-@NoArgsConstructor
+@Entity
 public class Cuenta {
 
     @Id
@@ -25,25 +15,18 @@ public class Cuenta {
     private Long id;
 
     private String estado;
-    private float total;
+    private Double total;
 
     @OneToOne
-    @JoinColumn(name = "reserva_id")
+    @JoinColumn(name = "id_reserva")
+    @JsonBackReference("reserva-cuenta")
     private Reserva reserva;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "cuenta")
-    private List<ItemCuenta> items = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "cuenta")
-    private List<Pago> pagos = new ArrayList<>();
-
-    public Cuenta(String estado, float total, Reserva reserva) {
-        this.estado = estado;
-        this.total = total;
-
-        
-        this.reserva = reserva;
-    }
+    @ManyToMany
+    @JoinTable(
+        name = "cuenta_servicios",
+        joinColumns = @JoinColumn(name = "cuenta_id"),
+        inverseJoinColumns = @JoinColumn(name = "servicio_id")
+    )
+    private List<Servicio> servicios;
 }

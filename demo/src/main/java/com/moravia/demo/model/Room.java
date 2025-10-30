@@ -1,37 +1,49 @@
 package com.moravia.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Data;
+import java.time.LocalDate;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Entity
 public class Room {
 
     @Id
-    @GeneratedValue
-    private Long id;                 // p.ej. ROOM001
-    
-    private String numeroHabitacion;   // p.ej. "101"
-    
-    private boolean disponible;         // true/false
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @JsonIgnore
+    private String habitacionNumber;   // Ej: "301", "302"
+    private Boolean available = true;  // Por defecto, disponible
+
     @ManyToOne
-    private Habitacion tipo; // Relación con la entidad Habitación 
+    @JoinColumn(name = "roomtype_id")
+    private Roomtype type;
 
-    public Room(String numeroHabitacion, boolean disponible) {
-        this.numeroHabitacion = numeroHabitacion;
-        this.disponible = disponible;
+    @ManyToMany(mappedBy = "rooms", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonBackReference("reserva-rooms")
+    private List<Reserva> reservas;
+
+
+    // ===============================
+    // MÉTODOS DE NEGOCIO
+    // ===============================
+
+    public boolean estaDisponibleEn(LocalDate inicio, LocalDate fin) {
+        if (!Boolean.TRUE.equals(this.available)) return false;
+        if (reservas == null || reservas.isEmpty()) return true;
+
+        // Retorna false si hay reservas que se cruzan con las fechas
+        return reservas.stream().noneMatch(r ->
+            !(r.getFechaFin().isBefore(inicio) || r.getFechaInicio().isAfter(fin))
+        );
+    }
+
+    public double getPrecioPorNoche() {
+        // Retorna el precio base definido en el Roomtype
+        return type != null && type.getPrice() != null ? type.getPrice() : 0.0;
     }
 }

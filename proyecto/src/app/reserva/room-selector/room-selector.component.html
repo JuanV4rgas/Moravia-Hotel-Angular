@@ -1,0 +1,62 @@
+<div class="room-selector">
+  <h3>Seleccionar Habitaciones</h3>
+  
+  <!-- Mensajes de estado -->
+  <div class="alert error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <p>Cargando habitaciones disponibles...</p>
+  </div>
+
+  <!-- Información de fechas -->
+  <div class="date-info" *ngIf="fechaInicio && fechaFin">
+    <p><strong>Fechas:</strong> {{ fechaInicio }} - {{ fechaFin }}</p>
+    <p><strong>Noches:</strong> {{ getNoches() }}</p>
+  </div>
+
+  <!-- Lista de habitaciones -->
+  <div class="rooms-grid" *ngIf="habitacionesDisponibles.length > 0 && !isLoading">
+    <div 
+      class="room-card" 
+      *ngFor="let habitacion of habitacionesDisponibles"
+      [class.selected]="isHabitacionSeleccionada(habitacion)"
+      (click)="toggleHabitacion(habitacion)">
+      
+      <div class="room-header">
+        <h4>Habitación {{ habitacion.habitacionNumber }}</h4>
+        <span class="price">${{ habitacion.type.price | number:'1.0-0' }}/noche</span>
+      </div>
+      
+      <div class="room-details">
+        <p><strong>Tipo:</strong> {{ habitacion.type.name }}</p>
+        <p><strong>Descripción:</strong> {{ habitacion.type.description }}</p>
+        <p><strong>Disponible:</strong> {{ habitacion.available ? 'Sí' : 'No' }}</p>
+      </div>
+      
+      <div class="room-footer">
+        <span class="total-price">
+          Total: ${{ (habitacion.type.price * getNoches()) | number:'1.0-0' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sin habitaciones disponibles -->
+  <div class="no-rooms" *ngIf="habitacionesDisponibles.length === 0 && !isLoading && !errorMessage">
+    <p>No hay habitaciones disponibles para las fechas seleccionadas.</p>
+  </div>
+
+  <!-- Resumen de selección -->
+  <div class="selection-summary" *ngIf="habitacionesSeleccionadasList.length > 0">
+    <h4>Habitaciones Seleccionadas ({{ habitacionesSeleccionadasList.length }})</h4>
+    <ul>
+      <li *ngFor="let habitacion of habitacionesSeleccionadasList">
+        Habitación {{ habitacion.habitacionNumber }} - {{ habitacion.type.name }}
+      </li>
+    </ul>
+    <div class="total-summary">
+      <strong>Total: ${{ total | number:'1.0-0' }}</strong>
+    </div>
+  </div>
+</div>

@@ -20,7 +20,63 @@
 
   <!-- Botones del lado derecho -->
   <div class="header-buttons">
-    <button class="button2" routerLink="/reservas">Reservar</button>
+    <!-- Botón según tipo de usuario -->
+    <button
+      class="button2"
+      *ngIf="authenticated && usuario?.tipo === 'cliente'"
+      routerLink="/reserva/nueva"
+    >
+      Reservar
+    </button>
+
+    <div
+      class="dropdown"
+      *ngIf="authenticated && usuario?.tipo !== 'cliente'"
+    >
+      <button
+        class="button2 dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Crear
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <button class="dropdown-item" routerLink="/room/nueva">
+            Habitacion
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" routerLink="/roomtype/nueva">
+            Tipo de Habitacion
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" routerLink="/servicio/nuevo">
+            Servicio
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" *ngIf="usuario?.tipo === 'administrador'" routerLink="/usuario/nuevo">
+            Usuario
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" routerLink="/cliente/nuevo">
+            Cliente
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <button
+      class="button2"
+      *ngIf="authenticated && usuario?.tipo !== 'cliente'"
+      routerLink="/consultar"
+    >
+      Consultar
+    </button>
 
     <!-- Si NO está autenticado -->
     <div *ngIf="!authenticated">
@@ -28,7 +84,11 @@
     </div>
 
     <!-- Si está autenticado -->
-    <app-user-dropdown *ngIf="authenticated"></app-user-dropdown>
+    <app-user-dropdown
+      *ngIf="authenticated"
+      [usuario]="usuario"
+      [logoutFn]="logout.bind(this)"
+    ></app-user-dropdown>
   </div>
 
   <!-- Offcanvas DESDE LA IZQUIERDA Y ALTURA COMPLETA -->
@@ -37,7 +97,8 @@
   <!-- Mensajes de estado -->
   <div
     *ngIf="loginSuccess"
-    class="alert alert-success alert-dismissible fade show position-fixed"
+    class="alert alert-success alert-dismissible fade show position-fixed notification-message"
+    [ngClass]="{ 'fade-out': loginFadeOut }"
     style="top: 80px; right: 20px; z-index: 9999"
     role="alert"
   >
@@ -47,7 +108,8 @@
 
   <div
     *ngIf="logoutSuccess"
-    class="alert alert-info alert-dismissible fade show position-fixed"
+    class="alert alert-info alert-dismissible fade show position-fixed notification-message"
+    [ngClass]="{ 'fade-out': logoutFadeOut }"
     style="top: 80px; right: 20px; z-index: 9999"
     role="alert"
   >

@@ -12,8 +12,9 @@ footer {
   width: 100%;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  margin-top: clamp(26px, 5vw, 64px);
+  padding-top: clamp(26px, 5vw, 64px);
 }
+
 
 .footer-wrap {
   max-width: 1200px;

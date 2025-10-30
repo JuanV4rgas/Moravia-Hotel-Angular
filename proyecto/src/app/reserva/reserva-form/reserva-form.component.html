@@ -1,0 +1,85 @@
+<div class="reserva-form-container">
+  <div class="header">
+    <h1 class="services-title">Nueva <em>Reserva</em></h1>
+    <p *ngIf="usuarioActual">Cliente: {{ usuarioActual.nombre }} {{ usuarioActual.apellido }}</p>
+  </div>
+
+  <!-- Mensajes de estado -->
+  <div class="alert error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="alert success" *ngIf="successMessage">{{ successMessage }}</div>
+
+  <!-- Formulario de fechas -->
+  <form [formGroup]="reservaForm" (ngSubmit)="onSubmit()" class="reserva-form">
+    <div class="form-section">
+      <h3>1. Seleccionar Fechas</h3>
+      <div class="form-row">
+        <div class="field">
+          <label for="fechaInicio">Fecha de Inicio*</label>
+          <input 
+            id="fechaInicio" 
+            type="date" 
+            formControlName="fechaInicio" 
+            [min]="getTodayDate()"
+            required>
+        </div>
+        
+        <div class="field">
+          <label for="fechaFin">Fecha de Fin*</label>
+          <input 
+            id="fechaFin" 
+            type="date" 
+            formControlName="fechaFin" 
+            [min]="getMinEndDate()"
+            required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selector de habitaciones -->
+            <div class="form-section" *ngIf="getFechaInicio() && getFechaFin()">
+              <h3>2. Seleccionar Tipo de Habitación</h3>
+              <app-room-type-selector
+                [fechaInicio]="getFechaInicio()"
+                [fechaFin]="getFechaFin()"
+                (tipoSeleccionado)="onTipoSeleccionado($event)"
+                (habitacionesDisponibles)="onHabitacionesDisponibles($event)">
+              </app-room-type-selector>
+            </div>
+
+            <div class="form-section" *ngIf="tipoSeleccionado && habitacionesDisponibles.length > 0">
+              <h3>3. Seleccionar Habitaciones Específicas</h3>
+              <app-room-selector
+                [fechaInicio]="getFechaInicio()"
+                [fechaFin]="getFechaFin()"
+                [habitacionesDisponibles]="habitacionesDisponibles"
+                (habitacionesSeleccionadas)="onHabitacionesSeleccionadas($event)"
+                (totalCalculado)="onTotalCalculado($event)">
+              </app-room-selector>
+            </div>
+
+    <!-- Resumen y botón de envío -->
+    <div class="form-section" *ngIf="habitacionesSeleccionadas.length > 0">
+      <h3>3. Confirmar Reserva</h3>
+      <div class="resumen-reserva">
+        <div class="resumen-item">
+          <strong>Fechas:</strong> {{ getFechaInicio() }} - {{ getFechaFin() }}
+        </div>
+        <div class="resumen-item">
+          <strong>Habitaciones:</strong> {{ habitacionesSeleccionadas.length }}
+        </div>
+        <div class="resumen-item">
+          <strong>Total:</strong> ${{ total | number:'1.0-0' }}
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="isLoading || !reservaForm.valid || habitacionesSeleccionadas.length === 0">
+          {{ isLoading ? 'Creando reserva...' : 'Confirmar Reserva' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

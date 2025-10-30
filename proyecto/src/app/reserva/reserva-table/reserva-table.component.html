@@ -1,0 +1,210 @@
+<main class="services-main">
+  <div class="container-servicios">
+    <!-- Encabezado -->
+    <div class="header-section">
+      <h1 class="services-title">Listado de <em>Reservas</em></h1>
+      <p class="services-subtitle">
+        Todas las reservas registradas en el sistema
+      </p>
+    </div>
+
+    <!-- Sección de filtros -->
+    <div class="filters-section">
+      <div class="filters-container">
+        <!-- Filtro por estado -->
+        <div class="filter-group">
+          <label for="filtroEstado" class="filter-label">
+            <i class="fas fa-filter"></i> Filtrar por Estado:
+          </label>
+          <select
+            id="filtroEstado"
+            class="filter-select"
+            [(ngModel)]="filtroEstado"
+            (change)="aplicarFiltros()"
+          >
+            <option *ngFor="let estado of estadosDisponibles" [value]="estado">
+              {{ estado }} ({{ contarPorEstado(estado) }})
+            </option>
+          </select>
+        </div>
+
+        <!-- Búsqueda general -->
+        <div class="filter-group">
+          <label for="filtroBusqueda" class="filter-label">
+            <i class="fas fa-search"></i> Buscar:
+          </label>
+          <input
+            type="text"
+            id="filtroBusqueda"
+            class="filter-input"
+            placeholder="ID, email o habitación..."
+            [(ngModel)]="filtroBusqueda"
+            (input)="aplicarFiltros()"
+          />
+        </div>
+
+        <!-- Botón limpiar filtros -->
+        <div class="filter-group">
+          <button class="btn-limpiar-filtros" (click)="limpiarFiltros()">
+            <i class="fas fa-eraser"></i> Limpiar Filtros
+          </button>
+        </div>
+      </div>
+
+      <!-- Contador de resultados -->
+      <div class="results-counter">
+        <span class="counter-text">
+          Mostrando <strong>{{ reservasFiltradas.length }}</strong> de
+          <strong>{{ reservas.length }}</strong> reservas
+        </span>
+      </div>
+    </div>
+
+    <!-- Estados de carga / error -->
+    <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div
+      *ngIf="
+        !error &&
+        !loading &&
+        reservasFiltradas?.length === 0 &&
+        reservas.length > 0
+      "
+      class="alert alert-warning"
+    >
+      No se encontraron reservas con los filtros aplicados.
+    </div>
+    <div
+      *ngIf="!error && !loading && reservas?.length === 0"
+      class="alert alert-warning"
+    >
+      No hay reservas registradas.
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrapper" *ngIf="!loading && reservasFiltradas?.length">
+      <table class="services-table">
+        <thead>
+          <tr class="table-header">
+            <th>ID</th>
+            <th>FECHA INICIO</th>
+            <th>FECHA FIN</th>
+            <th>ESTADO</th>
+            <th>CLIENTE (EMAIL)</th>
+            <th>HABITACIÓN</th>
+            <th>ACCIONES</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            class="service-row"
+            *ngFor="let r of reservasFiltradas; trackBy: trackById"
+          >
+            <td class="cell-id">
+              {{ r?.id != null ? r.id : "-" }}
+            </td>
+
+            <td class="cell-fecha">
+              {{ r?.fechaInicio ? (r.fechaInicio | date : "yyyy-MM-dd") : "-" }}
+            </td>
+
+            <td class="cell-fecha-fin">
+              {{ r?.fechaFin ? (r.fechaFin | date : "yyyy-MM-dd") : "-" }}
+            </td>
+
+            <td class="cell-estado">
+              <span
+                class="estado-badge"
+                [ngClass]="
+                  'estado-' + (r?.estado || 'sin-estado').toLowerCase()
+                "
+              >
+                {{ r?.estado || "-" }}
+              </span>
+            </td>
+
+            <td class="cell-cliente">
+              {{ r?.cliente?.email || "-" }}
+            </td>
+
+            <td class="cell-room">
+              {{ roomNumOf(r) }}
+            </td>
+
+            <td class="cell-acciones">
+              <div class="action-buttons">
+                <button
+                  class="btn-ver"
+                  (click)="verDetalleReserva(r)"
+                  title="Ver detalles"
+                >
+                  <i class="fas fa-eye"></i>
+                  <span>Ver</span>
+                </button>
+                <button
+                  class="btn-servicios"
+                  (click)="gestionarServicios(r)"
+                  title="Gestionar servicios"
+                  [disabled]="!puedeGestionarServicios(r)"
+                >
+                  <i class="fas fa-concierge-bell"></i>
+                  <span>Servicios</span>
+                </button>
+                <button
+                  class="btn-activar"
+                  (click)="activarReserva(r)"
+                  title="Activar reserva"
+                  [disabled]="!puedeActivarReserva(r)"
+                >
+                  <i class="fas fa-play"></i>
+                  <span>Activar</span>
+                </button>
+                <button
+                  class="btn-finalizar"
+                  (click)="finalizarReserva(r)"
+                  title="Finalizar reserva"
+                  [disabled]="!puedeFinalizarReserva(r)"
+                >
+                  <i class="fas fa-stop"></i>
+                  <span>Finalizar</span>
+                </button>
+                <button
+                  class="btn-pagar"
+                  (click)="pagarReserva(r)"
+                  title="Pagar cuenta"
+                  [disabled]="!puedePagarReserva(r)"
+                >
+                  <i class="fas fa-credit-card"></i>
+                  <span>Pagar</span>
+                </button>
+                <button
+                  class="btn-cancelar"
+                  (click)="cancelarReserva(r)"
+                  [disabled]="
+                    cancellingId === r?.id || !puedeCancelarReserva(r)
+                  "
+                  title="Cancelar reserva"
+                >
+                  <i class="fas fa-times"></i>
+                  <span>Cancelar</span>
+                </button>
+                <button
+                  class="btn-eliminar"
+                  (click)="eliminarReserva(r)"
+                  [disabled]="deletingId === r?.id || !puedeEliminarReserva(r)"
+                  title="Eliminar reserva"
+                >
+                  <i class="fas fa-trash"></i>
+                  <span>Eliminar</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions-footer" aria-hidden="true"></div>
+  </div>
+</main>

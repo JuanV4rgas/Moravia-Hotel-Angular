@@ -1,0 +1,121 @@
+<div class="editar-reserva-container">
+  <div class="header">
+    <h1>Editar Reserva</h1>
+    <p>Modifica los detalles de tu reserva</p>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Cargando reserva...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-message" *ngIf="errorMessage">
+    <div class="alert alert-error">
+      <i class="icon-error"></i>
+      {{ errorMessage }}
+    </div>
+    <button class="btn btn-primary" (click)="cancelar()">
+      Volver a la reserva
+    </button>
+  </div>
+
+  <!-- Formulario -->
+  <div class="form-container" *ngIf="!isLoading && !errorMessage">
+    <form [formGroup]="reservaForm" (ngSubmit)="onSubmit()">
+      <!-- Fechas -->
+      <div class="form-section">
+        <h3>Fechas de la Reserva</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fechaInicio">Fecha de Inicio</label>
+            <input
+              type="date"
+              id="fechaInicio"
+              formControlName="fechaInicio"
+              [min]="getTodayDate()"
+              class="form-control"
+              [class.error]="reservaForm.get('fechaInicio')?.invalid && reservaForm.get('fechaInicio')?.touched"
+            />
+            <div class="error-message" *ngIf="reservaForm.get('fechaInicio')?.invalid && reservaForm.get('fechaInicio')?.touched">
+              La fecha de inicio es requerida
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fechaFin">Fecha de Fin</label>
+            <input
+              type="date"
+              id="fechaFin"
+              formControlName="fechaFin"
+              [min]="getMinEndDate()"
+              class="form-control"
+              [class.error]="reservaForm.get('fechaFin')?.invalid && reservaForm.get('fechaFin')?.touched"
+            />
+            <div class="error-message" *ngIf="reservaForm.get('fechaFin')?.invalid && reservaForm.get('fechaFin')?.touched">
+              La fecha de fin es requerida
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selector de Tipo de Habitación -->
+      <div class="form-section">
+        <h3>Tipo de Habitación</h3>
+        <app-room-type-selector
+          (tipoSeleccionado)="onTipoSeleccionado($event)"
+          (habitacionesDisponibles)="onHabitacionesDisponibles($event)"
+          [fechaInicio]="getFechaInicio()"
+          [fechaFin]="getFechaFin()">
+        </app-room-type-selector>
+      </div>
+
+      <!-- Selector de Habitaciones -->
+      <div class="form-section" *ngIf="tipoSeleccionado">
+        <h3>Seleccionar Habitaciones</h3>
+        <app-room-selector
+          [fechaInicio]="getFechaInicio()"
+          [fechaFin]="getFechaFin()"
+          [habitacionesDisponibles]="habitacionesDisponibles"
+          (habitacionesSeleccionadas)="onHabitacionesSeleccionadas($event)"
+          (totalCalculado)="onTotalCalculado($event)">
+        </app-room-selector>
+      </div>
+
+      <!-- Resumen -->
+      <div class="form-section" *ngIf="habitacionesSeleccionadas.length > 0">
+        <h3>Resumen de la Reserva</h3>
+        <div class="resumen-container">
+          <div class="resumen-item">
+            <span class="label">Habitaciones seleccionadas:</span>
+            <span class="value">{{ habitacionesSeleccionadas.length }}</span>
+          </div>
+          <div class="resumen-item">
+            <span class="label">Total:</span>
+            <span class="value total">${{ total | number:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensajes -->
+      <div class="success-message" *ngIf="successMessage">
+        <div class="alert alert-success">
+          <i class="icon-success"></i>
+          {{ successMessage }}
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="cancelar()" [disabled]="isLoading">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="!reservaForm.valid || habitacionesSeleccionadas.length === 0 || isLoading">
+          <span *ngIf="isLoading">Actualizando...</span>
+          <span *ngIf="!isLoading">Actualizar Reserva</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

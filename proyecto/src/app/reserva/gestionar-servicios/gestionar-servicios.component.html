@@ -1,0 +1,115 @@
+<div class="gestionar-servicios-container">
+  <div class="header">
+    <h2>Gestionar Servicios - Reserva #{{ reserva?.id }}</h2>
+    <p *ngIf="reserva">Cliente: {{ reserva.cliente.nombre }} {{ reserva.cliente.apellido }}</p>
+    <button class="btn btn-secondary" (click)="volverATabla()">
+      ← Volver a tabla de reservas
+    </button>
+  </div>
+
+  <!-- Mensajes de estado -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+  
+  <div class="alert alert-success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Procesando...</p>
+  </div>
+
+  <!-- Información de la reserva -->
+  <div class="reserva-info" *ngIf="reserva">
+    <h3>Información de la Reserva</h3>
+    <div class="info-grid">
+      <div class="info-item">
+        <label>Estado:</label>
+        <span class="estado-badge" [ngClass]="getEstadoClass(reserva.estado)">
+          {{ reserva.estado }}
+        </span>
+      </div>
+      <div class="info-item">
+        <label>Fechas:</label>
+        <span>{{ reserva.fechaInicio }} - {{ reserva.fechaFin }}</span>
+      </div>
+      <div class="info-item">
+        <label>Habitaciones:</label>
+        <span>{{ reserva.rooms.length }} habitación(es)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Servicios disponibles -->
+  <div class="servicios-section" *ngIf="!isLoading">
+    <h3>Servicios Disponibles</h3>
+    <div class="servicios-grid">
+      <div class="servicio-card" *ngFor="let servicio of servicios">
+        <div class="servicio-image">
+          <img [src]="servicio.imagenUrl" 
+               [alt]="servicio.nombre"
+               (error)="onImageError($event)">
+        </div>
+        
+        <div class="servicio-content">
+          <h4>{{ servicio.nombre }}</h4>
+          <p class="descripcion">{{ servicio.descripcion }}</p>
+          <div class="precio">${{ servicio.precio | number:'1.2-2' }}</div>
+        </div>
+        
+        <div class="servicio-actions">
+          <button class="btn btn-primary btn-sm" 
+                  (click)="agregarServicioACuenta(servicio)"
+                  [disabled]="isLoading">
+            Agregar a Cuenta
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Servicios en la cuenta -->
+  <div class="cuenta-section" *ngIf="serviciosEnCuenta.length > 0">
+    <h3>Servicios en la Cuenta del Cliente</h3>
+    <div class="servicios-cuenta">
+      <div class="servicio-cuenta-item" *ngFor="let servicio of serviciosEnCuenta">
+        <div class="servicio-info">
+          <h4>{{ servicio.nombre }}</h4>
+          <p>{{ servicio.descripcion }}</p>
+        </div>
+        <div class="servicio-precio">
+          ${{ servicio.precio | number:'1.2-2' }}
+        </div>
+        <div class="servicio-actions">
+          <button class="btn btn-danger btn-sm" 
+                  (click)="eliminarServicioDeCuenta(servicio)"
+                  [disabled]="isLoading">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resumen de cuenta -->
+  <div class="resumen-cuenta" *ngIf="reserva">
+    <h3>Resumen de Cuenta</h3>
+    <div class="resumen-detalle">
+      <div class="resumen-item">
+        <span>Habitaciones:</span>
+        <span>${{ calcularTotalHabitaciones() | number:'1.2-2' }}</span>
+      </div>
+      <div class="resumen-item" *ngIf="serviciosEnCuenta.length > 0">
+        <span>Servicios:</span>
+        <span>${{ calcularTotalServicios() | number:'1.2-2' }}</span>
+      </div>
+      <div class="resumen-item total">
+        <span><strong>Total:</strong></span>
+        <span><strong>${{ calcularTotalCuenta() | number:'1.2-2' }}</strong></span>
+      </div>
+    </div>
+  </div>
+</div>

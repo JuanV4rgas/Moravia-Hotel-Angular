@@ -1,0 +1,14 @@
+.profile-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: none;
+  margin-top: -50px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Animaciones suaves */
+.card {
+  transition: all 0.3s ease;
+}

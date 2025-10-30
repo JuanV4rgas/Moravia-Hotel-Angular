@@ -1,40 +1,70 @@
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Correo</th>
-            <th scope="col">Clave</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Cédula</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Foto de Perfil</th>
+<main class="services-main">
+  <div class="container-servicios">
+    <div class="header-section">
+      <h1 class="services-title">Listado de <em>Clientes</em></h1>
+      <p class="services-subtitle">
+        Gestiona y revisa toda la información de clientes
+      </p>
+    </div>
 
+    <div *ngIf="loading" class="alert alert-info">Cargando clientes...</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let cliente of clientesList">
-            <th scope="row">{{cliente.id}}</th>
-            <td>{{cliente.email}}</td>
-            <td>{{cliente.password}}</td>
-            <td>{{cliente.name}}</td>
-            <td>{{cliente.surename}}</td>
-            <td>{{cliente.cedula}}</td>
-            <td>{{cliente.phone}}</td>
-            <td>{{cliente.pfp}}</td>
+    <div class="table-wrapper" *ngIf="!loading && !error">
+      <table class="services-table">
+        <thead>
+          <tr class="table-header">
+            <th class="th-id">ID</th>
+            <th class="th-nombre">NOMBRE</th>
+            <th class="th-apellido">APELLIDO</th>
+            <th class="th-email">EMAIL</th>
+            <th class="th-tipo">TIPO</th>
+            <th class="th-cedula">CÉDULA</th>
+            <th class="th-telefono">TELÉFONO</th>
+            <th class="th-acciones">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="service-row"
+            *ngFor="let client of clientes; trackBy: trackById"
+          >
+            <td class="service-id">{{ client.idUsuario }}</td>
+            <td class="service-name">{{ client.nombre }}</td>
+            <td>{{ client.apellido }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.tipo | uppercase }}</td>
+            <td>{{ client.cedula }}</td>
+            <td>{{ client.telefono }}</td>
             <td>
-                <button class="btn btn-primary" (click)="mostrarCliente(cliente)">
-                    Seleccionar
-                </button>
+              <a
+                class="btn-action-inline"
+                [routerLink]="['/cliente/detalle', client.idUsuario]"
+                >Ver</a
+              >
+              <a
+                class="btn-action-inline"
+                [routerLink]="['/cliente/editar', client.idUsuario]"
+                >Editar</a
+              >
+              <button
+                class="btn-action-inline btn-delete"
+                (click)="eliminar(client.idUsuario)"
+              >
+                Eliminar
+              </button>
             </td>
-            <td>
-                <button class="btn btn-primary" (click)="eliminarCliente(cliente)">
-                    Eliminar
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<app-cliente-detail [cliente] = "selectedCliente"></app-cliente-detail>
-<app-cliente-form (addClienteEvent)="agregarCliente($event)"></app-cliente-form>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-actions">
+        <a
+          class="btn-action btn-primary-custom"
+          [routerLink]="['/cliente/nuevo']"
+          >Nuevo Cliente</a
+        >
+      </div>
+    </div>
+  </div>
+</main>

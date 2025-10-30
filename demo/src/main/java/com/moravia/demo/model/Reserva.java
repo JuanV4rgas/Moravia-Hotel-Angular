@@ -1,55 +1,39 @@
 package com.moravia.demo.model;
 
-import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Entity
+import java.time.LocalDate;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Data
-@NoArgsConstructor
+@Entity
 public class Reserva {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaFin;
-    private int cantPersonas;
     private String estado;
 
-
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    private Usuario cliente;
 
+    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
-
-    
-    @OneToOne(mappedBy = "reserva")
     private Cuenta cuenta;
 
-    public Reserva(LocalDate fechaInicio, LocalDate fechaFin, int cantPersonas, String estado, Cliente cliente,
-            Room room) {
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.cantPersonas = cantPersonas;
-        this.estado = estado;
-        this.cliente = cliente;
-        this.room = room;
-    }
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "reserva_rooms", joinColumns = @JoinColumn(name = "reserva_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
+    private List<Room> rooms;
 }

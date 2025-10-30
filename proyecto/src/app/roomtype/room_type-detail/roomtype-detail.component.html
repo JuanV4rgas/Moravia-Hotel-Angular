@@ -1,0 +1,75 @@
+<main class="detail-main">
+  <div class="detail-container">
+
+    <ng-container *ngIf="roomtype as rt; else cargando">
+      <!-- HERO -->
+      <section class="service-hero">
+        <div class="service-hero-content">
+          <h1 class="service-title">{{ rt.name }}</h1>
+          <div class="service-id">
+            <span class="service-label">ID:</span>
+            <span>{{ rt.id }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- TARJETA PRINCIPAL -->
+      <div class="service-card">
+        <div class="service-content">
+          <div class="service-header">
+            <h2 class="service-name">{{ rt.name }}</h2>
+
+            <!-- Precio a la derecha (píldora) -->
+            <div class="service-price">
+              <span class="price-label">Precio</span>
+              <span class="price-value">
+                {{ rt.price | number:'1.0-2' }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Descripción -->
+          <div class="service-description">
+            <h3>Descripción</h3>
+            <p>{{ rt.description }}</p>
+          </div>
+        </div>
+
+        <!-- Visual (imagen si existe) -->
+        <div class="service-visual">
+          <div class="service-image-placeholder">
+            <img *ngIf="rt.image" [src]="rt.image" alt="Imagen del tipo de habitación">
+          </div>
+        </div>
+      </div>
+
+      <!-- DETALLES EN TARJETAS -->
+      <div class="service-details">
+        <div class="detail-item">
+          <dt class="detail-label">Capacidad</dt>
+          <dd class="detail-value">{{ rt.capacity }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Camas</dt>
+          <dd class="detail-value">{{ rt.numberOfBeds }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Precio</dt>
+          <dd class="detail-value price-highlight">{{ rt.price | number:'1.0-2' }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">ID</dt>
+          <dd class="detail-value">{{ rt.id }}</dd>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #cargando>
+      <p *ngIf="!error" class="alert alert-info">Cargando tipo de habitación…</p>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    </ng-template>
+  </div>
+</main>

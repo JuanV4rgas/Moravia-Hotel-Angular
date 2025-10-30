@@ -1,21 +1,151 @@
-<div>
-    <h4>Cliente-detail</h4>
-    <ng-container *ngIf="cliente">
-        <ul>
-            <li>Id:{{cliente.id}}</li>
-            <li>Correo:{{cliente.email}}</li>
-            <li>Clave:{{cliente.password}}</li>
-            <li>Nombre:{{cliente.name}}</li>
-            <li>Apellido:{{cliente.surename}}</li>
-            <li>Cedula:{{cliente.cedula}}</li>
-            <li>Telfonp:{{cliente.phone}}</li>
-            <li>Foto de Perfil:{{cliente.pfp}}</li>
-
-        </ul>
-    </ng-container>
-
-    <ng-container *ngIf="!cliente">
-        <p>No hay Cliente seleccionado</p>
-    </ng-container>
-
+<!-- Header -->
+<div class="profile-header text-center" *ngIf="!loading && !error">
+  <img
+    [src]="
+      cliente.fotoPerfil ||
+      'https://via.placeholder.com/280x280.png?text=' +
+        cliente.nombre[0] +
+        '+' +
+        cliente.apellido[0]
+    "
+    [alt]="'Foto de perfil de ' + cliente.nombre"
+    class="profile-avatar"
+  />
+  <h1 class="profile-name">{{ cliente.nombre }} {{ cliente.apellido }}</h1>
+  <p class="profile-username">@{{ cliente.email.split("@")[0] }}</p>
+  <div class="mt-3">
+    <span class="badge bg-info text-white">
+      <i class="bi bi-person-check"></i>
+      Cliente
+    </span>
+  </div>
 </div>
+
+<!-- Loading -->
+<div *ngIf="loading" class="container text-center py-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <p class="mt-3">Cargando información del cliente...</p>
+</div>
+
+<!-- Error -->
+<div *ngIf="error" class="container py-5">
+  <div class="alert alert-danger">{{ error }}</div>
+  <button class="btn btn-secondary" (click)="volver()">Volver</button>
+</div>
+
+<!-- Contenido -->
+<main class="container pb-5" *ngIf="!loading && !error">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <div class="card profile-card p-4 mt-4">
+        
+        <!-- Información Personal -->
+        <section class="mb-4">
+          <h4 class="section-title">
+            <i class="bi bi-person me-2"></i> Información Personal
+          </h4>
+          <div class="info-row">
+            <span class="info-label">ID:</span>
+            <span class="info-value">{{ cliente.idUsuario }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Nombres:</span>
+            <span class="info-value">{{ cliente.nombre }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Apellidos:</span>
+            <span class="info-value">{{ cliente.apellido }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Cédula:</span>
+            <span class="info-value">{{ cliente.cedula }}</span>
+          </div>
+        </section>
+
+        <!-- Información de Contacto -->
+        <section class="mb-4">
+          <h4 class="section-title">
+            <i class="bi bi-telephone me-2"></i> Información de Contacto
+          </h4>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value">{{ cliente.email }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Teléfono:</span>
+            <span class="info-value">{{ cliente.telefono || 'No registrado' }}</span>
+          </div>
+        </section>
+
+        <!-- Reservas -->
+        <section class="mb-4">
+          <h4 class="section-title">
+            <i class="bi bi-calendar-check me-2"></i> Reservas ({{ reservas.length }})
+          </h4>
+          
+          <div *ngIf="reservas.length === 0" class="text-center text-muted py-4">
+            <i class="bi bi-calendar-x" style="font-size: 3rem;"></i>
+            <p class="mt-3">Este cliente no tiene reservas registradas</p>
+          </div>
+
+          <div *ngFor="let reserva of reservas" class="reserva-card">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h6 class="mb-1">
+                  <i class="bi bi-hash"></i> Reserva #{{ reserva.idReserva }}
+                </h6>
+                <p class="mb-1">
+                  <i class="bi bi-calendar3"></i>
+                  <strong>Fecha:</strong> {{ reserva.fecha | date: 'dd/MM/yyyy' }}
+                </p>
+                <p class="mb-1">
+                  <i class="bi bi-clock"></i>
+                  <strong>Hora:</strong> {{ reserva.hora }}
+                </p>
+                <p class="mb-1">
+                  <i class="bi bi-people"></i>
+                  <strong>Personas:</strong> {{ reserva.numeroPersonas }}
+                </p>
+                <p class="mb-0">
+                  <i class="bi bi-building"></i>
+                  <strong>Servicio:</strong> {{ reserva.servicio?.nombre || 'N/A' }}
+                </p>
+              </div>
+              <span 
+                class="badge"
+                [ngClass]="{
+                  'bg-success': reserva.estado === 'confirmada',
+                  'bg-warning text-dark': reserva.estado === 'pendiente',
+                  'bg-danger': reserva.estado === 'cancelada'
+                }"
+              >
+                {{ reserva.estado }}
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-between flex-wrap gap-2 mt-4">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="volver()"
+          >
+            <i class="bi bi-arrow-left me-1"></i> Volver
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [routerLink]="['/cliente/editar', cliente.idUsuario]"
+          >
+            <i class="bi bi-pencil me-1"></i> Editar Cliente
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>

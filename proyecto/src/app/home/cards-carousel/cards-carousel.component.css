@@ -5,13 +5,13 @@
 /* Carrusel contenedor */
 .cards-carousel {
   position: relative;
-  width: min(1024px, 94%);
-  margin: 24px auto;
+  width: min(1400px, 100%);
   display: flex;
   align-items: center;
-  gap: 8px;
-    overflow: hidden;
-
+  gap: 15px;
+  overflow: hidden;
+  padding-inline: 20px;
+  margin-bottom: 50px;
 }
 
 /* Pista desplazable */
@@ -34,17 +34,15 @@
 
 .flip-card {
   position: relative;
-  width: min(1400px, 92%);
   margin: 18px auto 0;
   box-shadow: var(--shadow);
   overflow: hidden;
   background-color: transparent;
   width: 190px;
-  height: 254px;
+  height: 350px;
   perspective: 1000px;
   font-family: sans-serif;
   flex: 0 0 calc((100% - (4 * 16px)) / 5);
-  height: 254px;
   scroll-snap-align: start;
 }
 
@@ -111,15 +109,15 @@
 
 .cc-arrow {
   border: none;
-  background: #1f5f87;
+  background: var(--pink);
   color: #fff;
-  width: 36px;
-  height: 36px;
+  width: 60px;
+  height: 60px;
   border-radius: 999px;
   cursor: pointer;
   display: grid;
   place-items: center;
-  font-size: 20px;
+  font-size: 40px;
 }
 .cc-arrow:disabled {
   opacity: 0.35;

@@ -1,0 +1,129 @@
+body {
+  font-family: var(--nav-font);
+  background-color: var(--paper);
+}
+
+.page-header {
+  background: var(--plum);
+  color: white;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.page-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: none;
+  padding: 2rem;
+}
+
+.section-title {
+  color: var(--plum);
+  font-size: 1.3rem;
+  font-weight: 750;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid color-mix(in srgb, #1f5f87 20%, #e9ecef 80%);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #1f5f87;
+  margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: #fdfdfd;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #1f5f87;
+  box-shadow: 0 0 0 0.2rem rgba(31, 95, 135, 0.15);
+  background-color: white;
+}
+
+.form-control:not(:read-only):hover, .form-select:hover {
+  border-color: var(--plum);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #1f5f87, #2c5aa0);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  letter-spacing: 0.4px;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #184a6b, #1f5f87);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(31, 95, 135, 0.3);
+}
+
+.btn-secondary {
+  background-color: var(--muted);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  letter-spacing: 0.4px;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+  transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border: 2px solid #6c757d;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  letter-spacing: 0.4px;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.input-group .btn {
+  border-radius: 0 8px 8px 0;
+}
+
+.form-text {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.text-danger {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.alert {
+  border-radius: 8px;
+  padding: 1rem;
+}

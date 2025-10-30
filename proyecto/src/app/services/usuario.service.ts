@@ -1,38 +1,80 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Usuario {
-  id: number;
-  nombre: string;
-  email: string;
-}
+import { Usuario } from '../model/usuario';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'http://localhost:8081/api/usuarios'; 
+  private apiUrl = 'http://localhost:8081/usuario';
 
   constructor(private http: HttpClient) {}
 
-  getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(this.apiUrl);
+  // Ya retorna UsuarioResponseDTO (sin reservas)
+  getAllUsuarios(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.apiUrl}/all`);
   }
 
-  getUsuario(id: number): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.apiUrl}/${id}`);
+  // Ya retorna UsuarioResponseDTO
+  getUsuarioById(id: number): Observable<Usuario> { 
+  return this.http.get<Usuario>(`${this.apiUrl}/find?id=${id.toString()}`);
+}
+
+  // Nuevo: obtener usuario CON reservas
+  getUsuarioConReservas(id: number): Observable<any> {
+    const params = new HttpParams().set('id', id.toString());
+    return this.http.get<any>(`${this.apiUrl}/find/id`, { params });
   }
 
+  // Envía CrearUsuarioRequestDTO
   addUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(this.apiUrl, usuario);
+    const requestDTO = {
+      email: usuario.email,
+      clave: usuario.clave,
+      nombre: usuario.nombre,
+      apellido: usuario.apellido,
+      cedula: usuario.cedula,
+      telefono: usuario.telefono,
+      fotoPerfil: usuario.fotoPerfil,
+      tipo: usuario.tipo
+    };
+    
+    return this.http.post<Usuario>(`${this.apiUrl}/add`, requestDTO);
   }
 
+  // Envía ActualizarUsuarioRequestDTO
   updateUsuario(id: number, usuario: Usuario): Observable<Usuario> {
-    return this.http.put<Usuario>(`${this.apiUrl}/${id}`, usuario);
+    const requestDTO = {
+      email: usuario.email,
+      clave: usuario.clave || undefined, // solo si se cambió
+      nombre: usuario.nombre,
+      apellido: usuario.apellido,
+      cedula: usuario.cedula,
+      telefono: usuario.telefono,
+      fotoPerfil: usuario.fotoPerfil,
+      tipo: usuario.tipo
+    };
+    
+    return this.http.post<Usuario>(`${this.apiUrl}/update/${id}`, requestDTO);
   }
 
-  deleteUsuario(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteUsuario(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/delete/${id}`);
+  }
+
+  getUsuarioByEmail(email: string): Observable<Usuario> {
+    const params = new HttpParams().set('email', email);
+    return this.http.get<Usuario>(`${this.apiUrl}/find/email`, { params });
+  }
+
+  // Alias para compatibilidad
+  getUsuario(id: number) {
+    return this.getUsuarioById(id);
+  }
+
+  // Buscar todos los clientes
+  getClientes(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.apiUrl}/clientes`);
   }
 }

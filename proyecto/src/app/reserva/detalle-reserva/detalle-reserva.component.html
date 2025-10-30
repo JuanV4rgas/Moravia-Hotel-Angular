@@ -1,0 +1,231 @@
+<div class="detalle-reserva-container">
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Cargando detalles de la reserva...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-message" *ngIf="errorMessage">
+    <div class="alert alert-error">
+      <i class="icon-error"></i>
+      {{ errorMessage }}
+    </div>
+    <button class="btn btn-primary" (click)="cargarDetalleReserva()">
+      Intentar de nuevo
+    </button>
+  </div>
+
+  <!-- Detalle de reserva -->
+  <div class="reserva-detail" *ngIf="reserva && !isLoading && !errorMessage">
+    <!-- Header -->
+    <div class="detail-header">
+      <div class="header-info">
+        <h1>Reserva #{{ reserva.id }}</h1>
+        <div class="reserva-meta">
+          <span class="fecha">{{ reserva.fechaInicio }} - {{ reserva.fechaFin }}</span>
+          <div class="estado-badge" [ngClass]="getEstadoClass(reserva.estado)">
+            {{ getEstadoTexto(reserva.estado) }}
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-secondary" (click)="volverAMisReservas()">
+        ← Volver a mis reservas
+      </button>
+    </div>
+
+    <!-- Información de la reserva -->
+    <div class="reserva-info">
+      <div class="info-section">
+        <h3>Información de la Reserva</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Cliente:</label>
+            <span>{{ reserva.cliente.nombre }} {{ reserva.cliente.apellido }}</span>
+          </div>
+          <div class="info-item">
+            <label>Email:</label>
+            <span>{{ reserva.cliente.email }}</span>
+          </div>
+          <div class="info-item">
+            <label>Fechas:</label>
+            <span>{{ reserva.fechaInicio }} - {{ reserva.fechaFin }}</span>
+          </div>
+          <div class="info-item">
+            <label>Estado:</label>
+            <span class="estado-badge" [ngClass]="getEstadoClass(reserva.estado)">
+              {{ getEstadoTexto(reserva.estado) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Habitaciones -->
+      <div class="info-section">
+        <h3>Habitaciones Reservadas</h3>
+        <div class="rooms-list">
+          <div class="room-card" *ngFor="let room of reserva.rooms">
+            <!-- Imagen de la habitación -->
+            <div class="room-image-container">
+              <img 
+                [src]="getRoomImage(room)" 
+                [alt]="room.type.name"
+                class="room-image"
+                (error)="onImageError($event)">
+            </div>
+            
+            <div class="room-content">
+              <div class="room-header">
+                <h4>Habitación {{ room.habitacionNumber }}</h4>
+                <span class="room-type">{{ room.type.name }}</span>
+              </div>
+              <div class="room-details">
+                <p><strong>Descripción:</strong> {{ room.type.description }}</p>
+                <p><strong>Capacidad:</strong> {{ room.type.capacity }}</p>
+                <p><strong>Camas:</strong> {{ room.type.numberOfBeds }}</p>
+                <p><strong>Precio por noche:</strong> ${{ room.type.price | number:'1.0-0' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Servicios (si existen) -->
+      <div class="info-section" *ngIf="reserva.cuenta && reserva.cuenta.servicios && reserva.cuenta.servicios.length > 0">
+        <h3>Servicios Adicionales</h3>
+        <div class="servicios-list">
+          <div class="servicio-item" *ngFor="let servicio of reserva.cuenta.servicios">
+            <div class="servicio-info">
+              <h4>{{ servicio.nombre }}</h4>
+              <p>{{ servicio.descripcion }}</p>
+            </div>
+            <div class="servicio-precio">
+              ${{ servicio.precio | number:'1.0-0' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agregar Servicios (para reservas activas, confirmadas o próximas) -->
+      <div class="info-section agregar-servicios-section" *ngIf="authenticated && usuario?.tipo !== 'cliente'">
+        <h3>Agregar Servicios</h3>
+        <p>Puedes agregar servicios adicionales a tu reserva:</p>
+        <button class="btn btn-info" (click)="mostrarAgregarServicios = !mostrarAgregarServicios">
+          {{ mostrarAgregarServicios ? 'Ocultar Servicios' : 'Ver Servicios Disponibles' }}
+        </button>
+        
+        <app-agregar-servicios 
+          *ngIf="mostrarAgregarServicios"
+          [reserva]="reserva"
+          (serviciosAgregados)="onServiciosAgregados($event)">
+        </app-agregar-servicios>
+      </div>
+
+      <!-- Total -->
+      <div class="info-section total-section" *ngIf="reserva.cuenta">
+        <h3>Resumen de Costos</h3>
+        <div class="total-breakdown">
+          <div class="cost-item">
+            <span>Habitaciones:</span>
+            <span>${{ calcularTotalHabitaciones() | number:'1.0-0' }}</span>
+          </div>
+          <div class="cost-item" *ngIf="tieneServicios()">
+            <span>Servicios:</span>
+            <span>${{ calcularTotalServicios() | number:'1.0-0' }}</span>
+          </div>
+          <div class="cost-item total">
+            <span><strong>Total:</strong></span>
+            <span><strong>${{ reserva.cuenta.total | number:'1.0-0' }}</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="actions-section" *ngIf="puedePagar() || puedeCancelar() || puedeFinalizar() || puedeEditar()">
+      <!-- Botón de pago -->
+      <div class="payment-section" *ngIf="puedePagar()">
+        <div class="payment-info">
+          <h3>Procesar Pago</h3>
+          <p>Tu reserva está confirmada. Haz clic en el botón para procesar el pago y finalizar tu estadía.</p>
+        </div>
+        <button 
+          class="btn btn-success btn-large" 
+          (click)="pagarReserva()"
+          [disabled]="isLoading">
+          <i class="icon-payment"></i>
+          {{ isLoading ? 'Procesando...' : 'Pagar Reserva' }}
+        </button>
+      </div>
+
+      <!-- Botón de cancelar -->
+      <div class="cancel-section" *ngIf="puedeCancelar()">
+        <div class="cancel-info">
+          <h3>Cancelar Reserva</h3>
+          <p>Puedes cancelar tu reserva si ya no planeas utilizarla.</p>
+        </div>
+        <button 
+          class="btn btn-danger btn-large" 
+          (click)="cancelarReserva()"
+          [disabled]="isLoading">
+          <i class="icon-cancel"></i>
+          {{ isLoading ? 'Cancelando...' : 'Cancelar Reserva' }}
+        </button>
+      </div>
+
+      <!-- Botón de finalizar -->
+      <div class="finalize-section" *ngIf="puedeFinalizar()">
+        <div class="finalize-info">
+          <h3>Finalizar Reserva</h3>
+          <p>Finaliza tu estadía y libera las habitaciones para nuevas reservas.</p>
+        </div>
+        <button 
+          class="btn btn-warning btn-large" 
+          (click)="finalizarReserva()"
+          [disabled]="isLoading">
+          <i class="icon-check"></i>
+          {{ isLoading ? 'Finalizando...' : 'Finalizar Reserva' }}
+        </button>
+      </div>
+
+      <!-- Botón de editar -->
+      <div class="edit-section" *ngIf="puedeEditar()">
+        <div class="edit-info">
+          <h3>Editar Reserva</h3>
+          <p>Modifica las fechas o habitaciones de tu reserva.</p>
+        </div>
+        <button 
+          class="btn btn-info btn-large" 
+          (click)="editarReserva()"
+          [disabled]="isLoading">
+          <i class="icon-edit"></i>
+          Editar Reserva
+        </button>
+      </div>
+    </div>
+
+    <!-- Mensaje para reservas activas -->
+    <div class="payment-section" *ngIf="esReservaActiva()">
+      <div class="payment-info">
+        <h3>Reserva Activa</h3>
+        <p>Tu estadía está en curso. Disfruta de tu estancia en nuestro hotel.</p>
+      </div>
+    </div>
+
+    <!-- Mensaje para reservas ya pagadas -->
+    <div class="payment-section" *ngIf="!puedePagar() && !puedeCancelar() && reserva.estado === 'FINALIZADA'">
+      <div class="payment-info">
+        <h3>Reserva Finalizada</h3>
+        <p>Esta reserva ya ha sido pagada y finalizada.</p>
+      </div>
+    </div>
+
+    <!-- Mensaje para reservas canceladas -->
+    <div class="payment-section" *ngIf="!puedePagar() && !puedeCancelar() && reserva.estado === 'CANCELADA'">
+      <div class="payment-info">
+        <h3>Reserva Cancelada</h3>
+        <p>Esta reserva ha sido cancelada.</p>
+      </div>
+    </div>
+  </div>
+</div>

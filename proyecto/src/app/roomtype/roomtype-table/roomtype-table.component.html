@@ -1,0 +1,47 @@
+<main class="services-main">
+  <div class="container-servicios">
+    <div class="header-section">
+      <h1 class="services-title">Nuestros <em>Tipos de Habitaciones</em></h1>
+      <p class="services-subtitle">Descubre todo lo que tenemos para ofrecerte</p>
+    </div>
+
+    <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+    <div class="table-wrapper" *ngIf="!loading && !error">
+      <table class="services-table">
+        <thead>
+          <tr class="table-header">
+            <th class="th-id">ID</th>
+            <th class="th-nombre">SERVICIO</th>
+            <th class="th-descripcion">DESCRIPCIÓN</th>
+            <th class="th-precio">PRECIO</th>
+            <th class="th-acciones">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="service-row" *ngFor="let tipo of roomtypes">
+            <td class="service-id">
+              <span class="id-chip">{{ tipo.id }}</span>
+            </td>
+            <td class="service-name">{{ tipo.name }}</td>
+            <td class="service-description">{{ tipo.description }}</td>
+            <td class="service-price">
+              <span class="price-symbol">&euro;</span>
+              <span class="price-value">{{ tipo.price || 0 }}</span>
+            </td>
+            <td>
+              <a class="btn-action-inline" [routerLink]="['/roomtype/detail', tipo.id]">Ver</a>
+              <a class="btn-action-inline" [routerLink]="['/roomtype/editar', tipo.id]">Editar</a>
+              <button class="btn-action-inline btn-delete" (click)="eliminarRoomType(tipo.id)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-actions">
+        <a class="btn-action btn-primary-custom" [routerLink]="['/roomtype/nueva']">Crear Tipo</a>
+      </div>
+    </div>
+  </div>
+</main>

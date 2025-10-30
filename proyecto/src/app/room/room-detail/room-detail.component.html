@@ -1,17 +1,46 @@
-<p>room-detail works!</p>
-<div>
-    <h4>Room-detail</h4>
-    <ng-container *ngIf="room">
-        <ul>
-            <li>Id:{{room.id}}</li>
-            <li>Numero de Habitacion: {{room.habitacionNumber}}</li>
-            <li>Tipo: {{room.type}}</li>
-            <li>Disponible: {{room.available}}</li>
-        </ul>
-    </ng-container>
+<h2 class="visually-hidden">Detalle de habitación</h2>
 
-    <ng-container *ngIf="!room">
-        <p>No hay Room seleccionada</p>
-    </ng-container>
+<div *ngIf="loading" class="alert alert-info">Cargando…</div>
+<div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
 
-</div>
+<ng-container *ngIf="!loading && !error && room as r">
+  <main class="detail-main">
+    <div class="detail-container">
+
+      <!-- HERO (título e ID) -->
+      <section class="service-hero">
+        <div class="service-hero-content">
+          <h1 class="service-title">Habitación {{ r.habitacionNumber }}</h1>
+          <div class="service-id">
+            <span class="service-label">ID:</span>
+            <span>{{ r.id }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- DETALLES (solo los 4 campos pedidos) -->
+      <div class="service-details">
+        <div class="detail-item">
+          <dt class="detail-label">ID</dt>
+          <dd class="detail-value">{{ r.id }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Número de habitación</dt>
+          <dd class="detail-value">{{ r.habitacionNumber }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Tipo</dt>
+          <dd class="detail-value">{{ r.type.name || '—' }}</dd>
+        </div>
+
+        <div class="detail-item">
+          <dt class="detail-label">Disponible</dt>
+          <dd class="detail-value">{{ r.available ? 'Sí' : 'No' }}</dd>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</ng-container>

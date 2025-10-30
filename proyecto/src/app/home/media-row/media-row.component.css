@@ -3,12 +3,12 @@
    <section.media-row>
    ========================================================= */
 .media-row {
-  width: min(1400px, 92%);
+  width: min(1400px, 100%);
   margin: 14px auto 0;
   display: grid;
   grid-template-columns: 2fr 1fr; /* video más grande */
   gap: 18px;
-  align-items: stretch;
+  align-items: start;
   z-index: 1;
 }
 
@@ -19,6 +19,10 @@
   overflow: hidden;
   min-height: clamp(320px, 48vw, 520px);
   border-radius: 16px;
+  background-color: #1f5f87; /* Color de fondo mientras carga */
+  background-image: url('/assets/img/video-poster.webp');
+  background-size: cover;
+  background-position: center;
 }
 
 .media-frame .video-bg {
@@ -27,18 +31,55 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+/* Mostrar video cuando esté cargado */
+.media-frame .video-bg[data-loaded="true"],
+.media-frame .video-bg:not([data-loaded]) {
+  opacity: 1;
+}
+
+/* Animación de carga */
+.media-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Ocultar animación cuando el video está cargado */
+.media-frame.loaded::before {
+  display: none;
 }
 
 /*==========================
               BOOK
 ==========================*/
 .book {
-  margin-top: 50px;
   position: relative;
   border-radius: 10px;
   width: 500px;
-  height: 420px;
-  background-color: #3579a3;
+  height: 520px;
+  background-color: var(--plum);
   transform: preserve-3d;
   perspective: 2000px;
   display: block;
@@ -47,8 +88,9 @@
 
 .cover {
   top: 0;
+  border: 0.5px solid var(--muted);
   position: absolute;
-  background-color: #ffffff;
+  background-color: #fff;
   width: 100%;
   height: 100%;
   border-radius: 10px;

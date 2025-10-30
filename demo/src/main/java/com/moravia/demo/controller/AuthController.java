@@ -24,11 +24,24 @@ public class AuthController {
     return "login"; // resolve a templates/login.html
   }
 
+  /**
+   * Login: busca usuario por email y valida contraseña
+   * 
+   * Redirige a la landing page con parámetro de autenticación si el usuario existe y la contraseña es correcta
+   * Redirige a la misma página con parámetro de error si el usuario no existe o la contraseña es incorrecta
+   * Redirige a la misma página con parámetro de error si ocurre un error al buscar el usuario
+   * 
+   * @param email el email del usuario a buscar
+   * @param clave la contraseña del usuario a buscar
+   * @param model el modelo de la vista que se utilizará para mostrar el formulario de login
+   * @param session la sesión HTTP actual
+   * @return un string que indica la página a la que se debe redirigir
+   */
   @PostMapping("/login")
   public String login(@RequestParam String email, @RequestParam String clave,
       Model model, HttpSession session) {
     try {
-      Usuario usuario = usuarioService.findByEmail(email);
+      Usuario usuario = usuarioService.searchByEmail(email);
       if (usuario != null) {
         if (usuario.getClave().equals(clave)) {
           // Guardar usuario en sesión
@@ -49,6 +62,12 @@ public class AuthController {
     }
   }
 
+/**
+ * Cierra la sesión actual y redirige a la página principal con parámetro de logout
+ * 
+ * @param session la sesión HTTP actual
+ * @return un string que indica la página a la que se debe redirigir
+ */
   @GetMapping("/logout")
   public String logout(HttpSession session) {
     session.invalidate(); // Eliminar toda la sesión

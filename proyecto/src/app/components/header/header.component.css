@@ -12,7 +12,7 @@
   align-items: center;
   gap: 16px;
   padding: 8px 20px;
-  border-bottom: 2px solid #ffffff; /* línea blanca */
+  border-bottom: 2px solid var(--sand); /* línea blanca */
 }
 
 /* Evita que el contenido quede por debajo del header fijo */
@@ -74,7 +74,7 @@ body {
   color: #fff;
   text-decoration: none;
   font-weight: 700;
-  font-family: "DM Serif Display", "Inter", system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   background: transparent;
   border: none;
   padding: 8px 0;
@@ -89,12 +89,12 @@ body {
   cursor: pointer;
   font-size: 16px;
   border-radius: 8px;
-  background: transparent;
+  background: var(--plum);
   border: 3px solid transparent;
   width: 120px;
   text-align: center;
   color: var(--nav-text, #fff);
-  font-weight: 600;
+  font-weight: 630;
   transition: all 0.3s ease;
   overflow: hidden;
 }
@@ -121,6 +121,97 @@ body {
   transform: scaleY(1);
 }
 
+/*Dropdown de crear*/
+.dropdown-menu {
+  border: 2px solid var(--nav-accent);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  background: var(--plum);
+  backdrop-filter: blur(10px);
+}
+
+/* Asegura que cada item mantenga la forma y recorte la pseudo-barra */
+.dropdown-item {
+  position: relative;           /* para el ::before */
+  overflow: hidden;             /* recorta la barra en los bordes */
+  display: flex;                /* igual que tu offcanvas menu a */
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 8px;           /* borde del item (menos agresivo que 12 si quieres) */
+  font-family: "Inter", system-ui, sans-serif;
+  padding: 0.75rem 1.25rem !important;
+  color: var(--nav-text);
+  background: transparent;
+  font-weight: 550;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+  font-size: 0.95rem;
+}
+
+/* Hover / focus — movimiento + color */
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: var(--nav-hover);
+  color: var(--nav-accent);
+  transform: translateX(6px);
+  outline: none;
+}
+
+/* Línea izquierda: oculta por defecto, animada desde arriba */
+.dropdown-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;                   /* grosor de la barra */
+  background: var(--nav-accent);
+  transform-origin: top;        /* escala desde arriba */
+  transform: scaleY(0);         /* oculta */
+  transition: transform 0.25s ease;
+  pointer-events: none;         /* no interfiere con clicks */
+  border-top-left-radius: 8px;  /* suaviza el inicio/fin de la barra */
+  border-bottom-left-radius: 8px;
+  z-index: 1;                   /* por encima del fondo del item */
+}
+
+/* Mostrar la barra en hover/focus */
+.dropdown-item:hover::before,
+.dropdown-item:focus::before {
+  transform: scaleY(1);
+}
+
+/* Si quieres que la barra aparezca también en el item activo (ruta actual) */
+.dropdown-item.active::before {
+  transform: scaleY(1);
+}
+
+/* === ANIMACIONES DE NOTIFICACIONES === */
+.notification-message {
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification-message.fade-out {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* Animación de entrada suave */
+.notification-message {
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
 /* === RESPONSIVE === */
 @media (min-width: 992px) {

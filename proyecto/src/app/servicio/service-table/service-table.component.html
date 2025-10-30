@@ -1,33 +1,46 @@
-<p>service-table works!</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Description</th>
-            <th scope="col">Image</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let service of servicesList">
-            <th scope="row">{{service.id}}</th>
-            <td>{{service.name}}</td>
-            <td>{{service.price}}</td>
-            <td>{{service.description}}</td>
-            <td>{{service.image}}</td>
-            <td>
-                <button class="btn btn-primary" (click)="mostrarServicio(service)">
-                    Seleccionar
-                </button>
+<main class="services-main">
+  <div class="container-servicios">
+    <div class="header-section">
+      <h1 class="services-title">Nuestros <em>Servicios</em></h1>
+      <p class="services-subtitle">Descubre todo lo que tenemos para ofrecerte</p>
+    </div>
+
+    <div *ngIf="loading" class="alert alert-info">Cargando…</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div *ngIf="!error && !loading && servicios?.length === 0" class="alert alert-warning">
+      No hay servicios.
+    </div>
+
+    <div class="table-wrapper" *ngIf="!loading && servicios?.length">
+      <table class="services-table">
+        <thead>
+          <tr class="table-header">
+            <th class="th-nombre">NOMBRE</th>
+            <th class="th-descripcion">DESCRIPCIÓN</th>
+            <th class="th-precio">PRECIO</th>
+            <th class="th-acciones">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="service-row" *ngFor="let service of servicios; trackBy: trackById">
+            <td class="service-name">{{ service.nombre }}</td>
+            <td class="service-description">{{ service.descripcion }}</td>
+            <td class="service-price">
+              <span class="price-symbol">&euro;</span>
+              <span class="price-value">{{ service.precio || 0 }}</span>
             </td>
             <td>
-                <button class="btn btn-primary" (click)="eliminarServicio(service)">
-                    Eliminar
-                </button>
+              <a class="btn-action-inline" [routerLink]="['/servicio/detail', service.idServicio]">Ver</a>
+              <a class="btn-action-inline" [routerLink]="['/servicio/editar', service.idServicio]">Editar</a>
+              <button class="btn-action-inline btn-delete" (click)="eliminar(service.idServicio!, $event)">Eliminar</button>
             </td>
-        </tr>
-    </tbody>
-</table>
-<app-service-detail [service] = "selectedService"></app-service-detail>
-<app-service-form (addServiceEvent)="agregarServicio($event)"></app-service-form>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-actions">
+        <a class="btn-action btn-primary-custom" [routerLink]="['/servicio/nuevo']">Crear Servicio</a>
+      </div>
+    </div>
+  </div>
+</main>

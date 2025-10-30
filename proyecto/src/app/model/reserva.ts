@@ -1,13 +1,34 @@
-import { Cuenta } from './cuenta';
-import { Usuario } from './usuario';
+// Importar Room desde el modelo unificado
 import { Room } from './room';
+import { Servicio } from './servicio';
 
 export interface Reserva {
-  id: number;            
-  fechaInicio: string;   
-  fechaFin: string;        
+  id?: number;
+  fechaInicio: string;
+  fechaFin: string;
   estado: string;
-  usuario: Usuario;      
-  room: Room;
-  cuenta?: Cuenta;       
+  cliente: {
+    idUsuario: number;
+    nombre: string;
+    apellido: string;
+    email: string;
+  };
+  rooms: Room[];
+  cuenta?: {
+    id: number;
+    estado: string;
+    total: number;
+    servicios?: Servicio[];
+  };
+}
+
+export interface RoomType {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  capacity: string;
+  numberOfBeds: number;
+  image: string;
+  type: string; 
 }

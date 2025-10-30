@@ -1,56 +1,32 @@
 package com.moravia.demo.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import javax.validation.constraints.*;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 public class Usuario {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
-    
-    @NotBlank(message = "El correo es obligatorio")
-    @Email(message = "El formato del correo no es válido")
-    private String email;
-    
-    @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
-    private String clave;
-    
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
-    private String nombre;
-    
-    @NotBlank(message = "El apellido es obligatorio")
-    @Size(min = 2, max = 50, message = "El apellido debe tener entre 2 y 50 caracteres")
-    private String apellido;
-    
-    @NotBlank(message = "La cédula es obligatoria")
-    @Pattern(regexp = "^[0-9]{7,10}$", message = "La cédula debe tener entre 7 y 10 dígitos")
-    private String cedula;
-    
-    @Pattern(regexp = "^[+]?[0-9\\s\\-()]+$", message = "El formato del teléfono no es válido")
-    private String telefono;
-    
-    private String fotoPerfil;
 
-    public Usuario(String email, String clave, String nombre, String apellido, String cedula, String telefono, String fotoPerfil) {
-        this.email = email;
-        this.clave = clave;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.cedula = cedula;
-        this.telefono = telefono;
-        this.fotoPerfil = fotoPerfil;
-    }
+    private String email;
+    private String clave;
+    private String nombre;
+    private String apellido;
+    private String cedula;
+    private String telefono;
+    private String fotoPerfil;
+    private String tipo;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Reserva> reservas = new ArrayList<>();
 }
