@@ -42,7 +42,7 @@ import { ProfileFormComponent } from './user/profile-form/profile-form.component
 import { UsuarioTableComponent } from './usuario/usuario-table/usuario-table.component';
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
 import { UsuarioFormComponent } from './usuario/usuario-form/usuario-form.component';
-import { RoomtypeEditarComponent } from './roomtype/roomtype-editar/roomtype-editar.component';
+import { RoomTypeEditarComponent } from './roomtype/roomtype-editar/roomtype-editar.component';
 import { RoomEditarComponent } from './room/room-editar/room-editar.component';
 import { ServiceEditarComponent } from './servicio/service-editar/service-editar.component';
 import { ReservaFormComponent } from './reserva/reserva-form/reserva-form.component';
@@ -97,7 +97,7 @@ import { CuentaTableComponent } from './cuenta/cuenta-table/cuenta-table.compone
     //UsuarioTableComponent,
     UsuarioDetailComponent,
     UsuarioFormComponent,
-    RoomtypeEditarComponent,
+    RoomTypeEditarComponent,
     //RoomEditarComponent,
     ReservaFormComponent,
     RoomSelectorComponent,

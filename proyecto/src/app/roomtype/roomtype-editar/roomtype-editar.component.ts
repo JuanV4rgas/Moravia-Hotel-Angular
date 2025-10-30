@@ -6,8 +6,9 @@ import { RoomTypeService } from '../../services/roomtype.service';
 @Component({
   selector: 'app-roomtype-editar',
   templateUrl: './roomtype-editar.component.html',
+  styleUrls: ['./roomtype-editar.component.css']
 })
-export class RoomtypeEditarComponent implements OnInit { // <-- usa este mismo nombre
+export class RoomTypeEditarComponent implements OnInit { // <-- usa este mismo nombre
   loading = false;
   error?: string;
   private id!: number;

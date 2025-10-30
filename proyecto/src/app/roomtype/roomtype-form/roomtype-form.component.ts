@@ -6,7 +6,8 @@ import { RoomType } from 'src/app/model/roomtype';
 
 @Component({
   selector: 'app-roomtype-form',
-  templateUrl: './roomtype-form.component.html'
+  templateUrl: './roomtype-form.component.html',
+  styleUrls: ['./roomtype-form.component.css']  
 })
 export class RoomTypeFormComponent implements OnInit {
   form: RoomType = {

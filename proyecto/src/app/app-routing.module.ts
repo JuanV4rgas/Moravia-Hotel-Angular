@@ -35,6 +35,7 @@ import { GestionarServiciosComponent } from './reserva/gestionar-servicios/gesti
 import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.component';
 import { authGuard, roleGuard } from './auth.guard';
 import { PortalLayoutComponent } from './layouts/portal-layout/portal-layout.component';
+import { RoomTypeEditarComponent } from './roomtype/roomtype-editar/roomtype-editar.component';
 
 const routes: Routes = [
   {
@@ -129,7 +130,7 @@ const routes: Routes = [
       },
       {
         path: 'roomtype/editar/:id',
-        component: RoomTypeFormComponent,
+        component: RoomTypeEditarComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
 
