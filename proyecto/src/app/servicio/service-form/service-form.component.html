@@ -5,19 +5,6 @@
 <div *ngIf="saving" class="alert alert-info">Guardando…</div>
 
 <form (ngSubmit)="guardar()" class="p-3" *ngIf="!saving">
-  <!-- ID -->
-  <div class="mb-3">
-    <label class="form-label">ID de servicio</label>
-    <input
-      type="number"
-      class="form-control"
-      [(ngModel)]="form.idServicio"
-      name="idServicio"
-      min="1"
-      required
-    />
-    <small class="text-muted">Debe ser un número entero positivo.</small>
-  </div>
 
   <div class="mb-3">
     <label class="form-label">Nombre</label>
