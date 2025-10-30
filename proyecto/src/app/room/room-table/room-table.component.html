@@ -22,7 +22,7 @@
               <span class="id-chip">{{ h.id }}</span>
             </td>
             <td class="service-name">{{ h.habitacionNumber }}</td>
-            <td class="service-type">{{ h.type?.name }}</td>
+            <td class="service-type">{{ h.type.name }}</td>
             <td class="service-available">{{ h.available ? 'Sí' : 'No' }}</td>
             <td>
               <a class="btn-action-inline" [routerLink]="['/room/detail', h.id]">Ver</a>
