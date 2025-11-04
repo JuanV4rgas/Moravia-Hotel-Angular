@@ -45,16 +45,20 @@ public class DatabaseInitTest implements ApplicationRunner {
         JsonNode jsonNode = mapper.readTree(inputStream);
 
         for (JsonNode usuarioJson : jsonNode.get("usuarios")) {
-            Usuario usuario = new Usuario();
-            usuario.setEmail(usuarioJson.get("correo").asText());
-            usuario.setClave(usuarioJson.get("clave").asText());
-            usuario.setNombre(usuarioJson.get("nombre").asText());
-            usuario.setApellido(usuarioJson.get("apellido").asText());
-            usuario.setCedula(usuarioJson.get("cedula").asText());
-            usuario.setTelefono(usuarioJson.get("telefono").asText());
-            usuario.setFotoPerfil(usuarioJson.get("fotoPerfil").asText());
-            usuario.setTipo(usuarioJson.get("tipo").asText());
-            usuarioRepository.save(usuario);
+            String email = usuarioJson.get("correo").asText();
+            // Verificar si el usuario ya existe para evitar duplicados
+            if (usuarioRepository.findByEmail(email) == null) {
+                Usuario usuario = new Usuario();
+                usuario.setEmail(email);
+                usuario.setClave(usuarioJson.get("clave").asText());
+                usuario.setNombre(usuarioJson.get("nombre").asText());
+                usuario.setApellido(usuarioJson.get("apellido").asText());
+                usuario.setCedula(usuarioJson.get("cedula").asText());
+                usuario.setTelefono(usuarioJson.get("telefono").asText());
+                usuario.setFotoPerfil(usuarioJson.get("fotoPerfil").asText());
+                usuario.setTipo(usuarioJson.get("tipo").asText());
+                usuarioRepository.save(usuario);
+            }
         }
         // ========================
         // Load RoomTypes

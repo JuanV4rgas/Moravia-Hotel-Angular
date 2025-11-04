@@ -1,24 +1,18 @@
 package com.moravia.demo.model;
 
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 
-
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moravia.demo.controller.RoomController;
 import com.moravia.demo.repository.*;
-
-import jakarta.transaction.Transactional;
 
 import java.io.InputStream;
 import java.util.List;
 
-@Component
-@Transactional
+// @Component - Deshabilitado para evitar duplicados con DatabaseInitTest
+// @Transactional
 public class DatabaseInit implements ApplicationRunner {
 
     @Autowired
@@ -45,16 +39,20 @@ public class DatabaseInit implements ApplicationRunner {
         JsonNode jsonNode = mapper.readTree(inputStream);
 
         for (JsonNode usuarioJson : jsonNode.get("usuarios")) {
-            Usuario usuario = new Usuario();
-            usuario.setEmail(usuarioJson.get("correo").asText());
-            usuario.setClave(usuarioJson.get("clave").asText());
-            usuario.setNombre(usuarioJson.get("nombre").asText());
-            usuario.setApellido(usuarioJson.get("apellido").asText());
-            usuario.setCedula(usuarioJson.get("cedula").asText());
-            usuario.setTelefono(usuarioJson.get("telefono").asText());
-            usuario.setFotoPerfil(usuarioJson.get("fotoPerfil").asText());
-            usuario.setTipo(usuarioJson.get("tipo").asText());
-            usuarioRepository.save(usuario);
+            String email = usuarioJson.get("correo").asText();
+            // Verificar si el usuario ya existe para evitar duplicados
+            if (usuarioRepository.findByEmail(email) == null) {
+                Usuario usuario = new Usuario();
+                usuario.setEmail(email);
+                usuario.setClave(usuarioJson.get("clave").asText());
+                usuario.setNombre(usuarioJson.get("nombre").asText());
+                usuario.setApellido(usuarioJson.get("apellido").asText());
+                usuario.setCedula(usuarioJson.get("cedula").asText());
+                usuario.setTelefono(usuarioJson.get("telefono").asText());
+                usuario.setFotoPerfil(usuarioJson.get("fotoPerfil").asText());
+                usuario.setTipo(usuarioJson.get("tipo").asText());
+                usuarioRepository.save(usuario);
+            }
         }
         // ========================
         // Load RoomTypes
