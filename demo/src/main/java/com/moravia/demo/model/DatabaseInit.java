@@ -4,7 +4,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
-import java.time.LocalDate;
+
 
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,14 +16,10 @@ import jakarta.transaction.Transactional;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.Random;
-import java.util.ArrayList;
 
 @Component
 @Transactional
 public class DatabaseInit implements ApplicationRunner {
-
-    private final RoomController roomController;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -37,20 +33,10 @@ public class DatabaseInit implements ApplicationRunner {
     @Autowired
     private ServicioRepository servicioRepository;
 
-    @Autowired
-    private ReservaRepository reservaRepository;
-
-    @Autowired
-    private CuentaRepository cuentaRepository;
-
-    public DatabaseInit(RoomController roomController) {
-        this.roomController = roomController;
-    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Random rand = new Random();
 
         // ========================
         // Load Usuarios
@@ -70,13 +56,6 @@ public class DatabaseInit implements ApplicationRunner {
             usuario.setTipo(usuarioJson.get("tipo").asText());
             usuarioRepository.save(usuario);
         }
-
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        // Filtrar solo los clientes (usuarios con tipo = "cliente")
-        List<Usuario> clientes = usuarios.stream()
-                .filter(u -> "cliente".equalsIgnoreCase(u.getTipo()))
-                .toList();
-
         // ========================
         // Load RoomTypes
         // ========================
@@ -108,13 +87,12 @@ public class DatabaseInit implements ApplicationRunner {
             room.setHabitacionNumber(roomJson.get("numeroHabitacion").asText());
             room.setAvailable(roomJson.get("disponible").asBoolean());
 
-            Roomtype rt = roomTypes.get(rand.nextInt(roomTypes.size()));
+            int floor = Integer.parseInt(roomJson.get("numeroHabitacion").asText().substring(0, 1));
+            Roomtype rt = roomTypes.get(floor);
             room.setType(rt);
 
             roomRepository.save(room);
         }
-
-        List<Room> rooms = roomRepository.findAll();
 
         // ========================
         // Load Servicios
@@ -131,39 +109,5 @@ public class DatabaseInit implements ApplicationRunner {
             servicioRepository.save(servicio);
         }
 
-        List<Servicio> servicios = servicioRepository.findAll();
-
-        // ========================
-        // Crear Reservas y Cuentas Dummy
-        // ========================
-        /* 
-        for (int i = 0; i < 5; i++) {
-            Usuario cliente = clientes.get(rand.nextInt(clientes.size()));
-
-            Reserva reserva = new Reserva();
-            reserva.setCliente(cliente);
-            reserva.setFechaInicio(LocalDate.parse("2025-10-15"));
-            reserva.setFechaFin(LocalDate.parse("2025-10-18"));
-            reserva.setEstado("CONFIRMADA");
-
-            List<Room> reservaRooms = new ArrayList<>();
-            reservaRooms.add(rooms.get(rand.nextInt(rooms.size())));
-            reserva.setRooms(reservaRooms);
-
-            Cuenta cuenta = new Cuenta();
-            cuenta.setEstado("ABIERTA");
-            cuenta.setTotal(0.0);
-
-            List<Servicio> cuentaServicios = new ArrayList<>();
-            cuentaServicios.add(servicios.get(rand.nextInt(servicios.size())));
-            cuenta.setServicios(cuentaServicios);
-
-            cuenta.setReserva(reserva);
-            reserva.setCuenta(cuenta);
-
-            reservaRepository.save(reserva);
-            cuentaRepository.save(cuenta);
-        }
-        */
     }
 }

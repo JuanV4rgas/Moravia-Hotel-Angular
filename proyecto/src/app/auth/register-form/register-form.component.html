@@ -31,7 +31,7 @@
       <input id="email" formControlName="email" type="email" placeholder="tu@correo.com" required />
       <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
         <span *ngIf="registerForm.get('email')?.errors?.['required']">El correo es requerido.</span>
-        <span *ngIf="registerForm.get('email')?.errors?.['email']">Ingresa un correo válido.</span>
+        <span *ngIf="registerForm.get('email')?.errors?.['pattern']">Ingresa un correo válido.</span>
       </div>
     </div>
 

@@ -1,14 +1,104 @@
 {
   "roomtypes": [
-    { "id": "RT001", "name": "Suite Presidencial", "description": "Suite de lujo con jacuzzi y mayordomo.", "price": 1850, "capacity": "2 adultos + 1 niño", "numberOfBeds": 1, "image": "https://giessbach.ch/images/image_uploads/GrandhotelGiessbach_%C2%A9DigitaleMassarbeit_269.jpg", "type": "Suite" },
-    { "id": "RT002", "name": "Suite Real", "description": "Decoración clásica, chimenea y terraza.", "price": 1350, "capacity": "2 adultos", "numberOfBeds": 1, "image": "https://giessbach.ch/images/image_uploads/224_Weber-Suite-Wohnzimmer.jpg", "type": "Suite" },
-    { "id": "RT003", "name": "Junior Suite", "description": "Elegante con sala de estar separada.", "price": 890, "capacity": "2 adultos + 1 niño", "numberOfBeds": 1, "image": "https://giessbach.ch/images/image_uploads/Suite-Horace-Edouard-Zimmer.jpg", "type": "Suite" },
-    { "id": "RT004", "name": "Deluxe Panorámica", "description": "Vistas al centro histórico de Praga.", "price": 520, "capacity": "2 adultos", "numberOfBeds": 1, "image": "https://giessbach.ch/images/image_uploads/_zimmer/Suite-von-Rappard-Wohnecke.jpg", "type": "Doble" },
-    { "id": "RT005", "name": "Superior Doble", "description": "Dos camas, escritorio y baño privado.", "price": 340, "capacity": "2 adultos", "numberOfBeds": 2, "image": "https://giessbach.ch/images/image_uploads/_zimmer/307_DDGB-Zimmer.jpg", "type": "Doble" },
-    { "id": "RT006", "name": "Familiar Premium", "description": "Cama king, sofá cama y área de juegos.", "price": 610, "capacity": "2 adultos + 2 niños", "numberOfBeds": 2, "image": "https://giessbach.ch/images/image_uploads/306_CDGB.jpg", "type": "Doble" },
-    { "id": "RT007", "name": "Individual Deluxe", "description": "Cama queen-size y baño en mármol.", "price": 270, "capacity": "1 adulto", "numberOfBeds": 1, "image": "https://www.hola.com/horizon/original_aspect_ratio/f43d5e2f613c-habitaciones-hotel-8a-a.jpg", "type": "Sencilla" },
-    { "id": "RT008", "name": "Individual Estándar", "description": "Cama individual y escritorio.", "price": 150, "capacity": "1 adulto", "numberOfBeds": 1, "image": "https://giessbach.ch/images/image_uploads/230_GLWA_neu.jpg", "type": "Sencilla" },
-    { "id": "RT009", "name": "Penthouse Panorámico", "description": "Último piso, terraza y piscina privada.", "price": 2500, "capacity": "2 adultos", "numberOfBeds": 1, "image": "https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg", "type": "Suite" },
-    { "id": "RT010", "name": "Loft Urbano", "description": "Estilo moderno, cocina equipada.", "price": 750, "capacity": "2 adultos", "numberOfBeds": 1, "image": "https://images.pexels.com/photos/1457847/pexels-photo-1457847.jpeg", "type": "Loft" }
+    {
+      "id": "RT001",
+      "name": "Suite Presidencial",
+      "description": "Suite de lujo con jacuzzi y mayordomo.",
+      "price": 1850,
+      "capacity": "2 adultos + 1 niño",
+      "numberOfBeds": 1,
+      "image": "https://giessbach.ch/images/image_uploads/GrandhotelGiessbach_%C2%A9DigitaleMassarbeit_269.jpg",
+      "type": "Suite"
+    },
+    {
+      "id": "RT002",
+      "name": "Suite Real",
+      "description": "Decoración clásica, chimenea y terraza.",
+      "price": 1350,
+      "capacity": "2 adultos",
+      "numberOfBeds": 1,
+      "image": "https://giessbach.ch/images/image_uploads/224_Weber-Suite-Wohnzimmer.jpg",
+      "type": "Suite"
+    },
+    {
+      "id": "RT003",
+      "name": "Junior Suite",
+      "description": "Elegante con sala de estar separada.",
+      "price": 890,
+      "capacity": "2 adultos + 1 niño",
+      "numberOfBeds": 1,
+      "image": "https://giessbach.ch/images/image_uploads/Suite-Horace-Edouard-Zimmer.jpg",
+      "type": "Suite"
+    },
+    {
+      "id": "RT004",
+      "name": "Deluxe Panorámica",
+      "description": "Vistas al centro histórico de Praga.",
+      "price": 520,
+      "capacity": "2 adultos",
+      "numberOfBeds": 1,
+      "image": "https://giessbach.ch/images/image_uploads/_zimmer/Suite-von-Rappard-Wohnecke.jpg",
+      "type": "Doble"
+    },
+    {
+      "id": "RT005",
+      "name": "Superior Doble",
+      "description": "Dos camas, escritorio y baño privado.",
+      "price": 340,
+      "capacity": "2 adultos",
+      "numberOfBeds": 2,
+      "image": "https://giessbach.ch/images/image_uploads/_zimmer/307_DDGB-Zimmer.jpg",
+      "type": "Doble"
+    },
+    {
+      "id": "RT006",
+      "name": "Familiar Premium",
+      "description": "Cama king, sofá cama y área de juegos.",
+      "price": 610,
+      "capacity": "2 adultos + 2 niños",
+      "numberOfBeds": 2,
+      "image": "https://giessbach.ch/images/image_uploads/306_CDGB.jpg",
+      "type": "Doble"
+    },
+    {
+      "id": "RT007",
+      "name": "Individual Deluxe",
+      "description": "Cama queen-size y baño en mármol.",
+      "price": 270,
+      "capacity": "1 adulto",
+      "numberOfBeds": 1,
+      "image": "https://www.hola.com/horizon/original_aspect_ratio/f43d5e2f613c-habitaciones-hotel-8a-a.jpg",
+      "type": "Sencilla"
+    },
+    {
+      "id": "RT008",
+      "name": "Individual Estándar",
+      "description": "Cama individual y escritorio.",
+      "price": 150,
+      "capacity": "1 adulto",
+      "numberOfBeds": 1,
+      "image": "https://giessbach.ch/images/image_uploads/230_GLWA_neu.jpg",
+      "type": "Sencilla"
+    },
+    {
+      "id": "RT009",
+      "name": "Penthouse Panorámico",
+      "description": "Último piso, terraza y piscina privada.",
+      "price": 2500,
+      "capacity": "2 adultos",
+      "numberOfBeds": 1,
+      "image": "https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg",
+      "type": "Suite"
+    },
+    {
+      "id": "RT010",
+      "name": "Loft Urbano",
+      "description": "Estilo moderno, cocina equipada.",
+      "price": 750,
+      "capacity": "2 adultos",
+      "numberOfBeds": 1,
+      "image": "https://images.pexels.com/photos/1457847/pexels-photo-1457847.jpeg",
+      "type": "Loft"
+    }
   ]
 }
