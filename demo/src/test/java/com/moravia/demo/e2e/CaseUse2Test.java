@@ -3,1063 +3,426 @@ package com.moravia.demo.e2e;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-/**
- * Test E2E para el caso de uso 2: Reserva completa con check-in, servicios y checkout
- * 
- * IMPORTANTE: Este test asume que la aplicación ya está corriendo:
- * - Frontend Angular en http://localhost:4200
- * - Backend Spring Boot en http://localhost:8081
- * 
- * REQUISITOS PREVIOS:
- * - Usuario cliente: maria.gomez@example.com / pass456 debe existir en la BD
- * - Usuario operador: carlos.rojas@example.com / carlos123 debe existir en la BD
- * - El cliente debe tener al menos una reserva con estado CONFIRMADA o PENDIENTE
- * 
- * NOTA: Este test crea DOS ventanas de Chrome (una para el cliente y otra para el operador)
- * porque el caso de uso requiere que ambos usuarios interactúen simultáneamente.
- */
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class CaseUse2Test {
 
-    private final String baseUrl = "http://localhost:4200";
-    private final String baseXpathAuth = "/html/body/app-root/app-auth-layout/app-auth-wrap/div/app-auth-card/div";
-    private final String baseXpathReserva = "/html/body/app-root/app-portal-layout/app-reserva-form/div/form/div";
-    
-    private WebDriver driver;
-    private WebDriverWait wait;
-    private WebDriver operatorDriver;
-    private WebDriverWait operatorWait;
+        private final String baseUrl = "http://localhost:4200";
+        private final String baseXpathAuth = "/html/body/app-root/app-auth-layout/app-auth-wrap/div/app-auth-card/div";
+        private final String baseXpathReserva = "/html/body/app-root/app-portal-layout/app-reserva-form/div/form/div";
+        private final String baseXpathMisReservas = "/html/body/app-root/app-portal-layout/app-mis-reservas";
+        private final String baseXpathTablaReservas = "/html/body/app-root/app-portal-layout/app-reserva-table";
+        private final String baseXpathGestionarServicios = "/html/body/app-root/app-portal-layout/app-gestionar-servicios";
+        private final String baseXpathDetalleReserva = "/html/body/app-root/app-portal-layout/app-detalle-reserva";
 
-    @BeforeEach
-    public void init() {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--disable-extensions");
-        chromeOptions.addArguments("--disable-notifications");
-        // chromeOptions.addArguments("--headless");
+        private WebDriver driver;
+        private WebDriverWait wait;
+        private WebDriver operatorDriver;
+        private WebDriverWait operatorWait;
 
-        // Driver para el usuario cliente
-        this.driver = new ChromeDriver(chromeOptions);
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        @BeforeEach
+        public void init() {
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--disable-extensions");
+                chromeOptions.addArguments("--disable-notifications");
+                // chromeOptions.addArguments("--headless");
 
-        // Driver para el operador (en otra pestaña/ventana)
-        this.operatorDriver = new ChromeDriver(chromeOptions);
-        this.operatorWait = new WebDriverWait(operatorDriver, Duration.ofSeconds(5));
-    }
+                // Desactivar la autenticación de Chrome para que no salga el pop-up
+                Map<String, Object> prefs = new HashMap<>();
+                prefs.put("credentials_enable_service", false);
+                prefs.put("profile.password_manager_enabled", false);
+                prefs.put("profile.password_manager_leak_detection", false);
 
-    @Test
-    public void testReservaCompleta_CheckinServiciosYCheckout() {
-        // ============================================
-        // PASO 1: Usuario cliente hace login
-        // ============================================
-        driver.get(baseUrl + "/auth");
-        shortPause(2);
+                chromeOptions.setExperimentalOption("prefs", prefs);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(baseXpathAuth)));
+                // Driver para el usuario cliente
+                this.driver = new ChromeDriver(chromeOptions);
+                this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        WebElement loginEmailInput = driver.findElement(
-                By.xpath(baseXpathAuth + "/app-login-form/form/div[1]/input"));
+                // Driver para el operador (en otra pestaña/ventana)
+                this.operatorDriver = new ChromeDriver(chromeOptions);
+                this.operatorWait = new WebDriverWait(operatorDriver, Duration.ofSeconds(5));
+        }
 
-        loginEmailInput.clear();
-        loginEmailInput.sendKeys("maria.gomez@example.com");
+        @Test
+        public void testReservaCompleta_CheckinServiciosYCheckout() {
 
-        shortPause(2);
+                /* ================ FLUJO DEL CLIENTE ==================== */
+                /** Navegar a la página principal */
+                this.driver.get(baseUrl + "/home");
+                this.wait.until(ExpectedConditions
+                                .visibilityOfElementLocated(By.xpath("/html/body/app-root/app-main-layout")));
 
-        WebElement loginPasswordInput = driver.findElement(
-                By.xpath(baseXpathAuth + "/app-login-form/form/div[2]/input"));
-
-        loginPasswordInput.clear();
-        loginPasswordInput.sendKeys("pass456");
-
-        shortPause(2);
-
-        WebElement loginButton = driver.findElement(
-                By.xpath(baseXpathAuth + "/app-login-form/form/div[3]/button[1]"));
-        loginButton.click();
-
-        shortPause(3);
-
-        // ============================================
-        // PASO 1.5: Crear una reserva si no existe ninguna
-        // ============================================
-        driver.get(baseUrl + "/mis-reservas");
-        shortPause(2);
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("mis-reservas-container")));
-
-        List<WebElement> reservaCards = driver.findElements(By.className("reserva-card"));
-        
-        // Si no hay reservas, crear una nueva
-        if (reservaCards.isEmpty()) {
-            driver.get(baseUrl + "/reserva/nueva");
-            shortPause(2);
-
-            // Crear una reserva para dentro de 7 días (para que esté en estado CONFIRMADA/PENDIENTE)
-            String inicioReserva = LocalDate.now().plusDays(7).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-            String finReserva = LocalDate.now().plusDays(10).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-
-            llenarFormularioReserva(inicioReserva, finReserva);
-
-            shortPause(5); // Esperar más tiempo para que se procese la reserva
-
-            // Volver a mis reservas y esperar a que se cargue
-            driver.get(baseUrl + "/mis-reservas");
-            shortPause(3);
-
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("mis-reservas-container")));
-            
-            // Esperar a que aparezcan las reservas (puede haber un delay)
-            shortPause(2);
-            reservaCards = driver.findElements(By.className("reserva-card"));
-            
-            // Si aún no hay reservas, esperar un poco más
-            int intentos = 0;
-            while (reservaCards.isEmpty() && intentos < 3) {
                 shortPause(2);
-                reservaCards = driver.findElements(By.className("reserva-card"));
-                intentos++;
-            }
-        }
 
-        // Verificar que hay reservas
-        Assertions.assertThat(reservaCards.size()).isGreaterThan(0)
-                .withFailMessage("El cliente no tiene reservas después de intentar crear una.");
+                /** Navegar a la página de autenticación y logearse */
+                this.driver.get(baseUrl + "/auth");
 
-        // Encontrar una reserva que esté sin iniciar (estado CONFIRMADA, PENDIENTE, PROXIMA o cualquier estado que no sea FINALIZADA/CANCELADA)
-        WebElement reservaSinIniciar = null;
-        StringBuilder estadosEncontrados = new StringBuilder();
-        
-        System.out.println("📋 Buscando reserva sin iniciar. Total de reservas: " + reservaCards.size());
-        
-        for (WebElement card : reservaCards) {
-            try {
-                String estadoTexto = card.findElement(By.className("estado-badge")).getText().trim();
-                estadosEncontrados.append(estadoTexto).append("; ");
-                System.out.println("  - Estado encontrado: " + estadoTexto);
-                
-                // Aceptar cualquier estado que no sea FINALIZADA o CANCELADA
-                // Esto es más flexible porque el frontend puede calcular estados dinámicamente
-                if (!estadoTexto.contains("FINALIZADA") && !estadoTexto.contains("CANCELADA")) {
-                    reservaSinIniciar = card;
-                    System.out.println("✓ Reserva seleccionada con estado: " + estadoTexto);
-                    break;
-                }
-            } catch (Exception e) {
-                System.err.println("⚠️ Error al leer estado de reserva: " + e.getMessage());
-            }
-        }
-
-        if (reservaSinIniciar == null) {
-            // Si no encontramos ninguna, tomar la primera disponible
-            if (!reservaCards.isEmpty()) {
-                reservaSinIniciar = reservaCards.get(0);
-                System.out.println("⚠️ No se encontró reserva sin iniciar, usando la primera disponible");
-                try {
-                    String estadoPrimera = reservaSinIniciar.findElement(By.className("estado-badge")).getText().trim();
-                    System.out.println("  Estado de la primera reserva: " + estadoPrimera);
-                } catch (Exception e) {
-                    System.err.println("⚠️ No se pudo leer el estado de la primera reserva");
-                }
-            } else {
-                String mensaje = "No se encontró ninguna reserva. Estados encontrados: " + estadosEncontrados.toString();
-                System.err.println("❌ " + mensaje);
-                throw new AssertionError(mensaje);
-            }
-        }
-        
-        Assertions.assertThat(reservaSinIniciar).isNotNull()
-                .withFailMessage("No se encontró una reserva válida. Estados encontrados: " + estadosEncontrados.toString());
-
-        // Guardar el ID de la reserva para uso posterior
-        String reservaIdText = reservaSinIniciar.findElement(By.tagName("h3")).getText();
-        String reservaId = reservaIdText.replace("Reserva #", "").trim();
-        
-        System.out.println("🔄 Reserva ID obtenida: " + reservaId);
-        
-        // ============================================
-        // PASO 1.6: Resetear la reserva a estado CONFIRMADA y limpiar servicios
-        // ============================================
-        resetearReserva(reservaId);
-        
-        // Recargar la página para que los cambios se reflejen
-        driver.get(baseUrl + "/mis-reservas");
-        shortPause(2);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("mis-reservas-container")));
-        
-        // Recargar las reservas para obtener el estado actualizado
-        reservaCards = driver.findElements(By.className("reserva-card"));
-        for (WebElement card : reservaCards) {
-            String cardId = card.findElement(By.tagName("h3")).getText();
-            if (cardId.contains(reservaId)) {
-                String estadoActualizado = card.findElement(By.className("estado-badge")).getText().trim();
-                System.out.println("✅ Estado actualizado de la reserva: " + estadoActualizado);
-                break;
-            }
-        }
-        shortPause(1);
-
-        // ============================================
-        // PASO 3: Operador hace login en otra pestaña
-        // ============================================
-        operatorDriver.get(baseUrl + "/auth");
-        shortPause(2);
-
-        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(baseXpathAuth)));
-
-        WebElement operatorEmailInput = operatorDriver.findElement(
-                By.xpath(baseXpathAuth + "/app-login-form/form/div[1]/input"));
-
-        operatorEmailInput.clear();
-        operatorEmailInput.sendKeys("carlos.rojas@example.com");
-
-        shortPause(2);
-
-        WebElement operatorPasswordInput = operatorDriver.findElement(
-                By.xpath(baseXpathAuth + "/app-login-form/form/div[2]/input"));
-
-        operatorPasswordInput.clear();
-        operatorPasswordInput.sendKeys("carlos123");
-
-        shortPause(2);
-
-        WebElement operatorLoginButton = operatorDriver.findElement(
-                By.xpath(baseXpathAuth + "/app-login-form/form/div[3]/button[1]"));
-        operatorLoginButton.click();
-
-        shortPause(3);
-
-        // ============================================
-        // PASO 4: Operador va al perfil de reservas
-        // ============================================
-        operatorDriver.get(baseUrl + "/reserva/table");
-        shortPause(2);
-
-        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("services-table")));
-
-        // Esperar a que la tabla se cargue
-        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("service-row")));
-
-        // Encontrar la fila de la reserva del usuario
-        List<WebElement> rows = operatorDriver.findElements(By.className("service-row"));
-        WebElement reservaRow = null;
-
-        for (WebElement row : rows) {
-            String idCell = row.findElement(By.className("cell-id")).getText();
-            if (idCell.equals(reservaId)) {
-                reservaRow = row;
-                break;
-            }
-        }
-
-        Assertions.assertThat(reservaRow).isNotNull()
-                .withFailMessage("No se encontró la reserva con ID " + reservaId + " en la tabla del operador");
-
-        // ============================================
-        // PASO 5: Operador activa (realiza check-in) la reserva
-        // ============================================
-        // Verificar el estado actual antes de intentar activar
-        String estadoAntesActivar = reservaRow.findElement(By.className("cell-estado"))
-                .findElement(By.className("estado-badge")).getText().trim();
-        System.out.println("📋 Estado de la reserva antes de activar: " + estadoAntesActivar);
-        
-        // Si la reserva ya está ACTIVA, saltarse el paso de activación
-        if (estadoAntesActivar.contains("ACTIVA")) {
-            System.out.println("✅ La reserva ya está ACTIVA, saltándose el paso de activación");
-            // Asegurar que tenemos la reservaRow actualizada
-            shortPause(1);
-        } else {
-            // Solo intentar activar si no está ACTIVA
-            WebElement btnActivar = reservaRow.findElement(By.className("btn-activar"));
-            
-            // Scroll al botón para asegurar que esté visible
-            ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].scrollIntoView({block: 'center'});", btnActivar);
-            shortPause(1);
-            
-            // Verificar si el botón está habilitado (método más confiable)
-            boolean isEnabled = btnActivar.isEnabled();
-            System.out.println("🔘 Botón activar está habilitado: " + isEnabled);
-            
-            if (!isEnabled) {
-                System.err.println("⚠️ El botón de activar está deshabilitado. Estado de la reserva: " + estadoAntesActivar);
-                System.err.println("⚠️ Solo se puede activar una reserva con estado CONFIRMADA o INACTIVA");
-                throw new AssertionError("El botón de activar está deshabilitado. Estado actual: " + estadoAntesActivar);
-            }
-            
-            // Proceder con la activación
-        {
-            // Esperar a que sea clickeable
-            operatorWait.until(ExpectedConditions.elementToBeClickable(btnActivar));
-            
-            // Intentar click normal primero
-            try {
-                btnActivar.click();
-            } catch (Exception e) {
-                // Si falla, usar JavaScript click
-                System.out.println("⚠️ Click normal falló, usando JavaScript click");
-                ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].click();", btnActivar);
-            }
-            
-            shortPause(3);
-            
-            // Manejar PRIMERA alerta: confirm('¿Activar esta reserva?')
-            boolean confirmAceptado = false;
-            try {
-                WebDriverWait alertWait = new WebDriverWait(operatorDriver, Duration.ofSeconds(10));
-                alertWait.until(ExpectedConditions.alertIsPresent());
-                String confirmText = operatorDriver.switchTo().alert().getText();
-                System.out.println("✅ Confirmación recibida: " + confirmText);
-                operatorDriver.switchTo().alert().accept(); // Aceptar el confirm
-                confirmAceptado = true;
                 shortPause(2);
-            } catch (Exception e) {
-                System.err.println("⚠️ No se encontró el confirm de activación después de 10 segundos: " + e.getMessage());
-                System.err.println("⚠️ Continuando de todas formas...");
-            }
-            
-            // Esperar SEGUNDA alerta: alert('Reserva activada exitosamente')
-            boolean alertAceptado = false;
-            if (confirmAceptado) {
-                try {
-                    WebDriverWait alertWait = new WebDriverWait(operatorDriver, Duration.ofSeconds(10));
-                    alertWait.until(ExpectedConditions.alertIsPresent());
-                    String alertText = operatorDriver.switchTo().alert().getText();
-                    System.out.println("✅ Alerta recibida: " + alertText);
-                    operatorDriver.switchTo().alert().accept(); // Aceptar el alert
-                    alertAceptado = true;
-                    shortPause(2);
-                } catch (Exception e) {
-                    System.err.println("⚠️ No se encontró el alert de éxito después de 10 segundos: " + e.getMessage());
-                    System.err.println("⚠️ El confirm fue aceptado, pero no apareció el alert. Puede que la operación haya fallado.");
-                }
-            }
-            
-            // Si no se encontraron las alertas, esperar un poco más para que la operación se complete
-            if (!confirmAceptado || !alertAceptado) {
-                System.out.println("⏳ Esperando más tiempo para que la operación se complete...");
-                shortPause(3);
-            }
-            
-            // Esperar a que la tabla se recargue automáticamente
-            shortPause(3);
-            
-            // Recargar la tabla para asegurar que tenemos los datos actualizados
-            operatorDriver.get(baseUrl + "/reserva/table");
-            shortPause(2);
-            
-            operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("service-row")));
-            
-            // Recargar la fila
-            rows = operatorDriver.findElements(By.className("service-row"));
-            reservaRow = null;
-            for (WebElement row : rows) {
-                String idCell = row.findElement(By.className("cell-id")).getText();
-                if (idCell.equals(reservaId)) {
-                    reservaRow = row;
-                    break;
-                }
-            }
-            
-            Assertions.assertThat(reservaRow).isNotNull()
-                    .withFailMessage("No se encontró la reserva con ID " + reservaId + " después de activar");
-            
-            // Verificar que el estado cambió a ACTIVA
-            String estadoActual = reservaRow.findElement(By.className("cell-estado"))
-                    .findElement(By.className("estado-badge")).getText().trim();
-            System.out.println("Estado actual de la reserva: " + estadoActual);
-            
-            // Si aún no está ACTIVA, intentar activar directamente mediante API
-            if (!estadoActual.contains("ACTIVA")) {
-                System.out.println("⚠️ Estado aún no es ACTIVA, intentando activar mediante API...");
-                
-                // Intentar activar directamente mediante API
-                try {
-                    String scriptActivar = String.format(
-                        "var callback = arguments[arguments.length - 1]; " +
-                        "(async function() { " +
-                        "  try { " +
-                        "    var res1 = await fetch('http://localhost:8081/reserva/find/%s'); " +
-                        "    var reserva = await res1.json(); " +
-                        "    var dto = { " +
-                        "      fechaInicio: reserva.fechaInicio, " +
-                        "      fechaFin: reserva.fechaFin, " +
-                        "      estado: 'ACTIVA', " +
-                        "      roomIds: reserva.rooms ? reserva.rooms.map(r => r.id) : [] " +
-                        "    }; " +
-                        "    var res2 = await fetch('http://localhost:8081/reserva/update/%s', { " +
-                        "      method: 'PUT', " +
-                        "      headers: { 'Content-Type': 'application/json' }, " +
-                        "      body: JSON.stringify(dto) " +
-                        "    }); " +
-                        "    callback(res2.ok); " +
-                        "  } catch(e) { " +
-                        "    console.error('Error:', e); " +
-                        "    callback(false); " +
-                        "  } " +
-                        "})();",
-                        reservaId, reservaId
-                    );
-                    
-                    Object resultado = ((JavascriptExecutor) operatorDriver).executeAsyncScript(scriptActivar);
-                    if (Boolean.TRUE.equals(resultado)) {
-                        System.out.println("✅ Reserva activada mediante API");
-                        shortPause(2);
-                        
-                        // Recargar la tabla
-                        operatorDriver.get(baseUrl + "/reserva/table");
-                        shortPause(2);
-                        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("service-row")));
-                        
-                        // Recargar la fila
-                        rows = operatorDriver.findElements(By.className("service-row"));
-                        for (WebElement row : rows) {
-                            String idCell = row.findElement(By.className("cell-id")).getText();
-                            if (idCell.equals(reservaId)) {
-                                reservaRow = row;
-                                estadoActual = reservaRow.findElement(By.className("cell-estado"))
-                                        .findElement(By.className("estado-badge")).getText().trim();
-                                System.out.println("Estado después de activar mediante API: " + estadoActual);
+
+                llenarFormularioLogin("maria.gomez@example.com", "pass456", this.driver, this.wait);
+
+                shortPause(2);
+
+                /** Navegar a la página de reserva y realizar una nueva reserva */
+                this.driver.get(baseUrl + "/reserva/nueva");
+                shortPause(2);
+
+                String inicioReserva = LocalDate.now().plusDays(-3).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                String finReserva = LocalDate.now().plusDays(10).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+                llenarFormularioReserva(inicioReserva, finReserva, this.driver, this.wait);
+
+                shortPause(2);
+
+                /** Navegar a la página de mis reservas y obtener el id de la reserva */
+                this.driver.get(baseUrl + "/mis-reservas");
+
+                this.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(baseXpathMisReservas)));
+                shortPause(2);
+
+                WebElement elemento = this.driver.findElement(
+                                By.xpath(baseXpathMisReservas + "/div/div[2]/div[1]/div[1]/div[1]/h3"));
+                String texto = elemento.getText(); // "Reserva #123"
+                String idReserva = texto.split("#")[1]; // "123"
+
+                /* ================ FLUJO DEL OPERADOR ==================== */
+                /** Navegar a la página principal */
+                this.operatorDriver.get(baseUrl + "/home");
+
+                shortPause(2);
+
+                /** Navegar a la página de autenticación y logearse */
+                this.operatorDriver.get(baseUrl + "/auth");
+
+                shortPause(2);
+
+                llenarFormularioLogin("carlos.rojas@example.com", "carlos123", this.operatorDriver, this.operatorWait);
+
+                shortPause(1);
+
+                Actions actions = new Actions(this.operatorDriver);
+                actions.sendKeys(Keys.ESCAPE).perform();
+                shortPause(1);
+
+                shortPause(2);
+
+                /** Navegar a la tabla de reservas y activar la reserva */
+                this.operatorDriver.get(baseUrl + "/reserva/table");
+                this.operatorWait
+                                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(baseXpathTablaReservas)));
+                shortPause(2);
+
+                WebElement reservaIdInput = this.operatorDriver
+                                .findElement(By.xpath(baseXpathTablaReservas + "/main/div/div[2]/div[1]/div[2]/input"));
+                reservaIdInput.clear();
+                reservaIdInput.sendKeys(idReserva);
+
+                shortPause(2);
+
+                WebElement tablaReserva = this.operatorDriver
+                                .findElement(By.xpath(baseXpathTablaReservas + "/main/div/div[3]/table/tbody"));
+                ((JavascriptExecutor) this.operatorDriver).executeScript("arguments[0].scrollIntoView(true);",
+                                tablaReserva);
+
+                shortPause(1);
+
+                WebElement botonActivar = this.operatorDriver.findElement(By
+                                .xpath(baseXpathTablaReservas + "/main/div/div[3]/table/tbody/tr/td[7]/div/button[3]"));
+                botonActivar.click();
+
+                limpiarAlertasPendientes(this.operatorDriver, this.operatorWait);
+
+                shortPause(2);
+
+                /**
+                 * Navegar a la página de gestión de servicios y añadir servicios a la
+                 * reserva
+                 */
+                WebElement botonServicios = this.operatorDriver.findElement(By
+                                .xpath(baseXpathTablaReservas + "/main/div/div[3]/table/tbody/tr/td[7]/div/button[2]"));
+                botonServicios.click();
+
+                this.operatorWait.until(
+                                ExpectedConditions.presenceOfElementLocated(By.xpath(baseXpathGestionarServicios)));
+                shortPause(1);
+
+                WebElement serviciosGrid = this.operatorDriver
+                                .findElement(By.xpath(baseXpathGestionarServicios + "/div/div[3]/div/div[1]"));
+                ((JavascriptExecutor) this.operatorDriver).executeScript("arguments[0].scrollIntoView(true);",
+                                serviciosGrid);
+
+                shortPause(1);
+
+                WebElement botonAgregarServicio1 = this.operatorDriver.findElement(
+                                By.xpath(baseXpathGestionarServicios + "/div/div[3]/div/div[1]/div[3]/button"));
+                this.operatorWait.until(ExpectedConditions.elementToBeClickable(botonAgregarServicio1));
+                shortPause(1);
+                ((JavascriptExecutor) this.operatorDriver).executeScript("arguments[0].click();",
+                                botonAgregarServicio1);
+                shortPause(1);
+                ((JavascriptExecutor) this.operatorDriver).executeScript("window.scrollTo(0, 0);");
+
+                shortPause(2);
+
+                this.operatorWait.until(
+                                ExpectedConditions.presenceOfElementLocated(By.xpath(baseXpathGestionarServicios)));
+                shortPause(2);
+
+                serviciosGrid = this.operatorDriver
+                                .findElement(By.xpath(baseXpathGestionarServicios + "/div/div[3]/div/div[1]"));
+                ((JavascriptExecutor) this.operatorDriver).executeScript("arguments[0].scrollIntoView(true);",
+                                serviciosGrid);
+
+                this.operatorWait.until(ExpectedConditions.presenceOfElementLocated(
+                                By.xpath(baseXpathGestionarServicios + "/div/div[3]/div/div[2]/div[3]/button")));
+
+                WebElement botonAgregarServicio2 = this.operatorDriver.findElement(
+                                By.xpath(baseXpathGestionarServicios + "/div/div[3]/div/div[2]/div[3]/button"));
+                this.operatorWait.until(ExpectedConditions.elementToBeClickable(botonAgregarServicio2));
+                shortPause(1);
+                ((JavascriptExecutor) this.operatorDriver).executeScript("arguments[0].click();",
+                                botonAgregarServicio2);
+                shortPause(1);
+                ((JavascriptExecutor) this.operatorDriver).executeScript("window.scrollTo(0, 0);");
+
+                /* ================ FLUJO DEL CLIENTE ==================== */
+                /** Navegar a la página de mis reservas para ver los servicios y el total */
+                this.driver.get(baseUrl + "/mis-reservas");
+                this.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(baseXpathMisReservas)));
+                shortPause(2);
+
+                /* Navegar a la página de detalle de la reserva */
+                this.driver.get(baseUrl + "/reserva/detalle/" + idReserva);
+                shortPause(2);
+
+                WebElement serviciosReserva = this.driver
+                                .findElement(By.xpath(baseXpathDetalleReserva + "/div/div/div[2]/div[3]"));
+                ((JavascriptExecutor) this.driver).executeScript("arguments[0].scrollIntoView(true);",
+                                serviciosReserva);
+                shortPause(4);
+
+                WebElement totalReserva = this.driver
+                                .findElement(By.xpath(baseXpathDetalleReserva + "/div/div/div[2]/div[4]"));
+                ((JavascriptExecutor) this.driver).executeScript("arguments[0].scrollIntoView(true);", totalReserva);
+                shortPause(4);
+
+                /* ================ FLUJO DEL OPERADOR ==================== */
+                /** Navegar a la página la tabla de reservas y hacer el chaeckout */
+                this.operatorDriver.get(baseUrl + "/reserva/table");
+                this.operatorWait
+                                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(baseXpathTablaReservas)));
+                shortPause(2);
+
+                reservaIdInput = this.operatorDriver
+                                .findElement(By.xpath(baseXpathTablaReservas + "/main/div/div[2]/div[1]/div[2]/input"));
+                reservaIdInput.clear();
+                reservaIdInput.sendKeys(idReserva);
+
+                shortPause(2);
+
+                tablaReserva = this.operatorDriver
+                                .findElement(By.xpath(baseXpathTablaReservas + "/main/div/div[3]/table/tbody"));
+                ((JavascriptExecutor) this.operatorDriver).executeScript("arguments[0].scrollIntoView(true);",
+                                tablaReserva);
+                shortPause(1);
+
+                /* Hacer el pago de la reserva */
+                WebElement botonPagar = this.operatorDriver.findElement(By
+                                .xpath(baseXpathTablaReservas + "/main/div/div[3]/table/tbody/tr/td[7]/div/button[5]"));
+                botonPagar.click();
+                limpiarAlertasPendientes(this.operatorDriver, this.operatorWait);
+
+                shortPause(2);
+
+                /* Finalizar la reserva */
+                WebElement botonFinalizar = this.operatorDriver.findElement(By
+                                .xpath(baseXpathTablaReservas + "/main/div/div[3]/table/tbody/tr/td[7]/div/button[4]"));
+                botonFinalizar.click();
+                limpiarAlertasPendientes(this.operatorDriver, this.operatorWait);
+
+                /* ================ FLUJO DEL CLIENTE ==================== */
+                /*
+                 * Navegar a la página de detalle de la reserva para ver el estaodo de la
+                 * reserva
+                 */
+                this.driver.get(baseUrl + "/reserva/detalle/" + idReserva);
+                shortPause(2);
+
+                serviciosReserva = this.driver
+                                .findElement(By.xpath(baseXpathDetalleReserva + "/div/div/div[2]/div[3]"));
+                ((JavascriptExecutor) this.driver).executeScript("arguments[0].scrollIntoView(true);",
+                                serviciosReserva);
+                shortPause(4);
+
+                totalReserva = this.driver.findElement(By.xpath(baseXpathDetalleReserva + "/div/div/div[2]/div[4]"));
+                ((JavascriptExecutor) this.driver).executeScript("arguments[0].scrollIntoView(true);", totalReserva);
+                shortPause(4);
+        }
+
+        private void limpiarAlertasPendientes(WebDriver driver, WebDriverWait wait) {
+                int maxIntentos = 3;
+                int intentos = 0;
+                boolean alertHandled = false;
+                while (intentos < maxIntentos) {
+                        try {
+                                WebDriverWait alertWait = new WebDriverWait(driver, Duration.ofSeconds(2));
+                                alertWait.until(ExpectedConditions.alertIsPresent());
+                                String alertText = driver.switchTo().alert().getText();
+                                System.out.println("Limpiando alerta pendiente: " + alertText);
+                                shortPause(3); // Delay to see the alert content
+                                driver.switchTo().alert().accept();
+                                intentos++;
+                                alertHandled = true;
+                                shortPause(1);
+                        } catch (Exception e) {
+                                // No hay más alertas pendientes
                                 break;
-                            }
                         }
-                    }
-                } catch (Exception e) {
-                    System.err.println("⚠️ Error al activar mediante API: " + e.getMessage());
                 }
-            }
-            
-            // Verificar que el estado sea ACTIVA o al menos permita continuar
-            if (!estadoActual.contains("ACTIVA") && !estadoActual.contains("CONFIRMADA")) {
-                Assertions.fail("El estado no es ACTIVA ni CONFIRMADA. Estado actual: " + estadoActual + ", estado anterior: " + estadoAntesActivar);
-            }
-            
-            System.out.println("✅ Estado verificado: " + estadoActual + " (permite continuar con el flujo)");
-        }
-        }
-
-        // ============================================
-        // PASO 6: Operador agrega 2 servicios a la reserva
-        // ============================================
-        // Asegurar que la reservaRow esté actualizada
-        rows = operatorDriver.findElements(By.className("service-row"));
-        reservaRow = null;
-        for (WebElement row : rows) {
-            String idCell = row.findElement(By.className("cell-id")).getText();
-            if (idCell.equals(reservaId)) {
-                reservaRow = row;
-                break;
-            }
-        }
-        Assertions.assertThat(reservaRow).isNotNull()
-                .withFailMessage("No se encontró la reserva con ID " + reservaId + " antes de agregar servicios");
-        
-        WebElement btnServicios = reservaRow.findElement(By.className("btn-servicios"));
-        
-        // Scroll al botón
-        ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].scrollIntoView({block: 'center', behavior: 'smooth'});", btnServicios);
-        shortPause(2);
-        
-        // Esperar a que sea clickeable
-        operatorWait.until(ExpectedConditions.elementToBeClickable(btnServicios));
-        
-        // Verificar que el botón no esté deshabilitado
-        boolean btnServiciosEnabled = btnServicios.isEnabled();
-        System.out.println("🔘 Botón servicios está habilitado: " + btnServiciosEnabled);
-        
-        if (!btnServiciosEnabled) {
-            throw new AssertionError("El botón de servicios está deshabilitado. La reserva debe estar ACTIVA para agregar servicios.");
-        }
-        
-        // Usar JavaScript click directamente para evitar interceptación
-        ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].click();", btnServicios);
-
-        shortPause(3);
-
-        // Esperar a que se cargue la página de gestión de servicios
-        operatorWait.until(ExpectedConditions.urlContains("/reserva/servicios/"));
-
-        // Esperar a que se carguen los servicios disponibles
-        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("servicios-grid")));
-
-        shortPause(2);
-
-        // Encontrar los primeros 2 servicios disponibles
-        List<WebElement> servicioCards = operatorDriver.findElements(By.className("servicio-card"));
-        Assertions.assertThat(servicioCards.size()).isGreaterThanOrEqualTo(2)
-                .withFailMessage("No hay suficientes servicios disponibles (se requieren al menos 2)");
-
-        // Agregar primer servicio
-        WebElement primerServicio = servicioCards.get(0);
-        WebElement btnAgregarPrimero = primerServicio.findElement(By.cssSelector("button.btn-primary"));
-        
-        // Scroll al elemento para asegurar que esté visible
-        ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].scrollIntoView({block: 'center', behavior: 'smooth'});", btnAgregarPrimero);
-        shortPause(2);
-        
-        // Esperar a que sea clickeable
-        operatorWait.until(ExpectedConditions.elementToBeClickable(btnAgregarPrimero));
-        
-        // Usar JavaScript click para evitar interceptación
-        try {
-            ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].click();", btnAgregarPrimero);
-        } catch (Exception e) {
-            // Si falla, intentar click normal
-            btnAgregarPrimero.click();
-        }
-
-        shortPause(3);
-
-        // Recargar servicios disponibles
-        servicioCards = operatorDriver.findElements(By.className("servicio-card"));
-
-        // Agregar segundo servicio
-        if (servicioCards.size() >= 2) {
-            WebElement segundoServicio = servicioCards.get(1);
-            WebElement btnAgregarSegundo = segundoServicio.findElement(By.cssSelector("button.btn-primary"));
-            
-            // Scroll al elemento para asegurar que esté visible
-            ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].scrollIntoView({block: 'center', behavior: 'smooth'});", btnAgregarSegundo);
-            shortPause(2);
-            
-            // Esperar a que sea clickeable
-            operatorWait.until(ExpectedConditions.elementToBeClickable(btnAgregarSegundo));
-            
-            // Usar JavaScript click para evitar interceptación
-            try {
-                ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].click();", btnAgregarSegundo);
-            } catch (Exception e) {
-                // Si falla, intentar click normal
-                btnAgregarSegundo.click();
-            }
-
-            shortPause(3);
-        }
-
-        // Verificar que los servicios se agregaron correctamente
-        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("servicios-cuenta")));
-        List<WebElement> serviciosEnCuenta = operatorDriver.findElements(By.className("servicio-cuenta-item"));
-        Assertions.assertThat(serviciosEnCuenta.size()).isGreaterThanOrEqualTo(2)
-                .withFailMessage("No se agregaron correctamente los servicios a la cuenta");
-
-        // Verificar el total en el resumen (debe ser mayor a 0)
-        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".resumen-item.total")));
-        WebElement totalElement = operatorDriver.findElement(By.cssSelector(".resumen-item.total"));
-        String totalText = totalElement.findElements(By.tagName("span")).get(1).getText();
-        double totalEsperado = Double.parseDouble(totalText.replace("$", "").replace(",", "").trim());
-        Assertions.assertThat(totalEsperado).isGreaterThan(0.0);
-        
-        System.out.println("✅ Servicios agregados correctamente. Total: $" + totalEsperado);
-        shortPause(2);
-        
-        // Recargar la tabla de reservas para que el botón de pagar se actualice
-        operatorDriver.get(baseUrl + "/reserva/table");
-        shortPause(2);
-        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("services-table")));
-        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("service-row")));
-        System.out.println("✅ Tabla de reservas recargada después de agregar servicios");
-
-        // ============================================
-        // PASO 7: Usuario acaba su estadía y desea realizar checkout
-        // ============================================
-        // El usuario vuelve a revisar sus reservas
-        driver.get(baseUrl + "/mis-reservas");
-        shortPause(2);
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("mis-reservas-container")));
-
-        // Encontrar la reserva actualizada
-        reservaCards = driver.findElements(By.className("reserva-card"));
-        WebElement reservaActualizada = null;
-        for (WebElement card : reservaCards) {
-            String cardId = card.findElement(By.tagName("h3")).getText();
-            if (cardId.contains(reservaId)) {
-                reservaActualizada = card;
-                break;
-            }
-        }
-
-        Assertions.assertThat(reservaActualizada).isNotNull();
-
-        // Verificar que la reserva ahora está ACTIVA
-        String estadoUsuario = reservaActualizada.findElement(By.className("estado-badge")).getText();
-        Assertions.assertThat(estadoUsuario).containsIgnoringCase("ACTIVA");
-
-        // ============================================
-        // PASO 8: Usuario va donde el operador y decide pagar
-        // ============================================
-        // El operador vuelve a la tabla de reservas
-        operatorDriver.get(baseUrl + "/reserva/table");
-        shortPause(2);
-
-        operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("services-table")));
-
-        // Encontrar nuevamente la fila de la reserva
-        rows = operatorDriver.findElements(By.className("service-row"));
-        reservaRow = null;
-        for (WebElement row : rows) {
-            String idCell = row.findElement(By.className("cell-id")).getText();
-            if (idCell.equals(reservaId)) {
-                reservaRow = row;
-                break;
-            }
-        }
-
-        Assertions.assertThat(reservaRow).isNotNull();
-
-        // Hacer clic en el botón de pagar
-        // Buscar el botón dentro de la fila de reserva
-        WebElement btnPagar = null;
-        try {
-            btnPagar = reservaRow.findElement(By.className("btn-pagar"));
-        } catch (Exception e) {
-            // Si no se encuentra, esperar un poco y recargar la fila
-            System.out.println("⚠️ Botón de pagar no encontrado, recargando fila...");
-            shortPause(2);
-            rows = operatorDriver.findElements(By.className("service-row"));
-            for (WebElement row : rows) {
-                String idCell = row.findElement(By.className("cell-id")).getText();
-                if (idCell.equals(reservaId)) {
-                    reservaRow = row;
-                    btnPagar = reservaRow.findElement(By.className("btn-pagar"));
-                    break;
+                // Intentar dismissar popups con ESC solo si no se manejaron alertas
+                if (!alertHandled) {
+                        try {
+                                Actions actions = new Actions(driver);
+                                actions.sendKeys(Keys.ESCAPE).perform();
+                                shortPause(1);
+                        } catch (Exception e) {
+                                // Ignorar si no hay popup
+                        }
                 }
-            }
-        }
-        
-        Assertions.assertThat(btnPagar).isNotNull()
-                .withFailMessage("No se encontró el botón de pagar para la reserva " + reservaId);
-        
-        // Scroll al botón
-        ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].scrollIntoView({block: 'center', behavior: 'smooth'});", btnPagar);
-        shortPause(2);
-        
-        // Esperar a que sea visible
-        operatorWait.until(ExpectedConditions.visibilityOf(btnPagar));
-        shortPause(1);
-        
-        // Verificar que el botón no esté deshabilitado
-        boolean btnPagarEnabled = btnPagar.isEnabled();
-        System.out.println("🔘 Botón pagar está habilitado: " + btnPagarEnabled);
-        
-        // Si no está habilitado, intentar esperar un poco más por si acaso
-        if (!btnPagarEnabled) {
-            shortPause(2);
-            btnPagarEnabled = btnPagar.isEnabled();
-            System.out.println("🔘 Botón pagar está habilitado (después de esperar): " + btnPagarEnabled);
-        }
-        
-        if (!btnPagarEnabled) {
-            System.out.println("⚠️ El botón de pagar está deshabilitado. Verificando si la reserva ya fue pagada...");
-            // Verificar el estado de la reserva
-            String estadoReserva = reservaRow.findElement(By.className("cell-estado"))
-                    .findElement(By.className("estado-badge")).getText().trim();
-            System.out.println("Estado de la reserva: " + estadoReserva);
-            // Si la reserva ya está finalizada o pagada, continuar
-            if (estadoReserva.contains("FINALIZADA")) {
-                System.out.println("✅ La reserva ya está finalizada, saltándose el paso de pago");
-            } else {
-                throw new AssertionError("El botón de pagar está deshabilitado. Estado de la reserva: " + estadoReserva);
-            }
-        } else {
-            // Usar JavaScript click directamente para evitar interceptación
-            ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].click();", btnPagar);
-
-            shortPause(2);
-
-            // Manejar la alerta de confirmación si existe
-            try {
-                operatorWait.until(ExpectedConditions.alertIsPresent());
-                String alertText = operatorDriver.switchTo().alert().getText();
-                System.out.println("✅ Alerta de confirmación recibida: " + alertText);
-                // Verificar que el monto mencionado en la alerta sea el apropiado
-                if (alertText.contains("$")) {
-                    // Extraer el monto de la alerta y verificar
-                    String montoEnAlerta = alertText.replaceAll(".*?\\$([0-9,]+(\\.[0-9]+)?).*", "$1");
-                    double montoAlerta = Double.parseDouble(montoEnAlerta.replace(",", ""));
-                    Assertions.assertThat(montoAlerta).isGreaterThan(0);
-                }
-                operatorDriver.switchTo().alert().accept();
-                shortPause(2);
-            } catch (Exception e) {
-                // No hay alerta de confirmación, continuar
-                System.out.println("⚠️ No se encontró alerta de confirmación: " + e.getMessage());
-            }
-
-            // Manejar la alerta de éxito del pago (puede aparecer después de la confirmación)
-            try {
-                operatorWait.until(ExpectedConditions.alertIsPresent());
-                String alertText = operatorDriver.switchTo().alert().getText();
-                System.out.println("✅ Alerta de éxito recibida: " + alertText);
-                operatorDriver.switchTo().alert().accept();
-                shortPause(2);
-            } catch (Exception e) {
-                // No hay alerta de éxito, continuar
-                System.out.println("⚠️ No se encontró alerta de éxito: " + e.getMessage());
-            }
-
-            shortPause(2);
-
-            // Asegurar que no haya alertas pendientes antes de recargar
-            try {
-                WebDriverWait alertWait = new WebDriverWait(operatorDriver, Duration.ofSeconds(2));
-                alertWait.until(ExpectedConditions.alertIsPresent());
-                operatorDriver.switchTo().alert().accept();
-                shortPause(1);
-            } catch (Exception e) {
-                // No hay alertas pendientes, continuar
-            }
-
-            // Recargar la tabla
-            operatorDriver.get(baseUrl + "/reserva/table");
-            shortPause(2);
-
-            // Recargar la fila para verificar el cambio
-            rows = operatorDriver.findElements(By.className("service-row"));
-            for (WebElement row : rows) {
-                String idCell = row.findElement(By.className("cell-id")).getText();
-                if (idCell.equals(reservaId)) {
-                    reservaRow = row;
-                    break;
-                }
-            }
         }
 
-        // ============================================
-        // PASO 9: Finalizar la reserva (si aún está activa)
-        // ============================================
-        // Verificar si la reserva necesita ser finalizada
-        String estadoFinal = reservaRow.findElement(By.className("cell-estado"))
-                .findElement(By.className("estado-badge")).getText();
-
-        if (estadoFinal.contains("ACTIVA")) {
-            WebElement btnFinalizar = reservaRow.findElement(By.className("btn-finalizar"));
-            
-            // Scroll al botón
-            ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].scrollIntoView(true);", btnFinalizar);
-            shortPause(1);
-            
-            // Esperar a que sea clickeable
-            operatorWait.until(ExpectedConditions.elementToBeClickable(btnFinalizar));
-            
-            String disabledFinalizar = btnFinalizar.getAttribute("disabled");
-            if (disabledFinalizar == null || !disabledFinalizar.equals("true")) {
+        private void shortPause(int seconds) {
                 try {
-                    btnFinalizar.click();
-                } catch (Exception e) {
-                    // Si falla el click normal, usar JavaScript click
-                    ((JavascriptExecutor) operatorDriver).executeScript("arguments[0].click();", btnFinalizar);
+                        Thread.sleep(seconds * 1000L);
+                } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                 }
+        }
 
-                shortPause(3);
-
-                // Manejar todas las alertas que puedan aparecer (confirmación y éxito)
-                int maxAlertas = 3;
-                int alertasManejadas = 0;
-                while (alertasManejadas < maxAlertas) {
-                    try {
-                        WebDriverWait alertWait = new WebDriverWait(operatorDriver, Duration.ofSeconds(5));
-                        alertWait.until(ExpectedConditions.alertIsPresent());
-                        String alertText = operatorDriver.switchTo().alert().getText();
-                        System.out.println("✅ Alerta recibida: " + alertText);
-                        operatorDriver.switchTo().alert().accept();
-                        alertasManejadas++;
-                        shortPause(1);
-                    } catch (Exception e) {
-                        // No hay más alertas
-                        break;
-                    }
-                }
-                
-                System.out.println("✅ Total de alertas manejadas: " + alertasManejadas);
+        private void llenarFormularioReserva(String inicio, String fin, WebDriver driver, WebDriverWait wait) {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath(baseXpathReserva + "[1]")));
 
                 shortPause(2);
-                
-                // Asegurar que no haya alertas pendientes antes de recargar
-                limpiarAlertasPendientes(operatorDriver, operatorWait);
 
-                // Recargar la tabla
-                operatorDriver.get(baseUrl + "/reserva/table");
+                WebElement dateInputStart = driver.findElement(By.xpath(
+                                baseXpathReserva + "/div/div[1]/input"));
+                dateInputStart.clear();
+                dateInputStart.sendKeys(inicio);
+
                 shortPause(2);
 
-                // Verificar que la reserva está finalizada
-                rows = operatorDriver.findElements(By.className("service-row"));
-                reservaRow = null;
-                for (WebElement row : rows) {
-                    String idCell = row.findElement(By.className("cell-id")).getText();
-                    if (idCell.equals(reservaId)) {
-                        reservaRow = row;
-                        break;
-                    }
-                }
-                
-                Assertions.assertThat(reservaRow).isNotNull()
-                        .withFailMessage("No se encontró la reserva con ID " + reservaId + " después de finalizar");
+                WebElement dateInputEnd = driver.findElement(By.xpath(
+                                baseXpathReserva + "/div/div[2]/input"));
+                dateInputEnd.clear();
+                dateInputEnd.sendKeys(fin);
 
-                String estadoFinalizado = reservaRow.findElement(By.className("cell-estado"))
-                        .findElement(By.className("estado-badge")).getText().trim();
-                
-                // Si aún no está FINALIZADA, intentar finalizar mediante API
-                if (!estadoFinalizado.contains("FINALIZADA")) {
-                    System.out.println("⚠️ Estado aún no es FINALIZADA (" + estadoFinalizado + "), intentando finalizar mediante API...");
-                    
-                    try {
-                        String scriptFinalizar = String.format(
-                            "var callback = arguments[arguments.length - 1]; " +
-                            "(async function() { " +
-                            "  try { " +
-                            "    var res1 = await fetch('http://localhost:8081/reserva/find/%s'); " +
-                            "    var reserva = await res1.json(); " +
-                            "    var dto = { " +
-                            "      fechaInicio: reserva.fechaInicio, " +
-                            "      fechaFin: reserva.fechaFin, " +
-                            "      estado: 'FINALIZADA', " +
-                            "      roomIds: reserva.rooms ? reserva.rooms.map(r => r.id) : [] " +
-                            "    }; " +
-                            "    var res2 = await fetch('http://localhost:8081/reserva/update/%s', { " +
-                            "      method: 'PUT', " +
-                            "      headers: { 'Content-Type': 'application/json' }, " +
-                            "      body: JSON.stringify(dto) " +
-                            "    }); " +
-                            "    callback(res2.ok); " +
-                            "  } catch(e) { " +
-                            "    console.error('Error:', e); " +
-                            "    callback(false); " +
-                            "  } " +
-                            "})();",
-                            reservaId, reservaId
-                        );
-                        
-                        Object resultado = ((JavascriptExecutor) operatorDriver).executeAsyncScript(scriptFinalizar);
-                        if (Boolean.TRUE.equals(resultado)) {
-                            System.out.println("✅ Reserva finalizada mediante API");
-                            shortPause(2);
-                            
-                            // Asegurar que no haya alertas pendientes antes de recargar
-                            limpiarAlertasPendientes(operatorDriver, operatorWait);
-                            
-                            // Recargar la tabla
-                            operatorDriver.get(baseUrl + "/reserva/table");
-                            shortPause(2);
-                            operatorWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("service-row")));
-                            
-                            // Recargar la fila
-                            rows = operatorDriver.findElements(By.className("service-row"));
-                            for (WebElement row : rows) {
-                                String idCell = row.findElement(By.className("cell-id")).getText();
-                                if (idCell.equals(reservaId)) {
-                                    reservaRow = row;
-                                    estadoFinalizado = reservaRow.findElement(By.className("cell-estado"))
-                                            .findElement(By.className("estado-badge")).getText().trim();
-                                    System.out.println("Estado después de finalizar mediante API: " + estadoFinalizado);
-                                    break;
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        System.err.println("⚠️ Error al finalizar mediante API: " + e.getMessage());
-                    }
-                }
-                
-                Assertions.assertThat(estadoFinalizado).containsIgnoringCase("FINALIZADA")
-                        .withFailMessage("El estado no cambió a FINALIZADA. Estado actual: " + estadoFinalizado);
-            }
-        } else {
-            // Ya está finalizada
-            Assertions.assertThat(estadoFinal).containsIgnoringCase("FINALIZADA");
+                shortPause(2);
+
+                wait.until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath(
+                                                baseXpathReserva + "[2]/app-room-type-selector")));
+
+                WebElement roomTypeGrid = driver.findElement(By.xpath(
+                                baseXpathReserva + "[2]/app-room-type-selector/div/div[2]"));
+
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", roomTypeGrid);
+
+                shortPause(2);
+
+                WebElement roomTypeSelect = driver.findElement(By.xpath(
+                                baseXpathReserva + "[2]/app-room-type-selector/div/div[3]/div[1]"));
+
+                roomTypeSelect.click();
+
+                shortPause(2);
+
+                wait.until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath(baseXpathReserva + "[3]/app-room-selector")));
+
+                WebElement roomGrid = driver.findElement(By.xpath(
+                                baseXpathReserva + "[3]/app-room-selector/div"));
+
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", roomGrid);
+
+                shortPause(2);
+
+                WebElement roomSelect = driver.findElement(By.xpath(
+                                baseXpathReserva + "[3]/app-room-selector/div/div[2]/div[1]"));
+                roomSelect.click();
+
+                wait.until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath(baseXpathReserva + "[4]")));
+
+                shortPause(2);
+
+                WebElement formAction = driver.findElement(By.xpath(
+                                baseXpathReserva + "[4]/div[2]"));
+
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", formAction);
+
+                shortPause(2);
+
+                WebElement submitButton = driver.findElement(By.xpath(
+                                baseXpathReserva + "[4]/div[2]/button"));
+
+                submitButton.click();
+
+                shortPause(2);
+
+                ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
         }
-    }
 
-    /**
-     * Resetea una reserva a estado CONFIRMADA y limpia los servicios de su cuenta
-     * usando llamadas HTTP al API del backend mediante JavaScript fetch
-     */
-    private void resetearReserva(String reservaId) {
-        try {
-            System.out.println("🔄 Reseteando reserva " + reservaId + " a estado CONFIRMADA...");
-            
-            // Script completo que obtiene la reserva, resetea el estado y limpia la cuenta
-            String scriptCompleto = String.format(
-                "var callback = arguments[arguments.length - 1]; " +
-                "(async function() { " +
-                "  try { " +
-                "    var res1 = await fetch('http://localhost:8081/reserva/find/%s'); " +
-                "    var reserva = await res1.json(); " +
-                "    var dto = { " +
-                "      fechaInicio: reserva.fechaInicio, " +
-                "      fechaFin: reserva.fechaFin, " +
-                "      estado: 'CONFIRMADA', " +
-                "      roomIds: reserva.rooms ? reserva.rooms.map(r => r.id) : [] " +
-                "    }; " +
-                "    var res2 = await fetch('http://localhost:8081/reserva/update/%s', { " +
-                "      method: 'PUT', " +
-                "      headers: { 'Content-Type': 'application/json' }, " +
-                "      body: JSON.stringify(dto) " +
-                "    }); " +
-                "    if (reserva.cuenta && reserva.cuenta.id) { " +
-                "      var totalServicios = (reserva.cuenta.servicios || []).reduce(function(sum, s) { return sum + (s.precio || 0); }, 0); " +
-                "      var totalHabitaciones = reserva.cuenta.total - totalServicios; " +
-                "      var cuentaDto = { " +
-                "        id: reserva.cuenta.id, " +
-                "        estado: 'ABIERTA', " +
-                "        total: totalHabitaciones, " +
-                "        servicioIds: [] " +
-                "      }; " +
-                "      await fetch('http://localhost:8081/cuenta/update/' + reserva.cuenta.id, { " +
-                "        method: 'POST', " +
-                "        headers: { 'Content-Type': 'application/json' }, " +
-                "        body: JSON.stringify(cuentaDto) " +
-                "      }); " +
-                "    } " +
-                "    callback(res2.ok); " +
-                "  } catch(e) { " +
-                "    console.error('Error:', e); " +
-                "    callback(false); " +
-                "  } " +
-                "})();",
-                reservaId, reservaId
-            );
-            
-            Object resultado = ((JavascriptExecutor) driver).executeAsyncScript(scriptCompleto);
-            
-            if (Boolean.TRUE.equals(resultado)) {
-                System.out.println("✅ Reserva reseteada exitosamente a CONFIRMADA y cuenta limpiada");
-            } else {
-                System.err.println("⚠️ Error al resetear reserva, continuando de todas formas...");
-            }
-            
-            shortPause(3); // Esperar más tiempo para que se procesen los cambios
-            
-        } catch (Exception e) {
-            System.err.println("⚠️ Error al resetear reserva: " + e.getMessage());
-            e.printStackTrace();
-            // Continuar de todas formas, el test puede seguir
+        private void llenarFormularioLogin(String email, String password, WebDriver driver, WebDriverWait wait) {
+
+                wait.until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath(baseXpathAuth)));
+
+                shortPause(2);
+
+                WebElement loginEmailInput = driver.findElement(
+                                org.openqa.selenium.By.xpath(
+                                                baseXpathAuth + "/app-login-form/form/div[1]/input"));
+
+                loginEmailInput.sendKeys(email);
+
+                shortPause(2);
+
+                WebElement loginPasswordInput = driver.findElement(
+                                org.openqa.selenium.By.xpath(
+                                                baseXpathAuth + "/app-login-form/form/div[2]/input"));
+
+                loginPasswordInput.sendKeys(password);
+
+                shortPause(2);
+
+                WebElement loginButton = driver.findElement(
+                                org.openqa.selenium.By.xpath(
+                                                baseXpathAuth + "/app-login-form/form/div[3]/button[1]"));
+                loginButton.click();
         }
-    }
-
-    /**
-     * Limpia todas las alertas pendientes antes de realizar operaciones que requieren navegación
-     */
-    private void limpiarAlertasPendientes(WebDriver driver, WebDriverWait wait) {
-        int maxIntentos = 3;
-        int intentos = 0;
-        while (intentos < maxIntentos) {
-            try {
-                WebDriverWait alertWait = new WebDriverWait(driver, Duration.ofSeconds(2));
-                alertWait.until(ExpectedConditions.alertIsPresent());
-                String alertText = driver.switchTo().alert().getText();
-                System.out.println("🔔 Limpiando alerta pendiente: " + alertText);
-                driver.switchTo().alert().accept();
-                intentos++;
-                shortPause(1);
-            } catch (Exception e) {
-                // No hay más alertas pendientes
-                break;
-            }
-        }
-    }
-
-    private void shortPause(int seconds) {
-        try {
-            Thread.sleep(seconds * 1000L);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
-
-    private void llenarFormularioReserva(String inicio, String fin) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(baseXpathReserva + "[1]")));
-
-        shortPause(2);
-
-        WebElement dateInputStart = driver.findElement(By.xpath(
-                baseXpathReserva + "/div/div[1]/input"));
-        dateInputStart.clear();
-        dateInputStart.sendKeys(inicio);
-
-        shortPause(2);
-
-        WebElement dateInputEnd = driver.findElement(By.xpath(
-                baseXpathReserva + "/div/div[2]/input"));
-        dateInputEnd.clear();
-        dateInputEnd.sendKeys(fin);
-
-        shortPause(2);
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(
-                        baseXpathReserva + "[2]/app-room-type-selector")));
-
-        WebElement roomTypeGrid = driver.findElement(By.xpath(
-                baseXpathReserva + "[2]/app-room-type-selector/div/div[2]"));
-
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", roomTypeGrid);
-
-        shortPause(2);
-
-        WebElement roomTypeSelect = driver.findElement(By.xpath(
-                baseXpathReserva + "[2]/app-room-type-selector/div/div[3]/div[1]"));
-
-        roomTypeSelect.click();
-
-        shortPause(2);
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(baseXpathReserva + "[3]/app-room-selector")));
-
-        WebElement roomGrid = driver.findElement(By.xpath(
-                baseXpathReserva + "[3]/app-room-selector/div"));
-
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", roomGrid);
-
-        shortPause(2);
-
-        WebElement roomSelect = driver.findElement(By.xpath(
-                baseXpathReserva + "[3]/app-room-selector/div/div[2]/div[1]"));
-        roomSelect.click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(baseXpathReserva + "[4]")));
-
-        shortPause(2);
-
-        WebElement formAction = driver.findElement(By.xpath(
-                baseXpathReserva + "[4]/div[2]"));
-
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", formAction);
-
-        shortPause(2);
-
-        WebElement submitButton = driver.findElement(By.xpath(
-                baseXpathReserva + "[4]/div[2]/button"));
-
-        submitButton.click();
-
-        shortPause(2);
-
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
-    }
-
-    @AfterEach
-    void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-        if (operatorDriver != null) {
-            operatorDriver.quit();
-        }
-    }
 }
