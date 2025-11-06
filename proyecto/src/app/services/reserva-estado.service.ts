@@ -17,7 +17,7 @@ export class ReservaEstadoService {
     const fechaFin = new Date(reserva.fechaFin);
     
     // Si ya pasó la fecha de fin, está finalizada
-    if (fechaFin < hoy) {
+    if (fechaFin < hoy || reserva.estado === 'FINALIZADA') {
       return 'FINALIZADA';
     }
     
