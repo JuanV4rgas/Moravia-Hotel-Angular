@@ -28,17 +28,47 @@
           </select>
         </div>
 
-        <!-- Búsqueda general -->
+        <!-- Búsqueda por ID -->
         <div class="filter-group">
-          <label for="filtroBusqueda" class="filter-label">
-            <i class="fas fa-search"></i> Buscar:
+          <label for="filtroId" class="filter-label">
+            <i class="fas fa-hashtag"></i> ID de Reserva:
           </label>
           <input
             type="text"
-            id="filtroBusqueda"
+            id="filtroId"
             class="filter-input"
-            placeholder="ID, email o habitación..."
-            [(ngModel)]="filtroBusqueda"
+            placeholder="Buscar por ID..."
+            [(ngModel)]="filtroId"
+            (input)="aplicarFiltros()"
+          />
+        </div>
+
+        <!-- Búsqueda por email -->
+        <div class="filter-group">
+          <label for="filtroEmail" class="filter-label">
+            <i class="fas fa-envelope"></i> Email del Cliente:
+          </label>
+          <input
+            type="text"
+            id="filtroEmail"
+            class="filter-input"
+            placeholder="Buscar por email..."
+            [(ngModel)]="filtroEmail"
+            (input)="aplicarFiltros()"
+          />
+        </div>
+
+        <!-- Búsqueda por habitación -->
+        <div class="filter-group">
+          <label for="filtroHabitacion" class="filter-label">
+            <i class="fas fa-door-open"></i> Habitación:
+          </label>
+          <input
+            type="text"
+            id="filtroHabitacion"
+            class="filter-input"
+            placeholder="Buscar por habitación..."
+            [(ngModel)]="filtroHabitacion"
             (input)="aplicarFiltros()"
           />
         </div>

@@ -19,9 +19,11 @@ export class ReservaTableComponent implements OnInit {
   loading = false;
   error: string | null = null;
 
-  // Filtros
+  // Filtros separados
   filtroEstado: string = 'TODAS';
-  filtroBusqueda: string = '';
+  filtroId: string = '';
+  filtroEmail: string = '';
+  filtroHabitacion: string = '';
 
   /** id de la fila que se está procesando */
   cancellingId: number | null = null;
@@ -68,7 +70,7 @@ export class ReservaTableComponent implements OnInit {
       });
   }
 
-  /** Aplica todos los filtros activos */
+  /** Aplica todos los filtros activos de manera independiente */
   aplicarFiltros(): void {
     let resultado = [...this.reservas];
 
@@ -80,17 +82,30 @@ export class ReservaTableComponent implements OnInit {
       });
     }
 
-    // Filtro por búsqueda (busca en email del cliente, ID, habitaciones)
-    if (this.filtroBusqueda && this.filtroBusqueda.trim().length > 0) {
-      const busqueda = this.filtroBusqueda.toLowerCase().trim();
+    // Filtro por ID de reserva
+    if (this.filtroId && this.filtroId.trim().length > 0) {
+      const busquedaId = this.filtroId.toLowerCase().trim();
       resultado = resultado.filter(r => {
         const id = String((r as any)?.id || '').toLowerCase();
+        return id.includes(busquedaId);
+      });
+    }
+
+    // Filtro por email del cliente
+    if (this.filtroEmail && this.filtroEmail.trim().length > 0) {
+      const busquedaEmail = this.filtroEmail.toLowerCase().trim();
+      resultado = resultado.filter(r => {
         const email = ((r as any)?.cliente?.email || '').toLowerCase();
+        return email.includes(busquedaEmail);
+      });
+    }
+
+    // Filtro por número de habitación
+    if (this.filtroHabitacion && this.filtroHabitacion.trim().length > 0) {
+      const busquedaHabitacion = this.filtroHabitacion.toLowerCase().trim();
+      resultado = resultado.filter(r => {
         const habitaciones = this.roomNumOf(r).toLowerCase();
-        
-        return id.includes(busqueda) || 
-               email.includes(busqueda) || 
-               habitaciones.includes(busqueda);
+        return habitaciones.includes(busquedaHabitacion);
       });
     }
 
@@ -100,7 +115,9 @@ export class ReservaTableComponent implements OnInit {
   /** Limpia todos los filtros */
   limpiarFiltros(): void {
     this.filtroEstado = 'TODAS';
-    this.filtroBusqueda = '';
+    this.filtroId = '';
+    this.filtroEmail = '';
+    this.filtroHabitacion = '';
     this.aplicarFiltros();
   }
 
