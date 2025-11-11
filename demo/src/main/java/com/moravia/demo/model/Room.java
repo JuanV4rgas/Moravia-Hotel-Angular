@@ -1,7 +1,11 @@
 package com.moravia.demo.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Room {
 
     @Id
@@ -45,5 +52,10 @@ public class Room {
     public double getPrecioPorNoche() {
         // Retorna el precio base definido en el Roomtype
         return type != null && type.getPrice() != null ? type.getPrice() : 0.0;
+    }
+
+    public Room(String habitacionNumber, boolean available) {
+        this.habitacionNumber = habitacionNumber;
+        this.available = available;
     }
 }
