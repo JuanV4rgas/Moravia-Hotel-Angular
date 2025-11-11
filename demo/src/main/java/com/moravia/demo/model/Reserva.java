@@ -8,11 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
 @Entity
@@ -35,7 +32,7 @@ public class Reserva {
     @JoinColumn(name = "cliente_id")
     private Usuario cliente;
 
-    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL)
     @JsonIgnore
     private Cuenta cuenta;
 
