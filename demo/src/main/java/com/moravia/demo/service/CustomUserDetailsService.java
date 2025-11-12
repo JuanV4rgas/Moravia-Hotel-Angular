@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,11 +28,25 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuario no encontrado");
         }
 
-        Set<GrantedAuthority> authorities = usuario.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toSet());
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
+            authorities.addAll(
+                usuario.getRoles().stream()
+                    .map(role -> new SimpleGrantedAuthority(role.getName()))
+                    .collect(Collectors.toSet())
+            );
+        } else if (usuario.getTipo() != null) {
+            // Fallback: mapear campo tipo (cliente|administrador|operador) a ROLE_*
+            String mappedRole = switch (usuario.getTipo().toLowerCase()) {
+                case "administrador" -> "ROLE_ADMIN";
+                case "operador" -> "ROLE_OPERADOR";
+                case "cliente" -> "ROLE_CLIENTE";
+                default -> "ROLE_CLIENTE";
+            };
+            authorities.add(new SimpleGrantedAuthority(mappedRole));
+        }
 
         return new User(usuario.getEmail(), usuario.getClave(), authorities);
     }
 }
-

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
@@ -57,6 +57,7 @@ import { GestionarServiciosComponent } from './reserva/gestionar-servicios/gesti
 import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.component';
 import { PortalLayoutComponent } from './layouts/portal-layout/portal-layout.component';
 import { CuentaTableComponent } from './cuenta/cuenta-table/cuenta-table.component';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -123,7 +124,9 @@ import { CuentaTableComponent } from './cuenta/cuenta-table/cuenta-table.compone
     RouterModule,
     CommonModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

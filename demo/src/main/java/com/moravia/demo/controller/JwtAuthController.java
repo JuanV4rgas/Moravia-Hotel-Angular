@@ -1,10 +1,13 @@
 package com.moravia.demo.controller;
 
 import com.moravia.demo.dto.request.LoginRequestDTO;
+import com.moravia.demo.dto.request.RefreshTokenRequestDTO;
 import com.moravia.demo.dto.response.LoginResponseDTO;
 import com.moravia.demo.dto.response.UserInfoDTO;
+import com.moravia.demo.model.RefreshToken;
 import com.moravia.demo.model.Usuario;
 import com.moravia.demo.security.JwtTokenProvider;
+import com.moravia.demo.service.RefreshTokenService;
 import com.moravia.demo.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +16,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://127.0.0.1:4200"})
 public class JwtAuthController {
 
     @Autowired
@@ -32,6 +36,9 @@ public class JwtAuthController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
@@ -46,8 +53,17 @@ public class JwtAuthController {
 
         String token = tokenProvider.generateToken(request.getEmail(), roles);
         Usuario usuario = usuarioService.searchByEmail(request.getEmail());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(usuario);
 
-        LoginResponseDTO response = new LoginResponseDTO(token, usuario.getNombre(), usuario.getTipo(), roles);
+        LoginResponseDTO response = new LoginResponseDTO(
+                token,
+                refreshToken.getToken(),
+                usuario.getIdUsuario(),
+                usuario.getEmail(),
+                usuario.getNombre(),
+                usuario.getTipo(),
+                resolveRoles(usuario, roles)
+        );
         return ResponseEntity.ok(response);
     }
 
@@ -64,11 +80,56 @@ public class JwtAuthController {
         return ResponseEntity.ok(dto);
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponseDTO> refresh(@RequestBody RefreshTokenRequestDTO request) {
+        RefreshToken refreshToken = refreshTokenService.findByToken(request.getRefreshToken())
+                .map(refreshTokenService::verifyExpiration)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token no válido"));
+
+        Usuario usuario = refreshToken.getUsuario();
+        List<String> roles = resolveRoles(usuario, null);
+        String token = tokenProvider.generateToken(usuario.getEmail(), roles);
+
+        LoginResponseDTO response = new LoginResponseDTO(
+                token,
+                refreshToken.getToken(),
+                usuario.getIdUsuario(),
+                usuario.getEmail(),
+                usuario.getNombre(),
+                usuario.getTipo(),
+                roles
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        // Stateless: el cliente debe eliminar el token del almacenamiento
+    public ResponseEntity<Void> logout(@RequestBody(required = false) RefreshTokenRequestDTO request) {
+        if (request != null && request.getRefreshToken() != null) {
+            refreshTokenService.deleteByToken(request.getRefreshToken());
+        }
         SecurityContextHolder.clearContext();
         return ResponseEntity.noContent().build();
     }
-}
 
+    private List<String> resolveRoles(Usuario usuario, List<String> fallback) {
+        if (usuario.getRoles() != null && !usuario.getRoles().isEmpty()) {
+            return usuario.getRoles().stream()
+                    .map(role -> role.getName())
+                    .collect(Collectors.toList());
+        }
+        if (fallback != null && !fallback.isEmpty()) {
+            return fallback;
+        }
+        if (usuario.getTipo() != null) {
+            String role = switch (usuario.getTipo().toLowerCase()) {
+                case "administrador" -> "ROLE_ADMIN";
+                case "operador" -> "ROLE_OPERADOR";
+                case "cliente" -> "ROLE_CLIENTE";
+                default -> "ROLE_CLIENTE";
+            };
+            return List.of(role);
+        }
+        return List.of();
+    }
+}
