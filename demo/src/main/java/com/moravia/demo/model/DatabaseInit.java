@@ -158,33 +158,42 @@ public class DatabaseInit implements ApplicationRunner {
                 .filter(u -> u.getTipo() != null && u.getTipo().equalsIgnoreCase("cliente"))
                 .toList();
 
+        System.out.println("Total de clientes encontrados: " + clientes.size());
+
         List<Reserva> reservasCreadas = new java.util.ArrayList<>();
-        int maxReservas = 6;
-        int[] roomIndices = { 0, 4, 9 };
 
-        for (int i = 0, j = 0; i < maxReservas; i++) {
-            if (j == clientes.size() - 1)
-                j = 0;
-            Usuario cliente = clientes.get(j);
-            j++;
-            int roomIdx = roomIndices[i % roomIndices.length];
-            Room selectedRoom = rooms.get(roomIdx % rooms.size());
+        // Solo crear reservas si hay clientes disponibles
+        if (!clientes.isEmpty()) {
+            int maxReservas = 6;
+            int[] roomIndices = { 0, 4, 9 };
+            int clienteIdx = 0;
 
-            // Distribuir reservas en los últimos 6 meses
-            LocalDate fechaInicio = LocalDate.now().minusMonths(6 - i);
-            LocalDate fechaFin = fechaInicio.plusDays(4);
+            for (int i = 0; i < maxReservas; i++) {
+                Usuario cliente = clientes.get(clienteIdx % clientes.size());
+                clienteIdx++;
 
-            Reserva r = reservaRepository.save(Reserva.builder()
-                    .fechaInicio(fechaInicio)
-                    .fechaFin(fechaFin)
-                    .estado("CONFIRMADA")
-                    .cliente(cliente)
-                    .rooms(List.of(selectedRoom))
-                    .build());
+                int roomIdx = roomIndices[i % roomIndices.length];
+                Room selectedRoom = rooms.get(roomIdx % rooms.size());
 
-            reservasCreadas.add(r);
-            System.out.println("Reserva creada: " + cliente.getNombre() + " (" + cliente.getEmail() 
-                + ") - Habitación " + selectedRoom.getHabitacionNumber() + " - " + fechaInicio + " a " + fechaFin);
+                // Distribuir reservas en los últimos 6 meses
+                LocalDate fechaInicio = LocalDate.now().minusMonths(6 - i);
+                LocalDate fechaFin = fechaInicio.plusDays(4);
+
+                Reserva r = reservaRepository.save(Reserva.builder()
+                        .fechaInicio(fechaInicio)
+                        .fechaFin(fechaFin)
+                        .estado("CONFIRMADA")
+                        .cliente(cliente)
+                        .rooms(List.of(selectedRoom))
+                        .build());
+
+                reservasCreadas.add(r);
+                System.out.println("✓ Reserva creada: " + cliente.getNombre() + " (" + cliente.getEmail()
+                        + ") - Habitación " + selectedRoom.getHabitacionNumber() + " - " + fechaInicio + " a "
+                        + fechaFin);
+            }
+        } else {
+            System.out.println("⚠ No hay clientes disponibles para crear reservas");
         }
 
         // Crear cuentas para cada reserva creada: 1 room por reserva y 2 servicios
@@ -205,7 +214,7 @@ public class DatabaseInit implements ApplicationRunner {
                 totalServicios += s2.getPrecio();
 
             Cuenta cuenta = Cuenta.builder()
-                    .estado("ABIERTA")
+                    .estado("PAGADA")
                     .total(totalServicios)
                     .reserva(r)
                     .servicios(List.of(s1, s2))
@@ -262,16 +271,22 @@ public class DatabaseInit implements ApplicationRunner {
                     default -> rCliente;
                 };
 
+                // Inicializar roles si es null
+                if (usuario.getRoles() == null) {
+                    usuario.setRoles(new java.util.HashSet<>());
+                }
                 usuario.getRoles().add(roleToAssign);
                 usuarioRepository.save(usuario);
                 rolesAssigned++;
-                System.out.println("Rol asignado a usuario: " + usuario.getEmail() +
+                System.out.println("✓ Rol asignado a usuario: " + usuario.getEmail() +
                         " -> " + roleToAssign.getName());
             }
         }
 
         if (rolesAssigned > 0) {
-            System.out.println("Se asignaron " + rolesAssigned + " roles a usuarios sin roles.");
+            System.out.println("✓ Se asignaron " + rolesAssigned + " roles a usuarios sin roles.");
+        } else {
+            System.out.println("✓ Todos los usuarios ya tienen roles asignados.");
         }
     }
 }
