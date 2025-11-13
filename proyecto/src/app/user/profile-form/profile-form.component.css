@@ -119,3 +119,46 @@ body {
 .form-control:not(:read-only):hover {
   border-color: var(--plum);
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.1rem;
+  }
+
+  .form-control {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline-primary,
+  .btn-outline-danger {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+
+  .form-control {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline-primary,
+  .btn-outline-danger {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}

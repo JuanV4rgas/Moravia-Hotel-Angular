@@ -81,3 +81,44 @@
   font-size: clamp(22px, 5.4vw, 72px);
   text-shadow: 0 6px 20px rgba(0,0,0,.35);
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-main .hero-img {
+    height: clamp(300px, 60vh, 600px);
+  }
+
+  .hero-main .hero-title h1 {
+    font-size: clamp(28px, 8vw, 96px);
+  }
+
+  .hero-main .hero-title h2 {
+    font-size: clamp(18px, 4.5vw, 56px);
+  }
+
+  .hero-main .hero-crest {
+    width: clamp(32px, 5vw, 60px);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-main .hero-img {
+    height: 250px;
+  }
+
+  .hero-main .hero-title {
+    padding: 12px;
+  }
+
+  .hero-main .hero-title h1 {
+    font-size: 24px;
+  }
+
+  .hero-main .hero-title h2 {
+    font-size: 16px;
+  }
+
+  .hero-main .hero-crest {
+    width: 28px;
+  }
+}

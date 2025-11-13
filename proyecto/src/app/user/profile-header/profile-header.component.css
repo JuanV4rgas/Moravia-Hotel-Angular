@@ -53,3 +53,42 @@
 .profile-username {
   color: color-mix(in srgb, #ffcb0e 82%, #ffffff 18%);
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-header {
+    padding: 2rem 0;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-name {
+    font-size: 1.6rem;
+  }
+
+  .profile-username {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header {
+    padding: 1.5rem 0;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-name {
+    font-size: 1.4rem;
+  }
+
+  .profile-username {
+    font-size: 0.9rem;
+  }
+}

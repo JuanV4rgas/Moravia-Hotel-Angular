@@ -118,3 +118,40 @@
   margin: 0.5rem 0;
   border-color: #e9ecef;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .user-profile-circle .dropdown-menu {
+    min-width: 200px;
+    right: -50px; /* Adjust position on small screens */
+  }
+
+  .user-profile-circle .dropdown-header {
+    padding: 0.8rem 1rem;
+  }
+
+  .user-profile-circle .user-info strong {
+    font-size: 0.9rem;
+  }
+
+  .user-profile-circle .user-info small {
+    font-size: 0.8rem;
+  }
+
+  .user-profile-circle .dropdown-item {
+    padding: 0.6rem 1rem !important;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-profile-circle .dropdown-menu {
+    min-width: 180px;
+    right: -70px;
+  }
+
+  .user-avatar-circle {
+    width: 32px;
+    height: 32px;
+  }
+}

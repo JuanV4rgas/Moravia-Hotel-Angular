@@ -31,3 +31,16 @@
   object-fit: cover;  /* llena sin deformar */
   z-index: 0;         /* debajo del overlay y la tarjeta */
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-wrap {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-wrap {
+    padding: 12px;
+  }
+}

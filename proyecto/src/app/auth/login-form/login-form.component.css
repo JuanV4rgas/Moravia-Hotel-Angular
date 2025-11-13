@@ -93,3 +93,48 @@ label {
   font-size: 12px;
   margin-top: 4px;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .field input {
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+
+  .btn {
+    padding: 10px 12px;
+  }
+
+  .alert {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .muted {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .field input {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  .btn {
+    padding: 8px 10px;
+  }
+
+  .alert {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .muted {
+    font-size: 12px;
+  }
+
+  .error-message {
+    font-size: 11px;
+  }
+}

@@ -121,3 +121,55 @@
 .offcanvas.hiding {
   opacity: 3; /* cuando comienza a cerrarse */
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .offcanvas-custom {
+    width: min(320px, 90vw);
+  }
+
+  .offcanvas-custom .offcanvas-body {
+    padding: 1rem;
+  }
+
+  .offcanvas-custom .menu a {
+    font-size: 1rem;
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .offcanvas-custom {
+    width: min(280px, 85vw);
+  }
+
+  .offcanvas-custom .offcanvas-header {
+    padding: 12px 16px;
+  }
+
+  .offcanvas-custom .offcanvas-body {
+    padding: 0.8rem;
+  }
+
+  .offcanvas-custom .menu a {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .offcanvas-custom .btn-close {
+    width: 36px;
+    height: 36px;
+  }
+
+  .offcanvas-custom .btn-close::after {
+    font-size: 1.2rem;
+  }
+
+  .offcanvas-custom .offcanvas-header img {
+    height: 36px;
+  }
+
+  .offcanvas-custom .titulo-logo img {
+    height: 20px;
+  }
+}

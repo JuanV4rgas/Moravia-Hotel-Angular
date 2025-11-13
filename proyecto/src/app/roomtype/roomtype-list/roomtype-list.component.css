@@ -102,3 +102,55 @@
 .cta:hover svg path {
   transform: translateX(5px);
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .servicios-container {
+    grid-template-columns: 1fr;
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .servicio-info {
+    padding: 1rem;
+  }
+
+  .servicio-info h2 {
+    font-size: 1.1rem;
+  }
+
+  .servicio-info p {
+    font-size: 0.9rem;
+  }
+
+  .cta {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .servicios-container {
+    padding: 1.5rem 0.5rem;
+    gap: 1rem;
+  }
+
+  .servicio-info {
+    padding: 0.8rem;
+  }
+
+  .servicio-info h2 {
+    font-size: 1rem;
+  }
+
+  .servicio-info p {
+    font-size: 0.85rem;
+  }
+
+  .precio {
+    font-size: 0.9rem;
+  }
+
+  .cta {
+    font-size: 0.85rem;
+  }
+}
