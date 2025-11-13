@@ -1,0 +1,159 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Dashboard <em>Analítico</em></h1>
+    <p>Resumen en tiempo real de tu hotel</p>
+  </div>
+
+  <!-- Loading / Error -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Cargando datos del dashboard...</p>
+  </div>
+
+  <div class="alert alert-error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="dashboard-content" *ngIf="!isLoading && !errorMessage">
+    <!-- Selector de período -->
+    <div class="period-selector">
+      <button
+        class="btn-period"
+        [class.active]="periodoSeleccionado === 'semana'"
+        (click)="cambiarPeriodo('semana')"
+      >
+        Última Semana
+      </button>
+      <button
+        class="btn-period"
+        [class.active]="periodoSeleccionado === 'mes'"
+        (click)="cambiarPeriodo('mes')"
+      >
+        Último Mes
+      </button>
+      <button
+        class="btn-period"
+        [class.active]="periodoSeleccionado === 'año'"
+        (click)="cambiarPeriodo('año')"
+      >
+        Último Año
+      </button>
+    </div>
+
+    <!-- Métricas principales -->
+    <div class="metrics-grid">
+      <div class="metric-card ocupacion">
+        <div class="metric-icon">
+          <i class="fas fa-bed"></i>
+        </div>
+        <div class="metric-info">
+          <h3>Ocupación</h3>
+          <p class="metric-value">{{ metricas.ocupacion }}%</p>
+          <span class="metric-label">Habitaciones ocupadas</span>
+        </div>
+      </div>
+
+      <div class="metric-card ingresos">
+        <div class="metric-icon">
+          <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="metric-info">
+          <h3>Ingresos</h3>
+          <p class="metric-value">
+            ${{ metricas.ingresos | number : "1.0-0" }}
+          </p>
+          <span class="metric-label">Total recaudado</span>
+        </div>
+      </div>
+
+      <div class="metric-card reservas">
+        <div class="metric-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="metric-info">
+          <h3>Reservas Activas</h3>
+          <p class="metric-value">{{ metricas.reservasActivas }}</p>
+          <span class="metric-label">En curso</span>
+        </div>
+      </div>
+
+      <div class="metric-card clientes">
+        <div class="metric-icon">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <div class="metric-info">
+          <h3>Clientes</h3>
+          <p class="metric-value">{{ metricas.clientesNuevos }}</p>
+          <span class="metric-label">Registrados</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos principales -->
+    <div class="charts-section">
+      <div class="chart-card large">
+        <h3>Evolución de Ocupación</h3>
+        <div class="chart-container">
+          <canvas id="chartOcupacion"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card large">
+        <h3>Evolución de Ingresos</h3>
+        <div class="chart-container">
+          <canvas id="chartIngresos"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos secundarios -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Distribución por Tipo de Habitación</h3>
+        <div class="chart-container">
+          <canvas id="chartTipoHabitacion"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>Estados de Reservas</h3>
+        <div class="chart-container">
+          <canvas id="chartEstadoReservas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de servicios top -->
+    <div class="top-services-section">
+      <h3>Top 3 Servicios Más Solicitados</h3>
+
+      <div class="services-table" *ngIf="serviciosTop.length > 0">
+        <div class="service-row header">
+          <div class="service-col">Servicio</div>
+          <div class="service-col">Cantidad</div>
+          <div class="service-col">Ingresos</div>
+        </div>
+
+        <div
+          class="service-row"
+          *ngFor="let servicio of serviciosTop; let i = index"
+        >
+          <div class="service-col">
+            <span class="rank">{{ i + 1 }}</span>
+            {{ servicio.nombre }}
+          </div>
+          <div class="service-col">{{ servicio.cantidad }}</div>
+          <div class="service-col">
+            ${{ servicio.ingresos | number : "1.0-0" }}
+          </div>
+        </div>
+      </div>
+
+      <div class="no-services" *ngIf="serviciosTop.length === 0">
+        <p>No hay servicios registrados todavía</p>
+      </div>
+    </div>
+  </div>
+</div>
