@@ -216,7 +216,7 @@ public class DatabaseInit implements ApplicationRunner {
             Cuenta cuenta = Cuenta.builder()
                     .estado("ABIERTA")
                     .total(totalServicios)
-                    .saldo(totalServicios)
+                    .saldo(0.0)
                     .reserva(r)
                     .servicios(List.of(s1, s2))
                     .build();
