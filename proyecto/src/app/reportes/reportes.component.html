@@ -1,0 +1,272 @@
+<div class="reportes-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Sistema de <em>Reportes</em></h1>
+    <p>Genera reportes personalizados de tu hotel</p>
+  </div>
+
+  <!-- Loading / Messages -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Generando reporte...</p>
+  </div>
+
+  <div class="alert alert-error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="alert alert-success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="reportes-content" *ngIf="!isLoading">
+    <!-- Selección de tipo de reporte -->
+    <div class="seccion" *ngIf="!mostrandoVistaPrevia">
+      <h3>1. Selecciona el Tipo de Reporte</h3>
+
+      <div class="tipos-grid">
+        <div
+          class="tipo-card"
+          *ngFor="let tipo of tiposReporte"
+          [class.selected]="config.tipo === tipo.id"
+          (click)="seleccionarTipo(tipo.id)"
+        >
+          <div class="tipo-icon">
+            <i class="fas" [ngClass]="tipo.icono"></i>
+          </div>
+
+          <div class="tipo-info">
+            <h4>{{ tipo.nombre }}</h4>
+            <p>{{ tipo.descripcion }}</p>
+          </div>
+
+          <div class="tipo-check" *ngIf="config.tipo === tipo.id">
+            <i class="fas fa-check-circle"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Configuración del reporte -->
+    <div class="seccion" *ngIf="config.tipo && !mostrandoVistaPrevia">
+      <h3>2. Configura el Período y Formato</h3>
+
+      <div class="config-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fechaInicio">Fecha de Inicio</label>
+            <input
+              type="date"
+              id="fechaInicio"
+              [(ngModel)]="config.fechaInicio"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="fechaFin">Fecha de Fin</label>
+            <input
+              type="date"
+              id="fechaFin"
+              [(ngModel)]="config.fechaFin"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Formato de Exportación</label>
+          <div class="formato-options">
+            <button
+              class="btn-formato"
+              [class.active]="config.formato === 'pdf'"
+              (click)="config.formato = 'pdf'"
+            >
+              <i class="fas fa-file-pdf"></i>
+              PDF
+            </button>
+            <button
+              class="btn-formato"
+              [class.active]="config.formato === 'excel'"
+              (click)="config.formato = 'excel'"
+            >
+              <i class="fas fa-file-excel"></i>
+              Excel
+            </button>
+            <button
+              class="btn-formato"
+              [class.active]="config.formato === 'csv'"
+              (click)="config.formato = 'csv'"
+            >
+              <i class="fas fa-file-csv"></i>
+              CSV
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="acciones">
+        <button class="btn btn-secondary" (click)="limpiarFormulario()">
+          <i class="fas fa-times"></i>
+          Cancelar
+        </button>
+        <button class="btn btn-primary" (click)="generarVistaPrevia()">
+          <i class="fas fa-eye"></i>
+          Generar Vista Previa
+        </button>
+      </div>
+    </div>
+
+    <!-- Vista previa del reporte -->
+    <div class="seccion" *ngIf="mostrandoVistaPrevia && vistaPrevia">
+      <div class="vista-previa-header">
+        <div>
+          <h3>Vista Previa del Reporte</h3>
+          <p class="reporte-subtitulo">{{ vistaPrevia.titulo }}</p>
+          <p class="reporte-descripcion">{{ vistaPrevia.descripcion }}</p>
+        </div>
+
+        <div class="acciones-preview">
+          <button class="btn btn-secondary" (click)="limpiarFormulario()">
+            <i class="fas fa-arrow-left"></i>
+            Nueva Búsqueda
+          </button>
+          <button class="btn btn-success" (click)="exportarReporte()">
+            <i class="fas fa-download"></i>
+            Exportar {{ config.formato.toUpperCase() }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Resumen -->
+      <div class="resumen-card" *ngIf="vistaPrevia.resumen">
+        <h4>Resumen</h4>
+        <div class="resumen-grid">
+          <div
+            class="resumen-item"
+            *ngFor="let item of vistaPrevia.resumen | keyvalue"
+          >
+            <span class="resumen-label">{{ formatearLabel(item.key) }}:</span>
+            <span class="resumen-value">{{ formatearValor(item.value) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de datos - Ocupación -->
+      <div class="datos-tabla" *ngIf="config.tipo === 'ocupacion'">
+        <table class="reporte-table">
+          <thead>
+            <tr>
+              <th>Habitación</th>
+              <th>Tipo</th>
+              <th>Reservas</th>
+              <th>Días Ocupados</th>
+              <th>Tasa Ocupación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dato of vistaPrevia.datos">
+              <td>{{ dato.habitacion }}</td>
+              <td>{{ dato.tipo }}</td>
+              <td>{{ dato.reservas }}</td>
+              <td>{{ dato.diasOcupados }}</td>
+              <td>{{ dato.tasaOcupacion }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tabla de datos - Financiero -->
+      <div class="datos-tabla" *ngIf="config.tipo === 'financiero'">
+        <table class="reporte-table">
+          <thead>
+            <tr>
+              <th>Concepto</th>
+              <th>Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dato of vistaPrevia.datos">
+              <td>{{ dato.concepto }}</td>
+              <td>${{ dato.monto | number : "1.0-0" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tabla de datos - Clientes -->
+      <div class="datos-tabla" *ngIf="config.tipo === 'clientes'">
+        <table class="reporte-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Email</th>
+              <th>Reservas</th>
+              <th>Gasto Total</th>
+              <th>Gasto Promedio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dato of vistaPrevia.datos">
+              <td>{{ dato.nombre }}</td>
+              <td>{{ dato.email }}</td>
+              <td>{{ dato.reservas }}</td>
+              <td>${{ dato.gastoTotal | number : "1.0-0" }}</td>
+              <td>${{ dato.gastoPromedio | number : "1.0-0" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tabla de datos - Reservas -->
+      <div class="datos-tabla" *ngIf="config.tipo === 'reservas'">
+        <table class="reporte-table">
+          <thead>
+            <tr>
+              <th>Estado</th>
+              <th>Cantidad</th>
+              <th>Porcentaje</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dato of vistaPrevia.datos">
+              <td>
+                <span
+                  class="estado-badge"
+                  [ngClass]="'estado-' + dato.estado.toLowerCase()"
+                >
+                  {{ dato.estado }}
+                </span>
+              </td>
+              <td>{{ dato.cantidad }}</td>
+              <td>{{ dato.porcentaje }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tabla de datos - Servicios -->
+      <div class="datos-tabla" *ngIf="config.tipo === 'servicios'">
+        <table class="reporte-table">
+          <thead>
+            <tr>
+              <th>Servicio</th>
+              <th>Cantidad</th>
+              <th>Ingresos</th>
+              <th>Precio Promedio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dato of vistaPrevia.datos">
+              <td>{{ dato.nombre }}</td>
+              <td>{{ dato.cantidad }}</td>
+              <td>${{ dato.ingresos | number : "1.0-0" }}</td>
+              <td>${{ dato.precioPromedio | number : "1.0-0" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
