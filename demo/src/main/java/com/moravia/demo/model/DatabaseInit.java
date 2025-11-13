@@ -139,6 +139,44 @@ public class DatabaseInit implements ApplicationRunner {
                 .servicios(List.of(servicios.get(0), servicios.get(1)))
                 .build());
 
+        // Asignar roles a usuarios existentes que no tienen roles
+        assignRolesToUsersWithoutRoles();
+
         System.out.println("DB inicializada con datos y roles.");
+    }
+
+    /**
+     * Asigna roles a usuarios existentes que no tienen asignado ningún rol
+     * basado en su campo 'tipo'
+     */
+    private void assignRolesToUsersWithoutRoles() {
+        Role rAdmin = roleRepository.findByName("ROLE_ADMIN").orElseThrow();
+        Role rOperador = roleRepository.findByName("ROLE_OPERADOR").orElseThrow();
+        Role rCliente = roleRepository.findByName("ROLE_CLIENTE").orElseThrow();
+
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        int rolesAssigned = 0;
+
+        for (Usuario usuario : usuarios) {
+            // Si el usuario no tiene roles asignados
+            if (usuario.getRoles() == null || usuario.getRoles().isEmpty()) {
+                Role roleToAssign = switch (usuario.getTipo().toLowerCase()) {
+                    case "administrador" -> rAdmin;
+                    case "operador" -> rOperador;
+                    case "cliente" -> rCliente;
+                    default -> rCliente;
+                };
+
+                usuario.getRoles().add(roleToAssign);
+                usuarioRepository.save(usuario);
+                rolesAssigned++;
+                System.out.println("Rol asignado a usuario: " + usuario.getEmail() + 
+                                 " -> " + roleToAssign.getName());
+            }
+        }
+
+        if (rolesAssigned > 0) {
+            System.out.println("Se asignaron " + rolesAssigned + " roles a usuarios sin roles.");
+        }
     }
 }

@@ -47,6 +47,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/auth/**", "/h2/**", "/", "/login", "/error", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/servicio/**", "/roomtype/**", "/room/**").permitAll()
+                // Permitir registro de usuarios sin autenticación
+                .requestMatchers(HttpMethod.POST, "/usuario/add").permitAll()
                 .requestMatchers("/usuario/**").hasAnyRole("ADMIN", "OPERADOR")
                 .requestMatchers("/reserva/**", "/cuenta/**").hasAnyRole("ADMIN", "OPERADOR", "CLIENTE")
                 .anyRequest().authenticated()
