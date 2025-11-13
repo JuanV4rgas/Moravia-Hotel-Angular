@@ -20,13 +20,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.core.AuthenticationException;
 
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = {"http://localhost:4200", "http://127.0.0.1:4200"})
 public class JwtAuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthController.class);
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -41,30 +46,37 @@ public class JwtAuthController {
     private RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
+    try {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getClave()));
+            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getClave()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         List<String> roles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
 
         String token = tokenProvider.generateToken(request.getEmail(), roles);
         Usuario usuario = usuarioService.searchByEmail(request.getEmail());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(usuario);
 
         LoginResponseDTO response = new LoginResponseDTO(
-                token,
-                refreshToken.getToken(),
-                usuario.getIdUsuario(),
-                usuario.getEmail(),
-                usuario.getNombre(),
-                usuario.getTipo(),
-                resolveRoles(usuario, roles)
+            token,
+            refreshToken.getToken(),
+            usuario.getIdUsuario(),
+            usuario.getEmail(),
+            usuario.getNombre(),
+            usuario.getTipo(),
+            resolveRoles(usuario, roles)
         );
         return ResponseEntity.ok(response);
+    } catch (AuthenticationException ex) {
+        // Log full exception for easier debugging and return 401 with a clear message
+        logger.info("Authentication failed for email={}: {}", request.getEmail(), ex.toString());
+        logger.debug("Authentication exception details:", ex);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+    }
     }
 
     @GetMapping("/me")
