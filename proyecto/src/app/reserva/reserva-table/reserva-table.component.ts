@@ -271,23 +271,21 @@ export class ReservaTableComponent implements OnInit {
       return;
     }
 
-    const ok = confirm(`¿Procesar pago de $${cuenta.total}? Esto limpiará la cuenta del cliente.`);
+    const ok = confirm(`¿Procesar pago de $${cuenta.total}?`);
     if (!ok) return;
 
     this.processingId = Number(id);
     
-    const cuentaLimpia = {
+    const cuentaPagada = {
       ...cuenta,
-      total: 0,
-      servicios: [],
       estado: 'PAGADA'
     };
 
-    this.cuentaService.updateCuenta(cuentaLimpia)
+    this.cuentaService.updateCuenta(cuentaPagada)
       .pipe(finalize(() => { this.processingId = null; }))
       .subscribe({
         next: () => {
-          alert('Pago procesado exitosamente. Cuenta limpiada.');
+          alert('Pago procesado exitosamente. Cuenta marcada como PAGADA.');
           this.cargarReservas();
         },
         error: (error) => {
