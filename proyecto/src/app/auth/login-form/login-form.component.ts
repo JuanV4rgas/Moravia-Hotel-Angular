@@ -42,7 +42,8 @@ export class LoginFormComponent {
         },
         error: (error) => {
           console.error('Error en login:', error);
-          this.errorMessage = error.message || 'Error al iniciar sesión';
+          // Prefer server-provided message when available (body may contain timestamp, status, message)
+          this.errorMessage = (error && error.error && (error.error.message || error.error)) || error.message || 'Error al iniciar sesión';
           this.isLoading = false;
         }
       });
