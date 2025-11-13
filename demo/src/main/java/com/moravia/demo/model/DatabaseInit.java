@@ -153,6 +153,7 @@ public class DatabaseInit implements ApplicationRunner {
         // RESERVAS
         // ===========================
         // Crear reservas iniciales SOLO para usuarios de tipo 'cliente'
+        // Las reservas abarcan los últimos 6 meses para mostrar evolución en gráficos
         List<Usuario> clientes = usuarios.stream()
                 .filter(u -> u.getTipo() != null && u.getTipo().equalsIgnoreCase("cliente"))
                 .toList();
@@ -169,15 +170,21 @@ public class DatabaseInit implements ApplicationRunner {
             int roomIdx = roomIndices[i % roomIndices.length];
             Room selectedRoom = rooms.get(roomIdx % rooms.size());
 
+            // Distribuir reservas en los últimos 6 meses
+            LocalDate fechaInicio = LocalDate.now().minusMonths(6 - i);
+            LocalDate fechaFin = fechaInicio.plusDays(4);
+
             Reserva r = reservaRepository.save(Reserva.builder()
-                    .fechaInicio(LocalDate.now())
-                    .fechaFin(LocalDate.now().plusDays(4))
+                    .fechaInicio(fechaInicio)
+                    .fechaFin(fechaFin)
                     .estado("CONFIRMADA")
                     .cliente(cliente)
                     .rooms(List.of(selectedRoom))
                     .build());
 
             reservasCreadas.add(r);
+            System.out.println("Reserva creada: " + cliente.getNombre() + " (" + cliente.getEmail() 
+                + ") - Habitación " + selectedRoom.getHabitacionNumber() + " - " + fechaInicio + " a " + fechaFin);
         }
 
         // Crear cuentas para cada reserva creada: 1 room por reserva y 2 servicios
