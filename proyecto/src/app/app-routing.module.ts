@@ -36,6 +36,8 @@ import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.
 import { authGuard, roleGuard } from './auth.guard';
 import { PortalLayoutComponent } from './layouts/portal-layout/portal-layout.component';
 import { RoomTypeEditarComponent } from './roomtype/roomtype-editar/roomtype-editar.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ReportesComponent } from './reportes/reportes.component';
 
 const routes: Routes = [
   {
@@ -74,6 +76,17 @@ const routes: Routes = [
       {
         path: 'servicio/editar/:id',
         component: ServiceEditarComponent,
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
+      },
+      // Dashboard y Reportes - Solo trabajadores
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
+      },
+      {
+        path: 'reportes',
+        component: ReportesComponent,
         canActivate: [authGuard, roleGuard(['administrador', 'operador'])],
       },
 
