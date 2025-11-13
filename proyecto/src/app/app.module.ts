@@ -58,6 +58,8 @@ import { EditarReservaComponent } from './reserva/editar-reserva/editar-reserva.
 import { PortalLayoutComponent } from './layouts/portal-layout/portal-layout.component';
 import { CuentaTableComponent } from './cuenta/cuenta-table/cuenta-table.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ReportesComponent } from './reportes/reportes.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +116,8 @@ import { AuthInterceptor } from './services/auth.interceptor';
     EditarReservaComponent,
     PortalLayoutComponent,
     CuentaTableComponent,
+    DashboardComponent,
+    ReportesComponent,
   ],
   imports: [
     BrowserModule,
