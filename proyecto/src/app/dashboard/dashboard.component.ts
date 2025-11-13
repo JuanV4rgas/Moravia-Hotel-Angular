@@ -96,6 +96,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.usuarios = usuarios || [];
       this.habitaciones = habitaciones || [];
 
+      // Vincular cuentas a reservas
+      this.reservas.forEach(r => {
+        r.cuenta = this.cuentas.find(c => c.id === r.id) as any;
+      });
+
       console.log('✓ Datos cargados:', {
         reservas: this.reservas.length,
         cuentas: this.cuentas.length,
@@ -127,9 +132,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       ? Math.round((habitacionesOcupadas / this.habitaciones.length) * 100)
       : 0;
 
-    // Calcular ingresos
+    // Calcular ingresos (lo pagado hasta el momento)
     this.metricas.ingresos = this.cuentas
-  .reduce((sum, c) => sum + (c.total! - c.saldo!), 0);
+      .reduce((sum, c) => sum + (c.saldo || 0), 0);
 
     // Reservas activas
     this.metricas.reservasActivas = this.reservas.filter(r => 
@@ -567,15 +572,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     console.log('💰 Procesando', this.cuentas.length, 'cuentas para ingresos');
 
-    // Sumar ingresos de cuentas pagadas por mes
+    // Sumar ingresos pagados por mes (incluyendo pagos parciales de cuentas abiertas)
     this.cuentas
-      .filter(c => c.estado === 'PAGADA')
       .forEach((cuenta, idx) => {
         if (cuenta.reserva && cuenta.reserva.fechaInicio) {
           const mesIdx = new Date(cuenta.reserva.fechaInicio).getMonth();
           const mesKey = meses[mesIdx];
-          console.log(`  Cuenta ${idx}: ${mesKey} - $${cuenta.total} (Estado: ${cuenta.estado})`);
-          datosIngresos[mesKey] += cuenta.total || 0;
+          console.log(`  Cuenta ${idx}: ${mesKey} - $${cuenta.saldo} pagado (Estado: ${cuenta.estado})`);
+          datosIngresos[mesKey] += cuenta.saldo || 0;
         }
       });
 

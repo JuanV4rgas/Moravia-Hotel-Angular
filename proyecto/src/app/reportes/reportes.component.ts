@@ -129,6 +129,12 @@ export class ReportesComponent implements OnInit {
       this.servicios = servicios || [];
       this.usuarios = usuarios || [];
       this.habitaciones = habitaciones || [];
+
+      // Vincular cuentas a reservas
+      this.reservas.forEach(r => {
+        r.cuenta = this.cuentas.find(c => c.id === r.id) as any;
+      });
+
       this.isLoading = false;
     }).catch(error => {
       console.error('Error al cargar datos:', error);
@@ -214,23 +220,23 @@ export class ReportesComponent implements OnInit {
 
   generarReporteFinanciero(): DatosReporte {
     const cuentasFiltradas = this.filtrarCuentasPorFechas();
-    
+
     const ingresosTotales = cuentasFiltradas
       .filter(c => c.estado === 'PAGADA')
-      .reduce((sum, c) => sum + c.total!, 0);
+      .reduce((sum, c) => sum + (c.saldo || 0), 0);
 
     const ingresosPorConcepto = [
       {
         concepto: 'Habitaciones',
-        monto: cuentasFiltradas.reduce((sum, c) => {
-          // Calcular solo habitaciones (asumiendo que el total incluye servicios)
+        monto: cuentasFiltradas.filter(c => c.estado === 'PAGADA').reduce((sum, c) => {
+          // Calcular solo habitaciones (asumiendo que el saldo incluye servicios pagados)
           const servicios = c.servicios?.reduce((s, srv) => s + srv.precio, 0) || 0;
-          return sum + (c.total! - servicios);
+          return sum + ((c.saldo || 0) - servicios);
         }, 0)
       },
       {
         concepto: 'Servicios',
-        monto: cuentasFiltradas.reduce((sum, c) => {
+        monto: cuentasFiltradas.filter(c => c.estado === 'PAGADA').reduce((sum, c) => {
           const servicios = c.servicios?.reduce((s, srv) => s + srv.precio, 0) || 0;
           return sum + servicios;
         }, 0)
@@ -264,12 +270,12 @@ export class ReportesComponent implements OnInit {
           gastoTotal: 0
         });
       }
-      
+
       const cliente = clientesMap.get(clienteId);
       cliente.reservas++;
-      
+
       if (reserva.cuenta) {
-        cliente.gastoTotal += reserva.cuenta.total;
+        cliente.gastoTotal += (reserva.cuenta.saldo || 0);
       }
     });
 

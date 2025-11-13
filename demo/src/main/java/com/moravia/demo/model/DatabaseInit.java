@@ -38,14 +38,6 @@ public class DatabaseInit implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        // Si ya hay usuarios, saltamos la inicialización (evita duplicación en cada
-        // restart)
-        List<Usuario> usuariosExistentes = usuarioRepository.findAll();
-        if (!usuariosExistentes.isEmpty()) {
-            System.out.println("BD ya inicializada. Saltando DatabaseInit.");
-            return;
-        }
-
         Random random = new Random(42);
 
         // ===========================
@@ -81,55 +73,59 @@ public class DatabaseInit implements ApplicationRunner {
         // ===========================
         // ROOMTYPES
         // ===========================
-        roomtypeRepository.save(Roomtype.builder().name("Suite Presidencial")
-                .description("Suite de lujo con jacuzzi y mayordomo.").price(1850.0).capacity("2 adultos + 1 nino")
-                .numberOfBeds(1)
-                .image("https://giessbach.ch/images/image_uploads/GrandhotelGiessbach_%C2%A9DigitaleMassarbeit_269.jpg")
-                .type("Suite").build());
-        roomtypeRepository.save(Roomtype.builder().name("Suite Real")
-                .description("Decoracion clasica, chimenea y terraza.").price(1350.0).capacity("2 adultos")
-                .numberOfBeds(1).image("https://giessbach.ch/images/image_uploads/224_Weber-Suite-Wohnzimmer.jpg")
-                .type("Suite").build());
-        roomtypeRepository.save(Roomtype.builder().name("Junior Suite")
-                .description("Elegante con sala de estar separada.").price(890.0).capacity("2 adultos + 1 nino")
-                .numberOfBeds(1).image("https://giessbach.ch/images/image_uploads/Suite-Horace-Edouard-Zimmer.jpg")
-                .type("Suite").build());
-        roomtypeRepository.save(Roomtype.builder().name("Deluxe Panoramica")
-                .description("Vistas al centro historico de Praga.").price(520.0).capacity("2 adultos").numberOfBeds(1)
-                .image("https://giessbach.ch/images/image_uploads/_zimmer/Suite-von-Rappard-Wohnecke.jpg").type("Doble")
-                .build());
-        roomtypeRepository.save(Roomtype.builder().name("Superior Doble")
-                .description("Dos camas, escritorio y bano privado.").price(340.0).capacity("2 adultos").numberOfBeds(2)
-                .image("https://giessbach.ch/images/image_uploads/_zimmer/307_DDGB-Zimmer.jpg").type("Doble").build());
-        roomtypeRepository.save(Roomtype.builder().name("Familiar Premium")
-                .description("Cama king, sofa cama y area de juegos.").price(610.0).capacity("2 adultos + 2 ninos")
-                .numberOfBeds(2).image("https://giessbach.ch/images/image_uploads/306_CDGB.jpg").type("Doble").build());
-        roomtypeRepository.save(Roomtype.builder().name("Individual Deluxe")
-                .description("Cama queen-size y bano en marmol.").price(270.0).capacity("1 adulto").numberOfBeds(1)
-                .image("https://www.hola.com/horizon/original_aspect_ratio/f43d5e2f613c-habitaciones-hotel-8a-a.jpg")
-                .type("Sencilla").build());
-        roomtypeRepository.save(Roomtype.builder().name("Individual Estandar")
-                .description("Cama individual y escritorio.").price(150.0).capacity("1 adulto").numberOfBeds(1)
-                .image("https://giessbach.ch/images/image_uploads/230_GLWA_neu.jpg").type("Sencilla").build());
-        roomtypeRepository.save(Roomtype.builder().name("Penthouse Panoramico")
-                .description("Ultimo piso, terraza y piscina privada.").price(2500.0).capacity("2 adultos")
-                .numberOfBeds(1).image("https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg")
-                .type("Suite").build());
-        roomtypeRepository.save(Roomtype.builder().name("Loft Urbano").description("Estilo moderno, cocina equipada.")
-                .price(750.0).capacity("2 adultos").numberOfBeds(1)
-                .image("https://images.pexels.com/photos/1457847/pexels-photo-1457847.jpeg").type("Loft").build());
+        if (roomtypeRepository.count() == 0) {
+            roomtypeRepository.save(Roomtype.builder().name("Suite Presidencial")
+                    .description("Suite de lujo con jacuzzi y mayordomo.").price(1850.0).capacity("2 adultos + 1 nino")
+                    .numberOfBeds(1)
+                    .image("https://giessbach.ch/images/image_uploads/GrandhotelGiessbach_%C2%A9DigitaleMassarbeit_269.jpg")
+                    .type("Suite").build());
+            roomtypeRepository.save(Roomtype.builder().name("Suite Real")
+                    .description("Decoracion clasica, chimenea y terraza.").price(1350.0).capacity("2 adultos")
+                    .numberOfBeds(1).image("https://giessbach.ch/images/image_uploads/224_Weber-Suite-Wohnzimmer.jpg")
+                    .type("Suite").build());
+            roomtypeRepository.save(Roomtype.builder().name("Junior Suite")
+                    .description("Elegante con sala de estar separada.").price(890.0).capacity("2 adultos + 1 nino")
+                    .numberOfBeds(1).image("https://giessbach.ch/images/image_uploads/Suite-Horace-Edouard-Zimmer.jpg")
+                    .type("Suite").build());
+            roomtypeRepository.save(Roomtype.builder().name("Deluxe Panoramica")
+                    .description("Vistas al centro historico de Praga.").price(520.0).capacity("2 adultos").numberOfBeds(1)
+                    .image("https://giessbach.ch/images/image_uploads/_zimmer/Suite-von-Rappard-Wohnecke.jpg").type("Doble")
+                    .build());
+            roomtypeRepository.save(Roomtype.builder().name("Superior Doble")
+                    .description("Dos camas, escritorio y bano privado.").price(340.0).capacity("2 adultos").numberOfBeds(2)
+                    .image("https://giessbach.ch/images/image_uploads/_zimmer/307_DDGB-Zimmer.jpg").type("Doble").build());
+            roomtypeRepository.save(Roomtype.builder().name("Familiar Premium")
+                    .description("Cama king, sofa cama y area de juegos.").price(610.0).capacity("2 adultos + 2 ninos")
+                    .numberOfBeds(2).image("https://giessbach.ch/images/image_uploads/306_CDGB.jpg").type("Doble").build());
+            roomtypeRepository.save(Roomtype.builder().name("Individual Deluxe")
+                    .description("Cama queen-size y bano en marmol.").price(270.0).capacity("1 adulto").numberOfBeds(1)
+                    .image("https://www.hola.com/horizon/original_aspect_ratio/f43d5e2f613c-habitaciones-hotel-8a-a.jpg")
+                    .type("Sencilla").build());
+            roomtypeRepository.save(Roomtype.builder().name("Individual Estandar")
+                    .description("Cama individual y escritorio.").price(150.0).capacity("1 adulto").numberOfBeds(1)
+                    .image("https://giessbach.ch/images/image_uploads/230_GLWA_neu.jpg").type("Sencilla").build());
+            roomtypeRepository.save(Roomtype.builder().name("Penthouse Panoramico")
+                    .description("Ultimo piso, terraza y piscina privada.").price(2500.0).capacity("2 adultos")
+                    .numberOfBeds(1).image("https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg")
+                    .type("Suite").build());
+            roomtypeRepository.save(Roomtype.builder().name("Loft Urbano").description("Estilo moderno, cocina equipada.")
+                    .price(750.0).capacity("2 adultos").numberOfBeds(1)
+                    .image("https://images.pexels.com/photos/1457847/pexels-photo-1457847.jpeg").type("Loft").build());
+        }
 
         List<Roomtype> tipos = roomtypeRepository.findAll();
 
         // ===========================
         // ROOMS
         // ===========================
-        for (int piso = 0; piso < 10; piso++) {
-            for (int num = 1; num <= 10; num++) {
-                String code = (piso + 1) + String.format("%02d", num);
-                Room room = new Room(code, true);
-                room.setType(tipos.get(random.nextInt(tipos.size())));
-                roomRepository.save(room);
+        if (roomRepository.count() == 0) {
+            for (int piso = 0; piso < 10; piso++) {
+                for (int num = 1; num <= 10; num++) {
+                    String code = (piso + 1) + String.format("%02d", num);
+                    Room room = new Room(code, true);
+                    room.setType(tipos.get(random.nextInt(tipos.size())));
+                    roomRepository.save(room);
+                }
             }
         }
         List<Room> rooms = roomRepository.findAll();
@@ -137,15 +133,17 @@ public class DatabaseInit implements ApplicationRunner {
         // ===========================
         // SERVICIOS
         // ===========================
-        servicioRepository.save(Servicio.builder().nombre("Restaurante Michelin 3 Estrellas")
-                .descripcion("Experiencia gastronomica excepcional...").precio(295.0)
-                .imagenUrl("https://cldnr.prod.webx.talpa.digital/.../pexels-cottonbro-6466288.jpg").build());
-        servicioRepository.save(Servicio.builder().nombre("Spa Royal Bohemia")
-                .descripcion("Centro de bienestar de lujo con tratamientos exclusivos...").precio(180.0)
-                .imagenUrl("https://images.pexels.com/photos/6560304/pexels-photo-6560304.jpeg").build());
-        servicioRepository.save(Servicio.builder().nombre("Bar Kompot Legendario")
-                .descripcion("Bar exclusivo famoso por su ambiente nocturno elegante...").precio(35.0)
-                .imagenUrl("https://offloadmedia.feverup.com/.../6890019703301565669_n-2-1024x683.jpg").build());
+        if (servicioRepository.count() == 0) {
+            servicioRepository.save(Servicio.builder().nombre("Restaurante Michelin 3 Estrellas")
+                    .descripcion("Experiencia gastronomica excepcional...").precio(295.0)
+                    .imagenUrl("https://cldnr.prod.webx.talpa.digital/.../pexels-cottonbro-6466288.jpg").build());
+            servicioRepository.save(Servicio.builder().nombre("Spa Royal Bohemia")
+                    .descripcion("Centro de bienestar de lujo con tratamientos exclusivos...").precio(180.0)
+                    .imagenUrl("https://images.pexels.com/photos/6560304/pexels-photo-6560304.jpeg").build());
+            servicioRepository.save(Servicio.builder().nombre("Bar Kompot Legendario")
+                    .descripcion("Bar exclusivo famoso por su ambiente nocturno elegante...").precio(35.0)
+                    .imagenUrl("https://offloadmedia.feverup.com/.../6890019703301565669_n-2-1024x683.jpg").build());
+        }
 
         List<Servicio> servicios = servicioRepository.findAll();
 
@@ -162,8 +160,8 @@ public class DatabaseInit implements ApplicationRunner {
 
         List<Reserva> reservasCreadas = new java.util.ArrayList<>();
 
-        // Solo crear reservas si hay clientes disponibles
-        if (!clientes.isEmpty()) {
+        // Solo crear reservas si hay clientes disponibles y no existen reservas
+        if (!clientes.isEmpty() && reservaRepository.count() == 0) {
             int maxReservas = 6;
             int[] roomIndices = { 0, 4, 9 };
             int clienteIdx = 0;
@@ -193,7 +191,11 @@ public class DatabaseInit implements ApplicationRunner {
                         + fechaFin);
             }
         } else {
-            System.out.println("⚠ No hay clientes disponibles para crear reservas");
+            if (clientes.isEmpty()) {
+                System.out.println("⚠ No hay clientes disponibles para crear reservas");
+            } else if (reservaRepository.count() > 0) {
+                System.out.println("Reservas ya existen, saltando creación.");
+            }
         }
 
         // Crear cuentas para cada reserva creada: 1 room por reserva y 2 servicios
@@ -213,10 +215,21 @@ public class DatabaseInit implements ApplicationRunner {
             if (s2.getPrecio() != null)
                 totalServicios += s2.getPrecio();
 
+            // Calcular precio de la habitación
+            double precioHabitacion = 0.0;
+            if (r.getRooms() != null && !r.getRooms().isEmpty()) {
+                Room room = r.getRooms().get(0); // Asumiendo una habitación por reserva
+                if (room.getType() != null && room.getType().getPrice() != null) {
+                    precioHabitacion = room.getType().getPrice();
+                }
+            }
+
+            double total = precioHabitacion + totalServicios;
+
             Cuenta cuenta = Cuenta.builder()
-                    .estado("ABIERTA")
-                    .total(totalServicios)
-                    .saldo(0.0)
+                    .estado("PAGADA")
+                    .total(total)
+                    .saldo(total)
                     .reserva(r)
                     .servicios(List.of(s1, s2))
                     .build();

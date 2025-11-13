@@ -16,6 +16,7 @@ export interface Reserva {
   rooms: Room[];
   cuenta?: {
     id: number;
+    saldo: number;
     estado: string;
     total: number;
     servicios?: Servicio[];

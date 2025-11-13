@@ -283,6 +283,7 @@ export class DetalleReservaComponent implements OnInit {
       console.log('Creando nueva cuenta');
       this.reserva.cuenta = {
         id: 0,
+        saldo: 0,
         estado: 'ABIERTA',
         total: this.calcularTotalHabitaciones(),
         servicios: []
@@ -291,23 +292,23 @@ export class DetalleReservaComponent implements OnInit {
     
     // Agregar los servicios a la cuenta local
     for (const servicio of serviciosAgregados) {
-      const yaExiste = this.reserva.cuenta.servicios?.some(s => s.idServicio === servicio.idServicio);
+      const yaExiste = this.reserva.cuenta!.servicios?.some(s => s.idServicio === servicio.idServicio);
       if (!yaExiste) {
-        if (!this.reserva.cuenta.servicios) {
-          this.reserva.cuenta.servicios = [];
+        if (!this.reserva.cuenta!.servicios) {
+          this.reserva.cuenta!.servicios = [];
         }
         console.log('Agregando servicio:', servicio);
-        this.reserva.cuenta.servicios.push(servicio);
+        this.reserva.cuenta!.servicios.push(servicio);
       }
     }
-    
+
     // Recalcular el total
     const totalHabitaciones = this.calcularTotalHabitaciones();
     const totalServicios = this.calcularTotalServicios();
-    this.reserva.cuenta.total = totalHabitaciones + totalServicios;
-    
+    this.reserva.cuenta!.total = totalHabitaciones + totalServicios;
+
     console.log('Reserva actualizada:', this.reserva);
-    console.log('Servicios en cuenta:', this.reserva.cuenta.servicios);
+    console.log('Servicios en cuenta:', this.reserva.cuenta!.servicios);
   }
 
   // ===== NUEVOS MÉTODOS PARA EDITAR RESERVA =====
