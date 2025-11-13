@@ -130,14 +130,17 @@ export class ReportesComponent implements OnInit {
       this.usuarios = usuarios || [];
       this.habitaciones = habitaciones || [];
 
-      // Vincular cuentas a reservas
-      this.reservas.forEach(r => {
-        r.cuenta = this.cuentas.find(c => c.id === r.id) as any;
+      console.log('✓ Datos cargados para reportes:', {
+        reservas: this.reservas.length,
+        cuentas: this.cuentas.length,
+        servicios: this.servicios.length,
+        usuarios: this.usuarios.length,
+        habitaciones: this.habitaciones.length
       });
 
       this.isLoading = false;
     }).catch(error => {
-      console.error('Error al cargar datos:', error);
+      console.error('✗ Error al cargar datos:', error);
       this.errorMessage = 'Error al cargar los datos para reportes';
       this.isLoading = false;
     });
@@ -190,22 +193,35 @@ export class ReportesComponent implements OnInit {
   generarReporteOcupacion(): DatosReporte {
     const reservasFiltradas = this.filtrarPorFechas(this.reservas);
     
+    console.log('🏨 Generando reporte de ocupación con', this.habitaciones.length, 'habitaciones y', reservasFiltradas.length, 'reservas');
+    
     const ocupacionPorHabitacion = this.habitaciones.map(hab => {
       const reservasHab = reservasFiltradas.filter(r =>
-        r.rooms.some(room => room.id === hab.id)
+        r.rooms.some(room => room.id === hab.id) &&
+        (r.estado === 'ACTIVA' || r.estado === 'CONFIRMADA' || r.estado === 'FINALIZADA')
       );
+
+      const diasOcupados = this.calcularDiasOcupados(reservasHab);
+      const tasaOcupacion = this.calcularTasaOcupacion(reservasHab);
 
       return {
         habitacion: `Habitación ${hab.habitacionNumber}`,
         tipo: hab.type?.name || 'N/A',
         reservas: reservasHab.length,
-        diasOcupados: this.calcularDiasOcupados(reservasHab),
-        tasaOcupacion: this.calcularTasaOcupacion(reservasHab)
+        diasOcupados,
+        tasaOcupacion
       };
     });
 
-    const totalReservas = reservasFiltradas.length;
-    const promedioOcupacion = ocupacionPorHabitacion.reduce((sum, h) => sum + h.tasaOcupacion, 0) / this.habitaciones.length;
+    console.log('  Ocupación por habitación:', ocupacionPorHabitacion);
+
+    const totalReservas = reservasFiltradas.filter(r => 
+      r.estado === 'ACTIVA' || r.estado === 'CONFIRMADA' || r.estado === 'FINALIZADA'
+    ).length;
+    
+    const promedioOcupacion = ocupacionPorHabitacion.length > 0
+      ? Math.round(ocupacionPorHabitacion.reduce((sum, h) => sum + h.tasaOcupacion, 0) / ocupacionPorHabitacion.length)
+      : 0;
 
     return {
       titulo: 'Reporte de Ocupación',
@@ -213,7 +229,7 @@ export class ReportesComponent implements OnInit {
       datos: ocupacionPorHabitacion,
       resumen: {
         totalReservas,
-        promedioOcupacion: Math.round(promedioOcupacion)
+        promedioOcupacion
       }
     };
   }
@@ -221,42 +237,56 @@ export class ReportesComponent implements OnInit {
   generarReporteFinanciero(): DatosReporte {
     const cuentasFiltradas = this.filtrarCuentasPorFechas();
 
-    const ingresosTotales = cuentasFiltradas
-      .filter(c => c.estado === 'PAGADA')
-      .reduce((sum, c) => sum + (c.saldo || 0), 0);
+    console.log('💰 Generando reporte financiero con', cuentasFiltradas.length, 'cuentas');
+
+    // Calcular ingresos por habitaciones (total - servicios)
+    const ingresosHabitaciones = cuentasFiltradas.reduce((sum, c) => {
+      const serviciosTotal = c.servicios?.reduce((s, srv) => s + srv.precio, 0) || 0;
+      const totalCuenta = c.total || 0;
+      return sum + (totalCuenta - serviciosTotal);
+    }, 0);
+
+    // Calcular ingresos por servicios
+    const ingresosServicios = cuentasFiltradas.reduce((sum, c) => {
+      const serviciosTotal = c.servicios?.reduce((s, srv) => s + srv.precio, 0) || 0;
+      return sum + serviciosTotal;
+    }, 0);
+
+    const ingresosTotales = ingresosHabitaciones + ingresosServicios;
 
     const ingresosPorConcepto = [
       {
         concepto: 'Habitaciones',
-        monto: cuentasFiltradas.filter(c => c.estado === 'PAGADA').reduce((sum, c) => {
-          // Calcular solo habitaciones (asumiendo que el saldo incluye servicios pagados)
-          const servicios = c.servicios?.reduce((s, srv) => s + srv.precio, 0) || 0;
-          return sum + ((c.saldo || 0) - servicios);
-        }, 0)
+        monto: Math.round(ingresosHabitaciones)
       },
       {
         concepto: 'Servicios',
-        monto: cuentasFiltradas.filter(c => c.estado === 'PAGADA').reduce((sum, c) => {
-          const servicios = c.servicios?.reduce((s, srv) => s + srv.precio, 0) || 0;
-          return sum + servicios;
-        }, 0)
+        monto: Math.round(ingresosServicios)
+      },
+      {
+        concepto: 'TOTAL',
+        monto: Math.round(ingresosTotales)
       }
     ];
+
+    console.log('  Ingresos calculados:', ingresosPorConcepto);
 
     return {
       titulo: 'Reporte Financiero',
       descripcion: `Análisis financiero del ${this.config.fechaInicio} al ${this.config.fechaFin}`,
       datos: ingresosPorConcepto,
       resumen: {
-        ingresosTotales,
-        cuentasPagadas: cuentasFiltradas.filter(c => c.estado === 'PAGADA').length,
-        cuentasPendientes: cuentasFiltradas.filter(c => c.estado !== 'PAGADA').length
+        ingresosTotales: Math.round(ingresosTotales),
+        cuentasPagadas: cuentasFiltradas.filter(c => c.estado === 'PAGADA' || c.estado === 'CERRADA').length,
+        cuentasPendientes: cuentasFiltradas.filter(c => c.estado === 'ABIERTA' || c.estado === 'PENDIENTE').length
       }
     };
   }
 
   generarReporteClientes(): DatosReporte {
     const reservasFiltradas = this.filtrarPorFechas(this.reservas);
+    
+    console.log('👥 Generando reporte de clientes con', reservasFiltradas.length, 'reservas');
     
     const clientesMap = new Map<number, any>();
     
@@ -274,21 +304,28 @@ export class ReportesComponent implements OnInit {
       const cliente = clientesMap.get(clienteId);
       cliente.reservas++;
 
-      if (reserva.cuenta) {
-        cliente.gastoTotal += (reserva.cuenta.saldo || 0);
+      // Buscar la cuenta asociada a esta reserva
+      const cuenta = this.cuentas.find(c => c.reserva?.id === reserva.id);
+      if (cuenta) {
+        cliente.gastoTotal += (cuenta.total || 0);
       }
     });
 
     const datosClientes = Array.from(clientesMap.values())
-      .sort((a, b) => b.reservas - a.reservas)
+      .sort((a, b) => b.gastoTotal - a.gastoTotal)
       .slice(0, 10)
       .map(c => ({
         ...c,
-        gastoPromedio: c.gastoTotal / c.reservas
+        gastoTotal: Math.round(c.gastoTotal),
+        gastoPromedio: Math.round(c.gastoTotal / c.reservas)
       }));
 
+    console.log('  Top 10 clientes:', datosClientes);
+
     const totalClientes = clientesMap.size;
-    const gastoPromedio = datosClientes.reduce((sum, c) => sum + c.gastoPromedio, 0) / datosClientes.length;
+    const gastoPromedio = datosClientes.length > 0 
+      ? Math.round(datosClientes.reduce((sum, c) => sum + c.gastoPromedio, 0) / datosClientes.length)
+      : 0;
 
     return {
       titulo: 'Reporte de Clientes',
@@ -296,7 +333,7 @@ export class ReportesComponent implements OnInit {
       datos: datosClientes,
       resumen: {
         totalClientes,
-        gastoPromedio: Math.round(gastoPromedio)
+        gastoPromedio
       }
     };
   }
@@ -304,6 +341,8 @@ export class ReportesComponent implements OnInit {
   generarReporteReservas(): DatosReporte {
     const reservasFiltradas = this.filtrarPorFechas(this.reservas);
     
+    console.log('📋 Generando reporte de reservas con', reservasFiltradas.length, 'reservas');
+
     const estadoMap = new Map<string, number>();
     reservasFiltradas.forEach(r => {
       const estado = r.estado || 'DESCONOCIDO';
@@ -313,8 +352,12 @@ export class ReportesComponent implements OnInit {
     const datosEstados = Array.from(estadoMap.entries()).map(([estado, cantidad]) => ({
       estado,
       cantidad,
-      porcentaje: Math.round((cantidad / reservasFiltradas.length) * 100)
+      porcentaje: reservasFiltradas.length > 0 
+        ? Math.round((cantidad / reservasFiltradas.length) * 100)
+        : 0
     }));
+
+    console.log('  Estados de reservas:', datosEstados);
 
     return {
       titulo: 'Reporte de Reservas',
@@ -331,6 +374,8 @@ export class ReportesComponent implements OnInit {
   generarReporteServicios(): DatosReporte {
     const cuentasFiltradas = this.filtrarCuentasPorFechas();
     
+    console.log('🛎️ Generando reporte de servicios con', cuentasFiltradas.length, 'cuentas');
+
     const serviciosMap = new Map<number, any>();
     
     cuentasFiltradas.forEach(cuenta => {
@@ -355,8 +400,11 @@ export class ReportesComponent implements OnInit {
       .sort((a, b) => b.cantidad - a.cantidad)
       .map(s => ({
         ...s,
-        precioPromedio: s.ingresos / s.cantidad
+        ingresos: Math.round(s.ingresos),
+        precioPromedio: Math.round(s.ingresos / s.cantidad)
       }));
+
+    console.log('  Servicios encontrados:', datosServicios);
 
     const totalServicios = datosServicios.reduce((sum, s) => sum + s.cantidad, 0);
     const ingresosServicios = datosServicios.reduce((sum, s) => sum + s.ingresos, 0);
@@ -384,13 +432,13 @@ export class ReportesComponent implements OnInit {
   }
 
   filtrarCuentasPorFechas(): Cuenta[] {
-    const reservasFiltradas = this.filtrarPorFechas(this.reservas);
-    const reservaIds = new Set(reservasFiltradas.map(r => r.id));
-    
+    const inicio = new Date(this.config.fechaInicio);
+    const fin = new Date(this.config.fechaFin);
+
     return this.cuentas.filter(c => {
-      // Buscar la reserva asociada a esta cuenta
-      const reservaAsociada = this.reservas.find(r => r.cuenta?.id === c.id);
-      return reservaAsociada && reservaIds.has(reservaAsociada.id);
+      if (!c.reserva || !c.reserva.fechaInicio) return false;
+      const fechaReserva = new Date(c.reserva.fechaInicio);
+      return fechaReserva >= inicio && fechaReserva <= fin;
     });
   }
 
@@ -399,7 +447,7 @@ export class ReportesComponent implements OnInit {
       const inicio = new Date(r.fechaInicio);
       const fin = new Date(r.fechaFin);
       const dias = Math.ceil((fin.getTime() - inicio.getTime()) / (1000 * 60 * 60 * 24));
-      return sum + dias;
+      return sum + Math.max(dias, 1); // Al menos 1 día
     }, 0);
   }
 
@@ -409,7 +457,7 @@ export class ReportesComponent implements OnInit {
     const fin = new Date(this.config.fechaFin);
     const diasPeriodo = Math.ceil((fin.getTime() - inicio.getTime()) / (1000 * 60 * 60 * 24));
     
-    return diasPeriodo > 0 ? Math.round((diasOcupados / diasPeriodo) * 100) : 0;
+    return diasPeriodo > 0 ? Math.min(Math.round((diasOcupados / diasPeriodo) * 100), 100) : 0;
   }
 
   exportarReporte() {
@@ -473,7 +521,6 @@ export class ReportesComponent implements OnInit {
       this.vistaPrevia.datos.forEach(row => {
         csv += headers.map(h => {
           const value = (row as any)[h];
-          // Escapar valores con comas o comillas
           if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
             return `"${value.replace(/"/g, '""')}"`;
           }
@@ -529,7 +576,6 @@ export class ReportesComponent implements OnInit {
   private exportarPDF() {
     if (!this.vistaPrevia) return;
 
-    // Crear un documento HTML formateado como PDF usando una tabla
     let html = `
       <!DOCTYPE html>
       <html>
@@ -586,13 +632,11 @@ export class ReportesComponent implements OnInit {
 
     html += '</body></html>';
 
-    // Usar impresión del navegador para guardar como PDF
     const ventana = window.open('', '_blank');
     if (ventana) {
       ventana.document.write(html);
       ventana.document.close();
       
-      // Esperar a que el contenido se cargue, luego ejecutar "Guardar como PDF"
       ventana.onload = () => {
         ventana.print();
       };
@@ -631,31 +675,25 @@ export class ReportesComponent implements OnInit {
     const keyStr = String(key);
     const labels: { [key: string]: string } = {
       'totalReservas': 'Total Reservas',
-      'promedioOcupacion': 'Ocupación Promedio',
-      'ingresosTotales': 'Ingresos Totales',
+      'promedioOcupacion': 'Ocupación Promedio (%)',
+      'ingresosTotales': 'Ingresos Totales ($)',
       'cuentasPagadas': 'Cuentas Pagadas',
       'cuentasPendientes': 'Cuentas Pendientes',
       'totalClientes': 'Total Clientes',
-      'gastoPromedio': 'Gasto Promedio',
+      'gastoPromedio': 'Gasto Promedio ($)',
       'reservasActivas': 'Reservas Activas',
       'reservasConfirmadas': 'Reservas Confirmadas',
-      'totalServicios': 'Total Servicios',
-      'ingresosServicios': 'Ingresos por Servicios',
-      'tiposServicios': 'Tipos de Servicios'
+      'totalServicios': 'Total Servicios Solicitados',
+      'ingresosServicios': 'Ingresos por Servicios ($)',
+      'tiposServicios': 'Tipos de Servicios Diferentes'
     };
     return labels[keyStr] || keyStr;
   }
 
   formatearValor(value: any): string {
     if (typeof value === 'number') {
-      // Si es un número grande, formatearlo como moneda
       if (value > 1000) {
-        return "'"
- + value.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-      }
-      // Si es un porcentaje
-      if (value <= 100) {
-        return value + (value > 1 ? '' : '');
+        return '$' + value.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
       }
       return value.toString();
     }
