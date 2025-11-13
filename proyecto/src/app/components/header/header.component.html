@@ -78,6 +78,22 @@
       Consultar
     </button>
 
+    <button
+      class="button2"
+      *ngIf="authenticated && usuario?.tipo !== 'cliente'"
+      routerLink="/dashboard"
+    >
+      Dashboard
+    </button>
+
+    <button
+      class="button2"
+      *ngIf="authenticated && usuario?.tipo !== 'cliente'"
+      routerLink="/reportes"
+    >
+      Reportes
+    </button>
+
     <!-- Si NO está autenticado -->
     <div *ngIf="!authenticated">
       <button class="button2" routerLink="/auth">Login</button>
