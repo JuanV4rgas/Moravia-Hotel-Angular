@@ -1,4 +1,4 @@
-spring.application.name=demo
+ spring.application.name=demo
 server.port=8081
 
 #datasource
@@ -35,3 +35,11 @@ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
 jwt.secret=VGhpcy1pcy1hLXN1cGVyLXNlY3JldC1zdHJpbmctZm9yLU1vcmF2aWEtSG90ZWw=
 jwt.expiration-ms=86400000
 jwt.refresh-expiration-ms=604800000
+
+# Email - CONFIGURAR CON TUS DATOS
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=TU-CORREO@gmail.com
+spring.mail.password=TU-CONTRASEÑA-DE-APLICACION
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
