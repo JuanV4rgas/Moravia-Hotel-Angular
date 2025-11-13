@@ -28,6 +28,7 @@ public class CuentaRequestMapper {
         Cuenta cuenta = new Cuenta();
         cuenta.setEstado(dto.getEstado());
         cuenta.setTotal(dto.getTotal());
+        cuenta.setSaldo(dto.getSaldo() != null ? dto.getSaldo() : dto.getTotal()); // Initialize saldo to total if not provided
         
         // Buscar reserva
         if (dto.getReservaId() != null) {
@@ -54,6 +55,9 @@ public class CuentaRequestMapper {
         }
         if (dto.getTotal() != null) {
             cuenta.setTotal(dto.getTotal());
+        }
+        if (dto.getSaldo() != null) {
+            cuenta.setSaldo(dto.getSaldo());
         }
         if (dto.getServicioIds() != null) {
             List<Servicio> servicios = dto.getServicioIds().stream()

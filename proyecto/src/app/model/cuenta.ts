@@ -3,7 +3,8 @@ import { Servicio } from './servicio';
 export interface Cuenta {
   id?: number;
   estado?: string;  // ABIERTA, CERRADA, PAGADA, PENDIENTE
-  total?: number;
+  total?: number;   // Total original de la cuenta
+  saldo?: number;   // Saldo pendiente por pagar
   reserva?: { 
     id: number; 
     fechaInicio: string; 

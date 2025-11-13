@@ -23,6 +23,7 @@ public class CuentaMapper {
         dto.setId(cuenta.getId());
         dto.setEstado(cuenta.getEstado()); // ✅ Asegurar que se incluya el estado
         dto.setTotal(cuenta.getTotal());
+        dto.setSaldo(cuenta.getSaldo());
         
         // Reserva simplificada (sin cliente, rooms, cuenta)
         if (cuenta.getReserva() != null) {
@@ -49,6 +50,7 @@ public class CuentaMapper {
         dto.setId(cuenta.getId());
         dto.setEstado(cuenta.getEstado()); // ✅ AGREGAR ESTADO AL DTO SIMPLIFICADO
         dto.setTotal(cuenta.getTotal());
+        dto.setSaldo(cuenta.getSaldo());
         
         // Servicios
         if (cuenta.getServicios() != null) {

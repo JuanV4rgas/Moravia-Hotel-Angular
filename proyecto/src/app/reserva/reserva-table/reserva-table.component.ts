@@ -278,6 +278,7 @@ export class ReservaTableComponent implements OnInit {
     
     const cuentaPagada = {
       ...cuenta,
+      saldo: 0,
       estado: 'PAGADA'
     };
 

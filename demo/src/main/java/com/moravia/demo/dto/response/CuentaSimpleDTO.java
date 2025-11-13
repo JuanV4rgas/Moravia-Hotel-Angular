@@ -12,6 +12,7 @@ public class CuentaSimpleDTO {
     private Long id;
     private String estado;
     private Double total;
+    private Double saldo;
     private List<ServicioResponseDTO> servicios;
     // ⚠️ NO incluye 'reserva' para evitar loop
 }

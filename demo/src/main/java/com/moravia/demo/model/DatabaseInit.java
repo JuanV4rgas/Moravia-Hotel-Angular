@@ -214,8 +214,9 @@ public class DatabaseInit implements ApplicationRunner {
                 totalServicios += s2.getPrecio();
 
             Cuenta cuenta = Cuenta.builder()
-                    .estado("PAGADA")
+                    .estado("ABIERTA")
                     .total(totalServicios)
+                    .saldo(totalServicios)
                     .reserva(r)
                     .servicios(List.of(s1, s2))
                     .build();

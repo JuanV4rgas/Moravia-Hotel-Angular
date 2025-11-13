@@ -129,8 +129,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // Calcular ingresos
     this.metricas.ingresos = this.cuentas
-      .filter(c => c.estado === 'PAGADA')
-      .reduce((sum, c) => sum + c.total!, 0);
+  .reduce((sum, c) => sum + (c.total! - c.saldo!), 0);
 
     // Reservas activas
     this.metricas.reservasActivas = this.reservas.filter(r => 

@@ -87,6 +87,7 @@ public class ReservaServiceImpl implements ReservaService {
         // 6️⃣ Crear cuenta vinculada a la reserva ya persistida
         Cuenta cuenta = new Cuenta();
         cuenta.setTotal(total);
+        cuenta.setSaldo(total); // Initialize saldo to total
         cuenta.setReserva(reservaGuardada);
         
         // ✅ ESTABLECER ESTADO DE LA CUENTA SEGÚN EL ESTADO DE LA RESERVA

@@ -11,6 +11,7 @@ import java.util.List;
 public class CrearCuentaRequestDTO {
     private String estado;
     private Double total;
+    private Double saldo;
     private Integer reservaId;
     private List<Long> servicioIds;
 }

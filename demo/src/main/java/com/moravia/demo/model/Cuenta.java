@@ -23,6 +23,10 @@ public class Cuenta {
 
     private String estado;
     private Double total;
+    
+    @Builder.Default
+    @Column(columnDefinition = "DOUBLE DEFAULT 0")
+    private Double saldo = 0.0;
 
     @OneToOne
     @JoinColumn(name = "id_reserva")

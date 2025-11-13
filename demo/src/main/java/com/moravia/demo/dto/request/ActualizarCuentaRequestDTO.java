@@ -11,5 +11,6 @@ import java.util.List;
 public class ActualizarCuentaRequestDTO {
     private String estado;
     private Double total;
+    private Double saldo;
     private List<Long> servicioIds;
 }
