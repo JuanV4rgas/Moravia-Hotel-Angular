@@ -77,6 +77,12 @@
 			<version>3.5.2</version>
 		</dependency>
 
+		<!-- Mail -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.microsoft.azure.cognitiveservices</groupId>
 			<artifactId>azure-cognitiveservices-luis-authoring</artifactId>

@@ -13,6 +13,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     UsuarioRepository repo;
 
+    @Autowired
+    EmailService emailService;
+
     @Override
     public Usuario searchById(Long id) {
         return repo.findById(id).orElse(null);
@@ -26,6 +29,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void add(Usuario usuario) {
         repo.save(usuario);
+        // Send confirmation email
+        try {
+            emailService.sendConfirmationEmail(usuario.getEmail(), usuario.getNombre());
+        } catch (Exception e) {
+            // Log error but don't fail registration
+            System.err.println("Error sending confirmation email: " + e.getMessage());
+        }
     }
 
     public void update(Usuario usuario) {
