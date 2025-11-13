@@ -412,18 +412,204 @@ export class ReportesComponent implements OnInit {
       return;
     }
 
-    this.successMessage = `Reporte exportado como ${this.config.formato.toUpperCase()}`;
-    
-    // Simular exportación
-    console.log('Exportando reporte:', {
-      tipo: this.config.tipo,
-      formato: this.config.formato,
-      datos: this.vistaPrevia
-    });
+    this.isLoading = true;
+    this.errorMessage = '';
 
-    setTimeout(() => {
-      this.successMessage = '';
-    }, 3000);
+    try {
+      switch (this.config.formato) {
+        case 'csv':
+          this.exportarCSV();
+          break;
+        case 'excel':
+          this.exportarExcel();
+          break;
+        case 'pdf':
+          this.exportarPDF();
+          break;
+      }
+
+      this.successMessage = `Reporte exportado como ${this.config.formato.toUpperCase()}`;
+      setTimeout(() => {
+        this.successMessage = '';
+      }, 3000);
+    } catch (error) {
+      console.error('Error al exportar reporte:', error);
+      this.errorMessage = 'Error al exportar el reporte';
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  private exportarCSV() {
+    if (!this.vistaPrevia) return;
+
+    let csv = '';
+
+    // Encabezado
+    csv += `${this.vistaPrevia.titulo}\n`;
+    csv += `${this.vistaPrevia.descripcion}\n\n`;
+
+    // Resumen
+    if (this.vistaPrevia.resumen) {
+      csv += 'RESUMEN\n';
+      Object.entries(this.vistaPrevia.resumen).forEach(([key, value]) => {
+        csv += `${this.formatearLabel(key)},${value}\n`;
+      });
+      csv += '\n';
+    }
+
+    // Datos
+    csv += 'DATOS\n';
+    if (this.vistaPrevia.datos.length > 0) {
+      const headers = Object.keys(this.vistaPrevia.datos[0]);
+      csv += headers.join(',') + '\n';
+
+      this.vistaPrevia.datos.forEach(row => {
+        csv += headers.map(h => {
+          const value = (row as any)[h];
+          // Escapar valores con comas o comillas
+          if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+            return `"${value.replace(/"/g, '""')}"`;
+          }
+          return value;
+        }).join(',') + '\n';
+      });
+    }
+
+    this.descargarArchivo(csv, `reporte_${this.config.tipo}_${new Date().getTime()}.csv`, 'text/csv');
+  }
+
+  private exportarExcel() {
+    if (!this.vistaPrevia) return;
+
+    let html = '<html><head><meta charset="utf-8"></head><body>';
+    html += `<h1>${this.vistaPrevia.titulo}</h1>`;
+    html += `<p>${this.vistaPrevia.descripcion}</p>`;
+
+    // Resumen
+    if (this.vistaPrevia.resumen) {
+      html += '<h3>Resumen</h3><table border="1"><tr><th>Métrica</th><th>Valor</th></tr>';
+      Object.entries(this.vistaPrevia.resumen).forEach(([key, value]) => {
+        html += `<tr><td>${this.formatearLabel(key)}</td><td>${value}</td></tr>`;
+      });
+      html += '</table>';
+    }
+
+    // Datos
+    if (this.vistaPrevia.datos.length > 0) {
+      html += '<h3>Datos Detallados</h3><table border="1"><thead><tr>';
+      const headers = Object.keys(this.vistaPrevia.datos[0]);
+      headers.forEach(h => {
+        html += `<th>${h}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+
+      this.vistaPrevia.datos.forEach(row => {
+        html += '<tr>';
+        headers.forEach(h => {
+          html += `<td>${(row as any)[h]}</td>`;
+        });
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+    }
+
+    html += '</body></html>';
+
+    this.descargarArchivo(html, `reporte_${this.config.tipo}_${new Date().getTime()}.xls`, 'application/vnd.ms-excel');
+  }
+
+  private exportarPDF() {
+    if (!this.vistaPrevia) return;
+
+    // Crear un documento HTML formateado como PDF usando una tabla
+    let html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h1 { color: #1f5f87; border-bottom: 2px solid #1f5f87; padding-bottom: 10px; }
+          h3 { color: #333; margin-top: 20px; }
+          table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+          th { background-color: #1f5f87; color: white; padding: 10px; text-align: left; }
+          td { border: 1px solid #ddd; padding: 8px; }
+          tr:nth-child(even) { background-color: #f9f9f9; }
+          .fecha { color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <h1>${this.vistaPrevia.titulo}</h1>
+        <p><strong>${this.vistaPrevia.descripcion}</strong></p>
+        <p class="fecha">Generado: ${new Date().toLocaleString('es-CO')}</p>
+    `;
+
+    // Resumen
+    if (this.vistaPrevia.resumen && Object.keys(this.vistaPrevia.resumen).length > 0) {
+      html += '<h3>Resumen</h3>';
+      html += '<table><tr><th>Métrica</th><th>Valor</th></tr>';
+      Object.entries(this.vistaPrevia.resumen).forEach(([key, value]) => {
+        html += `<tr><td>${this.formatearLabel(key)}</td><td><strong>${value}</strong></td></tr>`;
+      });
+      html += '</table>';
+    }
+
+    // Datos
+    if (this.vistaPrevia.datos.length > 0) {
+      html += '<h3>Datos Detallados</h3>';
+      html += '<table><thead><tr>';
+      const headers = Object.keys(this.vistaPrevia.datos[0]);
+      headers.forEach(h => {
+        html += `<th>${h}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+
+      this.vistaPrevia.datos.forEach(row => {
+        html += '<tr>';
+        headers.forEach(h => {
+          const valor = (row as any)[h];
+          html += `<td>${valor !== null && valor !== undefined ? valor : '-'}</td>`;
+        });
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+    }
+
+    html += '</body></html>';
+
+    // Usar impresión del navegador para guardar como PDF
+    const ventana = window.open('', '_blank');
+    if (ventana) {
+      ventana.document.write(html);
+      ventana.document.close();
+      
+      // Esperar a que el contenido se cargue, luego ejecutar "Guardar como PDF"
+      ventana.onload = () => {
+        ventana.print();
+      };
+    }
+  }
+
+  private descargarArchivo(contenido: string | Blob, nombreArchivo: string, tipo?: string) {
+    let blob: Blob;
+
+    if (typeof contenido === 'string') {
+      blob = new Blob([contenido], { type: tipo || 'text/plain' });
+    } else {
+      blob = contenido;
+    }
+
+    const url = window.URL.createObjectURL(blob);
+    const enlace = document.createElement('a');
+    enlace.href = url;
+    enlace.download = nombreArchivo;
+    document.body.appendChild(enlace);
+    enlace.click();
+    document.body.removeChild(enlace);
+    window.URL.revokeObjectURL(url);
   }
 
   limpiarFormulario() {
