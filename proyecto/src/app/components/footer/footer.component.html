@@ -21,7 +21,34 @@
         </address>
       </div>
 
-      <!-- Col 3: Escudo -->
+      <!-- Col 3: Ubicación -->
+      <div class="footer-col location">
+        <p class="label">Ubicación</p>
+        <p class="map-description">{{ map.description }}</p>
+
+        <div class="map-wrapper">
+          <iframe
+            title="Mapa de ubicación The Moravia Hotel"
+            [src]="map.embedUrl"
+            width="100%"
+            height="220"
+            style="border: 0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <a
+          class="map-link"
+          [href]="map.link"
+          target="_blank"
+          rel="noopener"
+        >
+          {{ map.linkLabel }}
+        </a>
+      </div>
+
+      <!-- Col 4: Escudo -->
       <div class="footer-col brand">
         <img
           class="crest-img"
