@@ -60,7 +60,7 @@
       
       <div class="room-type-header">
         <h4>{{ tipo.name }}</h4>
-        <span class="price">${{ tipo.price | number:'1.0-0' }}/noche</span>
+        <span class="price">€{{ tipo.price | number:'1.0-0' }}/noche</span>
       </div>
       
       <div class="room-type-details">
@@ -72,7 +72,7 @@
       
       <div class="room-type-footer">
         <span class="total-price">
-          Total: ${{ (tipo.price * getNoches()) | number:'1.0-0' }}
+          Total: €{{ (tipo.price * getNoches()) | number:'1.0-0' }}
         </span>
       </div>
     </div>

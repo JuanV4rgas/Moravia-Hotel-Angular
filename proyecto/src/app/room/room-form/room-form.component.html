@@ -28,7 +28,7 @@
       required
     >
       <option *ngFor="let t of roomTypes" [ngValue]="t">
-        {{ t.name }} — {{ t.price | currency:'COP':'symbol' }}
+        {{ t.name }} — {{ t.price | currency:'EUR':'symbol' }}
       </option>
     </select>
   </div>

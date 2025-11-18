@@ -57,7 +57,7 @@
         <div class="servicio-content">
           <h4>{{ servicio.nombre }}</h4>
           <p class="descripcion">{{ servicio.descripcion }}</p>
-          <div class="precio">${{ servicio.precio | number:'1.2-2' }}</div>
+          <div class="precio">€{{ servicio.precio | number:'1.2-2' }}</div>
         </div>
         
         <div class="servicio-actions">
@@ -81,7 +81,7 @@
           <p>{{ servicio.descripcion }}</p>
         </div>
         <div class="servicio-precio">
-          ${{ servicio.precio | number:'1.2-2' }}
+          €{{ servicio.precio | number:'1.2-2' }}
         </div>
         <div class="servicio-actions">
           <button class="btn btn-danger btn-sm" 
@@ -100,15 +100,15 @@
     <div class="resumen-detalle">
       <div class="resumen-item">
         <span>Habitaciones:</span>
-        <span>${{ calcularTotalHabitaciones() | number:'1.2-2' }}</span>
+        <span>€{{ calcularTotalHabitaciones() | number:'1.2-2' }}</span>
       </div>
       <div class="resumen-item" *ngIf="serviciosEnCuenta.length > 0">
         <span>Servicios:</span>
-        <span>${{ calcularTotalServicios() | number:'1.2-2' }}</span>
+        <span>€{{ calcularTotalServicios() | number:'1.2-2' }}</span>
       </div>
       <div class="resumen-item total">
         <span><strong>Total:</strong></span>
-        <span><strong>${{ calcularTotalCuenta() | number:'1.2-2' }}</strong></span>
+        <span><strong>€{{ calcularTotalCuenta() | number:'1.2-2' }}</strong></span>
       </div>
     </div>
   </div>

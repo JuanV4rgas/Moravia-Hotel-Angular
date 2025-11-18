@@ -83,7 +83,7 @@
                 <p><strong>Descripción:</strong> {{ room.type.description }}</p>
                 <p><strong>Capacidad:</strong> {{ room.type.capacity }}</p>
                 <p><strong>Camas:</strong> {{ room.type.numberOfBeds }}</p>
-                <p><strong>Precio por noche:</strong> ${{ room.type.price | number:'1.0-0' }}</p>
+                <p><strong>Precio por noche:</strong> €{{ room.type.price | number:'1.0-0' }}</p>
               </div>
             </div>
           </div>
@@ -100,7 +100,7 @@
               <p>{{ servicio.descripcion }}</p>
             </div>
             <div class="servicio-precio">
-              ${{ servicio.precio | number:'1.0-0' }}
+              €{{ servicio.precio | number:'1.0-0' }}
             </div>
           </div>
         </div>
@@ -127,15 +127,15 @@
         <div class="total-breakdown">
           <div class="cost-item">
             <span>Habitaciones:</span>
-            <span>${{ calcularTotalHabitaciones() | number:'1.0-0' }}</span>
+            <span>€{{ calcularTotalHabitaciones() | number:'1.0-0' }}</span>
           </div>
           <div class="cost-item" *ngIf="tieneServicios()">
             <span>Servicios:</span>
-            <span>${{ calcularTotalServicios() | number:'1.0-0' }}</span>
+            <span>€{{ calcularTotalServicios() | number:'1.0-0' }}</span>
           </div>
           <div class="cost-item total">
             <span><strong>Total:</strong></span>
-            <span><strong>${{ reserva.cuenta.total | number:'1.0-0' }}</strong></span>
+            <span><strong>€{{ reserva.cuenta.total | number:'1.0-0' }}</strong></span>
           </div>
         </div>
       </div>

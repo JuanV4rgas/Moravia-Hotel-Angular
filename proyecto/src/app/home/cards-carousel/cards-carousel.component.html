@@ -13,7 +13,7 @@
     <div class="flip-card" *ngFor="let servicio of servicios">
       <div class="flip-card-inner">
         <div class="flip-card-front">
-          <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" />
+          <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" (error)="onImageError($event)" />
         </div>
         <div class="flip-card-back">
           <p class="title-card">{{ servicio.nombre }}</p>

@@ -12,7 +12,7 @@
   <tr *ngFor="let h of habitaciones">
     <td>{{ h.name }}</td>
     <td>{{ h.description }}</td>
-    <td>{{ h.price | currency }}</td>
+    <td>{{ h.price | currency:'EUR':'symbol' }}</td>
     <td>{{ h.capacity }}</td>
     <td>{{ h.numberOfBeds }}</td>
     <td>{{ h.type }}</td>

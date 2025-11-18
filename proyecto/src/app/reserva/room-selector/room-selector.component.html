@@ -25,7 +25,7 @@
       
       <div class="room-header">
         <h4>Habitación {{ habitacion.habitacionNumber }}</h4>
-        <span class="price">${{ habitacion.type.price | number:'1.0-0' }}/noche</span>
+        <span class="price">€{{ habitacion.type.price | number:'1.0-0' }}/noche</span>
       </div>
       
       <div class="room-details">
@@ -36,7 +36,7 @@
       
       <div class="room-footer">
         <span class="total-price">
-          Total: ${{ (habitacion.type.price * getNoches()) | number:'1.0-0' }}
+          Total: €{{ (habitacion.type.price * getNoches()) | number:'1.0-0' }}
         </span>
       </div>
     </div>
@@ -56,7 +56,7 @@
       </li>
     </ul>
     <div class="total-summary">
-      <strong>Total: ${{ total | number:'1.0-0' }}</strong>
+      <strong>Total: €{{ total | number:'1.0-0' }}</strong>
     </div>
   </div>
 </div>

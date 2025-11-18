@@ -189,7 +189,7 @@
           <tbody>
             <tr *ngFor="let dato of vistaPrevia.datos">
               <td>{{ dato.concepto }}</td>
-              <td>${{ dato.monto | number : "1.0-0" }}</td>
+              <td>€{{ dato.monto | number : "1.0-0" }}</td>
             </tr>
           </tbody>
         </table>
@@ -212,8 +212,8 @@
               <td>{{ dato.nombre }}</td>
               <td>{{ dato.email }}</td>
               <td>{{ dato.reservas }}</td>
-              <td>${{ dato.gastoTotal | number : "1.0-0" }}</td>
-              <td>${{ dato.gastoPromedio | number : "1.0-0" }}</td>
+              <td>€{{ dato.gastoTotal | number : "1.0-0" }}</td>
+              <td>€{{ dato.gastoPromedio | number : "1.0-0" }}</td>
             </tr>
           </tbody>
         </table>
@@ -261,8 +261,8 @@
             <tr *ngFor="let dato of vistaPrevia.datos">
               <td>{{ dato.nombre }}</td>
               <td>{{ dato.cantidad }}</td>
-              <td>${{ dato.ingresos | number : "1.0-0" }}</td>
-              <td>${{ dato.precioPromedio | number : "1.0-0" }}</td>
+              <td>€{{ dato.ingresos | number : "1.0-0" }}</td>
+              <td>€{{ dato.precioPromedio | number : "1.0-0" }}</td>
             </tr>
           </tbody>
         </table>

@@ -47,4 +47,8 @@ export class ServiceDetailComponent implements OnInit {
   volver(): void {
     this.router.navigate(['/servicio/table']);
   }
+
+  onImageError(event: any) {
+    event.target.src = 'assets/img/portrait-grandhotel-giessbach-br.webp';
+  }
 }
