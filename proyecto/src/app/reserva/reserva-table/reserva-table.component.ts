@@ -271,7 +271,7 @@ export class ReservaTableComponent implements OnInit {
       return;
     }
 
-    const ok = confirm(`¿Procesar pago de $${cuenta.total}?`);
+    const ok = confirm(`¿Procesar pago de €${cuenta.total}?`);
     if (!ok) return;
 
     this.processingId = Number(id);

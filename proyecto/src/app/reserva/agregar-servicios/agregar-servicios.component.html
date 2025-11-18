@@ -63,7 +63,7 @@
         <div class="servicio-content">
           <h5>{{ servicio.nombre }}</h5>
           <p class="descripcion">{{ servicio.descripcion }}</p>
-          <div class="precio">${{ servicio.precio | number : "1.2-2" }}</div>
+          <div class="precio">€{{ servicio.precio | number : "1.2-2" }}</div>
         </div>
 
         <div class="servicio-actions">
@@ -91,14 +91,14 @@
         *ngFor="let servicio of serviciosSeleccionados"
       >
         <span class="nombre">{{ servicio.nombre }}</span>
-        <span class="precio">${{ servicio.precio | number : "1.2-2" }}</span>
+        <span class="precio">€{{ servicio.precio | number : "1.2-2" }}</span>
       </div>
     </div>
 
     <div class="total-section">
       <div class="total-servicios">
         <strong
-          >Total Servicios: ${{
+          >Total Servicios: €{{
             calcularTotalServicios() | number : "1.2-2"
           }}</strong
         >
