@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservaService } from '../../services/reserva.service';
 import { AuthService } from '../../services/auth.service';
-import { ReservaEstadoService } from '../../services/reserva-estado.service';
 import { Reserva } from '../../model/reserva';
 import { Router } from '@angular/router';
 
@@ -18,7 +17,6 @@ export class MisReservasComponent implements OnInit {
   constructor(
     private reservaService: ReservaService,
     private authService: AuthService,
-    private reservaEstadoService: ReservaEstadoService,
     private router: Router
   ) {}
 
@@ -36,12 +34,9 @@ export class MisReservasComponent implements OnInit {
         const usuarioActual = this.authService.usuarioActual;
         if (usuarioActual) {
           // Filtrar reservas del usuario
-          let reservasUsuario = reservas.filter(reserva => 
+          this.reservas = reservas.filter(reserva =>
             reserva.cliente.idUsuario === usuarioActual.idUsuario
           );
-          
-          // Actualizar estados automáticamente basado en fechas
-          this.reservas = this.reservaEstadoService.actualizarEstadosReservas(reservasUsuario);
         }
         this.isLoading = false;
       },
@@ -94,6 +89,34 @@ export class MisReservasComponent implements OnInit {
   }
 
   obtenerInfoEstado(reserva: Reserva) {
-    return this.reservaEstadoService.obtenerInfoEstado(reserva);
+    const estado = reserva.estado;
+    const hoy = new Date();
+    const fechaInicio = new Date(reserva.fechaInicio);
+    const fechaFin = new Date(reserva.fechaFin);
+
+    let diasRestantes = 0;
+    let mensaje = '';
+
+    switch (estado) {
+      case 'PROXIMA':
+        diasRestantes = Math.ceil((fechaInicio.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24));
+        mensaje = `Tu reserva comienza en ${diasRestantes} día${diasRestantes !== 1 ? 's' : ''}`;
+        break;
+      case 'ACTIVA':
+        diasRestantes = Math.ceil((fechaFin.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24));
+        mensaje = `Tu estadía termina en ${diasRestantes} día${diasRestantes !== 1 ? 's' : ''}`;
+        break;
+      case 'CONFIRMADA':
+        diasRestantes = Math.ceil((fechaInicio.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24));
+        mensaje = `Tu reserva comienza en ${diasRestantes} día${diasRestantes !== 1 ? 's' : ''}`;
+        break;
+      case 'FINALIZADA':
+        mensaje = 'Tu estadía ha terminado';
+        break;
+      default:
+        mensaje = 'Estado de reserva';
+    }
+
+    return { estado, diasRestantes, mensaje };
   }
 }

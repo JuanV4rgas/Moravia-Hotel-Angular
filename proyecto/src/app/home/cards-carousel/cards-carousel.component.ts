@@ -45,4 +45,8 @@ export class CardsCarouselComponent implements OnInit {
       behavior: 'smooth',
     });
   }
+
+  onImageError(event: any) {
+    event.target.src = 'assets/img/portrait-grandhotel-giessbach-br.webp';
+  }
 }
