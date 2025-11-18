@@ -60,6 +60,7 @@ import { CuentaTableComponent } from './cuenta/cuenta-table/cuenta-table.compone
 import { AuthInterceptor } from './services/auth.interceptor';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReportesComponent } from './reportes/reportes.component';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,8 @@ import { ReportesComponent } from './reportes/reportes.component';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    CommonModule
+    CommonModule,
+    RecaptchaModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

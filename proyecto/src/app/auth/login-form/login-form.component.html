@@ -33,6 +33,14 @@
     </div>
   </div>
 
+  <div class="field captcha-field">
+    <re-captcha
+      [siteKey]="siteKey"
+      (resolved)="onCaptchaResolved($event)">
+    </re-captcha>
+    <div class="error-message" *ngIf="captchaError">{{ captchaError }}</div>
+  </div>
+
   <div class="actions">
     <button 
       class="btn" 

@@ -16,4 +16,5 @@ public class CrearUsuarioRequestDTO {
     private String telefono;
     private String fotoPerfil;
     private String tipo;
+    private String captchaToken;
 }

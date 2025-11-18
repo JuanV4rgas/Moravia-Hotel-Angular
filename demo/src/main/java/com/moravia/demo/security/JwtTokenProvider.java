@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret:ZmFrZV9zZWNyZXRfMTIzNDU2}")
+    @Value("${jwt.secret:xSRMJ9VutWUcQIWTTrlnJfFtzSjUCVlYkDf5FuaP6GE=}")
     private String jwtSecret;
 
     @Value("${jwt.expiration-ms:86400000}") // 1 day default
@@ -57,4 +57,3 @@ public class JwtTokenProvider {
         }
     }
 }
-

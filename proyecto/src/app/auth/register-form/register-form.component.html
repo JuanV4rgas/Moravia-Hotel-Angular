@@ -81,6 +81,14 @@
   </div>
 
   <!-- Botones -->
+  <div class="field captcha-field">
+    <re-captcha
+      [siteKey]="siteKey"
+      (resolved)="onCaptchaResolved($event)">
+    </re-captcha>
+    <div class="error-message" *ngIf="captchaError">{{ captchaError }}</div>
+  </div>
+
   <div class="actions">
     <button class="btn" type="submit" [disabled]="isLoading || registerForm.invalid">
       {{ isLoading ? 'Registrando...' : 'Registrar' }}

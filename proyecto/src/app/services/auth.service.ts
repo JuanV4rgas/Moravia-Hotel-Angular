@@ -47,9 +47,9 @@ export class AuthService {
     return this.authenticatedSubject.value;
   }
 
-  login(email: string, clave: string): Observable<Usuario> {
+  login(email: string, clave: string, captchaToken: string): Observable<Usuario> {
     return this.http
-      .post<LoginResponse>(`${this.authApiUrl}/login`, { email, clave })
+      .post<LoginResponse>(`${this.authApiUrl}/login`, { email, clave, captchaToken })
       .pipe(
         switchMap((resp) => {
           this.persistTokens(resp);
@@ -70,9 +70,10 @@ export class AuthService {
       );
   }
 
-  register(usuario: Usuario): Observable<void> {
+  register(usuario: Usuario, captchaToken: string): Observable<void> {
     const headers = { 'Content-Type': 'application/json' };
-    return this.http.post<void>(`${this.apiUrl}/add`, usuario, { headers }).pipe(
+    const payload = { ...usuario, captchaToken };
+    return this.http.post<void>(`${this.apiUrl}/add`, payload, { headers }).pipe(
       tap(() => console.log('Usuario registrado exitosamente')),
       catchError((error) => {
         console.error('Error en registro:', error);

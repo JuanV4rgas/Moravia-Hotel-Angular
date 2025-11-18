@@ -10,4 +10,5 @@ import lombok.AllArgsConstructor;
 public class LoginRequestDTO {
     private String email;
     private String clave;
+    private String captchaToken;
 }
