@@ -145,7 +145,7 @@ public class DatabaseInit implements ApplicationRunner {
                 .imagenUrl("https://offloadmedia.feverup.com/secretsanfrancisco.com/wp-content/uploads/2023/02/13023230/68693037_151390299393573_6890019703301565669_n-2-1024x683.jpg").build());
         servicioRepository.save(Servicio.builder().nombre("Cafetería Imperial")
                 .descripcion("Cafetería de ambiente refinado que sirve café de especialidad, pasteles artesanales y té de las mejores plantaciones del mundo en un entorno histórico.").precio(13.0)
-                .imagenUrl("https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg").build());
+                .imagenUrl("https://swiss-historic-hotels.ch/bilder/hotels/grandhotel-giessbach/_AUTOxAUTO_crop_center-center_none/portrait-grandhotel-giessbach-brienz-swiss-historic-hotels-02.jpg").build());
         servicioRepository.save(Servicio.builder().nombre("Piscina Infinity Castillo")
                 .descripcion("Piscina climatizada tipo infinity con vista directa a nuestro castillo, área de relajación y servicio de toallas premium.").precio(45.0)
                 .imagenUrl("https://giessbach.ch/images/image_uploads/GrandhotelGiessbach_%C2%A9DigitaleMassarbeit_503.jpg").build());
