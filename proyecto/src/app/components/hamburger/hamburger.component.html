@@ -28,11 +28,10 @@
 
   <div class="offcanvas-body">
     <ul class="menu">
-      <li><a routerLink="/reserva/nueva" data-bs-dismiss="offcanvas">Reserva</a></li>
+      <li *ngIf="usuario?.tipo === 'cliente'"><a routerLink="/reserva/nueva" data-bs-dismiss="offcanvas">Reserva</a></li>
       <li><a routerLink="/roomtype/lista" data-bs-dismiss="offcanvas">Habitaciones</a></li>
       <li><a routerLink="/servicio/lista" data-bs-dismiss="offcanvas">Nuestros servicios</a></li>
       <li><a routerLink="/historia" data-bs-dismiss="offcanvas">Historia</a></li>
-      <li><a routerLink="/contacto" data-bs-dismiss="offcanvas">Contacto</a></li>
     </ul>
   </div>
 </div>

@@ -1,12 +1,10 @@
 <main class="detail-main">
   <div class="detail-container">
-
     <!-- Estados (idéntico flujo que ya tienes) -->
     <div *ngIf="loading" class="alert alert-info">Cargando…</div>
     <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
     <ng-container *ngIf="!loading && !error && servicio; else noSel">
-
       <!-- HERO del servicio (título grande e ID) -->
       <section class="service-hero">
         <div class="service-hero-content">
@@ -27,7 +25,9 @@
             <!-- Precio a la derecha (píldora) -->
             <div class="service-price">
               <span class="price-label">Precio</span>
-              <span class="price-value">{{ servicio.precio | currency:'EUR':'symbol' }}</span>
+              <span class="price-value">{{
+                servicio.precio | currency : "EUR" : "symbol"
+              }}</span>
             </div>
           </div>
 
@@ -44,7 +44,12 @@
         <!-- Visual (imagen si hay URL) -->
         <div class="service-visual">
           <div class="service-image-placeholder">
-            <img *ngIf="servicio.imagenUrl" [src]="servicio.imagenUrl" alt="Imagen del servicio" (error)="onImageError($event)">
+            <img
+              *ngIf="servicio.imagenUrl"
+              [src]="servicio.imagenUrl"
+              alt="Imagen del servicio"
+              (error)="onImageError($event)"
+            />
           </div>
         </div>
       </div>
@@ -69,16 +74,13 @@
         <div class="detail-item">
           <dt class="detail-label">Precio Final</dt>
           <dd class="detail-value price-highlight">
-            {{ servicio.precio | currency:'EUR':'symbol' }}
+            {{ servicio.precio | currency : "EUR" : "symbol" }}
           </dd>
         </div>
       </div>
 
       <!-- Acciones propias del panel (mantengo Editar/Volver si los usas) -->
-      <div class="detail-footer">
-      
-      </div>
-
+      <div class="detail-footer"></div>
     </ng-container>
 
     <ng-template #noSel>

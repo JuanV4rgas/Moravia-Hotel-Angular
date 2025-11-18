@@ -1,3 +1,4 @@
+/* ===== MODO CLARO (default) ===== */
 :root {
   --rose: #ffd8d8;
   --pink: #c28ba1;
@@ -16,6 +17,43 @@
   --nav-accent: #ffcb0e; /* acento (ej: subrayados/activos) */
   --nav-font: "Inter", "Futura PT", "Avenir Next", "Helvetica Neue", Helvetica,
     Arial, sans-serif, "DM Serif Display", system-ui, sans-serif;
+
+  /* Colores semánticos para tema claro */
+  --bg-primary: #fffde7;
+  --bg-secondary: #fffde7;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #1f1a1d;
+  --text-secondary: #6c757d;
+  --text-tertiary: #adb5bd;
+  --border-color: #b57c00;
+  --card-bg: #ffffff;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --input-bg: #ffffff;
+  --input-border: #ced4da;
+  --input-focus-border: #1f5f87;
+}
+
+/* ===== MODO OSCURO (tonos cálidos) ===== */
+[data-theme="dark"] {
+  --bg-primary: #b57c00;
+  --bg-secondary: #b57c00;
+  --bg-tertiary: #bf8d5c;
+  --text-primary: #2d1b0a;
+  --text-secondary: #4a3419;
+  --text-tertiary: #6b5232;
+  --border-color: #b57c00;
+  --card-bg: #d4a574;
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  --input-bg: #c89968;
+  --input-border: #b57c00;
+  --input-focus-border: #a0680a;
+  --sand: #071027;
+  --paper: #c89968;
+  --surface: #ffffff;
+  --nav-surface: #b57c00;
+  --nav-text: #ffff;
+  --ink: #ffff;
+  --nav-muted: #f0e6d2;
 }
 
 * {

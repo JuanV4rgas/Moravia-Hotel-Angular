@@ -59,7 +59,7 @@
 
 /* Detalle de reserva */
 .reserva-detail {
-  background: var(--paper);
+  background: white;
   border-radius: 20px;
   box-shadow: var(--shadow);
   overflow: hidden;

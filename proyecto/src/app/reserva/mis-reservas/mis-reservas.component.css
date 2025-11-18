@@ -2,7 +2,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background: var(--paper);
   min-height: 100vh;
 }
 
@@ -130,6 +129,23 @@
 .empty-state p {
   color: #666;
   margin-bottom: 20px;
+}
+
+.services-title {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px 0;
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+.services-title em {
+  font-style: normal;
+  color: var(--nav-accent);
+  text-shadow: 0 2px 8px rgba(255, 203, 14, 0.3);
 }
 
 /* Grid de reservas */

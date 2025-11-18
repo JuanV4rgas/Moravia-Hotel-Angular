@@ -28,6 +28,42 @@
   border-color: rgb(0, 255, 94);
 }
 
+/* ===== Badge toggle (nuevo) ===== */
+.user-badge-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px; /* pill */
+  background: var(--nav-accent);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.user-badge-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+}
+
+.user-badge-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #05233b;
+  white-space: nowrap;
+}
+
+/* Ajuste del avatar cuando va dentro del badge */
+.user-badge-toggle .user-avatar-circle {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: transparent;
+}
+
 /* Imagen dentro del avatar */
 .profile-circle-img {
   width: 100%;
@@ -116,7 +152,42 @@
 /* Divider */
 .user-profile-circle .dropdown-divider {
   margin: 0.5rem 0;
-  border-color: #e9ecef;
+  border-color: var(--border-color);
+}
+
+/* ===== Theme Item ===== */
+.user-profile-circle .theme-item {
+  display: flex !important;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.user-profile-circle .theme-item i {
+  font-size: 1.1rem;
+}
+
+.dropdown-divider-themed {
+  padding: 0.5rem 0 !important;
+}
+
+/* Responsivo al tema */
+[data-theme="dark"] .user-profile-circle .dropdown-menu {
+  background: var(--card-bg);
+}
+
+[data-theme="dark"] .user-profile-circle .dropdown-header {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .user-profile-circle .dropdown-item {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .user-profile-circle .dropdown-item:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary) !important;
 }
 
 /* Responsive */

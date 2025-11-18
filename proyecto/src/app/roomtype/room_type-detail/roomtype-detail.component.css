@@ -12,7 +12,6 @@
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .detail-main{
-  background: linear-gradient(180deg, var(--blue-hero), #365f7e 65%);
   padding: 28px 16px 40px;
   min-height: 100vh;
 }

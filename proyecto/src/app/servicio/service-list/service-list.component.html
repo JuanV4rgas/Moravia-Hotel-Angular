@@ -5,7 +5,7 @@
     <div *ngFor="let servicio of servicios" class="servicio-card">
       <!-- Imagen del servicio -->
       <div class="servicio-img">
-        <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" />
+        <img [src]="servicio.imagenUrl" [alt]="servicio.nombre" (error)="onImageError($event)" />
       </div>
 
       <!-- Info del servicio -->

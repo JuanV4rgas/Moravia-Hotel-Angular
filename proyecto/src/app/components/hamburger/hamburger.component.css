@@ -1,6 +1,6 @@
 /* === OFFCANVAS MENÚ (hamburguesa) === */
 .offcanvas-custom {
-  background: var(--nav-surface);
+  background: var(--plum);
   border: none;
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
   z-index: 1055;
@@ -13,7 +13,7 @@
 
 /* Header */
 .offcanvas-custom .offcanvas-header {
-  background: linear-gradient(135deg, var(--nav-surface), #1f5f87);
+  background: var(--plum);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   height: var(--header-h) !important;
   min-height: var(--header-h) !important;

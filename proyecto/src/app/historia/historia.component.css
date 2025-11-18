@@ -1,26 +1,11 @@
-/* ===== HISTORIA — ESTILO INSPIRADO EN THE RITZ (elegante clásico) ===== */
-:root{
-  /* Paleta clásica hotel boutique */
-  --ritz-navy: #0f1b2d;
-  --ritz-ink: #14223a;
-  --ritz-cream: #f7f3ea;
-  --ritz-ivory: #fbfaf6;
-  --ritz-gold: #c9a646;
-  --ritz-gold-soft: #e2c77b;
-  --card: #ffffff;
-  --muted: #6c7b8a;
-  --line: #d9dde5;
-  --shadow: 0 18px 36px rgba(0,0,0,.10);
-  --radius: 20px;
-}
 
 /* Tipos sugeridos (cárgalos global si quieres)
    h1/h2: Playfair Display; cuerpo: Inter/System */
 
 /* HERO */
 .hero-historia{
-  background: linear-gradient(180deg, var(--ritz-navy), #182742);
-  color: var(--ritz-cream);
+  /* Usar variables globales de theme (definidas en styles.css) */
+  color: var(--ink);
   text-align: center;
   padding: 68px 16px 44px;
 }
@@ -35,9 +20,9 @@
   max-width: 860px;
   margin: 0 auto;
   font-style: italic;
-  opacity: .92;
+  opacity: .95;
 }
-.hero-historia .resaltar{ color: var(--ritz-gold-soft); font-weight: 800; }
+.hero-historia .resaltar{ color: var(--nav-accent); font-weight: 800; }
 
 /* WRAP */
 .timeline-wrap{ background: var(--ritz-ivory); padding: 52px 0 80px; }
@@ -50,14 +35,14 @@
 .timeline__year-col{
   position: sticky; top: 90px; align-self: start;
   font-family: 'Playfair Display', Georgia, serif;
-  color: var(--ritz-ink);
+  color: var(--ink);
 }
 .timeline__year{
   font-size: clamp(32px, 5vw, 64px);
   font-weight: 900; letter-spacing: .5px;
   margin: 0 0 14px;
 }
-.timeline__sub{ color: var(--muted); margin: 0 0 24px; }
+.timeline__sub{ color: var(--ink); margin: 0 0 24px; }
 
 /* GRID PRINCIPAL: 1) Año, 2) Línea, 3) Eventos */
 .timeline__grid{
@@ -81,7 +66,7 @@
   content: "";
   position: absolute; left: -28px; top: 14px;
   width: 14px; height: 14px; border-radius: 999px;
-  background: #fff; border: 3px solid var(--ritz-gold);
+  background: var(--card-bg); border: 3px solid var(--nav-accent);
   box-shadow: 0 2px 8px rgba(0,0,0,.12);
 }
 
@@ -89,24 +74,24 @@
 .event__card{
   display: grid; gap: 18px; align-items: center;
   grid-template-columns: 1.1fr 1fr; /* texto | imagen */
-  background: var(--card);
-  border: 1px solid rgba(20,34,58,.06);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 20px;
 }
 .event__text h3{
   font-family: 'Playfair Display', Georgia, serif;
-  color: var(--ritz-ink); margin: 0 0 6px; font-size: 22px;
+  color: var(--text-primary); margin: 0 0 6px; font-size: 22px;
 }
-.event__text p{ margin: 0; color: #253247; line-height: 1.65; }
+.event__text p{ margin: 0; color: var(--text-secondary); line-height: 1.65; }
 .event__meta{ color: var(--muted); font-size: 13px; margin-top: 10px; }
 
 .event__media figure{ margin: 0; }
 .event__media img{
   display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover;
   border-radius: 16px; box-shadow: var(--shadow);
-  border: 1px solid #eef2f6;
+  border: 1px solid var(--border-color);
   transform: translateZ(0);
 }
 .event__media figcaption{
@@ -119,8 +104,8 @@
 
 /* Badge pequeño de año dentro del card */
 .badge-year{
-  display: inline-block; background: #fff; color: var(--ritz-ink);
-  border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px;
+  display: inline-block; background: var(--card-bg); color: var(--text-primary);
+  border: 1px solid var(--border-color); border-radius: 999px; padding: 6px 10px;
   font-weight: 700; letter-spacing: .3px; margin-bottom: 8px;
 }
 
