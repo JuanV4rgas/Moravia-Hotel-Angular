@@ -224,7 +224,7 @@
   font-size: 16px;
   transition: all 0.3s ease;
   background: #fdfdfd;
-  color: var(--ink);
+  color: #1f1a1d;
   font-family: var(--nav-font);
 }
 

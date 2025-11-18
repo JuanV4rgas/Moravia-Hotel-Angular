@@ -239,29 +239,18 @@ export class ReportesComponent implements OnInit {
 
     console.log('💰 Generando reporte financiero con', cuentasFiltradas.length, 'cuentas');
 
-    // Calcular ingresos por habitaciones (total - servicios)
-    const ingresosHabitaciones = cuentasFiltradas.reduce((sum, c) => {
-      const serviciosTotal = c.servicios?.reduce((s, srv) => s + srv.precio, 0) || 0;
+    // Calcular ingresos reales cobrados (total - saldo, donde saldo = pendiente de pagar)
+    const ingresosTotales = cuentasFiltradas.reduce((sum, c) => {
       const totalCuenta = c.total || 0;
-      return sum + (totalCuenta - serviciosTotal);
+      const saldo = c.saldo || 0;
+      const pagado = Math.max(0, totalCuenta - saldo);
+      return sum + pagado;
     }, 0);
-
-    // Calcular ingresos por servicios
-    const ingresosServicios = cuentasFiltradas.reduce((sum, c) => {
-      const serviciosTotal = c.servicios?.reduce((s, srv) => s + srv.precio, 0) || 0;
-      return sum + serviciosTotal;
-    }, 0);
-
-    const ingresosTotales = ingresosHabitaciones + ingresosServicios;
 
     const ingresosPorConcepto = [
       {
-        concepto: 'Habitaciones',
-        monto: Math.round(ingresosHabitaciones)
-      },
-      {
-        concepto: 'Servicios',
-        monto: Math.round(ingresosServicios)
+        concepto: 'Ingresos',
+        monto: Math.round(ingresosTotales)
       },
       {
         concepto: 'TOTAL',

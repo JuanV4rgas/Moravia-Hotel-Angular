@@ -132,9 +132,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
       ? Math.round((habitacionesOcupadas / this.habitaciones.length) * 100)
       : 0;
 
-    // Calcular ingresos (lo pagado hasta el momento)
-    this.metricas.ingresos = this.cuentas
-      .reduce((sum, c) => sum + (c.saldo || 0), 0);
+    // Calcular ingresos usando total y saldo (lo cobrado hasta el momento)
+    // Filtrar cuentas según el periodo seleccionado
+    const cuentasFiltradas: Cuenta[] = this.filtrarCuentasPorPeriodo();
+
+    // Ingresos reales cobrados: suma de (total - saldo) por cuenta (saldo = pendiente)
+    const ingresosTotales = cuentasFiltradas.reduce((sum: number, c: Cuenta) => {
+      const totalCuenta = c.total || 0;
+      const saldo = c.saldo || 0;
+      const pagado = Math.max(0, totalCuenta - saldo);
+      return sum + pagado;
+    }, 0);
+
+    console.log('Ingresos periodo (suma total - saldo):', Math.round(ingresosTotales));
+    this.metricas.ingresos = Math.round(ingresosTotales);
 
     // Reservas activas
     this.metricas.reservasActivas = this.reservas.filter(r => 
@@ -191,6 +202,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return fecha;
   }
 
+  filtrarCuentasPorPeriodo(): Cuenta[] {
+    const inicio = this.obtenerFechaFiltro();
+    const fin = new Date();
+
+    return this.cuentas.filter(c => {
+      if (!c.reserva || !c.reserva.fechaInicio) return false;
+      const fechaReserva = new Date(c.reserva.fechaInicio);
+      return fechaReserva >= inicio && fechaReserva <= fin;
+    });
+  }
+
   cambiarPeriodo(periodo: 'semana' | 'mes' | 'año') {
     this.periodoSeleccionado = periodo;
     this.calcularMetricas();
@@ -199,7 +221,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   crearGraficos() {
-    console.log('📊 Creando gráficos...');
+    console.log('Creando gráficos...');
     
     // Verificar disponibilidad de Chart
     const chartAvailable = typeof Chart !== 'undefined';
@@ -252,7 +274,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const rect = container.getBoundingClientRect();
         canvas.width = rect.width;
         canvas.height = rect.height;
-        console.log('📏 Canvas chartOcupacion dimensiones:', canvas.width, 'x', canvas.height);
+        console.log('Canvas chartOcupacion dimensiones:', canvas.width, 'x', canvas.height);
       }
 
       const ctx = canvas.getContext('2d');
@@ -262,15 +284,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
 
       const datos = this.obtenerDatosOcupacion();
-      console.log('📈 Datos de ocupación:', datos);
+      console.log('Datos de ocupación:', datos);
+
+      // Si no hay datos o todos los valores son 0, mostrar mensaje en lugar de gráfico
+      const valoresVacios = !datos || !datos.valores || datos.valores.length === 0 || datos.valores.every((v: number) => v === 0);
+      const containerEl = canvas.parentElement as HTMLElement;
+      // Eliminar mensaje previo si existe
+      const existingNote = containerEl.querySelector('.no-data-note');
+      if (existingNote) existingNote.remove();
+      if (valoresVacios) {
+        console.warn('⚠️ No hay datos significativos para el gráfico de ocupación, mostrando nota.');
+        const note = document.createElement('div');
+        note.className = 'no-data-note';
+        note.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700;pointer-events:none;';
+        note.innerText = 'No hay datos suficientes para mostrar la gráfica';
+        containerEl.appendChild(note);
+        return;
+      }
 
       // Destruir gráfico anterior si existe
       if (this.chartOcupacion) {
         this.chartOcupacion.destroy();
-        console.log('🔄 Gráfico anterior destruido');
+        console.log('Gráfico anterior destruido');
       }
 
-      console.log('📊 Creando nuevo gráfico de ocupación con Chart.js...');
+      console.log('Creando nuevo gráfico de ocupación con Chart.js...');
       this.chartOcupacion = new Chart(ctx, {
         type: 'line',
         data: {
@@ -336,6 +374,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       const datos = this.obtenerDatosIngresos();
       console.log('💰 Datos de ingresos:', datos);
+
+      // Si no hay datos o todos los valores son 0, mostrar mensaje en lugar de gráfico
+      const valoresVaciosIngresos = !datos || !datos.valores || datos.valores.length === 0 || datos.valores.every((v: number) => v === 0);
+      const containerElIngresos = canvas.parentElement as HTMLElement;
+      const existingNoteIngresos = containerElIngresos.querySelector('.no-data-note');
+      if (existingNoteIngresos) existingNoteIngresos.remove();
+      if (valoresVaciosIngresos) {
+        console.warn('⚠️ No hay datos significativos para el gráfico de ingresos, mostrando nota.');
+        const note = document.createElement('div');
+        note.className = 'no-data-note';
+        note.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700;pointer-events:none;';
+        note.innerText = 'No hay ingresos registrados en este periodo';
+        containerElIngresos.appendChild(note);
+        return;
+      }
 
       // Destruir gráfico anterior si existe
       if (this.chartIngresos) {
@@ -522,72 +575,91 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   obtenerDatosOcupacion() {
-    const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const datosOcupacion: { [key: string]: number[] } = {};
+    // Generar los últimos 6 meses dinámicamente (label + month/year)
+    const mesesInfo: { label: string; month: number; year: number }[] = [];
+    const now = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const label = d.toLocaleString(undefined, { month: 'short' });
+      mesesInfo.push({ label, month: d.getMonth(), year: d.getFullYear() });
+    }
 
-    // Inicializar arreglos para cada mes
-    meses.forEach(mes => {
-      datosOcupacion[mes] = [0, 0]; // [totalDias, diasOcupados]
-    });
+    const buckets: { [key: string]: { totalDias: number; diasOcupados: number } } = {};
+    mesesInfo.forEach(m => buckets[`${m.month}-${m.year}`] = { totalDias: 0, diasOcupados: 0 });
 
-    console.log('📊 Procesando', this.reservas.length, 'reservas para ocupación');
+    console.log('📊 Procesando', this.reservas.length, 'reservas para ocupación (últimos 6 meses)');
 
-    // Procesar reservas para contar ocupación por mes
+    // Contar días por mes-year en el rango de los últimos 6 meses
     this.reservas.forEach((reserva, idx) => {
       const inicio = new Date(reserva.fechaInicio);
       const fin = new Date(reserva.fechaFin);
       console.log(`  Reserva ${idx}: ${reserva.cliente?.nombre} - ${inicio.toLocaleDateString()} a ${fin.toLocaleDateString()} - Estado: ${reserva.estado}`);
 
       for (let d = new Date(inicio); d <= fin; d.setDate(d.getDate() + 1)) {
-        const mesIdx = d.getMonth();
-        const mesKey = meses[mesIdx];
-        datosOcupacion[mesKey][0]++; // incrementar total de días en mes
-        if (reserva.estado === 'ACTIVA' || reserva.estado === 'CONFIRMADA') {
-          datosOcupacion[mesKey][1]++; // incrementar días ocupados
+        const key = `${d.getMonth()}-${d.getFullYear()}`;
+        if (buckets[key]) {
+          buckets[key].totalDias++;
+          if (reserva.estado === 'ACTIVA' || reserva.estado === 'CONFIRMADA') {
+            buckets[key].diasOcupados++;
+          }
         }
       }
     });
 
-    const valores = meses.slice(0, 6).map(mes => {
-      const [totalDias, diasOcupados] = datosOcupacion[mes];
-      return totalDias > 0 ? Math.round((diasOcupados / (totalDias / this.habitaciones.length)) * 100) : 0;
+    const labels = mesesInfo.map(m => m.label);
+    const valores = mesesInfo.map(m => {
+      const b = buckets[`${m.month}-${m.year}`];
+      if (!b || this.habitaciones.length === 0) return 0;
+      const daysInMonth = new Date(m.year, m.month + 1, 0).getDate();
+      const possibleRoomDays = daysInMonth * this.habitaciones.length;
+      if (possibleRoomDays === 0) return 0;
+      const tasa = Math.round((b.diasOcupados / possibleRoomDays) * 100);
+      return Math.min(Math.max(tasa || 0, 0), 100);
     });
 
-    console.log('  Ocupación por mes:', meses.slice(0, 6), valores);
+    console.log('  Ocupación por mes (labels):', labels, valores);
 
-    return {
-      labels: meses.slice(0, 6),
-      valores: valores.map(v => Math.min(v, 100)) // Limitar a 100%
-    };
+    return { labels, valores };
   }
 
   obtenerDatosIngresos() {
-    const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const datosIngresos: { [key: string]: number } = {};
+    // Usar los últimos 6 meses como en ocupación
+    const mesesInfo: { label: string; month: number; year: number }[] = [];
+    const now = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const label = d.toLocaleString(undefined, { month: 'short' });
+      mesesInfo.push({ label, month: d.getMonth(), year: d.getFullYear() });
+    }
 
-    // Inicializar ingresos por mes en 0
-    meses.forEach(mes => {
-      datosIngresos[mes] = 0;
+    const buckets: { [key: string]: number } = {};
+    mesesInfo.forEach(m => buckets[`${m.month}-${m.year}`] = 0);
+
+    console.log('💰 Procesando', this.cuentas.length, 'cuentas para ingresos (últimos 6 meses)');
+
+    // Considerar cuentas filtradas por periodo también para consistencia
+    const cuentasFiltradas = this.filtrarCuentasPorPeriodo();
+
+    cuentasFiltradas.forEach((cuenta: Cuenta, idx: number) => {
+      if (cuenta.reserva && cuenta.reserva.fechaInicio) {
+        const d = new Date(cuenta.reserva.fechaInicio);
+        const key = `${d.getMonth()}-${d.getFullYear()}`;
+        if (buckets[key] !== undefined) {
+          const total = cuenta.total || 0;
+          const saldo = cuenta.saldo || 0;
+          const pagado = Math.max(0, total - saldo);
+          console.log(`  Cuenta ${idx}: ${key} - total:$${total} saldo:$${saldo} pagado:$${pagado} (Estado: ${cuenta.estado})`);
+          buckets[key] += pagado;
+        }
+      }
     });
 
-    console.log('💰 Procesando', this.cuentas.length, 'cuentas para ingresos');
+    const labels = mesesInfo.map(m => m.label);
+    const valores = mesesInfo.map(m => buckets[`${m.month}-${m.year}`] || 0);
 
-    // Sumar ingresos pagados por mes (incluyendo pagos parciales de cuentas abiertas)
-    this.cuentas
-      .forEach((cuenta, idx) => {
-        if (cuenta.reserva && cuenta.reserva.fechaInicio) {
-          const mesIdx = new Date(cuenta.reserva.fechaInicio).getMonth();
-          const mesKey = meses[mesIdx];
-          console.log(`  Cuenta ${idx}: ${mesKey} - $${cuenta.saldo} pagado (Estado: ${cuenta.estado})`);
-          datosIngresos[mesKey] += cuenta.saldo || 0;
-        }
-      });
+    console.log('  Ingresos por mes (labels):', labels, valores);
 
-    const valores = meses.slice(0, 6).map(mes => datosIngresos[mes]);
-
-    console.log('  Ingresos por mes:', meses.slice(0, 6), valores);
-
-    return { labels: meses.slice(0, 6), valores };
+    return { labels, valores };
   }
 
   obtenerDatosTipoHabitacion() {
@@ -649,5 +721,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.chartEstadoReservas.destroy();
       this.chartEstadoReservas = null;
     }
+
+    // Eliminar notas "no data" de los contenedores si existen
+    ['chartOcupacion', 'chartIngresos', 'chartTipoHabitacion', 'chartEstadoReservas'].forEach(id => {
+      const canvas = document.getElementById(id) as HTMLCanvasElement | null;
+      if (canvas && canvas.parentElement) {
+        const note = canvas.parentElement.querySelector('.no-data-note');
+        if (note) note.remove();
+      }
+    });
   }
 }

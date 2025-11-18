@@ -234,7 +234,7 @@ public class DatabaseInit implements ApplicationRunner {
                 Room selectedRoom = rooms.get(roomIdx % rooms.size());
 
                 // Distribuir reservas en los últimos 6 meses
-                LocalDate fechaInicio = LocalDate.now().minusMonths(6 - i);
+                LocalDate fechaInicio = LocalDate.now().minusDays(i);
                 LocalDate fechaFin = fechaInicio.plusDays(4);
 
                 Reserva r = reservaRepository.save(Reserva.builder()
@@ -246,13 +246,13 @@ public class DatabaseInit implements ApplicationRunner {
                         .build());
 
                 reservasCreadas.add(r);
-                System.out.println("✓ Reserva creada: " + cliente.getNombre() + " (" + cliente.getEmail()
+                System.out.println("Reserva creada: " + cliente.getNombre() + " (" + cliente.getEmail()
                         + ") - Habitación " + selectedRoom.getHabitacionNumber() + " - " + fechaInicio + " a "
                         + fechaFin);
             }
         } else {
             if (clientes.isEmpty()) {
-                System.out.println("⚠ No hay clientes disponibles para crear reservas");
+                System.out.println("No hay clientes disponibles para crear reservas");
             } else if (reservaRepository.count() > 0) {
                 System.out.println("Reservas ya existen, saltando creación.");
             }
@@ -289,7 +289,7 @@ public class DatabaseInit implements ApplicationRunner {
             Cuenta cuenta = Cuenta.builder()
                     .estado("PAGADA")
                     .total(total)
-                    .saldo(total)
+                    .saldo(0.0)
                     .reserva(r)
                     .servicios(List.of(s1, s2))
                     .build();
