@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.moravia.demo.dto.request.ActualizarUsuarioRequestDTO;
 import com.moravia.demo.dto.request.CrearUsuarioRequestDTO;
@@ -15,6 +17,8 @@ import com.moravia.demo.mapper.UsuarioMapper;
 import com.moravia.demo.mapper.UsuarioRequestMapper;
 import com.moravia.demo.model.Usuario;
 import com.moravia.demo.service.UsuarioService;
+import com.moravia.demo.service.CaptchaService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/usuario")
@@ -32,6 +36,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRequestMapper usuarioRequestMapper;
+    
+    @Autowired
+    private CaptchaService captchaService;
 
     // Lista todos los usuarios (sin reservas)
     @GetMapping("/all")
@@ -58,7 +65,11 @@ public class UsuarioController {
 
     // Crear usuario
     @PostMapping("/add")
-    public UsuarioResponseDTO agregarUsuario(@RequestBody CrearUsuarioRequestDTO requestDTO) {
+    public UsuarioResponseDTO agregarUsuario(@RequestBody CrearUsuarioRequestDTO requestDTO, HttpServletRequest servletRequest) {
+        String clientIp = resolveClientIp(servletRequest);
+        if (!captchaService.verifyToken(requestDTO.getCaptchaToken(), clientIp)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Captcha invalido");
+        }
         Usuario usuario = usuarioRequestMapper.toEntity(requestDTO);
         usuarioService.add(usuario);
         return usuarioMapper.toResponseDTO(usuario);
@@ -96,5 +107,13 @@ public class UsuarioController {
     @GetMapping("/delete/{id}")
     public void eliminarUsuario(@PathVariable("id") Long id) {
         usuarioService.deleteById(id);
+    }
+    
+    private String resolveClientIp(HttpServletRequest request) {
+        String forwarded = request.getHeader("X-Forwarded-For");
+        if (forwarded != null && !forwarded.isBlank()) {
+            return forwarded.split(",")[0].trim();
+        }
+        return request.getRemoteAddr();
     }
 }

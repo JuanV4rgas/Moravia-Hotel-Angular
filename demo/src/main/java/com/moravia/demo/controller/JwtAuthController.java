@@ -7,6 +7,7 @@ import com.moravia.demo.dto.response.UserInfoDTO;
 import com.moravia.demo.model.RefreshToken;
 import com.moravia.demo.model.Usuario;
 import com.moravia.demo.security.JwtTokenProvider;
+import com.moravia.demo.service.CaptchaService;
 import com.moravia.demo.service.RefreshTokenService;
 import com.moravia.demo.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.core.AuthenticationException;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -45,38 +47,45 @@ public class JwtAuthController {
     @Autowired
     private RefreshTokenService refreshTokenService;
 
+    @Autowired
+    private CaptchaService captchaService;
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
-    try {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getClave()));
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO request, HttpServletRequest httpRequest) {
+        String clientIp = resolveClientIp(httpRequest);
+        if (!captchaService.verifyToken(request.getCaptchaToken(), clientIp)) {
+            logger.warn("Captcha verification failed for ip={}", clientIp);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Captcha invalido");
+        }
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getClave()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        List<String> roles = authentication.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList());
+            List<String> roles = authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
 
-        String token = tokenProvider.generateToken(request.getEmail(), roles);
-        Usuario usuario = usuarioService.searchByEmail(request.getEmail());
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(usuario);
+            String token = tokenProvider.generateToken(request.getEmail(), roles);
+            Usuario usuario = usuarioService.searchByEmail(request.getEmail());
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(usuario);
 
-        LoginResponseDTO response = new LoginResponseDTO(
-            token,
-            refreshToken.getToken(),
-            usuario.getIdUsuario(),
-            usuario.getEmail(),
-            usuario.getNombre(),
-            usuario.getTipo(),
-            resolveRoles(usuario, roles)
-        );
-        return ResponseEntity.ok(response);
-    } catch (AuthenticationException ex) {
-        // Log full exception for easier debugging and return 401 with a clear message
-        logger.info("Authentication failed for email={}: {}", request.getEmail(), ex.toString());
-        logger.debug("Authentication exception details:", ex);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
-    }
+            LoginResponseDTO response = new LoginResponseDTO(
+                    token,
+                    refreshToken.getToken(),
+                    usuario.getIdUsuario(),
+                    usuario.getEmail(),
+                    usuario.getNombre(),
+                    usuario.getTipo(),
+                    resolveRoles(usuario, roles)
+            );
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException ex) {
+            logger.info("Authentication failed for email={}: {}", request.getEmail(), ex.toString());
+            logger.debug("Authentication exception details:", ex);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales invalidas");
+        }
     }
 
     @GetMapping("/me")
@@ -122,6 +131,14 @@ public class JwtAuthController {
         }
         SecurityContextHolder.clearContext();
         return ResponseEntity.noContent().build();
+    }
+
+    private String resolveClientIp(HttpServletRequest request) {
+        String forwarded = request.getHeader("X-Forwarded-For");
+        if (forwarded != null && !forwarded.isBlank()) {
+            return forwarded.split(",")[0].trim();
+        }
+        return request.getRemoteAddr();
     }
 
     private List<String> resolveRoles(Usuario usuario, List<String> fallback) {

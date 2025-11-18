@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Usuario } from '../../model/usuario';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-register-form',
@@ -15,6 +16,9 @@ export class RegisterFormComponent {
   errorMessage: string = '';
   successMessage: string = '';
   isLoading: boolean = false;
+  captchaToken: string | null = null;
+  captchaError: string | null = null;
+  siteKey = environment.recaptchaSiteKey;
 
   constructor(
     private fb: FormBuilder,
@@ -34,13 +38,19 @@ export class RegisterFormComponent {
 
   onRegister() {
     if (this.registerForm.valid) {
+      if (!this.captchaToken) {
+        this.captchaError = 'Por favor completa el captcha.';
+        return;
+      }
       this.isLoading = true;
       this.errorMessage = '';
       this.successMessage = '';
+      this.captchaError = null;
 
       const usuario: Usuario = this.registerForm.value;
+      const captchaToken = this.captchaToken;
 
-      this.authService.register(usuario).subscribe({
+      this.authService.register(usuario, captchaToken).subscribe({
         next: () => {
           console.log('Registro exitoso');
           this.isLoading = false;
@@ -53,6 +63,7 @@ export class RegisterFormComponent {
           console.error('Error en registro:', error);
           this.errorMessage = error.message || 'Error al registrar usuario';
           this.isLoading = false;
+          this.resetCaptcha();
         }
       });
     } else {
@@ -62,5 +73,14 @@ export class RegisterFormComponent {
 
   cambiarALogin() {
     this.toggleForm.emit();
+  }
+
+  onCaptchaResolved(token: string | null) {
+    this.captchaToken = token;
+    this.captchaError = null;
+  }
+
+  private resetCaptcha() {
+    this.captchaToken = null;
   }
 }
